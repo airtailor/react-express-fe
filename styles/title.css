@@ -1,0 +1,9 @@
+h1 {
+  color: blue;
+  transition-duration: 3s;
+}
+
+h1:hover {
+  color: green;
+  font-size: 100px;
+}
