@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SubTitle from './SubTitle';
 import '../../styles/App.css';
 import Axios from 'axios';
+import Login from './Login';
 
 class App extends Component {
 
@@ -29,10 +30,9 @@ class App extends Component {
     if (!this.state.user) {return <p>Loading...</p>}
     return (
       <ul>
-        <li>name: {this.state.user.name}</li>
-        <li>superpower: {this.state.user.superpower}</li>
+        <li>Name: {this.state.user.name}</li>
       </ul>
-    )
+    );
   }
 
   render() {
@@ -40,6 +40,7 @@ class App extends Component {
       <div>
         <h3> !!!!!Hi i am the app component! I am in root? </h3>
         <SubTitle />
+        <Login />
         { this.renderUser() }
       </div>
    );
