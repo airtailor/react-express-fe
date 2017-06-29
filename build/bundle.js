@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "6541d3f990200090e753"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "6d7eda40868944cde52b"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -10881,10 +10881,6 @@ var _react = __webpack_require__(26);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _SubTitle = __webpack_require__(213);
-
-var _SubTitle2 = _interopRequireDefault(_SubTitle);
-
 __webpack_require__(215);
 
 var _axios = __webpack_require__(53);
@@ -10909,65 +10905,16 @@ var App = function (_Component) {
   function App() {
     _classCallCheck(this, App);
 
-    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
-
-    _this.state = {
-      user: null
-    };
-    return _this;
+    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
   }
 
   _createClass(App, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      _axios2.default.get('/api/users/1').then(function (data) {
-        _this2.updateUser(data.data);
-      });
-    }
-  }, {
-    key: 'updateUser',
-    value: function updateUser(user) {
-      this.setState({
-        user: user
-      });
-    }
-  }, {
-    key: 'renderUser',
-    value: function renderUser() {
-      if (!this.state.user) {
-        return _react2.default.createElement(
-          'p',
-          null,
-          'Loading...'
-        );
-      }
-      return _react2.default.createElement(
-        'ul',
-        null,
-        _react2.default.createElement(
-          'li',
-          null,
-          'Name: ',
-          this.state.user.name
-        )
-      );
-    }
-  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(
-          'h3',
-          null,
-          ' !!!!!Hi i am the app component! I am in root? '
-        ),
-        _react2.default.createElement(_SubTitle2.default, null),
-        _react2.default.createElement(_Login2.default, null),
-        this.renderUser()
+        _react2.default.createElement(_Login2.default, null)
       );
     }
   }]);
@@ -26293,12 +26240,27 @@ var Login = function (_Component) {
     _this.state = {
       email: '',
       password: '',
+      user: '',
+      headers: '',
+      store: '',
       errors: {}
     };
     return _this;
   }
 
   _createClass(Login, [{
+    key: 'initialState',
+    value: function initialState() {
+      return {
+        email: '',
+        password: '',
+        user: '',
+        headers: '',
+        store: '',
+        errors: {}
+      };
+    }
+  }, {
     key: 'updateEmail',
     value: function updateEmail(email) {
       this.setState({ email: email });
@@ -26309,8 +26271,43 @@ var Login = function (_Component) {
       this.setState({ password: password });
     }
   }, {
+    key: 'updateUser',
+    value: function updateUser(user) {
+      var email = user.email,
+          id = user.id,
+          uid = user.uid,
+          store_id = user.store_id;
+
+      this.setState({ user: { email: email, id: id, uid: uid, store_id: store_id } });
+    }
+  }, {
+    key: 'updateHeaders',
+    value: function updateHeaders(headers) {
+      var accessToken = headers['access-token'];
+      var client = headers.client;
+      this.setState({ headers: { accessToken: accessToken, client: client } });
+    }
+  }, {
+    key: 'updateStore',
+    value: function updateStore(store) {
+      var id = store.id,
+          company_id = store.company_id,
+          phone = store.phone,
+          street1 = store.street1,
+          street2 = store.street2,
+          city = store.city,
+          zip = store.zip,
+          name = store.name;
+
+      this.setState({
+        store: { id: id, company_id: company_id, phone: phone, street1: street1, street2: street2, city: city, zip: zip, name: name }
+      });
+    }
+  }, {
     key: 'handleSubmit',
     value: function handleSubmit(event) {
+      var _this2 = this;
+
       event.preventDefault();
       var _state = this.state,
           email = _state.email,
@@ -26320,44 +26317,184 @@ var Login = function (_Component) {
         email: email,
         password: password
       }).then(function (res) {
-        console.log(res);
+        _this2.updateUser(res.data.body);
+        _this2.updateHeaders(res.data.headers);
       }).catch(function (err) {
         console.log(err);
       });
     }
   }, {
+    key: 'removeCurrentUser',
+    value: function removeCurrentUser() {
+      var initialState = this.initialState();
+      this.setState(initialState);
+    }
+  }, {
+    key: 'signOut',
+    value: function signOut() {
+      var _this3 = this;
+
+      var _state$headers = this.state.headers,
+          accessToken = _state$headers.accessToken,
+          client = _state$headers.client;
+      var uid = this.state.user.uid;
+
+      var body = { accessToken: accessToken, client: client, uid: uid };
+      _axios2.default.post('/api/sign_out', body).then(function (res) {
+        _this3.removeCurrentUser();
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  }, {
+    key: 'getUsersStore',
+    value: function getUsersStore() {
+      var _this4 = this;
+
+      var _state$headers2 = this.state.headers,
+          accessToken = _state$headers2.accessToken,
+          client = _state$headers2.client;
+      var _state$user = this.state.user,
+          uid = _state$user.uid,
+          store_id = _state$user.store_id;
+
+      var body = { accessToken: accessToken, client: client, uid: uid };
+
+      _axios2.default.post('/api/store/' + store_id, body).then(function (res) {
+        _this4.updateStore(res.data.body);
+      }).catch(function (err) {
+        console.log("error", err);
+      });
+    }
+  }, {
+    key: 'renderStore',
+    value: function renderStore() {
+      if (!this.state.store) {
+        return _react2.default.createElement('div', null);
+      } else {
+        var _state$store = this.state.store,
+            name = _state$store.name,
+            street1 = _state$store.street1,
+            street2 = _state$store.street2,
+            city = _state$store.city,
+            state = _state$store.state,
+            company_id = _state$store.company_id;
+
+        return _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'h3',
+            null,
+            name
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            ' ',
+            street1,
+            ' '
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            ' ',
+            street2,
+            ' '
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            ' ',
+            city,
+            ' '
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            ' ',
+            state,
+            ' '
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            ' Company ID: ',
+            company_id,
+            ' '
+          )
+        );
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this5 = this;
 
-      return _react2.default.createElement(
-        'form',
-        { onSubmit: function onSubmit(e) {
-            return _this2.handleSubmit(e);
-          } },
-        _react2.default.createElement(
-          'label',
+      if (!this.state.user || !this.state.headers) {
+        return _react2.default.createElement(
+          'form',
+          { onSubmit: function onSubmit(e) {
+              return _this5.handleSubmit(e);
+            } },
+          _react2.default.createElement(
+            'label',
+            null,
+            'Email:',
+            _react2.default.createElement('input', {
+              value: this.state.email,
+              onChange: function onChange(e) {
+                return _this5.updateEmail(e.target.value);
+              } })
+          ),
+          _react2.default.createElement(
+            'label',
+            null,
+            'Password:',
+            _react2.default.createElement('input', {
+              value: this.state.password,
+              onChange: function onChange(e) {
+                return _this5.updatePassword(e.target.value);
+              },
+              type: 'password' })
+          ),
+          _react2.default.createElement('input', { disabled: false, type: 'submit', value: 'Submit' })
+        );
+      } else if (this.state.user && this.state.headers) {
+        var email = this.state.user.email;
+
+        return _react2.default.createElement(
+          'div',
           null,
-          'Email:',
-          _react2.default.createElement('input', {
-            value: this.state.email,
-            onChange: function onChange(e) {
-              return _this2.updateEmail(e.target.value);
-            } })
-        ),
-        _react2.default.createElement(
-          'label',
-          null,
-          'Password:',
-          _react2.default.createElement('input', {
-            value: this.state.password,
-            onChange: function onChange(e) {
-              return _this2.updatePassword(e.target.value);
-            },
-            type: 'password' })
-        ),
-        _react2.default.createElement('input', { disabled: true, type: 'submit', value: 'Submit' })
-      );
+          _react2.default.createElement(
+            'h1',
+            null,
+            ' User Info '
+          ),
+          _react2.default.createElement(
+            'h3',
+            null,
+            ' Welcome, ',
+            email,
+            '! '
+          ),
+          _react2.default.createElement(
+            'button',
+            { onClick: function onClick() {
+                return _this5.signOut();
+              } },
+            'Sign Out'
+          ),
+          _react2.default.createElement(
+            'button',
+            { onClick: function onClick() {
+                return _this5.getUsersStore();
+              } },
+            'Store Info'
+          ),
+          this.renderStore()
+        );
+      }
     }
   }]);
 
@@ -26367,33 +26504,7 @@ var Login = function (_Component) {
 exports.default = Login;
 
 /***/ }),
-/* 213 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(26);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SubTitle = function SubTitle() {
-  return _react2.default.createElement(
-    'p',
-    null,
-    ' Web pack is even cooler than yesterday'
-  );
-};
-
-exports.default = SubTitle;
-
-/***/ }),
+/* 213 */,
 /* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 

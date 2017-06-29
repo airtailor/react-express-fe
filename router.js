@@ -2,16 +2,6 @@ const router = require('express').Router();
 const path = require('path');
 const Axios = require('axios');
 
-router.get('/api/users/:id', (req, res) =>{
-  res.json(
-      {
-        name: 'tims',
-        id: 1,
-        superpower: 'pretends to understand clojure'
-      }
-  );
-});
-
 router.post('/api/login', (req, res) => {
   const { email, password } = req.body;
   Axios.post('http://localhost:3000/auth/sign_in', {
@@ -19,20 +9,51 @@ router.post('/api/login', (req, res) => {
     password
   })
   .then(response => {
-    console.log("HEADERS", response.headers);
-    console.log("BODY", response.data);
     res.json({ headers: response.headers, body: response.data.data });
   })
   .catch(err => {
-    console.log(err);
     res.json({ error: err });
   });
 
+});
+
+router.post('/api/store/:id', (req, res) => {
+  const { client, accessToken, userId, uid } = req.body;
+  Axios.get(`http://localhost:3000/api/stores/${req.params.id}`, {
+    headers: {
+      client, 
+      ["access-token"]: accessToken,
+      uid
+   }
+  })
+  .then(response => {
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    res.json({ error: err });
+  });
+});
+
+router.post('/api/sign_out', (req, res) => {
+  const { uid, accessToken, client } = req.body;
+  Axios.delete('http://localhost:3000/auth/sign_out', {
+    headers: {
+      client, 
+      ["access-token"]: accessToken,
+      uid
+    }
+  })
+  .then(response => {
+    res.json(response)
+  })
+  .catch(err => {
+    res.json(err)
+  });
 });
 
 router.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-
 module.exports = router;
+
