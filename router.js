@@ -12,9 +12,26 @@ router.post('/api/login', (req, res) => {
     res.json({ headers: response.headers, body: response.data.data });
   })
   .catch(err => {
-    res.json({ error: err });
+    console.log("error: ", err.response);
+    res.json({ error: err.response });
   });
+});
 
+router.post('/api/sign_up', (req, res) => {
+  const { email, password, passwordConfirmation } = req.body;
+  Axios.post('http://localhost:3000/auth', {
+    email,
+    password,
+    password_confirmation: passwordConfirmation
+  })
+  .then(response => {
+    console.log("##############################", response);
+    res.json({ body: response.data });
+  })
+  .catch(err => {
+    console.log("error: ", err.response);
+    res.json({ error: err.response });
+  });
 });
 
 router.post('/api/store/:id', (req, res) => {
@@ -30,6 +47,7 @@ router.post('/api/store/:id', (req, res) => {
     res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {
+    console.log("error: ", err);
     res.json({ error: err });
   });
 });
@@ -47,7 +65,8 @@ router.post('/api/sign_out', (req, res) => {
     res.json(response)
   })
   .catch(err => {
-    res.json(err)
+    console.log("error: ", err.response);
+    res.json({ error: err.response });
   });
 });
 
