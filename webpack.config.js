@@ -1,42 +1,76 @@
-const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+import path from 'path';
+import webpack from 'webpack';
 
-const config = {
-  entry: './src/index.js',
+export default {
+  devtool: 'eval-source-map',
+  entry: [
+    'webpack-hot-middleware/client',
+    path.join(__dirname, '/client/index.js')
+  ],
   output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js'
+    path: '/',
+    publicPath: '/'
   },
+  plugins: [
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.HotModuleReplacementPlugin()
+  ],
   module: {
     loaders: [
-      { 
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: 'react-hot-loader!babel-loader'
-       },
-      { 
+      {
         test: /\.js$/,
+        include: path.join(__dirname, '/client'),
         exclude: /node_modules/,
-        loader: 'eslint-loader'
-      }
-    ],
-    rules: [
-      {
-        use: 'babel-loader',
-        test: /\.js$/
-      },
-      {
-        //use: ['style-loader', 'css-loader'],
-        use: ExtractTextPlugin.extract({
-          use: 'css-loader'
-        }),
-        test: /\.css$/
+        loaders: ['react-hot-loader', 'babel-loader']
       }
     ]
   },
-  plugins: [
-    new ExtractTextPlugin('style.css')
-  ]
-}
+  resolve: {
+    extensions: [
+      '.js'
+    ]
+  }
+};
 
-module.exports = config;
+
+
+// import path from 'path';
+// const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+// export default = {
+//   entry: './src/index.js',
+//   output: {
+//     path: path.resolve(__dirname, 'build'),
+//     filename: 'bundle.js'
+//   },
+//   module: {
+//     loaders: [
+//       {
+//         test: /\.jsx?$/,
+//         exclude: /node_modules/,
+//         loader: 'react-hot-loader!babel-loader'
+//        },
+//       {
+//         test: /\.js$/,
+//         exclude: /node_modules/,
+//         loader: 'eslint-loader'
+//       }
+//     ],
+//     rules: [
+//       {
+//         use: 'babel-loader',
+//         test: /\.js$/
+//       },
+//       {
+//         //use: ['style-loader', 'css-loader'],
+//         use: ExtractTextPlugin.extract({
+//           use: 'css-loader'
+//         }),
+//         test: /\.css$/
+//       }
+//     ]
+//   },
+//   plugins: [
+//     new ExtractTextPlugin('style.css')
+//   ]
+// }
