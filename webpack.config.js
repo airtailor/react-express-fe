@@ -9,7 +9,8 @@ export default {
   ],
   output: {
     path: '/',
-    publicPath: '/'
+    publicPath: '/',
+    filename: 'bundle.js'
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
