@@ -27,7 +27,7 @@ router.post('/api/sign_up', (req, res) => {
     password_confirmation: passwordConfirmation
   })
   .then(response => {
-    res.json({ body: response.data });
+    res.json({ body: response.data.data });
   })
   .catch(err => {
     console.log("error: ", err.response);
@@ -45,7 +45,7 @@ router.post('/api/store/:id', (req, res) => {
    }
   })
   .then(response => {
-    res.json({ headers: response.headers, body: response.data });
+    res.json({ headers: response.headers, body: response.data.data });
   })
   .catch(err => {
     console.log("error: ", err);

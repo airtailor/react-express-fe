@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function NavigationBar(props){
+const NavigationBar = (props) => {
+  // will need access to redux store to determine if there is a curent user
   return (
     <nav className="navbar">
       <div className="navbar-header">
@@ -15,5 +16,7 @@ export default function NavigationBar(props){
         </ul>
       </div>
     </nav>
-  );
+ );
 }
+
+export default NavigationBar;
