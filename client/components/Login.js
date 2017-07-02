@@ -199,7 +199,7 @@ class Login extends Component {
     if (!this.state.user || !this.state.headers) {
       return (
         <div>
-          <h5> Sign In </h5>
+          <h5> Sign In! </h5>
           <form onSubmit={(e) => this.signIn(e)}>
             <label>
               Email:
@@ -260,6 +260,7 @@ class Login extends Component {
           { this.renderOrders() }
         </div>
       );
+
     }
   }
 }
