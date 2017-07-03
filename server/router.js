@@ -19,7 +19,7 @@ router.post('/api/login', (req, res) => {
   });
 });
 
-router.post('/api/sign_up', (req, res) => {
+router.post('/api/sign_up', (req, res, next) => {
   const { email, password, passwordConfirmation } = req.body;
   Axios.post('http://localhost:3000/auth', {
     email,
@@ -30,8 +30,13 @@ router.post('/api/sign_up', (req, res) => {
     res.json({ body: response.data.data });
   })
   .catch(err => {
-    console.log("error: ", err.response);
-    res.json({ error: err.response });
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err);
+      res.json({status: err.response.status, error: err.response.data.errors.full_messages});
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
   });
 });
 

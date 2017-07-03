@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ValidateEmail, ValidatePassword, ValidatePasswordConfirmation } from '../utils/validations';
-import { UserSignUpRequest } from '../utils/requests';
-import SuccessMessage from './SuccessMessage';
+import { SignUpRequest, SignUpStatusResponse } from '../utils/requests';
+import FlashMessage from './FlashMessage';
 
 class SignUp extends Component {
    constructor(){
@@ -19,6 +19,7 @@ class SignUp extends Component {
         text: '',
         valid: false
       },
+      buttonDisabled: true,
       successMessage: '',
       errorMessage: ''
     }
@@ -26,18 +27,23 @@ class SignUp extends Component {
 
   signUp(e) {
     e.preventDefault();
+    this.updateMessage({name: 'successMessage', value: ''});
+    this.updateMessage({name: 'errorMessage', value: ''});
+
     const { email, password, passwordConfirmation } = this.state;
 
-    userSignUpRequest(email.text, password.text, passwordConfirmation.text)
+    SignUpRequest(email.text, password.text, passwordConfirmation.text)
     .then(res => {
-      console.log(res);
-      const message = statusResponse(res.status);
-      console.log(message);
+      if (res.data.error){
+        const message = res.data.error[0];
+        this.updateMessage({name: 'errorMessage', value: message});
+      } else {
+        const message = SignUpStatusResponse(res.status);
+        this.updateMessage({name: "successMessage", value: message});
+      }
     })
-    .catch(err => {
+    .catch(err => {;
       console.log(err);
-      const error = statusResponse(res.status);
-      console.log(error);
     });
   }
 
@@ -74,13 +80,13 @@ class SignUp extends Component {
     this.setState({buttonDisabled: bool});
   }
 
-  renderMessages(state){
+  renderMessages(){
+    const { successMessage, errorMessage } = this.state;
     let message;
-    if (state.successMessage){
-      message = <SuccessMessage message={state.successMessage} />
-      this.updateMessage({success: ''});
-    } else if (state.errorMessage){
-      debugger;
+    if (successMessage){
+      message = <FlashMessage type='success' message={successMessage} />
+    } else if (errorMessage){
+      message = <FlashMessage type='error' message={errorMessage} />
     }
     return message;
   }
@@ -89,7 +95,7 @@ class SignUp extends Component {
     const {buttonDisabled, email, password, passwordConfirmation} = this.state;
     return (
       <div>
-          { this.renderMessages(this.state) }
+          { this.renderMessages() }
           <h5> Sign Up </h5>
           <form onSubmit={(e) => this.signUp(e)}>
             <label>
