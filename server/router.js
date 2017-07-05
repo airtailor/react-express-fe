@@ -14,8 +14,13 @@ router.post('/api/sign_in', (req, res) => {
     res.json({ headers: response.headers, body: response.data.data });
   })
   .catch(err => {
-    console.log("error: ", err.response);
-    res.json({ error: err.response });
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err);
+      res.json({status: err.response.status, error: err.response.data.errors.full_messages});
+    } else {
+      console.log("error: ", err.response);
+      res.json({ error: err.response });
+    }
   });
 });
 

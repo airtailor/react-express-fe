@@ -25,10 +25,10 @@ class SignIn extends Component {
     e.preventDefault();
     this.props.userSignIn(this.state.email.text, this.state.password.text)
     .then((res) => {
-      console.log(res);
+      console.log('res', res);
     })
     .catch((err) => {
-      console.log(err);
+      console.log('err', err);
     });
   }
 
