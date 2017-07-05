@@ -56,8 +56,10 @@ class SignIn extends Component {
   }
 
   render() {
+    console.log('user', this.props.currentUser);
+    console.log('storage', JSON.parse(localStorage.AirTailorToken));
     const {buttonDisabled, email, password} = this.state;
-    if (this.props.currentUser){
+    if (this.props.authenticated){
       return (
         <h1>Hi {this.props.currentUser.email}</h1>
       );
@@ -93,7 +95,8 @@ class SignIn extends Component {
 
 const mapStateToProps = (store) => {
   return {
-    currentUser: store.currentUser
+    authenticated: store.currentUser.isAuthenticated,
+    currentUser: store.currentUser.user
   }
 }
 

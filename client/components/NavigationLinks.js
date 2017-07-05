@@ -1,11 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { signOut } from '../utils/requests';
+
+const handleSignOut = () => {
+  console.log('click');
+  signOut()
+  .then(res => {
+    debugger;
+  })
+  .catch(err => {
+    debugger;
+  })
+}
 
 const NavigationLinks = (props) => {
   if (props.currentUser) {
     return (
       <ul className="navbar-links-ul">
-        <li><Link className="navbar-links-li sign-out-link" to="#">Sign Out</Link></li>
+        <li onClick={() => handleSignOut }><Link className="navbar-links-li sign-out-link" to="#">Sign Out</Link></li>
       </ul>
     );
   } else {

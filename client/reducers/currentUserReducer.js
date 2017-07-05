@@ -1,11 +1,19 @@
-import { USER_SIGN_IN } from '../utils/constants';
+import { SET_CURRENT_USER } from '../utils/constants';
+import isEmpty from 'lodash/isEmpty';
 
-const currentUserReducer = (state = null, action) => {
+const initialState = {
+  isAuthenticated: false,
+  user: {}
+}
+
+const currentUserReducer = (state = initialState, action) => {
   switch(action.type){
-    case USER_SIGN_IN:
-      return action.payload.data.body;
-    default:
-      return state;
+    case SET_CURRENT_USER:
+      return {
+        isAuthenticated: !isEmpty(action.user),
+        user: action.user
+      }
+    default: return state;
   }
 }
 
