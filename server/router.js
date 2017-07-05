@@ -4,7 +4,7 @@ import Axios from 'axios';
 
 const router = express.Router();
 
-router.post('/api/login', (req, res) => {
+router.post('/api/sign_in', (req, res) => {
   const { email, password } = req.body;
   Axios.post('http://localhost:3000/auth/sign_in', {
     email,

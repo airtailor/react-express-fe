@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import NavigationBar from './components/NavigationBar';
 import Home from './components/Home';
@@ -7,6 +8,7 @@ import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 
 const Router = (props) => {
+  console.log('router', props)
   return (
     <BrowserRouter>
       <div>
@@ -22,4 +24,10 @@ const Router = (props) => {
   );
 };
 
-export default Router;
+const mapStateToProps = (store) => {
+  return {
+    currentUser: store.currentUser
+  }
+}
+
+export default connect(mapStateToProps)(Router);

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { ValidateEmail, ValidatePassword } from '../utils/validations';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { userSignIn } from '../actions/';
 
 class SignIn extends Component {
   constructor(){
@@ -20,7 +23,13 @@ class SignIn extends Component {
 
   signIn(e){
     e.preventDefault();
-    console.log(`login in with these credentials: \n email: ${this.state.email.text} password: ${this.state.password.text}`);
+    this.props.userSignIn(this.state.email.text, this.state.password.text)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }
 
   updateInputText(input){
@@ -48,32 +57,49 @@ class SignIn extends Component {
 
   render() {
     const {buttonDisabled, email, password} = this.state;
-
-    return (
-      <div>
-          <h5> Sign In </h5>
-          <form onSubmit={(e) => this.signIn(e)}>
-            <label>
-              Email:
-              <input
-                autoFocus={true}
-                value={email.text}
-                name="email"
-                onChange={(e) => this.updateInputText(e.target)} />
-            </label>
-            <label>
-              Password:
-              <input
-                value={password.text}
-                name="password"
-                onChange={(e) => this.updateInputText(e.target)}
-                type='password'/>
-            </label>
-            <input disabled={buttonDisabled} type="submit" value="Submit" />
-          </form>
-      </div>
-    );
+    if (this.props.currentUser){
+      return (
+        <h1>Hi {this.props.currentUser.email}</h1>
+      );
+    }
+    else { 
+      return (
+        <div>
+            <h5> Sign In </h5>
+            <form onSubmit={(e) => this.signIn(e)}>
+              <label>
+                Email:
+                <input
+                  autoFocus={true}
+                  value={email.text}
+                  name="email"
+                  onChange={(e) => this.updateInputText(e.target)} />
+              </label>
+              <label>
+                Password:
+                <input
+                  value={password.text}
+                  name="password"
+                  onChange={(e) => this.updateInputText(e.target)}
+                  type='password'/>
+              </label>
+              <input disabled={buttonDisabled} type="submit" value="Submit" />
+            </form>
+        </div>
+      );
+   }
   }
 }
 
-export default SignIn;
+const mapStateToProps = (store) => {
+  return {
+    currentUser: store.currentUser
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({userSignIn}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+//export default SignIn;

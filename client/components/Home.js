@@ -5,7 +5,7 @@ const Home = (props) => {
   // will need access to redux store to get data for user on home page
   return(
     <div>
-      <h3>Home!!!</h3>
+      <h3>!Home!!!</h3>
     </div>
   );
 }

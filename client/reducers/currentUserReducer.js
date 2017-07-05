@@ -1,9 +1,9 @@
-import { USER_SIGN_UP_REQUEST } from '../actions/index';
+import { USER_SIGN_IN } from '../utils/constants';
 
 const currentUserReducer = (state = null, action) => {
   switch(action.type){
-    case USER_SIGN_UP_REQUEST:
-      return action.payload.data;
+    case USER_SIGN_IN:
+      return action.payload.data.body;
     default:
       return state;
   }
