@@ -45,8 +45,11 @@ router.post('/api/sign_up', (req, res, next) => {
   });
 });
 
-router.post('/api/store/:id', (req, res) => {
-  const { client, accessToken, userId, uid } = req.body;
+router.post('/api/stores/:id', (req, res) => {
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const { userId } = req.body;
   Axios.get(`http://localhost:3000/api/stores/${req.params.id}`, {
     headers: {
       client,
@@ -55,11 +58,17 @@ router.post('/api/store/:id', (req, res) => {
    }
   })
   .then(response => {
-    res.json({ headers: response.headers, body: response.data.data });
+    console.log(response.data);
+    res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {
-    console.log("error: ", err);
-    res.json({ error: err });
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err);
+      res.json({status: err.response.status, error: err});
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
   });
 });
 
@@ -76,8 +85,13 @@ router.post('/api/sign_out', (req, res) => {
     res.json(response)
   })
   .catch(err => {
-    console.log("error: ", err.response);
-    res.json({ error: err.response });
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err);
+      res.json({status: err.response.status, error: err});
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
   });
 });
 

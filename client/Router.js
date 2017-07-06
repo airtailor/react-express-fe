@@ -1,25 +1,20 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import NavigationBar from './components/NavigationBar';
-import Home from './components/Home';
-import SignIn from './components/SignIn';
-import SignUp from './components/SignUp';
+import AvailableRoutes from './components/AvailableRoutes';
 
 const Router = (props) => {
-  console.log('router', props)
+  const loggedIn = props.currentUser.isAuthenticated;
   return (
     <BrowserRouter>
       <div>
-        <NavigationBar/>
+        <NavigationBar />
 
         <hr/>
-        <Route exact path="/" component={Home} />
-        <Route path="/sign_in" component={SignIn} />
-        <Route path="/sign_up" component={SignUp} />
-     </div>
-
+        <AvailableRoutes loggedIn={loggedIn} />
+      </div>
     </BrowserRouter>
   );
 };

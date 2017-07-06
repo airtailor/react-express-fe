@@ -56,8 +56,6 @@ class SignIn extends Component {
   }
 
   render() {
-    console.log('user', this.props.currentUser);
-    console.log('storage', JSON.parse(localStorage.AirTailorToken));
     const {buttonDisabled, email, password} = this.state;
     if (this.props.authenticated){
       return (

@@ -7,11 +7,6 @@ export const SignUpRequest = (email, password, passwordConfirmation) => {
   return Axios.post(url, data)
 }
 
-export const SignOut = () => {
-  const url = `${expressApi}/sign_out`;
-  return Axios.post(url);
-}
-
 export const SignUpStatusResponse = (status) => {
   if (status == 200) {
     return "Sign Up Successful : ) \n Please login";

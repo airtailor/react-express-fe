@@ -1,33 +1,43 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { signOut } from '../utils/requests';
+import NavigationLink from './NavigationLink';
+import { signOutCurrentUser } from '../actions';
 
-const handleSignOut = () => {
-  console.log('click');
-  signOut()
-  .then(res => {
-    debugger;
-  })
-  .catch(err => {
-    debugger;
-  })
-}
 
-const NavigationLinks = (props) => {
-  if (props.currentUser) {
-    return (
-      <ul className="navbar-links-ul">
-        <li onClick={() => handleSignOut }><Link className="navbar-links-li sign-out-link" to="#">Sign Out</Link></li>
-      </ul>
-    );
-  } else {
-    return (
-      <ul className="navbar-links-ul">
-        <li><Link className="navbar-links-li sign-in-link" to="/sign_in">Sign In</Link></li>
-        <li><Link className="navbar-links-li sign-up-link" to="/sign_up">Sign Up</Link></li>
-      </ul>
-    );
+class NavigationLinks extends Component {
+  handleSignOut(){
+    this.props.signOutCurrentUser()
+    .then(res => {
+      console.log('signed out');
+    })
+    .catch(err => {
+      console.log('oops something went wrong');
+    })
+  }
+  
+  render() {
+    if (this.props.currentUser.isAuthenticated) {
+      return (
+        <ul className="navbar-links-ul">
+          <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>Sign Out</a></li>
+          <NavigationLink cssClass="orders-link" route="/orders" text="Orders" />
+        </ul>
+      );
+    } else {
+      return (
+        <ul className="navbar-links-ul">
+          <NavigationLink cssClass="sign-in-link" route="/sign_in" text="Sign In" />
+          <NavigationLink cssClass="sign-up-link" route="/sign_up" text="Sign Up" />
+        </ul>
+      );
+    }
   }
 }
 
-export default NavigationLinks;
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({signOutCurrentUser}, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(NavigationLinks);
