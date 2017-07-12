@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
-import { getCurrentOrder, getItemTypes, updateOrderNotes } from '../actions';
+import { getCurrentOrder, updateOrderNotes } from '../actions';
 import isEmpty from 'lodash/isEmpty';
 
 class OrdersShow extends Component {
@@ -17,9 +17,8 @@ class OrdersShow extends Component {
   componentDidMount(){
     const { order_id } = this.props.match.params;
     const store_id = this.props.currentStore.id;
-    const { getCurrentOrder, getItemTypes } = this.props;
-    getItemTypes()
-      .then(getCurrentOrder(store_id, order_id).catch(err => console.log(err)))
+    const { getCurrentOrder } = this.props;
+    getCurrentOrder(store_id, order_id)
       .catch(err => console.log(err));
   }
 
@@ -28,21 +27,34 @@ class OrdersShow extends Component {
     return item.item_type.name == type.name;
   }
 
+  itemTypesList(){
+    return this.props.currentOrder.items.map(item => {
+      return item.item_type.name
+    });
+  }
+
+  removeDuplicates(arr){
+    return arr.filter(function(elem, index, self) {
+      return index == self.indexOf(elem);
+    });
+  }
+
   sortItemsByType(){
-    const { itemTypes } = this.props;
     const { items } = this.props.currentOrder;
+    const itemTypes = this.removeDuplicates(this.itemTypesList());
     return itemTypes.reduce((newList, type)=> {
 
       const filteredItems = items.filter(item => {
-        return item.item_type.name == type.name;
+        return item.item_type.name == type;
       });
 
       if (filteredItems.length > 0){
-        const newValue = { name: type.name, filteredItems };
+        const newValue = { name: type, filteredItems };
         newList.push(newValue);
       }
       return newList;
     }, []);
+    debugger;
   }
 
   renderItem(item, index){
@@ -127,9 +139,9 @@ class OrdersShow extends Component {
   }
 
   render(){
-    const { currentStore, currentOrder, itemTypes } = this.props;
+    const { currentStore, currentOrder} = this.props;
     const { customer } = currentOrder;
-    if (!isEmpty(currentOrder) && !isEmpty(itemTypes)){
+    if (!isEmpty(currentOrder)){
       const customerRoute = `/customers/${customer.id}/edit`;
       return (
         <div>
@@ -161,13 +173,12 @@ const mapStateToProps = (store) => {
     currentUser: store.currentUser,
     currentStore: store.currentStore,
     openOrders: store.storeOrders,
-    currentOrder: store.currentOrder,
-    itemTypes: store.itemTypes
+    currentOrder: store.currentOrder
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({getCurrentOrder, getItemTypes, updateOrderNotes}, dispatch);
+  return bindActionCreators({getCurrentOrder, updateOrderNotes}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrdersShow);
