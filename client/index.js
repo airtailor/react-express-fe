@@ -16,10 +16,14 @@ const store = createStore(
   applyMiddleware(thunk)
 );
 
-if (localStorage.AirTailorToken) {
-  const parsedUser = JSON.parse(localStorage.AirTailorToken);
-  setAuthToken(parsedUser);
+if (localStorage.AirTailorToken && localStorage.AirtailorToken) {
+  const parsedToken = JSON.parse(localStorage.AirTailorToken);
+  setAuthToken(parsedToken);
+  const parsedUser = JSON.parase(localStorage.CurrentUser);
   store.dispatch(setCurrentUser(parsedUser));
+} else {
+  delete localStorage.AirTailorToken;
+  delete localStorage.CurrentUser;
 }
 
 //const createStoreWithMiddleware = applyMiddleware(promise)(createStore);

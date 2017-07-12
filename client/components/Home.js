@@ -8,12 +8,8 @@ import { getUserStore } from '../actions';
 class Home extends Component {
 
   componentDidMount(){
-    console.log('component did mount');
     const { currentUser, getUserStore } = this.props;
     getUserStore(currentUser.user.store_id)
-    .then(res => {
-      console.log(res)
-    })
     .catch(err => {
       console.log(err);
     })
@@ -35,7 +31,6 @@ class Home extends Component {
 
 
   render(){ 
-    console.log(this.props);
     return(
       <div>
         <h3>!Home!!! { this.props.currentUser.user.email }</h3>

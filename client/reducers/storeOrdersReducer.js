@@ -1,8 +1,6 @@
 import { SET_STORE_ORDERS } from '../utils/constants';
 
-const initialState = {
-  orders: []
-}
+const initialState = [];
 
 const storeOrdersReducer = (state = initialState, action) => {
   switch(action.type){

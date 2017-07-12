@@ -4,6 +4,7 @@ import Home from './Home';
 import SignIn from './Signin';
 import SignUp from './SignUp';
 import StoreOrders from './StoreOrders';
+import OrdersShow from './OrdersShow';
 
 const AvailableRoutes = (props) => {
   const { loggedIn } = props;
@@ -33,9 +34,17 @@ const AvailableRoutes = (props) => {
         )
       )}/>
 
-      <Route path="/orders" render={() => (
+      <Route exact path="/orders" render={() => (
         loggedIn ? (
           <StoreOrders />
+        ) : (
+          <Redirect to="/sign_in" />
+        )
+      )}/>
+
+      <Route path="/orders/:order_id" render={(props) => (
+        loggedIn ? (
+          <OrdersShow {...props} />
         ) : (
           <Redirect to="/sign_in" />
         )

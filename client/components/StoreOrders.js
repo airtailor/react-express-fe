@@ -1,62 +1,82 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import moment from 'moment';
+import { Link } from'react-router-dom';
+import { getStoreOrders } from '../actions'; 
 
-const StoreOrders = (props) => {
-  const { currentUser, currentStore, openOrders } = props;
-  console.log(openOrders);
+class StoreOrders extends Component {
 
-  const formatDueDate = (dueDate, late) => {
-    const additionalString = late ? " ago" : " to go";
-    return (moment(dueDate).fromNow().split("in ")[1] + additionalString).toUpperCase();
+  componentDidMount(){
+    console.log('component did mount!');
+    console.log(this.props.currentStore);
+    this.props.getStoreOrders(this.props.currentStore.id).then(res => console.log(res)).catch(err => console.log(err));
   }
 
-  const getOrderStatus = (order) => {
+  formatDueDate(dueDate, late){
+    const todaysDate = moment(new Date());
+    const momentDueDate = moment(dueDate)
+    const diff = momentDueDate.diff(todaysDate, 'days');
+    const additionalString = late ? " days late" : " days to go";
+    const status = (diff + additionalString).toUpperCase();
+    return status;
+  }
+
+  getOrderStatus(order){
     if (!order.due_date){
       return {status: 'In Transit', color: 'green'};
     } else if (order.late){
-      let dueTime = formatDueDate(order.due_date, true);
+      let dueTime = this.formatDueDate(order.due_date, true);
       return {status: dueTime, color: 'red'};
     } else {
-      let dueTime = formatDueDate(order.due_date, false);
+      let dueTime = this.formatDueDate(order.due_date, false);
       return {status: dueTime, color: 'orange'};
     } 
   }
 
-  const renderOrderRows = () => {
-    return openOrders.map((order, i) => {
-      const orderStatus = getOrderStatus(order);
-      return (
-        <tr key={i}>
-          <td>{order.id}</td>
-          <td style={{color: orderStatus.color}}>{orderStatus.status}</td>
-          <td>{order.customer_id}</td>
-          <td>Quantity</td>
-        </tr>
-      );
-    });
+  renderOrderRows(){
+    const { openOrders } = this.props;
+    if (openOrders) {
+      return openOrders.map((order, i) => {
+        const orderStatus = this.getOrderStatus(order);
+        const { id, customer, alterations_count } = order;
+        const { first_name, last_name } = customer;
+        const { color, status} = orderStatus;
+        const route = `/orders/${id}`;
+        return (
+            <tr key={id}>
+              <td><Link to={route}>#{id}</Link></td>
+              <td style={{color: color}}>{status}</td>
+              <td>{first_name} {last_name}</td>
+              <td>{alterations_count}</td>
+            </tr>
+        );
+      });
+    } else {
+      return <div>Loading...</div>;
+    }
   }
 
-  return (
-    <div>
-      <h3>Orders</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Order</th>
-            <th>Status</th>
-            <th>Customer</th>
-            <th>Quantity</th>
-          </tr>
-        </thead>
-        <tbody>
-          { renderOrderRows() }
-        </tbody>
-      </table>
-    </div>
-
-
- );
+  render(){
+    return (
+      <div>
+        <h3>Orders</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Status</th>
+              <th>Customer</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            { this.renderOrderRows() }
+          </tbody>
+        </table>
+      </div>
+   );
+ }
 }
 
 const mapStateToProps = (store) => {
@@ -67,4 +87,8 @@ const mapStateToProps = (store) => {
   }
 }
 
-export default connect(mapStateToProps)(StoreOrders);
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({getStoreOrders}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StoreOrders);

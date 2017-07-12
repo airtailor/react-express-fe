@@ -49,7 +49,6 @@ router.post('/api/stores/:id', (req, res) => {
   const client = req.get('client');
   const accessToken = req.get('access-token');
   const uid = req.get('uid');
-  const { userId } = req.body;
   Axios.get(`http://localhost:3000/api/stores/${req.params.id}`, {
     headers: {
       client,
@@ -73,7 +72,10 @@ router.post('/api/stores/:id', (req, res) => {
 });
 
 router.post('/api/sign_out', (req, res) => {
-  const { uid, accessToken, client } = req.body;
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+
   Axios.delete('http://localhost:3000/auth/sign_out', {
     headers: {
       client,
@@ -87,7 +89,124 @@ router.post('/api/sign_out', (req, res) => {
   .catch(err => {
     if (err instanceof Error){
       console.log("@@@@@@@@@@@@@", err);
-      res.json({status: err.response.status, error: err});
+      res.json(err);
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
+
+router.post('/api/stores/:store_id/orders', (req, res) => {
+  const { store_id } = req.params;
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  console.log("##########################\n GET ALL ORDERS", client, accessToken, uid);
+  Axios.get(`http://localhost:3000/api/stores/${store_id}/orders`, {
+    headers: {
+      client,
+      ["access-token"]: accessToken,
+      uid
+   }
+  })
+  .then(response => {
+    console.log("##########################\n GET ALL ORDERS", { headers: response.headers, body: response.data });
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err);
+      res.json(err);
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
+
+
+router.post('/api/stores/:store_id/orders/:order_id', (req, res) => {
+  const { store_id, order_id } = req.params;
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  console.log("########################## ORDER ID\n", client, accessToken, uid);
+  Axios.get(`http://localhost:3000/api/stores/${store_id}/orders/${order_id}`, {
+    headers: {
+      client,
+      ["access-token"]: accessToken,
+      uid
+   }
+  })
+  .then(response => {
+    console.log("########################## GET ORDER\n", { headers: response.headers, body: response.data });
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err);
+      res.json(err);
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
+
+router.post('/api/item_types', (req, res) => {
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  console.log("##########################\n", "ITEMTYPES!", client, accessToken, uid);
+  Axios.get(`http://localhost:3000/api/item_types`, {
+    headers: {
+      client,
+      ["access-token"]: accessToken,
+      uid
+   }
+  })
+  .then(response => {
+    console.log("##########################\n ITEMTYPES", { headers: response.headers, body: response.data });
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err);
+      res.json(err);
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
+
+router.put('/api/stores/:store_id/orders/:order_id', (req, res) => {
+  const {store_id, order_id} = req.params;
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const data = req.body;
+  console.log("!!!!! DATA!!", data);
+  console.log("!!!!! req.body!!", req.body);
+  console.log("##########################\n", "PUT ORDER!", client, accessToken, uid);
+  Axios.put(`http://localhost:3000/api/stores/${store_id}/orders/${order_id}`, {
+    order: data.order, 
+
+    headers: {
+      client,
+      ["access-token"]: accessToken,
+      uid
+   }
+  })
+  .then(response => {
+    console.log("##########################\n", { headers: response.headers, body: response.data });
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err);
+      res.json(err);
     } else {
       console.log("error: ", err);
       res.json(err);
