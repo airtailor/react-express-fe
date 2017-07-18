@@ -54,7 +54,6 @@ class OrdersShow extends Component {
       }
       return newList;
     }, []);
-    debugger;
   }
 
   renderItem(item, index){
@@ -138,6 +137,10 @@ class OrdersShow extends Component {
     this.setState({ displayNotesForm: value });
   }
 
+  deleteOrder(){
+    console.log('delete');
+  }
+
   render(){
     const { currentStore, currentOrder} = this.props;
     const { customer } = currentOrder;
@@ -151,7 +154,7 @@ class OrdersShow extends Component {
               { customer.first_name } { customer.last_name + ' '}
             </Link>
             / 
-            <Link to="#"> delete order</Link>
+            <Link to="#" onClick={() => this.deleteOrder()}> delete order</Link>
           </div>
 
           { this.renderList() }
