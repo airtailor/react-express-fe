@@ -170,7 +170,8 @@ router.post('/api/stores/:store_id/orders/:order_id/edit', (req, res) => {
   const client = req.get('client');
   const accessToken = req.get('access-token');
   const uid = req.get('uid');
-  const headers = { client, ["access-token"]: accessToken, uid };
+  const expiry = req.get('expiry');
+  const headers = { client, ["access-token"]: accessToken, uid, expiry };
   const data = req.body;
   console.log("!!!!! DATA!!", data);
   console.log("!!!!! req.body!!", req.body);

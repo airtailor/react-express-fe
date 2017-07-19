@@ -80,7 +80,7 @@ class OrdersShow extends Component {
 
   orderNotes(party_notes){
     const notes = this.props.currentOrder[party_notes] || 'N/A';
-    const title = party_notes === 'provider_notes' ? 'Order Notes' : 'Tailor Notes';
+    const title = party_notes === 'provider_notes' ? 'Tailor Notes' : 'Order Notes';
     return (
       <div>
         <h3> { title } </h3>
