@@ -1,7 +1,16 @@
 import Axios from 'axios'
 import setAuthToken from '../utils/setAuthToken';
 import { setLocalStorageAuth, setLocalStorageUser } from '../utils/setLocalStorage';
-import { expressApi, SET_CURRENT_USER, SET_CURRENT_STORE, SET_STORE_ORDERS, SET_CURRENT_ORDER, SET_ITEM_TYPES } from '../utils/constants';
+import { 
+  expressApi, 
+  SET_CURRENT_USER, 
+  SET_CURRENT_STORE, 
+  SET_STORE_ORDERS, 
+  SET_CURRENT_ORDER, 
+  SET_ITEM_TYPES, 
+  SET_TAILOR_LIST,
+  SET_COMPANY_LIST
+} from '../utils/constants';
 
 const setTokens = (res) => {
   if (!res.data.headers['access-token']) { return; }
@@ -92,7 +101,7 @@ export function getCurrentOrder(store_id, order_id){
   }
 }
 
-export function getUserStore(store_id){
+export function getCurrentStore(store_id){
   const url = `${expressApi}/stores/${store_id}`;
   return dispatch => {
     return Axios.post(url)
@@ -112,60 +121,99 @@ export function getUserStore(store_id){
   }
 }
 
-export function updateOrderNotes(order, notes, userRole, store){
-  const url = `${expressApi}/stores/${store.id}/orders/${order.id}/edit`;
-  let data; 
-  if (userRole === "tailor"){
-    data = { order: { id: order.id, provider_notes: notes } }
-  }
-  console.log('old token', localStorage.AirTailorTokens);
-
+export function updateOrder(data){
+  const url = `${expressApi}/stores/${data.order.store_id}/orders/${data.order.id}/edit`;
   return dispatch => {
     return validateToken()
       .then(setTokens)
       .then(() => {
         return Axios.post(url, data)
           .then(res => {
-            //if (res.data === 401){
-            //  validateToken();
-            //  updateOrderNotes(order, notes, userRole, store);
-            //  return;
-            //}
-            debugger;
             dispatch(setCurrentOrder(res.data.body)); 
           })
           .catch(err => {
             debugger;
           })
       })
-      //.catch(err => {
-      //  console.log('validateTokenResponse error', err);
-      //  return err;
-      //});
   }
-  
-  //const url = `${expressApi}/stores/${store.id}/orders/${order.id}/edit`;
+}
 
-  //let data; 
-  //if (userRole === "tailor"){
-  //  data = { order: { id: order.id, provider_notes: notes } }
-  //}
-  //return dispatch => {
-  //  return Axios.post(url, data)
-  //    .then(res => {
-  //      //if (res.data === 401){
-  //      //  validateToken();
-  //      //  updateOrderNotes(order, notes, userRole, store);
-  //      //  return;
-  //      //}
-  //      dispatch(setCurrentOrder(res.data.body)); 
-  //    })
-  //    .catch(err => {
-  //    })
-  //}
+
+export function updateCustomer(data){
+  const url = `${expressApi}/customers/${data.customer.id}`;
+  return Axios.put(url, data)
+}
+
+export function createStore(data){
+  const url = `${expressApi}/stores/`;
+  return Axios.post(url, data)
+}
+
+export function getTailorList(){
+  const url = `${expressApi}/tailors`;
+  return dispatch => {
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.get(url)
+          .then(res => {
+            dispatch(setTailorList(res.data.body));
+          })
+          .catch(err => {
+            debugger;
+          })
+      })
+  }
+}
+
+export function updateStore(data){
+  const url = `${expressApi}/stores/${data.store.id}`;
+  return dispatch => {
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.put(url, data)
+          .then(res => {
+            dispatch(setCurrentStore(res.data.body)); 
+          })
+          .catch(err => {
+            debugger;
+          })
+      })
+  }
+}
+
+export function getCompanies(){
+  const url = `${expressApi}/companies`;
+  return dispatch => {
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.get(url)
+          .then(res => {
+            dispatch(setCompanyList(res.data.body)); 
+          })
+          .catch(err => {
+            debugger;
+          })
+      })
+  }
 }
 
 // actions
+export function setCompanyList(companies){
+  return {
+    type: SET_COMPANY_LIST,
+    companies
+  }
+}
+
+export function setTailorList(tailors){
+  return {
+    type: SET_TAILOR_LIST,
+    tailors
+  }
+}
 
 export function setCurrentUser(user) {
   return {

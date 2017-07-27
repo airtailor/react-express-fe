@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import { getUserStore } from '../actions';
+import { getCurrentStore } from '../actions';
 //import '../../styles/App.css';
 
 class Home extends Component {
 
   componentDidMount(){
-    const { currentUser, getUserStore } = this.props;
-    getUserStore(currentUser.user.store_id)
+    const { currentUser, getCurrentStore } = this.props;
+    getCurrentStore(currentUser.user.store_id)
     .catch(err => {
       console.log(err);
     })
@@ -17,11 +18,13 @@ class Home extends Component {
 
   renderStore(){
     if (!isEmpty(this.props.currentStore)){
+      const storeEditPath = `/stores/${this.props.currentStore.id}/edit`;
       return (
         <div>
           <h1>{this.props.currentStore.name}</h1>
           <p>Late Orders: { this.props.currentStore.late_orders_count }</p>
           <p>Current Orders: {this.props.currentStore.active_orders_count }</p>
+          <Link to={storeEditPath}>Edit Store</Link>
         </div>
       );
     } else {
@@ -48,7 +51,7 @@ const mapStateToProps = (store) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({getUserStore}, dispatch);
+  return bindActionCreators({getCurrentStore}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

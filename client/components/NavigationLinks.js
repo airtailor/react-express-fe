@@ -23,6 +23,7 @@ class NavigationLinks extends Component {
         <ul className="navbar-links-ul">
           <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>Sign Out</a></li>
           <NavigationLink cssClass="orders-link" route="/orders" text="Orders" />
+          <NavigationLink cssClass="new-store-link" route="/stores/new" text="Create New Store" />
         </ul>
       );
     } else {

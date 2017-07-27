@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
-import { getCurrentOrder, updateOrder } from '../actions';
+import { getCurrentOrder, updateOrderNotes } from '../actions';
 import isEmpty from 'lodash/isEmpty';
 
 class OrdersShow extends Component {
   constructor(props){
     super();
+
     this.state = { 
-      notes: '',
+     // notes: props.currentOrder.provider_notes,
+      notes: this.setNotes(props),
       displayNotesForm: false
     }
   }
@@ -23,8 +25,10 @@ class OrdersShow extends Component {
   }
 
   setNotes(props){
-    if (props.currentUser.user.roles[0].name === 'tailor'){
+    if (props.currentUser.user.roles[0] === 'tailor'){
       return props.currentOrder.provider_notes;
+    } else {
+      console.log('wat');
     }
   }
 
@@ -48,6 +52,7 @@ class OrdersShow extends Component {
     const { items } = this.props.currentOrder;
     const itemTypes = this.removeDuplicates(this.itemTypesList());
     return itemTypes.reduce((newList, type)=> {
+
       const filteredItems = items.filter(item => {
         return item.item_type.name == type;
       });
@@ -77,6 +82,7 @@ class OrdersShow extends Component {
             { itemType.filteredItems.map(this.renderItem) }
           </ul>
         </div>
+
       );
     });
   }
@@ -98,9 +104,8 @@ class OrdersShow extends Component {
 
   submitNotes(event){
     event.preventDefault();
-    const key = this.props.currentUser.user.roles[0].name === 'tailor' ? 'provider_notes' : 'requester_notes';
-    const data = { order: {[key]: this.state.notes, id: this.props.currentOrder.id, store_id: this.props.currentOrder.store_id }}; 
-    this.props.updateOrder(data)
+    this.props.updateOrderNotes(this.props.currentOrder, this.state.notes, this.props.currentUser.user.roles[0].name, this.props.currentStore)
+      .then(res => console.log(res))
       .catch(err => console.log(err));
   }
 
@@ -117,14 +122,14 @@ class OrdersShow extends Component {
         prompt = 'Add Admin Notes?'
         party = 'requester_notes';
       }
-      
+
       return (
         <form onSubmit={(e) => this.submitNotes(e)}>
           <label>
            { prompt }
            <br />
             <textarea
-              defaultValue={this.props.currentOrder[party]}
+              value={this.state.notes}
               onChange={(e) => this.updateNotes(e.target.value) }>
             </textarea>
           </label>
@@ -133,30 +138,6 @@ class OrdersShow extends Component {
       );
     } else {
       return <div></div>;
-    }
-  }
-
-  checkOrderIn(){
-    const data = { order: {id: this.props.currentOrder.id, store_id: this.props.currentOrder.store_id, arrived: true }}; 
-    this.props.updateOrder(data)
-      .catch(err => console.log(err));
-  }
-
-  renderArrivedButton() {
-    if (!this.props.currentOrder.arrived){
-      return <div><button onClick={() => this.checkOrderIn()}>Check Order In</button></div>;
-    }
-  }
-
-  fulfillOrder(){
-    const data = { order: {id: this.props.currentOrder.id, store_id: this.props.currentOrder.store_id, fulfilled: true }};
-    this.props.updateOrder(data)
-      .catch(err => console.log(err));
-  }
-
-  renderFulfillButton(){
-    if (this.props.currentOrder.arrived){
-      return <div><button onClick={() => this.fulfillOrder()}>Fulfill This Order</button></div>;
     }
   }
 
@@ -172,8 +153,6 @@ class OrdersShow extends Component {
   render(){
     const { currentStore, currentOrder} = this.props;
     const { customer } = currentOrder;
-    const orderEditPath = `/orders/${currentOrder.id}/edit`;
-
     if (!isEmpty(currentOrder)){
       const customerRoute = `/customers/${customer.id}/edit`;
       return (
@@ -186,17 +165,13 @@ class OrdersShow extends Component {
             / 
             <Link to="#" onClick={() => this.deleteOrder()}> delete order</Link>
           </div>
-          <div>
-            <Link to={orderEditPath}>Edit Order</Link>
-          </div>
 
-          { this.renderList() }
+         { this.renderList() }
           { this.orderNotes('requester_notes') }
           { this.orderNotes('provider_notes') }
-          <button onClick={() => this.showHideNotesForm()}>{this.state.displayNotesForm ? 'Hide' : 'Add Notes'}</button>
+          <button onClick={() => this.showHideNotesForm()}>Add Notes?</button>
           { this.notesForm() }
-          { this.renderArrivedButton() }
-          { this.renderFulfillButton() } 
+
         </div>
       );
     } else {
@@ -215,7 +190,7 @@ const mapStateToProps = (store) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({getCurrentOrder, updateOrder}, dispatch);
+  return bindActionCreators({getCurrentOrder, updateOrderNotes}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrdersShow);

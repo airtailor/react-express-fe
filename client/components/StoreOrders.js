@@ -6,11 +6,8 @@ import { Link } from'react-router-dom';
 import { getStoreOrders } from '../actions'; 
 
 class StoreOrders extends Component {
-
   componentDidMount(){
-    console.log('component did mount!');
-    console.log(this.props.currentStore);
-    this.props.getStoreOrders(this.props.currentStore.id).then(res => console.log(res)).catch(err => console.log(err));
+    this.props.getStoreOrders(this.props.currentUser.user.store_id).catch(err => console.log(err));
   }
 
   formatDueDate(dueDate, late){
