@@ -16,16 +16,31 @@ class NavigationLinks extends Component {
       console.log('oops something went wrong');
     })
   }
+
+  adminNavbar(){
+    return (
+      <ul className="navbar-links-ul">
+        <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>Sign Out</a></li>
+        <NavigationLink cssClass="orders-link" route="/orders" text="Orders" />
+        <NavigationLink cssClass="new-store-link" route="/stores/new" text="Create New Store" />
+      </ul>
+    );
+  }
+
+  tailorNavbar(){
+    return (
+      <ul className="navbar-links-ul">
+        <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>Sign Out</a></li>
+        <NavigationLink cssClass="orders-link" route="/orders" text="Orders" />
+      </ul>
+    );
+  }
   
   render() {
-    if (this.props.currentUser.isAuthenticated) {
-      return (
-        <ul className="navbar-links-ul">
-          <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>Sign Out</a></li>
-          <NavigationLink cssClass="orders-link" route="/orders" text="Orders" />
-          <NavigationLink cssClass="new-store-link" route="/stores/new" text="Create New Store" />
-        </ul>
-      );
+    if (this.props.admin) {
+      return this.adminNavbar();
+    } else if (this.props.loggedIn) {
+      return this.tailorNavbar()
     } else {
       return (
         <ul className="navbar-links-ul">

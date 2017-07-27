@@ -7,13 +7,14 @@ import AvailableRoutes from './components/AvailableRoutes';
 
 const Router = (props) => {
   const loggedIn = props.currentUser.isAuthenticated;
+  const admin = (props.currentUser.user.roles && props.currentUser.user.roles[0].name === 'admin');
   return (
     <BrowserRouter>
       <div>
-        <NavigationBar />
+        <NavigationBar loggedIn={loggedIn} admin={admin}/>
 
         <hr/>
-        <AvailableRoutes loggedIn={loggedIn} />
+        <AvailableRoutes loggedIn={loggedIn} admin={admin} />
       </div>
     </BrowserRouter>
   );

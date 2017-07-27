@@ -11,10 +11,10 @@ import StoresNew from './StoresNew';
 import CustomerEdit from './CustomerEdit';
 
 const AvailableRoutes = (props) => {
-  const { loggedIn } = props;
+  const { loggedIn, admin } = props;
   return (
     <div>
-      <Route exact path="/" render={() => ( 
+      <Route exact path="/" render={(props) => ( 
         loggedIn ? (
           <Home /> 
         ) : (
@@ -22,7 +22,7 @@ const AvailableRoutes = (props) => {
         )
       )}/>
 
-      <Route path="/sign_in" render={() => (
+      <Route path="/sign_in" render={(props) => (
         loggedIn ? (
           <Redirect to="/" /> 
         ) : (
@@ -30,7 +30,7 @@ const AvailableRoutes = (props) => {
         )
       )}/>
 
-      <Route path="/sign_up" render={() => (
+      <Route path="/sign_up" render={(props) => (
         loggedIn ? (
           <Redirect to="/"/>
         ) : (
@@ -39,9 +39,9 @@ const AvailableRoutes = (props) => {
       )}/>
 
 
-      <Route exact path="/orders" render={() => (
+      <Route exact path="/orders" render={(props) => (
         loggedIn ? (
-          <StoreOrders />
+          <StoreOrders {...props} />
         ) : (
           <Redirect to="/sign_in" />
         )
@@ -73,7 +73,7 @@ const AvailableRoutes = (props) => {
 
 
       <Route path="/stores/new" render={(props) => (
-        loggedIn ? (
+        admin ? (
           <StoresNew {...props} />
         ) : (
           <Redirect to="/sign_in" />
