@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-//import promise from 'redux-promise';
-
 import Router from './Router';
 import rootReducer from './reducers';
 import setAuthToken from './utils/setAuthToken';
@@ -16,17 +14,16 @@ const store = createStore(
   applyMiddleware(thunk)
 );
 
-if (localStorage.AirTailorToken && localStorage.AirtailorToken) {
-  const parsedToken = JSON.parse(localStorage.AirTailorToken);
+if (localStorage.AirTailorTokens && localStorage.CurrentUser) {
+  console.log('main indexjs line 20');
+  const parsedToken = JSON.parse(localStorage.AirTailorTokens);
   setAuthToken(parsedToken);
-  const parsedUser = JSON.parase(localStorage.CurrentUser);
+  const parsedUser = JSON.parse(localStorage.CurrentUser);
   store.dispatch(setCurrentUser(parsedUser));
 } else {
   delete localStorage.AirTailorToken;
   delete localStorage.CurrentUser;
 }
-
-//const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 ReactDOM.render(
   <Provider store={store}>
