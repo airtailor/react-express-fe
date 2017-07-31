@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
-import { getCurrentOrder, updateOrder } from '../actions';
+import { getCurrentOrder, updateOrder, createShipment } from '../actions';
 import isEmpty from 'lodash/isEmpty';
 
 class OrdersShow extends Component {
@@ -13,13 +13,18 @@ class OrdersShow extends Component {
       displayNotesForm: false
     }
   }
- 
-  componentDidMount(){
+
+  refreshCurrentOrder(){
     const { order_id } = this.props.match.params;
     const store_id = this.props.currentStore.id;
     const { getCurrentOrder } = this.props;
     getCurrentOrder(store_id, order_id)
+      .then(res => console.log('finisihed refresh current order'))
       .catch(err => console.log(err));
+  }
+ 
+  componentDidMount(){
+    this.refreshCurrentOrder();
   }
 
   setNotes(props){
@@ -169,10 +174,71 @@ class OrdersShow extends Component {
     console.log('delete');
   }
 
+  makeShippingLabel(type){
+    const data = { shipment: { type, order_id: this.props.currentOrder.id }};
+    createShipment(data)
+      .then(res => this.refreshCurrentOrder())
+      .catch(err => console.log(err));
+  }
+
+  getShippingType(role){
+    if (role === 'tailor'){
+      return 'OutgoingShipment';
+    } else if (role === 'sales_associate' && currentOrder.type !== 'WelcomeKit'){
+      return 'IncomingShipment';
+    } else if (currentOrder.type === 'WelcomeKit'){
+      return 'OutgoingShipment';
+    } else {
+      // if it gets here, we need to handle an error message
+      console.log('wtf - ordersshow renderPrintLabels()');
+    }
+  }
+
+  toSnakeCaseFromCamelCase(string){
+   debugger;
+   return string.replace(/([A-Z])/g, letter => {
+     return `_${letter.toLowerCase()}`;
+   });
+  }
+
+  /// need a better way to format this!
+
+  labelExists(shippingType, order){
+    const key = this.toSnakeCaseFromCamelCase(shippingType);
+    if (order[key]){
+      return order[key].shipping_label ? true : false
+    }
+    return false;
+  }
+
+  getPrintButtonPrompt(shippingType, order){
+    const verb = this.labelExists(shippingType, order) ?
+      'Print' :
+      'Create';
+
+    return `${verb} Shipping Label`
+  }
+
+  renderPrintLabels(){
+    const { currentUser, currentOrder } = this.props;
+    const role = currentUser.user.roles[0].name;
+    const shippingType = this.getShippingType(role);
+    const printPrompt = this.getPrintButtonPrompt(shippingType, currentOrder);
+
+    //const printPrompt = `${printOrCreate} ${shippingType.split('Sh')[0]} Shipping Label`;
+
+    return (
+      <button onClick={() => this.makeShippingLabel(shippingType)}>
+        Create {shippingType.split('Shipment')[0]} Shipping Label
+      </button>
+    );
+  }
+
   render(){
     const { currentStore, currentOrder} = this.props;
     const { customer } = currentOrder;
     const orderEditPath = `/orders/${currentOrder.id}/edit`;
+    console.log(currentOrder)
 
     if (!isEmpty(currentOrder)){
       const customerRoute = `/customers/${customer.id}/edit`;
@@ -197,6 +263,7 @@ class OrdersShow extends Component {
           { this.notesForm() }
           { this.renderArrivedButton() }
           { this.renderFulfillButton() } 
+          { this.renderPrintLabels() }
         </div>
       );
     } else {
@@ -219,3 +286,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrdersShow);
+

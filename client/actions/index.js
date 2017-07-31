@@ -200,6 +200,11 @@ export function getCompanies(){
   }
 }
 
+export function createShipment(data){
+  const url = `${expressApi}/shipments`;
+  return Axios.post(url, data)
+}
+
 // actions
 export function setCompanyList(companies){
   return {

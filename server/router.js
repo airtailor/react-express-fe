@@ -329,6 +329,33 @@ router.post('/api/stores', (req, res) => {
   });
 });
 
+router.post('/api/shipments', (req, res) => {
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const expiry = req.get('expiry');
+  const headers = { client, ["access-token"]: accessToken, uid, expiry };
+  const data = req.body;
+
+  Axios.post(`http://localhost:3000/api/shipments`, {
+    shipment: data.shipment,
+    headers
+  })
+  .then(response => {
+    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err.response.status);
+      res.json(err.response.status);
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
+
 router.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
