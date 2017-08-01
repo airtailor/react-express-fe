@@ -7,7 +7,7 @@ const NavigationBar = (props) => {
   return (
     <nav className="navbar">
       <div className="navbar-header">
-        <Link className="navbar-brand" to="/">Air Tailor</Link>
+        <Link className="navbar-brand test" to="/">Air Tailor</Link>
       </div>
       <div className="navbar-links-container">
         <NavigationLinks loggedIn={props.loggedIn} admin={props.admin} />

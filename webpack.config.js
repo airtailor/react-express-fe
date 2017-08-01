@@ -23,8 +23,22 @@ export default {
         include: path.join(__dirname, '/client'),
         exclude: /node_modules/,
         loaders: ['react-hot-loader', 'babel-loader']
+      },
+      { 
+        test: /\.css$/,
+        loader: 'style-loader!css-loader'
       }
-    ]
+    ],
+    //rules: [{
+    //  test: /\.scss$/,
+    //  use: [{
+    //      loader: "style-loader" // creates style nodes from JS strings
+    //    }, {
+    //      loader: "css-loader" // translates CSS into CommonJS
+    //    }, {
+    //      loader: "sass-loader" // compiles Sass to CSS
+    //  }]
+    //}]
   },
   resolve: {
     extensions: [
@@ -46,8 +60,7 @@ export default {
 //   },
 //   module: {
 //     loaders: [
-//       {
-//         test: /\.jsx?$/,
+//       { //         test: /\.jsx?$/,
 //         exclude: /node_modules/,
 //         loader: 'react-hot-loader!babel-loader'
 //        },
