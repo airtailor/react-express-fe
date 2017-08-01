@@ -65,30 +65,26 @@ class SignIn extends Component {
     }
     else { 
       return (
-        <div className="sign-in">
-            <LogoMessage className='sign-in-logo' text='Welcome, you can log in securely below.' />
+        <div>
+            <LogoMessage className='signin-logo' text='Welcome, you can log in securely below.' />
             <form onSubmit={(e) => this.signIn(e)}>
-              <input
-                className="form-input"
-                autoFocus={true}
-                value={email.text}
-                name="email"
-                placeholder='Email'
-                type='email'
-                onChange={(e) => this.updateInputText(e.target)} />
-              <input
-                className="form-input"
-                value={password.text}
-                name="password"
-                onChange={(e) => this.updateInputText(e.target)}
-                placeholder='Password'
-                type='password'/>
-              <input disabled={buttonDisabled} type="submit" value="Log In" />
-              <a 
-                className="forgot-password link"
-                href='mailto:brian@airtailor.com?&subject=Forgot%20Password'>
-                Forgot your password?
-              </a>
+              <label>
+                Email:
+                <input
+                  autoFocus={true}
+                  value={email.text}
+                  name="email"
+                  onChange={(e) => this.updateInputText(e.target)} />
+              </label>
+              <label>
+                Password:
+                <input
+                  value={password.text}
+                  name="password"
+                  onChange={(e) => this.updateInputText(e.target)}
+                  type='password'/>
+              </label>
+              <input disabled={buttonDisabled} type="submit" value="Submit" />
             </form>
         </div>
       );

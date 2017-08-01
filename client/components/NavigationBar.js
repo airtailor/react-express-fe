@@ -2,13 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NavigationLinks from './NavigationLinks';
+import LogoMessage from './LogoMessage';
 
 const NavigationBar = (props) => {
   return (
     <nav className="navbar">
-      <div className="navbar-header">
-        <Link className="navbar-brand test" to="/">Air Tailor</Link>
-      </div>
+      <LogoMessage className='navbar-logo' text='SHOP PORTAL' />
       <div className="navbar-links-container">
         <NavigationLinks loggedIn={props.loggedIn} admin={props.admin} />
       </div>

@@ -4,20 +4,29 @@ import { connect } from 'react-redux';
 
 import NavigationBar from './components/NavigationBar';
 import AvailableRoutes from './components/AvailableRoutes';
+import SignIn from './components/SignIn';
 
 const Router = (props) => {
   const loggedIn = props.currentUser.isAuthenticated;
   const admin = (props.currentUser.user.roles && props.currentUser.user.roles[0].name === 'admin');
-  return (
-    <BrowserRouter>
-      <div>
-        <NavigationBar loggedIn={loggedIn} admin={admin}/>
-
-        <hr/>
-        <AvailableRoutes loggedIn={loggedIn} admin={admin} />
-      </div>
-    </BrowserRouter>
-  );
+  if (loggedIn){
+    return (
+      <BrowserRouter>
+        <div>
+          <NavigationBar loggedIn={loggedIn} admin={admin}/>
+          <AvailableRoutes loggedIn={loggedIn} admin={admin} />
+        </div>
+      </BrowserRouter>
+    );
+  } else {
+    return ( 
+      <BrowserRouter>
+        <div>
+          <SignIn />
+        </div>
+      </BrowserRouter>
+    );
+  }
 };
 
 const mapStateToProps = (store) => {

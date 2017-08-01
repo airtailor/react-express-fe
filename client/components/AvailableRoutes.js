@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import '../../styles/main.css';
+import '../../styles/main.scss';
 import Home from './Home';
 import SignIn from './Signin';
 import SignUp from './SignUp';

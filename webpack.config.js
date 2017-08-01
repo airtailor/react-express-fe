@@ -25,8 +25,15 @@ export default {
         loaders: ['react-hot-loader', 'babel-loader']
       },
       { 
-        test: /\.css$/,
-        loader: 'style-loader!css-loader'
+        test: /\.scss$/,
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
+      },
+      {
+        test: /\.(jpg|png|svg)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 2500,
+        }
       }
     ],
     //rules: [{

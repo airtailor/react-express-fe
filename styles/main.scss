@@ -1,0 +1,73 @@
+@import 'normalize';
+@import 'variables';
+
+a {
+  font-family: arial;
+  font-weight: normal;
+  color: $primary-blue;
+  text-decoration: none;
+}
+
+h5 {
+  color: $primary-blue;
+}
+
+
+.navbar-logo > h5 {
+  margin-left: 36px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  font-family: arial;
+  letter-spacing: 2px;
+  font-size: 12px;
+}
+.navbar-logo > .logo {
+  width: 125px;
+  margin-left: 25px;
+  margin-top: 20px;
+}
+
+.sign-in {
+  width: 30px;
+  min-width: 400px;
+  /*margin: 10% auto; */
+  margin: 110px auto;
+}
+
+.sign-in-logo > .logo {
+  width: 200px;
+}
+
+.sign-in-logo > h5 {
+  font-family: alegreya;
+  letter-spacing: 0.5px;
+  margin-top: 18px;
+  margin-bottom: 18px;
+  font-size: 24px;
+}
+
+.form-input[type="email"], .form-input[type="password"] {
+ border: none;
+ background-color: rgba(216, 237, 252, .5);
+ margin-top: 10px;
+ height: 40px;
+ width: 360px;
+ padding-left: 40px;
+ border-radius: 5px;
+ border: 1px solid $primary-blue; 
+}
+
+input[type="submit"] {
+  background-color: $primary-blue;
+  color: white;
+  margin-top: 15px;
+  width: 40%;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.forgot-password {
+  margin-left: 20px;
+}
+
