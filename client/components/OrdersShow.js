@@ -19,7 +19,6 @@ class OrdersShow extends Component {
     const store_id = this.props.currentStore.id;
     const { getCurrentOrder } = this.props;
     getCurrentOrder(store_id, order_id)
-      .then(res => console.log('finisihed refresh current order'))
       .catch(err => console.log(err));
   }
  
@@ -91,8 +90,8 @@ class OrdersShow extends Component {
     const title = party_notes === 'provider_notes' ? 'Tailor Notes' : 'Order Notes';
     return (
       <div>
-        <h3> { title } </h3>
-        <p>{ notes } </p>
+        <h3>{title}</h3>
+        <p>{notes}</p>
       </div>
     );
   }
@@ -190,21 +189,23 @@ class OrdersShow extends Component {
       return 'OutgoingShipment';
     } else {
       // if it gets here, we need to handle an error message
-      console.log('wtf - ordersshow renderPrintLabels()');
+      console.log('wtf fix this - ordersshow renderPrintLabels()');
     }
   }
 
   toSnakeCaseFromCamelCase(string){
-   debugger;
    return string.replace(/([A-Z])/g, letter => {
      return `_${letter.toLowerCase()}`;
    });
   }
 
-  /// need a better way to format this!
+  lowerCaseFirstLetter(string){
+    return string.charAt(0).toLowerCase() + string.slice(1);
+  }
+
 
   labelExists(shippingType, order){
-    const key = this.toSnakeCaseFromCamelCase(shippingType);
+    const key = this.toSnakeCaseFromCamelCase(this.lowerCaseFirstLetter(shippingType));
     if (order[key]){
       return order[key].shipping_label ? true : false
     }
@@ -219,26 +220,40 @@ class OrdersShow extends Component {
     return `${verb} Shipping Label`
   }
 
+  printShippingLabel(type){
+    const key = this.toSnakeCaseFromCamelCase(this.lowerCaseFirstLetter(type));
+    const label = this.props.currentOrder[key];
+
+  }
+
   renderPrintLabels(){
     const { currentUser, currentOrder } = this.props;
     const role = currentUser.user.roles[0].name;
     const shippingType = this.getShippingType(role);
     const printPrompt = this.getPrintButtonPrompt(shippingType, currentOrder);
 
-    //const printPrompt = `${printOrCreate} ${shippingType.split('Sh')[0]} Shipping Label`;
-
-    return (
-      <button onClick={() => this.makeShippingLabel(shippingType)}>
-        Create {shippingType.split('Shipment')[0]} Shipping Label
-      </button>
-    );
+    if (printPrompt.split(' ')[0] === "Print"){
+      const url=currentOrder[this.toSnakeCaseFromCamelCase(this.lowerCaseFirstLetter(shippingType))].shipping_label;
+      return (
+        <a href={url} target='blank'>
+          <button>
+            {printPrompt}
+          </button>
+        </a>
+      );
+    } else if (printPrompt.split(' ')[0] === 'Create'){
+      return (
+        <button onClick={() => this.makeShippingLabel(shippingType)}>
+          {printPrompt}
+        </button>
+      );
+    }
   }
 
   render(){
     const { currentStore, currentOrder} = this.props;
     const { customer } = currentOrder;
     const orderEditPath = `/orders/${currentOrder.id}/edit`;
-    console.log(currentOrder)
 
     if (!isEmpty(currentOrder)){
       const customerRoute = `/customers/${customer.id}/edit`;
