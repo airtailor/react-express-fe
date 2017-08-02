@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import { Link } from'react-router-dom';
 import { getStoreOrders } from '../actions'; 
+import SectionHeader from './SectionHeader';
 
 class StoreOrders extends Component {
   componentDidMount(){
@@ -41,12 +42,17 @@ class StoreOrders extends Component {
         const { color, status} = orderStatus;
         const route = `/orders/${id}`;
         return (
-            <tr key={id}>
-              <td><Link to={route}>#{id}</Link></td>
-              <td style={{color: color}}>{status}</td>
-              <td>{first_name} {last_name}</td>
-              <td>{alterations_count}</td>
-            </tr>
+            <div>
+            <div key={id} className='order-row'>
+              <Link to={route} className='flex-container'>
+                <div className='order-data'>#{id}</div>
+                <div className='order-data'style={{color}}>{status}</div>
+                <div className='order-data'>{first_name} {last_name}</div>
+                <div className='order-data'>{alterations_count}</div>
+              </Link>
+            </div>
+            <hr className='order-row-hr' />
+            </div>
         );
       });
     } else {
@@ -55,22 +61,22 @@ class StoreOrders extends Component {
   }
 
   render(){
+    const headerText=`Orders / ${this.props.currentStore.name}`;
     return (
       <div>
-        <h3>Orders</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Order</th>
-              <th>Status</th>
-              <th>Customer</th>
-              <th>Quantity</th>
-            </tr>
-          </thead>
-          <tbody>
+        <SectionHeader text={headerText} />
+        <div className='orders'>
+          <div className='order-row-header'>
+              <h3 className='order-column'>Order</h3>
+              <h3 className='order-column'>Status</h3>
+              <h3 className='order-column'>Customer</h3>
+              <h3 className='order-column'>Quantity</h3>
+          </div>
+          <hr className='order-header-hr' />
+          <div className='order-rows'>
             { this.renderOrderRows() }
-          </tbody>
-        </table>
+          </div>
+        </div>
       </div>
    );
  }

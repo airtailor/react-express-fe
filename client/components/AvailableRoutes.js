@@ -14,7 +14,7 @@ import CustomerEdit from './CustomerEdit';
 const AvailableRoutes = (props) => {
   const { loggedIn, admin } = props;
   return (
-    <div>
+    <div className='content'>
       <Route exact path="/" render={(props) => ( 
         loggedIn ? (
           <Home /> 

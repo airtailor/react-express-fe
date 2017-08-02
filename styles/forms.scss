@@ -1,0 +1,22 @@
+
+.form-input[type="email"], .form-input[type="password"] {
+ border: none;
+ background-color: rgba(216, 237, 252, .5);
+ margin-top: 10px;
+ height: 40px;
+ width: 360px;
+ padding-left: 40px;
+ border-radius: 5px;
+ border: 1px solid $primary-blue; 
+}
+
+input[type="submit"] {
+  background-color: $primary-blue;
+  color: white;
+  margin-top: 15px;
+  width: 40%;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+

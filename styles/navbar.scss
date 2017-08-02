@@ -1,0 +1,25 @@
+.navbar {
+  width: 175px;
+  margin: 0;
+  font-family: arial;
+  position: fixed;
+  border-right: 1px solid $primary-blue;
+  height: 100%;
+}
+
+.navbar-logo > h5 {
+  margin-left: 36px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  font-family: arial;
+  letter-spacing: 2px;
+  font-size: 12px;
+  /*border-bottom: 1px solid $primary-blue;*/
+}
+.navbar-logo > .logo {
+  width: 125px;
+  margin-left: 25px;
+  margin-top: 20px;
+}
+
+

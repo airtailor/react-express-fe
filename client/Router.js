@@ -9,11 +9,12 @@ import SignIn from './components/SignIn';
 const Router = (props) => {
   const loggedIn = props.currentUser.isAuthenticated;
   const admin = (props.currentUser.user.roles && props.currentUser.user.roles[0].name === 'admin');
+  const storeName = props.currentStore.name;
   if (loggedIn){
     return (
       <BrowserRouter>
         <div>
-          <NavigationBar loggedIn={loggedIn} admin={admin}/>
+          <NavigationBar loggedIn={loggedIn} admin={admin} />
           <AvailableRoutes loggedIn={loggedIn} admin={admin} />
         </div>
       </BrowserRouter>
@@ -31,7 +32,8 @@ const Router = (props) => {
 
 const mapStateToProps = (store) => {
   return {
-    currentUser: store.currentUser
+    currentUser: store.currentUser,
+    currentStore: store.currentStore
   }
 }
 

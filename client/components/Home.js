@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { getCurrentStore } from '../actions';
-//import '../../styles/App.css';
+import SectionHeader from './SectionHeader';
 
 class Home extends Component {
 
@@ -36,7 +36,7 @@ class Home extends Component {
   render(){ 
     return(
       <div>
-        <h3>!Home!!! { this.props.currentUser.user.email }</h3>
+        <SectionHeader text={`Home / ${this.props.currentStore.name}`} />
         { this.renderStore() }
       </div>
     );

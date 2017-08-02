@@ -1,5 +1,9 @@
 @import 'normalize';
 @import 'variables';
+@import 'navbar';
+@import 'forms';
+@import 'sign-in';
+@import 'section-header';
 
 a {
   font-family: arial;
@@ -12,62 +16,73 @@ h5 {
   color: $primary-blue;
 }
 
+h1 {
+  margin: 0;
+}
 
-.navbar-logo > h5 {
-  margin-left: 36px;
-  margin-top: 5px;
-  margin-bottom: 20px;
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.content {
+  margin-left: 175px;
+  overflow: auto;
+}
+
+.orders {
+  color: $primary-blue;
+  width: 100%;
+}
+
+.order-row-header {
   font-family: arial;
-  letter-spacing: 2px;
-  font-size: 12px;
-}
-.navbar-logo > .logo {
-  width: 125px;
-  margin-left: 25px;
-  margin-top: 20px;
+  font-size: 14px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  margin-left: 50px;
+  @extend .flex-container;
 }
 
-.sign-in {
-  width: 30px;
-  min-width: 400px;
-  /*margin: 10% auto; */
-  margin: 110px auto;
+.order-row-header > h3 {
+  flex: 1 0 25%;
+  text-transform: uppercase;
 }
 
-.sign-in-logo > .logo {
-  width: 200px;
+.row-hr {
+  width: 90%;
+  margin-left: 30px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
-.sign-in-logo > h5 {
-  font-family: alegreya;
-  letter-spacing: 0.5px;
-  margin-top: 18px;
-  margin-bottom: 18px;
-  font-size: 24px;
+.order-row-hr {
+  @extend .row-hr;
+  border-top: 1px solid rgba(0, 0, 51, .1);
 }
 
-.form-input[type="email"], .form-input[type="password"] {
- border: none;
- background-color: rgba(216, 237, 252, .5);
- margin-top: 10px;
- height: 40px;
- width: 360px;
- padding-left: 40px;
- border-radius: 5px;
- border: 1px solid $primary-blue; 
+.order-header-hr {
+  @extend .row-hr;
 }
 
-input[type="submit"] {
-  background-color: $primary-blue;
-  color: white;
-  margin-top: 15px;
-  width: 40%;
+.order-row {
   height: 40px;
-  border-radius: 5px;
-  font-size: 12px;
+  padding-top: 25px;
+  padding-bottom: 5px;
+  padding-left: 50px;
 }
 
-.forgot-password {
-  margin-left: 20px;
+.order-row:hover {
+  background-color: rgba(0,0,51,0.1);
+  cursor: pointer;
+}
+
+.order-data {
+  flex: 1 0 25%;
+  color: $primary-blue;
+}
+
+.rows {
+  margin-top: 50px;
 }
 

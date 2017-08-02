@@ -1,0 +1,18 @@
+.section-header {
+  background-color: $primary-blue;
+  border-bottom: 1px solid $primary-blue;
+  height: 93px;
+  line-height: 93px;
+  width: 100%;
+}
+
+.section-header > h2 {
+  color: white;
+  padding-left: 50px;
+  margin-top: 0;
+  width: 60%;
+  font-weight: normal;
+  font-family: alegreya;
+  letter-spacing: .5px;
+  font-size: 21px;
+}
