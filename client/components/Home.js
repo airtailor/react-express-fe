@@ -18,13 +18,35 @@ class Home extends Component {
 
   renderStore(){
     if (!isEmpty(this.props.currentStore)){
-      const storeEditPath = `/stores/${this.props.currentStore.id}/edit`;
+      const { currentStore } = this.props;
+      const { id, name, late_orders_count, active_orders_count } = currentStore;
+      const storeEditPath = `/stores/${id}/edit`;
+
       return (
         <div>
-          <h1>{this.props.currentStore.name}</h1>
-          <p>Late Orders: { this.props.currentStore.late_orders_count }</p>
-          <p>Current Orders: {this.props.currentStore.active_orders_count }</p>
+          <h2 className='greeting'>Greetings, {name}.</h2>
+          <p className='greeting'>Here's what's happening with your shop right now.</p>
+        {/*  <p>Late Orders: {late_orders_count}</p>
+          <p>Current Orders: {active_orders_count}</p> */}
           <Link to={storeEditPath}>Edit Store</Link>
+
+          <div className='store-boxes'>
+            <div className='late-orders orders-card'>
+              <span className='late-exclamation'>!</span>
+              <p> Late </p>
+              <p> {late_orders_count} </p>
+              <p> Orders </p>
+            </div>
+            <div className='current-orders orders-card'>
+              <p> Current </p>
+              <p> {active_orders_count} </p>
+              <p> Orders </p>
+            </div>
+            <div className='current-orders orders-card'>
+              <p> New </p>
+              <p> Messages </p>
+            </div>
+          </div>
         </div>
       );
     } else {
@@ -33,7 +55,7 @@ class Home extends Component {
   }
 
 
-  render(){ 
+  render(){
     return(
       <div>
         <SectionHeader text={`Home / ${this.props.currentStore.name}`} />

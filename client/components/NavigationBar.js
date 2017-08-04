@@ -11,7 +11,13 @@ class NavigationBar extends Component {
     this.state = {
       active: this.getNavActive(window)
     }
+    // Need to bind toggleActiveState in order to pass it down as a prop to
+    // the NavigationLinks component
     this.toggleActiveState = this.toggleActiveState.bind(this);
+
+    // Need to bind handleResize in order to maintain the component as 'this'
+    // after it is passed to the event listeners in comoponentWillMount and
+    // componentDidMount
     this.handleResize = this.handleResize.bind(this);
   }
 
@@ -31,7 +37,7 @@ class NavigationBar extends Component {
   componentWillUnmount(){
     window.removeEventListener('resize', this.handleResize);
   }
-  
+
   toggleActiveState(boolean){
     const state = !boolean;
     this.setState({active: state});
@@ -63,10 +69,8 @@ class NavigationBar extends Component {
   render(){
     const { active } = this.state;
     if (active){
-      console.log('nav')
       return this.navBar();
     } else {
-      console.log('burger')
       return this.hamburger();
     }
   }

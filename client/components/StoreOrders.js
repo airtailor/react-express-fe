@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
-import { Link } from'react-router-dom';
-import { getStoreOrders } from '../actions'; 
+import { Redirect, Link } from'react-router-dom';
+import { getStoreOrders } from '../actions';
 import SectionHeader from './SectionHeader';
 
 class StoreOrders extends Component {
@@ -29,7 +29,7 @@ class StoreOrders extends Component {
     } else {
       let dueTime = this.formatDueDate(order.due_date, false);
       return {status: dueTime, color: 'orange'};
-    } 
+    }
   }
 
   renderOrderRows(){
@@ -61,6 +61,9 @@ class StoreOrders extends Component {
   }
 
   render(){
+    if (!this.props.currentStore){
+      return <Redirect to="/" />;
+    }
     const headerText=`Orders / ${this.props.currentStore.name}`;
     return (
       <div>
