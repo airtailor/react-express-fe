@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { getCurrentStore } from '../actions';
 import SectionHeader from './SectionHeader';
+import OrderCard from './OrderCard';
+import OrderCardIcon from './OrderCardIcon';
+import ordersImage from '../images/orders.png';
 
 class Home extends Component {
 
@@ -18,34 +21,62 @@ class Home extends Component {
 
   renderStore(){
     if (!isEmpty(this.props.currentStore)){
-      const { currentStore } = this.props;
-      const { id, name, late_orders_count, active_orders_count } = currentStore;
+      const {currentStore} = this.props;
+      const {id, name, late_orders_count, active_orders_count} = currentStore;
       const storeEditPath = `/stores/${id}/edit`;
 
       return (
         <div>
           <h2 className='greeting'>Greetings, {name}.</h2>
-          <p className='greeting'>Here's what's happening with your shop right now.</p>
+          <p className='greeting'>
+            Here's what's happening with your shop right now.
+          </p>
         {/*  <p>Late Orders: {late_orders_count}</p>
           <p>Current Orders: {active_orders_count}</p> */}
-          <Link to={storeEditPath}>Edit Store</Link>
+
 
           <div className='store-boxes'>
-            <div className='late-orders orders-card'>
-              <span className='late-exclamation'>!</span>
-              <p> Late </p>
-              <p> {late_orders_count} </p>
-              <p> Orders </p>
-            </div>
+            <OrderCard
+              icon={<OrderCardIcon url={ordersImage} alt='orders' />}
+              count={late_orders_count}
+              type='Late'
+              call='FULFILL >'
+              styleClass='current-orders' />
+              
+            <OrderCard
+              icon={<OrderCardIcon url={ordersImage} alt='orders' />}
+              count={active_orders_count}
+              type='Late'
+              call='FULFILL >'
+              styleClass='current-orders' />
+
+
+
+            {/*<Link to='#'>
+              <div className='late-orders orders-card'>
+                <span className='late-exclamation'>!</span>
+                <p> Late </p>
+                <p> {late_orders_count} </p>
+                <p> Orders </p>
+              </div>
+            </Link>
+          </div>
+
+            <Link to='#'>
+              <div className='current-orders orders-card'>
+                <p> Current </p>
+                <p> {active_orders_count} </p>
+                <p> Orders </p>
+              </div>
+            </Link>
+
             <div className='current-orders orders-card'>
-              <p> Current </p>
-              <p> {active_orders_count} </p>
-              <p> Orders </p>
-            </div>
-            <div className='current-orders orders-card'>
+             <Link to='#'>
               <p> New </p>
               <p> Messages </p>
+             </Link>
             </div>
+          */}
           </div>
         </div>
       );
