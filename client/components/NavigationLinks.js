@@ -4,6 +4,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import NavigationLink from './NavigationLink';
 import { signOutCurrentUser } from '../actions';
+import SearchBar from './SearchBar';
+import homeImage from '../images/home.png';
+import ordersImage from '../images/orders.png';
+import logoutImage from '../images/logout.png';
 
 
 class NavigationLinks extends Component {
@@ -19,23 +23,40 @@ class NavigationLinks extends Component {
 
   adminNavbar(){
     return (
-      <ul className="navbar-links-ul">
-        <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>Sign Out</a></li>
-        <NavigationLink cssClass="orders-link" route="/orders" text="Orders" />
-        <NavigationLink cssClass="new-store-link" route="/stores/new" text="Create New Store" />
-      </ul>
+      <div>
+        <SearchBar />
+        <ul className="navbar-links-ul">
+          <NavigationLink cssClass="home-link" route="/" text="Home" image={homeImage} />
+          <NavigationLink cssClass="orders-link" route="/orders" text="Orders" image={ordersImage} />
+          <NavigationLink cssClass="new-store-link" route="/stores/new" text="Create New Store" image={homeImage} />
+          <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>
+          <NavigationLink cssClass="close-link" route="#" text="Close" image={homeImage} />
+            <img src={logoutImage} alt='logout' /> LOGOUT
+           </a></li>
+        </ul>
+      </div>
     );
   }
 
   tailorNavbar(){
+    const {toggleNavState, navState} = this.props;
     return (
-      <ul className="navbar-links-ul">
-        <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>Sign Out</a></li>
-        <NavigationLink cssClass="orders-link" route="/orders" text="Orders" />
-      </ul>
+      <div>
+        <SearchBar />
+        <ul className="navbar-links-ul">
+          <NavigationLink cssClass="home-link" route="/" text="Home" image={homeImage} />
+          <NavigationLink cssClass="orders-link" route="/orders" text="Orders" image={ordersImage} />
+          <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>
+            <img src={logoutImage} alt='logout' /> LOGOUT
+           </a></li>
+           <li><a className="navbar-links-li close-menu-link" onClick={() => toggleNavState(navState) }>
+             <img src={logoutImage} alt='logout' /> Close Menu
+            </a></li>
+        </ul>
+      </div>
     );
   }
-  
+
   render() {
     if (this.props.admin) {
       return this.adminNavbar();

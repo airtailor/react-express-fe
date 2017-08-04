@@ -32,7 +32,7 @@ export default {
         test: /\.(jpg|png|svg)$/,
         loader: 'url-loader',
         options: {
-          limit: 2500,
+          limit: 10000,
         }
       }
     ],

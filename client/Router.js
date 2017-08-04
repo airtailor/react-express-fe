@@ -13,14 +13,14 @@ const Router = (props) => {
   if (loggedIn){
     return (
       <BrowserRouter>
-        <div>
+        <div className="container">
           <NavigationBar loggedIn={loggedIn} admin={admin} />
           <AvailableRoutes loggedIn={loggedIn} admin={admin} />
         </div>
       </BrowserRouter>
     );
   } else {
-    return ( 
+    return (
       <BrowserRouter>
         <div>
           <SignIn />

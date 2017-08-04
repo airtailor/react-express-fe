@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import { getCurrentOrder, updateOrder, createShipment } from '../actions';
 import isEmpty from 'lodash/isEmpty';
+import SectionHeader from './SectionHeader';
 
 class OrdersShow extends Component {
   constructor(props){
@@ -254,19 +255,13 @@ class OrdersShow extends Component {
     const { currentStore, currentOrder} = this.props;
     const { customer } = currentOrder;
     const orderEditPath = `/orders/${currentOrder.id}/edit`;
+    const headerText=`Orders / ${currentStore.name} / #${currentOrder.id}`;
 
     if (!isEmpty(currentOrder)){
       const customerRoute = `/customers/${customer.id}/edit`;
       return (
         <div>
-          <div>
-            <h2>Orders / <Link to='/orders'>{ currentStore.name }</Link> / #{currentOrder.id} </h2>
-            <Link to={customerRoute} >
-              { customer.first_name } { customer.last_name + ' '}
-            </Link>
-            / 
-            <Link to="#" onClick={() => this.deleteOrder()}> delete order</Link>
-          </div>
+          <SectionHeader text={headerText} linkTo={customerRoute} linkText={ customer.first_name + ' ' + customer.last_name} />
           <div>
             <Link to={orderEditPath}>Edit Order</Link>
           </div>
@@ -282,7 +277,12 @@ class OrdersShow extends Component {
         </div>
       );
     } else {
-    return <div>Loading..</div>
+      return (
+        <div>
+          <SectionHeader text={headerText} />
+          <div>Loading..</div>
+        </div>
+      );
     }
   }
 }

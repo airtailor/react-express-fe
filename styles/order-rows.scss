@@ -1,0 +1,51 @@
+
+.orders {
+  color: $primary-blue;
+  width: 100%;
+}
+
+.order-row-header {
+  font-family: arial;
+  font-size: 14px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  margin-left: 50px;
+  @extend .flex-container;
+}
+
+.order-row-header > h3 {
+  flex: 1 0 25%;
+  text-transform: uppercase;
+}
+
+.row-hr {
+  width: 90%;
+  margin-left: 30px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.order-row-hr {
+  @extend .row-hr;
+  border-top: 1px solid rgba(0, 0, 51, .1);
+}
+
+.order-header-hr {
+  @extend .row-hr;
+}
+
+.order-row {
+  height: 40px;
+  padding-top: 25px;
+  padding-bottom: 5px;
+  padding-left: 50px;
+}
+
+.order-row:hover {
+  @extend .hoverable;
+}
+
+.order-data {
+  flex: 1 0 25%;
+  color: $primary-blue;
+}

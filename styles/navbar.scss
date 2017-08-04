@@ -2,9 +2,14 @@
   width: 175px;
   margin: 0;
   font-family: arial;
-  position: fixed;
+  // position: fixed;
   border-right: 1px solid $primary-blue;
   height: 100%;
+}
+
+div.navbar-logo {
+  border-bottom: 1px solid $primary-blue;
+  height: 93px;
 }
 
 .navbar-logo > h5 {
@@ -14,12 +19,77 @@
   font-family: arial;
   letter-spacing: 2px;
   font-size: 12px;
-  /*border-bottom: 1px solid $primary-blue;*/
 }
+
 .navbar-logo > .logo {
   width: 125px;
   margin-left: 25px;
   margin-top: 20px;
 }
 
+nav ul {
+  padding-left: 0px;
+}
 
+nav img {
+  display: inline-block;
+  width: 25px;
+  padding-right: 20px;
+  vertical-align: -9px;
+}
+
+nav li {
+  list-style: none;
+  height: 45px;
+}
+
+nav li:hover {
+  @extend .hoverable;
+}
+
+nav li a {
+  padding-left: 9%;
+  display: inline-block;
+  width: 91%;
+  line-height: 40px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 12px;
+  color: $primary-blue;
+}
+
+.section-header {
+  @extend .flex-container;
+}
+
+.hamburger {
+  width: 50px;
+  height: 50px;
+  padding-top: 20px;
+  padding-left: 10px;
+  position: fixed;
+}
+
+.hamburger:hover {
+  cursor: pointer;
+}
+//
+// @media screen and (max-width: $ipad-break){
+//   .navbar {
+//     display: none;
+//   }
+//
+//   .hamburger {
+//     display: inline;
+//   }
+//
+//   .content {
+//     margin-left: 0px;
+//   }
+// }
+
+// @media screen and (max-width: $ipad-break){
+//   .content {
+//     margin-left: 0px;
+//   }
+// }

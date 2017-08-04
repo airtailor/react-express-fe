@@ -15,9 +15,9 @@ const AvailableRoutes = (props) => {
   const { loggedIn, admin } = props;
   return (
     <div className='content'>
-      <Route exact path="/" render={(props) => ( 
+      <Route exact path="/" render={(props) => (
         loggedIn ? (
-          <Home /> 
+          <Home />
         ) : (
           <Redirect to="/sign_in"/>
         )
@@ -25,7 +25,7 @@ const AvailableRoutes = (props) => {
 
       <Route path="/sign_in" render={(props) => (
         loggedIn ? (
-          <Redirect to="/" /> 
+          <Redirect to="/" />
         ) : (
           <SignIn />
         )
@@ -92,6 +92,5 @@ const AvailableRoutes = (props) => {
     </div>
   );
 }
-
 
 export default AvailableRoutes;

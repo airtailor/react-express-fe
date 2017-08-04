@@ -42,16 +42,16 @@ class StoreOrders extends Component {
         const { color, status} = orderStatus;
         const route = `/orders/${id}`;
         return (
-            <div>
-            <div key={id} className='order-row'>
-              <Link to={route} className='flex-container'>
-                <div className='order-data'>#{id}</div>
-                <div className='order-data'style={{color}}>{status}</div>
-                <div className='order-data'>{first_name} {last_name}</div>
-                <div className='order-data'>{alterations_count}</div>
-              </Link>
-            </div>
-            <hr className='order-row-hr' />
+            <div key={id}>
+              <div className='order-row'>
+                <Link to={route} className='flex-container'>
+                  <div className='order-data'>#{id}</div>
+                  <div className='order-data'style={{color}}>{status}</div>
+                  <div className='order-data'>{first_name} {last_name}</div>
+                  <div className='order-data'>{alterations_count}</div>
+                </Link>
+              </div>
+              <hr className='order-row-hr' />
             </div>
         );
       });
