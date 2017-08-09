@@ -58,10 +58,17 @@ class NavigationLinks extends Component {
             image={ordersImage} />
 
           <NavigationLink
+            cssClass="new-order-link"
+            route="/orders/new" text="New Order"
+            image={homeImage} />
+
+          <NavigationLink
             cssClass="edit-store-link"
             route={editStoreRoute}
             text="Edit Store"
             image={editStoreImage} />
+
+
 
           <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>
             <img src={logoutImage} alt='logout' /> LOGOUT

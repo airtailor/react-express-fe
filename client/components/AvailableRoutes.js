@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import '../../styles/main.scss';
 import Home from './Home';
 import SignIn from './Signin';
@@ -10,6 +10,7 @@ import OrdersEdit from './OrdersEdit';
 import StoresEdit from './StoresEdit';
 import StoresNew from './StoresNew';
 import CustomerEdit from './CustomerEdit';
+import OrderForm from './OrderForm/RetailerOrderForm';
 
 const AvailableRoutes = (props) => {
   const { loggedIn, admin } = props;
@@ -39,7 +40,6 @@ const AvailableRoutes = (props) => {
         )
       )}/>
 
-
       <Route exact path='/orders' render={(props) => (
         loggedIn ? (
           <StoreOrders {...props} />
@@ -48,13 +48,25 @@ const AvailableRoutes = (props) => {
         )
       )}/>
 
-      <Route exact path='/orders/:order_id' render={(props) => (
-        loggedIn ? (
-          <OrdersShow {...props} />
-        ) : (
-          <Redirect to='/sign_in' />
-        )
-      )}/>
+      <Switch>
+        <Route exact path='/orders/new' render={(props) => (
+          loggedIn ? (
+            <OrderForm {...props} />
+          ) : (
+            <Redirect to='/sign_in' />
+          )
+        )}/>
+        
+        <Route exact path='/orders/:order_id' render={(props) => (
+          loggedIn ? (
+            <OrdersShow {...props} />
+          ) : (
+            <Redirect to='/sign_in' />
+          )
+        )}/>
+      </Switch>
+
+
 
       <Route path='/orders/:order_id/edit' render={(props) => (
         loggedIn ? (
