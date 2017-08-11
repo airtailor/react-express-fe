@@ -19,6 +19,10 @@ class RetailerOrderForm extends Component {
         state: '',
         zip: ''
       },
+      sales_associate: {
+        first_name: '',
+        last_name: ''
+      },
       deliverToCustomer: null,
       stage: 0
     }
@@ -33,7 +37,12 @@ class RetailerOrderForm extends Component {
   renderStage(stage){
     switch (stage){
       case 0:
-        return <StoreInfo stage={stage} nextStep={this.nextStep} />;
+        return (
+          <StoreInfo
+            stage={stage}
+            nextStep={this.nextStep}
+            store={this.props.store} />
+        );
     }
   }
 
@@ -45,10 +54,8 @@ class RetailerOrderForm extends Component {
 
     return (
       <div>
-        <SectionHeader text={headerText}
-          linkTo={storeRoute}
-          linkText={store.name} />
-        <div>
+        <SectionHeader text={headerText} />
+        <div className='order-form'>
         { this.renderStage(stage) }
         </div>
       </div>

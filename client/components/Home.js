@@ -8,6 +8,8 @@ import SectionHeader from './SectionHeader';
 import OrderCard from './OrderCard';
 import OrderCardIcon from './OrderCardIcon';
 import ordersImage from '../images/orders.png';
+import messagesImage from '../images/message.png';
+import exclamationImage from '../images/red-exclamation.png';
 
 class Home extends Component {
 
@@ -37,18 +39,25 @@ class Home extends Component {
 
           <div className='store-boxes'>
             <OrderCard
-              icon={<OrderCardIcon url={ordersImage} alt='orders' />}
+              icon={<OrderCardIcon url={exclamationImage} alt='orders' />}
               count={late_orders_count}
               type='Late'
               call='FULFILL >'
-              styleClass='current-orders' />
-              
+              styleClass='late-orders' />
+
             <OrderCard
               icon={<OrderCardIcon url={ordersImage} alt='orders' />}
               count={active_orders_count}
-              type='Late'
-              call='FULFILL >'
+              type='Current'
+              call='VIEW >'
               styleClass='current-orders' />
+
+            <OrderCard
+              icon={<OrderCardIcon url={messagesImage} alt='messages' />}
+              count={active_orders_count}
+              type='Unread'
+              call='READ >'
+              styleClass='unread-messages' />
 
 
 
