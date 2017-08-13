@@ -5,7 +5,7 @@ import Home from './Home';
 import SignIn from './Signin';
 import SignUp from './SignUp';
 import StoreOrders from './StoreOrders';
-import OrdersShow from './OrdersShow';
+import OrdersShow from './orders/show/OrdersShow';
 import OrdersEdit from './OrdersEdit';
 import StoresEdit from './StoresEdit';
 import StoresNew from './StoresNew';
@@ -56,7 +56,7 @@ const AvailableRoutes = (props) => {
             <Redirect to='/sign_in' />
           )
         )}/>
-        
+
         <Route exact path='/orders/:order_id' render={(props) => (
           loggedIn ? (
             <OrdersShow {...props} />
@@ -65,8 +65,6 @@ const AvailableRoutes = (props) => {
           )
         )}/>
       </Switch>
-
-
 
       <Route path='/orders/:order_id/edit' render={(props) => (
         loggedIn ? (
@@ -84,14 +82,23 @@ const AvailableRoutes = (props) => {
         )
       )}/>
 
+      <Switch>
+        <Route path='/stores/new' render={(props) => (
+          admin ? (
+            <StoresNew {...props} />
+          ) : (
+            <Redirect to='/sign_in' />
+          )
+        )}/>
 
-      <Route path='/stores/new' render={(props) => (
-        admin ? (
-          <StoresNew {...props} />
-        ) : (
-          <Redirect to='/sign_in' />
-        )
-      )}/>
+        <Route exact path='/stores/:id' render={(props) => (
+          loggedIn ? (
+            <Home />
+          ) : (
+            <Redirect to='/sign_in'/>
+          )
+        )}/>
+      </Switch>
 
       <Route path='/customers/:customer_id' render={(props) => (
         loggedIn ? (

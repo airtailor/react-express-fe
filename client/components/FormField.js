@@ -6,7 +6,7 @@ const FormField = (props) => {
     <div>
       <label>{title}</label>
       <br />
-      <input size='50' value={value} onChange={(e) => onChange(fieldName, e.target.value)} />
+      <input className='form-input' size='50' value={value} onChange={(e) => onChange(fieldName, e.target.value)} />
       <br /><br />
     </div>
   );

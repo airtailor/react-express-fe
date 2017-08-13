@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getCurrentStore, updateStore } from '../actions';
 import FormField from './FormField';
+import SectionHeader from './SectionHeader';
 
 class StoresEdit extends Component {
   constructor(props){
@@ -30,56 +31,64 @@ class StoresEdit extends Component {
       .catch(err => console.log(err));
   }
 
-  renderForm(){
-    const { name, phone, street1, street2, city, state, zip } = this.state;
+  renderForm(data){
+    const { name, phone, street1, street2, city, state, zip } = data;
     return (
-      <form onSubmit={(e) => this.handleSubmit(e)}>
-        <FormField value={name} 
-          fieldName={'name'} title={'Name:'} 
-          onChange={this.updateState} />
-        
-        <FormField value={phone} 
-          fieldName={'phone'} title={'Phone:'} 
-          onChange={this.updateState} />
+      <div>
+        <form onSubmit={(e) => this.handleSubmit(e)}>
+          <FormField value={name}
+            fieldName={'name'} title={'Name:'}
+            onChange={this.updateState} />
 
-        <FormField value={street1} 
-          fieldName={'street1'} title={'Street:'} 
-          onChange={this.updateState} />
+          <FormField value={phone}
+            fieldName={'phone'} title={'Phone:'}
+            onChange={this.updateState} />
 
-        <FormField value={street2} 
-          fieldName={'street2'} title={'Unit:'} 
-          onChange={this.updateState} />
+          <FormField value={street1}
+            fieldName={'street1'} title={'Street:'}
+            onChange={this.updateState} />
 
-        <FormField value={city} 
-          fieldName={'city'} title={'City:'} 
-          onChange={this.updateState} />
+          <FormField value={street2}
+            fieldName={'street2'} title={'Unit:'}
+            onChange={this.updateState} />
 
-        <FormField value={state} 
-          fieldName={'state'} title={'State:'} 
-          onChange={this.updateState} />
+          <FormField value={city}
+            fieldName={'city'} title={'City:'}
+            onChange={this.updateState} />
 
-        <FormField value={zip} 
-          fieldName={'zip'} title={'Zip:'} 
-          onChange={this.updateState} />
-        
-        <input type="submit" value="Update Store" />
-      </form>
+          <FormField value={state}
+            fieldName={'state'} title={'State:'}
+            onChange={this.updateState} />
+
+          <FormField value={zip}
+            fieldName={'zip'} title={'Zip:'}
+            onChange={this.updateState} />
+
+          <input className='short-button' type="submit" value="Update Store" />
+        </form>
+      </div>
     );
   }
 
   render(){
     console.log('props', this.props);
-    const backLink = `/stores/${this.props.store.id}`;
-    if (!this.props.store){
+    console.log('state', this.state);
+    const {store} = this.props;
+    const backLink = `/stores/${store.id}`;
+    if (!store){
       return <div>Loading...</div>
     } else {
       return (
         <div>
-          <h3>Edit Store</h3>
-          <Link to={backLink}>
+          <SectionHeader text={`Edit / ${store.name}`} />
+          <Link className='backLink' to={backLink}>
               Back
           </Link>
-          { this.renderForm() }
+          <div className='form-container'>
+            <h3>Edit Store</h3>
+
+            { this.renderForm(this.state) }
+          </div>
         </div>
       );
     }

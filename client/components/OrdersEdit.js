@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';  
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FormSelect from './FormSelect';
 import FormField from './FormField';
-import { updateOrder, getTailorList } from '../actions'; 
+import { updateOrder, getTailorList } from '../actions';
 
 class OrdersEdit extends Component {
   constructor(props){
@@ -35,39 +35,39 @@ class OrdersEdit extends Component {
     const { customer, total, weight, provider_id } = this.state;
     const { first_name, last_name } = customer;
     const customerName = first_name + ' ' + last_name;
-    const backLink = `/orders/${this.state.id}`; 
+    const backLink = `/orders/${this.state.id}`;
     console.log('state provider', this.state.provider_id);
 
     if (this.props.tailors && this.props.order){
-      return ( 
-        <div> 
+      return (
+        <div>
         <Link to={backLink}>
             Back
           </Link>
 
           <form onSubmit={(e) => this.handleSubmit(e)}>
-            <FormField value={customerName} 
-              fieldName={'name'} title={'Name:'} 
+            <FormField value={customerName}
+              fieldName={'name'} title={'Name:'}
               onChange={() => console.log('dont do nuthin')} />
 
-            <FormField value={total} 
-              fieldName={'total'} title={'Total: $'} 
+            <FormField value={total}
+              fieldName={'total'} title={'Total: $'}
               onChange={this.updateState} />
 
-            <FormField value={weight} 
-              fieldName={'weight'} title={'Weight (grams):'} 
+            <FormField value={weight}
+              fieldName={'weight'} title={'Weight (grams):'}
               onChange={this.updateState} />
-           
-            <FormSelect value={provider_id} 
+
+            <FormSelect value={provider_id}
               options={this.props.tailors}
-              fieldName={'provider_id'} title={'Tailor Shop:'} 
+              fieldName={'provider_id'} title={'Tailor Shop:'}
               onChange={this.updateState} />
 
-            <FormField value={this.state.total} 
-              fieldName={'total'} title={'Total:'} 
+            <FormField value={this.state.total}
+              fieldName={'total'} title={'Total:'}
               onChange={this.updateState} />
 
-            <input type='submit' value='Update' />
+            <input type='submit' className='short-button' value='Update' />
           </form>
         </div>
 

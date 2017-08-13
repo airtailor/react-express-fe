@@ -2,16 +2,24 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
-import { getCurrentOrder, updateOrder, createShipment } from '../actions';
+import { getCurrentOrder, updateOrder, createShipment } from '../../../actions';
 import isEmpty from 'lodash/isEmpty';
-import SectionHeader from './SectionHeader';
+import SectionHeader from '../../SectionHeader';
+import shirtImage from '../../../images/shirt.png';
+import pantsImage from '../../../images/pants.png';
+import tieImage from '../../../images/tie.png';
+import dressImage from '../../../images/dress.png';
+import suitJacketImage from '../../../images/suit-jacket.png';
+import suppliesImage from '../../../images/supplies.png';
+import Measurements from './measurements/Measurements';
 
 class OrdersShow extends Component {
   constructor(props){
     super();
-    this.state = { 
+    this.state = {
       notes: '',
-      displayNotesForm: false
+      displayNotesForm: false,
+      showMeasurements: false
     }
   }
 
@@ -22,7 +30,7 @@ class OrdersShow extends Component {
     getCurrentOrder(store_id, order_id)
       .catch(err => console.log(err));
   }
- 
+
   componentDidMount(){
     this.refreshCurrentOrder();
   }
@@ -65,21 +73,52 @@ class OrdersShow extends Component {
     }, []);
   }
 
+  renderAlteration(alteration, index){
+    return <li key={index}>{alteration.name}</li>;
+  }
+
   renderItem(item, index){
+    const renderAlt = this.renderAlteration;
+
     return (
-      <li key={index}>
-       { item.item_type.name } #{index + 1}  
+      <li className='type-list' key={index}>
+       { item.item_type.name } #{index + 1}
+       <ul>
+         { item.alterations.map(renderAlt)}
+       </ul>
       </li>
     )
   }
 
+  getImageForItemType(name){
+    switch (name){
+      case 'Pants':
+        return pantsImage;
+      case 'Shirt':
+        return shirtImage;
+      case 'Dress':
+        return dressImage;
+      case 'Jacket':
+        return suitJacketImage;
+      case 'Tie':
+        return tieImage;
+      default:
+        return suppliesImage;
+    }
+  }
+
   renderList(){
     return this.sortItemsByType().map((itemType, index) => {
+      const image = this.getImageForItemType(itemType.name);
       return (
-        <div key={index}>
-          <h3>{ itemType.name.toUpperCase() }</h3>
+        <div className='card' key={index}>
+          <div className='type-heading'>
+            <img className='item-type-image' src={image} alt={itemType.name} />
+            <h3>{itemType.name.toUpperCase()}</h3>
+          </div>
+
           <ul>
-            { itemType.filteredItems.map(this.renderItem) }
+            {itemType.filteredItems.map(this.renderItem.bind(this))}
           </ul>
         </div>
       );
@@ -88,11 +127,11 @@ class OrdersShow extends Component {
 
   orderNotes(party_notes){
     const notes = this.props.currentOrder[party_notes] || 'N/A';
-    const title = party_notes === 'provider_notes' ? 'Tailor Notes' : 'Order Notes';
+    const title = party_notes === 'provider_notes' ? 'Tailor Notes:' : 'Order Notes:';
     return (
       <div>
         <h3>{title}</h3>
-        <p>{notes}</p>
+        <p className='notes'>{notes}</p>
       </div>
     );
   }
@@ -104,7 +143,7 @@ class OrdersShow extends Component {
   submitNotes(event){
     event.preventDefault();
     const key = this.props.currentUser.user.roles[0].name === 'tailor' ? 'provider_notes' : 'requester_notes';
-    const data = { order: {[key]: this.state.notes, id: this.props.currentOrder.id, store_id: this.props.currentOrder.store_id }}; 
+    const data = { order: {[key]: this.state.notes, id: this.props.currentOrder.id, store_id: this.props.currentOrder.store_id }};
     this.props.updateOrder(data)
       .catch(err => console.log(err));
   }
@@ -122,18 +161,21 @@ class OrdersShow extends Component {
         prompt = 'Add Admin Notes?'
         party = 'requester_notes';
       }
-      
+
       return (
-        <form onSubmit={(e) => this.submitNotes(e)}>
+        <form className='notes-form' onSubmit={(e) => this.submitNotes(e)}>
           <label>
-           { prompt }
+           <h3>{ prompt }</h3>
            <br />
             <textarea
+              cols={43} rows={10}
               defaultValue={this.props.currentOrder[party]}
               onChange={(e) => this.updateNotes(e.target.value) }>
             </textarea>
           </label>
-          <input type="submit" value="Submit" />
+          <br />
+          <input className='short-button' type="submit" value="Submit" />
+          <hr />
         </form>
       );
     } else {
@@ -142,14 +184,20 @@ class OrdersShow extends Component {
   }
 
   checkOrderIn(){
-    const data = { order: {id: this.props.currentOrder.id, store_id: this.props.currentOrder.store_id, arrived: true }}; 
+    const data = { order: {id: this.props.currentOrder.id, store_id: this.props.currentOrder.store_id, arrived: true }};
     this.props.updateOrder(data)
       .catch(err => console.log(err));
   }
 
   renderArrivedButton() {
     if (!this.props.currentOrder.arrived){
-      return <div><button onClick={() => this.checkOrderIn()}>Check Order In</button></div>;
+      return (
+        <div>
+          <button onClick={() => this.checkOrderIn()} className='pink-button'>
+            Check Order In
+          </button>
+        </div>
+      );
     }
   }
 
@@ -161,7 +209,13 @@ class OrdersShow extends Component {
 
   renderFulfillButton(){
     if (this.props.currentOrder.arrived){
-      return <div><button onClick={() => this.fulfillOrder()}>Fulfill This Order</button></div>;
+      return (
+        <div>
+          <button onClick={() => this.fulfillOrder()} className='pink-button'>
+            Fulfill This Order
+          </button>
+        </div>
+      );
     }
   }
 
@@ -228,6 +282,7 @@ class OrdersShow extends Component {
   }
 
   renderPrintLabels(){
+  console.log('print-label', this.props.currentOrder)
     const { currentUser, currentOrder } = this.props;
     const role = currentUser.user.roles[0].name;
     const shippingType = this.getShippingType(role);
@@ -237,18 +292,62 @@ class OrdersShow extends Component {
       const url=currentOrder[this.toSnakeCaseFromCamelCase(this.lowerCaseFirstLetter(shippingType))].shipping_label;
       return (
         <a href={url} target='blank'>
-          <button>
+          <button className='pink-button'>
             {printPrompt}
           </button>
         </a>
       );
     } else if (printPrompt.split(' ')[0] === 'Create'){
       return (
-        <button onClick={() => this.makeShippingLabel(shippingType)}>
+        <button className='pink-button' onClick={() => this.makeShippingLabel(shippingType)}>
           {printPrompt}
         </button>
       );
     }
+  }
+
+  renderEditOrder(role){
+    if (role === 'admin'){
+      return (
+        <div>
+          <Link to={orderEditPath}>
+            <input className='short-button' type="submit" value="Edit Order" />
+          </Link>
+        </div>
+      )
+    }
+  }
+
+  renderOrderDetails(){
+    return (
+      <div>
+        { this.renderList() }
+        { this.orderNotes('requester_notes') }
+        { this.orderNotes('provider_notes') }
+        <button className='pink-button' onClick={() => this.showHideNotesForm()}>{this.state.displayNotesForm ? 'Hide' : 'Add Notes'}</button>
+        { this.notesForm() }
+        { this.renderArrivedButton() }
+        { this.renderFulfillButton() }
+        { this.renderPrintLabels() }
+      </div>
+    );
+  }
+
+  showHideDeatilsOrCustomerMeasurementsButton(boolean){
+    const value = !boolean;
+    this.setState({showMeasurements: value});
+  }
+
+  renderDetailsOrMeasurementsbutton(state){
+    const {showMeasurements} = this.state;
+    const value = showMeasurements ? 'See Order Details' : 'See Customer Measurements';
+    return (
+      <input
+        type='submit'
+        value={value}
+        className='small-buton'
+        onClick={() => this.showHideDeatilsOrCustomerMeasurementsButton(showMeasurements)}/>
+    )
   }
 
   render(){
@@ -259,21 +358,17 @@ class OrdersShow extends Component {
 
     if (!isEmpty(currentOrder)){
       const customerRoute = `/customers/${customer.id}/edit`;
+      const mainContent = !this.state.showMeasurements ? this.renderOrderDetails() : <Measurements />;
       return (
         <div>
           <SectionHeader text={headerText} linkTo={customerRoute} linkText={ customer.first_name + ' ' + customer.last_name} />
-          <div>
-            <Link to={orderEditPath}>Edit Order</Link>
-          </div>
+          <div className='order-show'>
+           { this.renderEditOrder(this.props.currentUser.user.roles[0].name) }
+           { this.renderDetailsOrMeasurementsbutton(this.state) }
 
-          { this.renderList() }
-          { this.orderNotes('requester_notes') }
-          { this.orderNotes('provider_notes') }
-          <button onClick={() => this.showHideNotesForm()}>{this.state.displayNotesForm ? 'Hide' : 'Add Notes'}</button>
-          { this.notesForm() }
-          { this.renderArrivedButton() }
-          { this.renderFulfillButton() } 
-          { this.renderPrintLabels() }
+            { mainContent }
+
+          </div>
         </div>
       );
     } else {
@@ -301,4 +396,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrdersShow);
-

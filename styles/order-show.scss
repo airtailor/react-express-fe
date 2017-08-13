@@ -1,0 +1,36 @@
+.order-show {
+  padding-left: 80px;
+}
+
+.item-type-image{
+  width: 75px;
+  height: 75px;
+  padding-right: 20px;
+}
+
+.type-heading{
+  @extend .flex-container;
+  justify-content: flex-start;
+}
+
+.notes {
+  padding: 20px;
+  padding-top: 0;
+}
+
+.type-list {
+  margin-left: 40px;
+  list-style: unset;
+  line-height: 2;
+}
+
+.form-label{
+  padding-top: 50px;
+  padding-top: 50px;
+  color: $primary-blue;
+  font-family: alegreya;
+}
+
+.notes-form > textarea {
+  width: 355px;
+}

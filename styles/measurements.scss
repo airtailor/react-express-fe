@@ -1,0 +1,13 @@
+
+.measurements-image {
+  display: block;
+  margin: 0;
+  width: 500px;
+}
+
+.measurement-buttons-container {
+  @extend .flex-container;
+  justify-content: space-around;
+  max-width: 500px;
+  margin-bottom: 50px;
+}

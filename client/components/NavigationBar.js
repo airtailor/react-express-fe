@@ -22,7 +22,7 @@ class NavigationBar extends Component {
   }
 
   getNavActive(window){
-    return window.innerWidth < 751 ? false : true;
+    return window.innerWidth < 816 ? false : true;
   }
 
   handleResize(){

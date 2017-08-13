@@ -28,7 +28,7 @@ class Home extends Component {
       const storeEditPath = `/stores/${id}/edit`;
 
       return (
-        <div>
+        <div className='home'>
           <h2 className='greeting'>Greetings, {name}.</h2>
           <p className='greeting'>
             Here's what's happening with your shop right now.

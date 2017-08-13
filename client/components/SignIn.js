@@ -63,9 +63,9 @@ class SignIn extends Component {
         <h1>Hi {this.props.currentUser.email}</h1>
       );
     }
-    else { 
+    else {
       return (
-        <div className="sign-in">
+        <div className="form-container">
             <LogoMessage className='sign-in-logo' text='Welcome, you can log in securely below.' />
             <form onSubmit={(e) => this.signIn(e)}>
               <input
@@ -83,8 +83,8 @@ class SignIn extends Component {
                 onChange={(e) => this.updateInputText(e.target)}
                 placeholder='Password'
                 type='password'/>
-              <input disabled={buttonDisabled} type="submit" value="Log In" />
-              <a 
+              <input disabled={buttonDisabled} type="submit" value="Log In" className='signin-button'/>
+              <a
                 className="forgot-password link"
                 href='mailto:brian@airtailor.com?&subject=Forgot%20Password'>
                 Forgot your password?

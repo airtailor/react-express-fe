@@ -27,13 +27,34 @@ class NavigationLinks extends Component {
       <div>
         <SearchBar />
         <ul className="navbar-links-ul">
-          <NavigationLink cssClass="home-link" route="/" text="Home" image={homeImage} />
-          <NavigationLink cssClass="orders-link" route="/orders" text="Orders" image={ordersImage} />
-          <NavigationLink cssClass="new-store-link" route="/stores/new" text="Create New Store" image={homeImage} />
+
+
+          <NavigationLink
+            cssClass="home-link"
+            route="/" text="Home"
+            image={homeImage} />
+
+          <NavigationLink
+            cssClass="orders-link"
+            route="/orders" text="Orders"
+            image={ordersImage} />
+
+          <NavigationLink
+            cssClass="new-store-link"
+            route="/stores/new"
+            text="Create New Store"
+            image={homeImage} />
+
+          <NavigationLink
+            cssClass="new-order-link"
+            route="/orders/new" text="New Order"
+            image={homeImage} />
+
           <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>
-          <NavigationLink cssClass="close-link" route="#" text="Close" image={homeImage} />
+            <NavigationLink cssClass="close-link" route="#" text="Close" image={homeImage} />
             <img src={logoutImage} alt='logout' /> LOGOUT
            </a></li>
+
         </ul>
       </div>
     );
@@ -57,10 +78,6 @@ class NavigationLinks extends Component {
             text="Orders"
             image={ordersImage} />
 
-          <NavigationLink
-            cssClass="new-order-link"
-            route="/orders/new" text="New Order"
-            image={homeImage} />
 
           <NavigationLink
             cssClass="edit-store-link"
