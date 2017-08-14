@@ -27,6 +27,7 @@ class OrdersShow extends Component {
     const { order_id } = this.props.match.params;
     const store_id = this.props.currentStore.id;
     const { getCurrentOrder } = this.props;
+    console.log("!!!!!!", store_id, order_id)
     getCurrentOrder(store_id, order_id)
       .catch(err => console.log(err));
   }
@@ -235,14 +236,15 @@ class OrdersShow extends Component {
       .catch(err => console.log(err));
   }
 
-  getShippingType(role){
+  getShippingType(role, orderType){
     if (role === 'tailor'){
       return 'OutgoingShipment';
-    } else if (role === 'sales_associate' && currentOrder.type !== 'WelcomeKit'){
+    } else if (role === 'sales_associate' && orderType !== 'WelcomeKit'){
       return 'IncomingShipment';
-    } else if (currentOrder.type === 'WelcomeKit'){
+    } else if (orderType === 'WelcomeKit'){
       return 'OutgoingShipment';
     } else {
+      return 'IncomingShipment';
       // if it gets here, we need to handle an error message
       console.log('wtf fix this - ordersshow renderPrintLabels()');
     }
@@ -278,14 +280,13 @@ class OrdersShow extends Component {
   printShippingLabel(type){
     const key = this.toSnakeCaseFromCamelCase(this.lowerCaseFirstLetter(type));
     const label = this.props.currentOrder[key];
-
   }
 
   renderPrintLabels(){
   console.log('print-label', this.props.currentOrder)
     const { currentUser, currentOrder } = this.props;
     const role = currentUser.user.roles[0].name;
-    const shippingType = this.getShippingType(role);
+    const shippingType = this.getShippingType(role, currentOrder.type);
     const printPrompt = this.getPrintButtonPrompt(shippingType, currentOrder);
 
     if (printPrompt.split(' ')[0] === "Print"){
@@ -306,7 +307,7 @@ class OrdersShow extends Component {
     }
   }
 
-  renderEditOrder(role){
+  renderEditOrder(role, orderEditPath){
     if (role === 'admin'){
       return (
         <div>
@@ -340,12 +341,12 @@ class OrdersShow extends Component {
 
   renderDetailsOrMeasurementsbutton(state){
     const {showMeasurements} = this.state;
-    const value = showMeasurements ? 'See Order Details' : 'See Customer Measurements';
+    const value = showMeasurements ? 'See Order Details' : 'See Measurements';
     return (
       <input
         type='submit'
         value={value}
-        className='small-buton'
+        className='short-button'
         onClick={() => this.showHideDeatilsOrCustomerMeasurementsButton(showMeasurements)}/>
     )
   }
@@ -358,12 +359,12 @@ class OrdersShow extends Component {
 
     if (!isEmpty(currentOrder)){
       const customerRoute = `/customers/${customer.id}/edit`;
-      const mainContent = !this.state.showMeasurements ? this.renderOrderDetails() : <Measurements />;
+      const mainContent = !this.state.showMeasurements ? this.renderOrderDetails() : <Measurements customer={customer}/>;
       return (
         <div>
           <SectionHeader text={headerText} linkTo={customerRoute} linkText={ customer.first_name + ' ' + customer.last_name} />
           <div className='order-show'>
-           { this.renderEditOrder(this.props.currentUser.user.roles[0].name) }
+           { this.renderEditOrder(this.props.currentUser.user.roles[0].name, orderEditPath) }
            { this.renderDetailsOrMeasurementsbutton(this.state) }
 
             { mainContent }
@@ -372,6 +373,7 @@ class OrdersShow extends Component {
         </div>
       );
     } else {
+      //debugger;
       return (
         <div>
           <SectionHeader text={headerText} />

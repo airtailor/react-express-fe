@@ -1,15 +1,16 @@
 import Axios from 'axios'
 import setAuthToken from '../utils/setAuthToken';
 import { setLocalStorageAuth, setLocalStorageUser } from '../utils/setLocalStorage';
-import { 
-  expressApi, 
-  SET_CURRENT_USER, 
-  SET_CURRENT_STORE, 
-  SET_STORE_ORDERS, 
-  SET_CURRENT_ORDER, 
-  SET_ITEM_TYPES, 
+import {
+  expressApi,
+  SET_CURRENT_USER,
+  SET_CURRENT_STORE,
+  SET_STORE_ORDERS,
+  SET_CURRENT_ORDER,
+  SET_ITEM_TYPES,
   SET_TAILOR_LIST,
-  SET_COMPANY_LIST
+  SET_COMPANY_LIST,
+  SET_CUSTOMER_MEASUREMENTS
 } from '../utils/constants';
 
 const setTokens = (res) => {
@@ -53,9 +54,9 @@ export function signOutCurrentUser(){
   return dispatch => {
     return Axios.post(url)
       .then(res => {
-        localStorage.setItem('AirTailorToken', JSON.stringify({}));
+        delete localStorage.AirTailorTokens
         setAuthToken({});
-        dispatch(setCurrentUser({ }));
+        dispatch(setCurrentUser({ }), setCurrentStore({}));
       })
       .catch(err => {
         console.log(err);
@@ -113,7 +114,7 @@ export function getCurrentStore(store_id){
           // console.log('getStoreOrders - no new auth headers');
         }
         const { company_id, city, id, name, phone, primary_contact_id, state, street1, street2, zip, active_orders_count, late_orders_count } = res.data.body;
-        dispatch(setCurrentStore({ company_id, city, id, name, phone, primary_contact_id, state, street1, street2, zip, active_orders_count, late_orders_count })); 
+        dispatch(setCurrentStore({ company_id, city, id, name, phone, primary_contact_id, state, street1, street2, zip, active_orders_count, late_orders_count }));
       })
       .catch(err => {
         debugger;
@@ -129,7 +130,7 @@ export function updateOrder(data){
       .then(() => {
         return Axios.post(url, data)
           .then(res => {
-            dispatch(setCurrentOrder(res.data.body)); 
+            dispatch(setCurrentOrder(res.data.body));
           })
           .catch(err => {
             debugger;
@@ -174,7 +175,7 @@ export function updateStore(data){
       .then(() => {
         return Axios.put(url, data)
           .then(res => {
-            dispatch(setCurrentStore(res.data.body)); 
+            dispatch(setCurrentStore(res.data.body));
           })
           .catch(err => {
             debugger;
@@ -191,7 +192,7 @@ export function getCompanies(){
       .then(() => {
         return Axios.get(url)
           .then(res => {
-            dispatch(setCompanyList(res.data.body)); 
+            dispatch(setCompanyList(res.data.body));
           })
           .catch(err => {
             debugger;
@@ -205,7 +206,33 @@ export function createShipment(data){
   return Axios.post(url, data)
 }
 
+export function getCustomerMeasurements(data){
+  console.log('customer-id', data.customer_id)
+  const url = `${expressApi}/customers/${data.customer_id}/measurements/last`;
+  return dispatch => {
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.get(url)
+          .then(res => {
+            //debugger;
+            dispatch(setCustomerMeasurements(res.data.body));
+          })
+          .catch(err => {
+            debugger;
+          })
+      })
+  }
+}
+
 // actions
+
+export function setCustomerMeasurements(measurements){
+  return {
+    type: 'SET_CUSTOMER_MEASUREMENTS',
+    measurements
+  }
+}
 export function setCompanyList(companies){
   return {
     type: SET_COMPANY_LIST,
@@ -253,4 +280,3 @@ export function setItemTypes(itemTypes) {
     itemTypes
   };
 }
-

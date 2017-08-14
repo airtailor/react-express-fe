@@ -6,6 +6,7 @@ import currentOrderReducer from './currentOrderReducer';
 import itemTypesReducer from './itemTypesReducer';
 import tailorListReducer from './tailorListReducer';
 import companyListReducer from './companyListReducer';
+import measurementsReducer from './measurementsReducer';
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   currentOrder: currentOrderReducer,
   itemTypes: itemTypesReducer,
   tailorList: tailorListReducer,
-  companyList: companyListReducer
+  companyList: companyListReducer,
+  measurements: measurementsReducer
 });
 
 export default rootReducer;

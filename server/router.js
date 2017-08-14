@@ -147,8 +147,9 @@ router.post('/api/stores/:store_id/orders/:order_id', (req, res) => {
   const uid = req.get('uid');
   const headers = { client, ["access-token"]: accessToken, uid };
   //console.log('outgoing headers get store/id/orders/id', headers);
-
-  Axios.get(`http://localhost:3000/api/stores/${store_id}/orders/${order_id}`, { headers })
+  //const url = `http://localhost:3000/api/stores/${store_id}/orders/${order_id}`;
+  const url = `http://localhost:3000/api/orders/${order_id}`;
+  Axios.get(url, { headers })
   .then(response => {
     //console.log('return headers get store/id/orders/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
@@ -178,7 +179,7 @@ router.post('/api/stores/:store_id/orders/:order_id/edit', (req, res) => {
   console.log('outgoing headers put store/id/orders/id', headers);
 
   Axios.put(`http://localhost:3000/api/stores/${store_id}/orders/${order_id}`, {
-    order: data.order, 
+    order: data.order,
     headers
   })
   .then(response => {
@@ -206,7 +207,7 @@ router.put('/api/customers/:customer_id/', (req, res) => {
   const data = req.body;
 
   Axios.put(`http://localhost:3000/api/customers/${customer_id}`, {
-    customer: data.customer, 
+    customer: data.customer,
     headers
   })
   .then(response => {
@@ -284,7 +285,7 @@ router.put('/api/stores/:store_id/', (req, res) => {
   const data = req.body;
 
   Axios.put(`http://localhost:3000/api/stores/${store_id}`, {
-    store: data.store, 
+    store: data.store,
     headers
   })
   .then(response => {
@@ -311,7 +312,7 @@ router.post('/api/stores', (req, res) => {
   const data = req.body;
 
   Axios.post(`http://localhost:3000/api/stores`, {
-    store: data.store, 
+    store: data.store,
     headers
   })
   .then(response => {
@@ -356,9 +357,35 @@ router.post('/api/shipments', (req, res) => {
   });
 });
 
+router.get('/api/customers/:customer_id/measurements/last', (req, res) => {
+  const { customer_id } = req.params;
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const headers = { client, ["access-token"]: accessToken, uid };
+  const url = `http://localhost:3000/api/customers/${customer_id}/measurements/last`;
+  //console.log('outgoing headers get store/id/orders', headers);
+
+  console.log('###################################################', url )
+  Axios.get(url, { headers })
+  .then(response => {
+   // console.log('return headers get store/id/orders', response.headers);
+   console.log('###################################################', response.body )
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err);
+      res.json(err);
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
+
 router.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 module.exports = router;
-

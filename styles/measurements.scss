@@ -11,3 +11,72 @@
   max-width: 500px;
   margin-bottom: 50px;
 }
+
+.customer-measurements {
+  position: relative;
+}
+
+.input-measurement {
+  width: 40px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  border: 3px solid pink;
+  border-radius: 5px;
+  position: absolute;
+}
+
+.chest_bust {
+  top: 271px;
+  left: 178px;
+}
+
+.upper_torso {
+  top: 350px;
+  left: 178px;
+}
+
+.elbow {
+  top: 257px;
+  left: 40px;
+}
+
+.waist {
+  top: 430px;
+  left: 178px;
+}
+
+.shoulder_to_waist {
+  top: 205px;
+  left: 262px;
+}
+
+.hips {
+  top: 510px;
+  left: 350px;
+}
+
+.pant_length {
+  top: 580px;
+  left: 100px;
+}
+
+.thigh {
+  top: 665px;
+  left: 168px;
+}
+
+.knee {
+  top: 770px;
+  left: 168px;
+}
+
+.calf {
+  top: 880px;
+  left: 168px;
+}
+
+.ankle {
+  top: 1000px;
+  left: 168px;
+}

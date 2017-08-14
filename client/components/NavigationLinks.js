@@ -27,8 +27,6 @@ class NavigationLinks extends Component {
       <div>
         <SearchBar />
         <ul className="navbar-links-ul">
-
-
           <NavigationLink
             cssClass="home-link"
             route="/" text="Home"
@@ -42,7 +40,7 @@ class NavigationLinks extends Component {
           <NavigationLink
             cssClass="new-store-link"
             route="/stores/new"
-            text="Create New Store"
+            text="New Store"
             image={homeImage} />
 
           <NavigationLink
@@ -51,10 +49,10 @@ class NavigationLinks extends Component {
             image={homeImage} />
 
           <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>
-            <NavigationLink cssClass="close-link" route="#" text="Close" image={homeImage} />
             <img src={logoutImage} alt='logout' /> LOGOUT
            </a></li>
 
+           <NavigationLink cssClass="close-link" route="#" text="Close" image={homeImage} />
         </ul>
       </div>
     );

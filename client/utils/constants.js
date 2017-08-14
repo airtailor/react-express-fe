@@ -8,8 +8,9 @@ export const SET_CURRENT_ORDER = 'SET_CURRENT_ORDER';
 export const SET_ITEM_TYPES = 'SET_ITEM_TYPES';
 export const SET_TAILOR_LIST = 'SET_TAILOR_LIST';
 export const SET_COMPANY_LIST = 'SET_COMPANY_LIST';
+export const SET_CUSTOMER_MEASUREMENTS = 'SET_CUSTOMER_MEASUREMENTS';
 
 export const storeTypes = [
-  { name: 'Tailor', id: 'tailor' }, 
+  { name: 'Tailor', id: 'tailor' },
   { name: 'Retailer', id: 'retailer'}
 ];
