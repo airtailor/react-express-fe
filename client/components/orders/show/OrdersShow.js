@@ -12,6 +12,7 @@ import dressImage from '../../../images/dress.png';
 import suitJacketImage from '../../../images/suit-jacket.png';
 import suppliesImage from '../../../images/supplies.png';
 import Measurements from './measurements/Measurements';
+import OrderComplete from '../../prints/OrderComplete.js';
 
 class OrdersShow extends Component {
   constructor(props){
@@ -291,6 +292,10 @@ class OrdersShow extends Component {
     const label = this.props.currentOrder[key];
   }
 
+  // handlePrintClick(){
+  //
+  // }
+
   renderPrintLabels(){
     const { currentUser, currentOrder } = this.props;
     const role = currentUser.user.roles[0].name;
@@ -299,13 +304,22 @@ class OrdersShow extends Component {
 
     if (printPrompt.split(' ')[0] === "Print"){
       const url=currentOrder[this.toSnakeCaseFromCamelCase(this.lowerCaseFirstLetter(shippingType))].shipping_label;
+
       return (
-        <a href={url} target='blank'>
-          <button className='pink-button'>
+        <div>
+          <button className='pink-button' onClick={() => window.print()}>
             {printPrompt}
           </button>
-        </a>
-      );
+          {/* <OrderComplete order={currentOrder} shippingType={shippingType} /> */}
+        </div>
+      )
+      // return (
+      //   <a href={url} target='blank'>
+      //     <button className='pink-button'>
+      //       {printPrompt}
+      //     </button>
+      //   </a>
+      // );
     } else if (printPrompt.split(' ')[0] === 'Create'){
       return (
         <button className='pink-button' onClick={() => this.makeShippingLabel(shippingType)}>

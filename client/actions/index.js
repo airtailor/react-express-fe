@@ -10,7 +10,8 @@ import {
   SET_ITEM_TYPES,
   SET_TAILOR_LIST,
   SET_COMPANY_LIST,
-  SET_CUSTOMER_MEASUREMENTS
+  SET_CUSTOMER_MEASUREMENTS,
+  SET_CURRENT_PRINT
 } from '../utils/constants';
 
 const setTokens = (res) => {
@@ -246,6 +247,11 @@ export function createCustomerMeasurements(measurement){
 }
 
 // actions
+
+// export function setCurrentPrint(){
+//   return: SET_CURRENT_PRINT,
+//
+// }
 
 export function setCustomerMeasurements(measurements){
   return {

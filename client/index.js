@@ -4,6 +4,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import Router from './Router';
+import MainPrint from './components/prints/MainPrint';
 import rootReducer from './reducers';
 import setAuthToken from './utils/setAuthToken';
 import { setCurrentUser } from './actions/';
@@ -27,7 +28,22 @@ if (localStorage.AirTailorTokens && localStorage.CurrentUser) {
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router />
+    <div>
+      <div id="react-no-print">
+        <Router />
+      </div>
+
+      <div id="print-mount">
+        <MainPrint />
+      </div>
+    </div>
   </Provider>,
   document.querySelector('#root')
 );
+
+// ReactDOM.render(
+//     <Provider store={store}>
+//       <Router />
+//     </Provider>,
+//   document.querySelector('#root')
+// );
