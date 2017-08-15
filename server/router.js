@@ -4,7 +4,6 @@ import Axios from 'axios';
 const router = express.Router();
 
 router.post('/api/validate_token', (req, res) => {
-  console.log('api/validate token!!!!');
   const client = req.get('client');
   const accessToken = req.get('access-token');
   const uid = req.get('uid');
@@ -12,8 +11,6 @@ router.post('/api/validate_token', (req, res) => {
 
   Axios.get(`http://localhost:3000/auth/validate_token`, { headers })
   .then(response => {
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nreturn response validate token', response);
-    console.log('!!!!!!!!!!!\n!!!!!!!!!!!\n!!!!!!!!!!\n!!!!!!!!!!\n!!!!!!!!!!\nreturn headers validate token', response.headers);
     res.json({ headers: response.headers, body: response.data.data });
   })
   .catch(err => {
@@ -377,6 +374,35 @@ router.get('/api/customers/:customer_id/measurements/last', (req, res) => {
     if (err instanceof Error){
       console.log("@@@@@@@@@@@@@", err);
       res.json(err);
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
+
+router.post('/api/customers/:customer_id/measurements', (req, res) => {
+  const {customer_id} = req.params;
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const expiry = req.get('expiry');
+  const headers = { client, ["access-token"]: accessToken, uid, expiry };
+  const data = req.body;
+  const url = `http://localhost:3000/api/customers/${customer_id}/measurements`;
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!,', data)
+  Axios.post(url, {
+    measurement: data.measurement,
+    headers
+  })
+  .then(response => {
+    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err.response.status);
+      res.json(err.response.status);
     } else {
       console.log("error: ", err);
       res.json(err);

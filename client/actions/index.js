@@ -207,7 +207,6 @@ export function createShipment(data){
 }
 
 export function getCustomerMeasurements(data){
-  console.log('customer-id', data.customer_id)
   const url = `${expressApi}/customers/${data.customer_id}/measurements/last`;
   return dispatch => {
     return validateToken()
@@ -216,6 +215,27 @@ export function getCustomerMeasurements(data){
         return Axios.get(url)
           .then(res => {
             //debugger;
+            dispatch(setCustomerMeasurements(res.data.body));
+          })
+          .catch(err => {
+            debugger;
+          })
+      })
+  }
+}
+
+export function createCustomerMeasurements(measurement){
+
+  const url = `${expressApi}/customers/${measurement.customer_id}/measurements`;
+  const data = {measurement};
+  console.log('action - sleeve_length', measurement.sleeve_length)
+  return dispatch => {
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.post(url, data)
+          .then(res => {
+            console.log('new', res.data.body.id)
             dispatch(setCustomerMeasurements(res.data.body));
           })
           .catch(err => {

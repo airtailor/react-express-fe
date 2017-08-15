@@ -27,7 +27,6 @@ class OrdersShow extends Component {
     const { order_id } = this.props.match.params;
     const store_id = this.props.currentStore.id;
     const { getCurrentOrder } = this.props;
-    console.log("!!!!!!", store_id, order_id)
     getCurrentOrder(store_id, order_id)
       .catch(err => console.log(err));
   }
@@ -283,7 +282,6 @@ class OrdersShow extends Component {
   }
 
   renderPrintLabels(){
-  console.log('print-label', this.props.currentOrder)
     const { currentUser, currentOrder } = this.props;
     const role = currentUser.user.roles[0].name;
     const shippingType = this.getShippingType(role, currentOrder.type);

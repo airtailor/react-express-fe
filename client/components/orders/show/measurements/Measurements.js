@@ -2,24 +2,35 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
-import { getCustomerMeasurements, setCustomerMeasurements } from '../../../../actions';
+import { getCustomerMeasurements, createCustomerMeasurements } from '../../../../actions';
 import FrontImage from '../../../../images/clothes-front-red.png';
 import BackImage from '../../../../images/clothes-back-red.png';
 import InputMeasurement from './InputMeasurement';
 
 class Measurements extends Component {
-  constructor(){
+  constructor(props){
     super();
     this.state = {
       showFront: true,
-      editEnabled: false
+      editEnabled: false,
+      measurements: props.measurements
     }
+    this.updateMeasurement = this.updateMeasurement.bind(this);
+
   }
 
   componentDidMount(){
+    this.resetCustomerMeasurements();
+  }
+
+  resetCustomerMeasurements(){
+    console.log('reset customer measuremnts')
     const {getCustomerMeasurements, customer} = this.props;
     getCustomerMeasurements({customer_id: customer.id})
-      .then(res => console.log('res'))
+      .then(res => {
+        console.log('res')
+        this.setState({measurements: this.props.measurements})
+      })
       .catch(err => console.log('err'))
   }
 
@@ -42,38 +53,141 @@ class Measurements extends Component {
     this.setState({showFront: boolean});
   }
 
-  renderButtons(){
+  enableEditButton(editEnabled){
+    if (!editEnabled) {
+      return (
+        <input className='pink-button tiny-button' readOnly={true} value='Edit'onClick={() => this.toggleEditEnabled(editEnabled)} />
+      );
+    } else {
+      return (
+        <input className='pink-button tiny-button' readOnly={true} value='Submit' onClick={() => this.submitNewMeasurements(this.state.measurements)} />
+      )
+    }
+
+  }
+
+  submitNewMeasurements(measurements){
+    this.setState({editEnabled: false});
+    this.props.createCustomerMeasurements(this.state.measurements)
+      .then(res => this.resetCustomerMeasurements())
+      .catch(err => console.log('err', err))
+  }
+
+  renderButtons(editEnabled){
     return (
       <div className='measurement-buttons-container'>
-        <input className='pink-button tiny-button' value='Front' onClick={() => this.showFrontOrBack(true)} />
-        <input className='pink-button tiny-button' value='Back' onClick={() => this.showFrontOrBack(false)} />
-        <input className='pink-button tiny-button' value='Edit' onClick={() => console.log('edit selected')} />
+        <input className='pink-button tiny-button' readOnly={true} value='Front' onClick={() => this.showFrontOrBack(true)} />
+        <input className='pink-button tiny-button' readOnly={true} value='Back' onClick={() => this.showFrontOrBack(false)} />
+        { this.enableEditButton(editEnabled)}
       </div>
-    )
+    );
+  }
+
+  toggleEditEnabled(editEnabled){
+    this.setState({editEnabled: !editEnabled})
+  }
+
+  updateMeasurement(kind, value){
+    let newState = this.state;
+    newState.measurements[kind] = value;
+    this.setState(newState)
+
+    // if (value <= 0 && !parseInt(value)){
+    //   // do nothing yet
+    // } else {
+    //   this.setState({measurements: {[kind]: value}}).then(res => {
+    //     debugger;
+    //   })
+    // }
+  }
+
+  validateMeasurement(value){
+    const last = value[0];
+    const lastCharInt = last.isNaN() ? true : false;
+
   }
 
   renderInputs(showFront, editEnabled, measurements){
     if (!isEmpty(measurements)){
       if (showFront){
         return (
-          <div>
-            <InputMeasurement disabled={editEnabled} kind='ankle' value={measurements.ankle} />
-            <InputMeasurement disabled={editEnabled} kind='calf' value={measurements.calf} />
-            <InputMeasurement disabled={editEnabled} kind='chest_bust' value={measurements.chest_bust} />
-            <InputMeasurement disabled={editEnabled} kind='elbow' value={measurements.elbow} />
-            <InputMeasurement disabled={editEnabled} kind='hips' value={measurements.hips} />
-            <InputMeasurement disabled={editEnabled} kind='knee' value={measurements.knee} />
-            <InputMeasurement disabled={editEnabled} kind='pant_length' value={measurements.pant_length} />
-            <InputMeasurement disabled={editEnabled} kind='shoulder_to_waist' value={measurements.shoulder_to_waist} />
-            <InputMeasurement disabled={editEnabled} kind='thigh' value={measurements.thigh} />
-            <InputMeasurement disabled={editEnabled} kind='upper_torso' value={measurements.upper_torso} />
-            <InputMeasurement disabled={editEnabled} kind='waist' value={measurements.waist} />
-          </div>
+          <form>
+            <InputMeasurement
+              update={this.updateMeasurement}
+              disabled={editEnabled}
+              kind='ankle'
+              value={measurements.ankle} />
+
+            <InputMeasurement
+              update={this.updateMeasurement}
+              disabled={editEnabled}
+              kind='calf'
+              value={measurements.calf} />
+
+            <InputMeasurement
+              update={this.updateMeasurement}
+              disabled={editEnabled}
+              kind='chest_bust'
+              value={measurements.chest_bust} />
+
+            <InputMeasurement
+              update={this.updateMeasurement}
+              disabled={editEnabled}
+              kind='hips'
+              value={measurements.hips} />
+
+            <InputMeasurement
+              update={this.updateMeasurement}
+              disabled={editEnabled}
+              kind='knee'
+              value={measurements.knee} />
+
+            <InputMeasurement
+              update={this.updateMeasurement}
+              disabled={editEnabled}
+              kind='pant_length'
+              value={measurements.pant_length} />
+
+            <InputMeasurement
+              update={this.updateMeasurement}
+              disabled={editEnabled}
+              kind='sleeve_length'
+              value={measurements.sleeve_length} />
+
+            <InputMeasurement
+              update={this.updateMeasurement}
+              disabled={editEnabled}
+              kind='shoulder_to_waist'
+              value={measurements.shoulder_to_waist} />
+
+            <InputMeasurement
+              update={this.updateMeasurement}
+              disabled={editEnabled}
+              kind='thigh'
+              value={measurements.thigh} />
+
+            <InputMeasurement
+              update={this.updateMeasurement}
+              disabled={editEnabled}
+              kind='upper_torso'
+              value={measurements.upper_torso} />
+
+            <InputMeasurement
+              update={this.updateMeasurement}
+              disabled={editEnabled}
+              kind='waist'
+              value={measurements.waist} />
+
+          </form>
         );
       } else {
         return (
           <div>
-          <InputMeasurement disabled={editEnabled} kind='back_width' value={measurements['back-width']} />
+            <InputMeasurement disabled={editEnabled} kind='back_width' value={measurements.back_width} />
+            <InputMeasurement disabled={editEnabled} kind='bicep' value={measurements.bicep} />
+            <InputMeasurement disabled={editEnabled} kind='elbow' value={measurements.elbow} />
+            <InputMeasurement disabled={editEnabled} kind='forearm' value={measurements.forearm} />
+            <InputMeasurement disabled={editEnabled} kind='inseam' value={measurements.inseam} />
           </div>
         )
       }
@@ -81,14 +195,13 @@ class Measurements extends Component {
   }
 
   render(){
-    console.log('measurements', this.props.measurements)
-    const {showFront, editEnabled} = this.state;
-    const {measurements} = this.props;
+    console.log('state',this.state.measurements.id)
+    const {showFront, editEnabled, measurements} = this.state;
     return (
       <div className='customer-measurements'>
         <div className='measurements-header'>
           <h3>Customer Measurements</h3>
-          {this.renderButtons()}
+          {this.renderButtons(editEnabled)}
         </div>
 
       {this.getImage(this.state)}
@@ -105,7 +218,7 @@ const mapStateToProps = (store) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({getCustomerMeasurements, setCustomerMeasurements}, dispatch);
+  return bindActionCreators({getCustomerMeasurements, createCustomerMeasurements}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Measurements);

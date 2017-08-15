@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const InputMeasurement = (props) => {
-  const {kind, value, updateMeasurement, disabled} = props;
-  const styling = `input-measurement ${kind}`;
-  const val = `${value.toFixed(1)}"`;
-  return (
-    <input className={styling} value={val} disabled={!disabled} />
-  )
+class InputMeasurement extends Component {
+  render() {
+    const {kind, value, update, disabled} = this.props;
+    const editEnabled = disabled;
+    const styling = `input-measurement ${kind}`;
+    let val;
+
+    if (value){
+      val = editEnabled ? `${value}` : `${value}"`;
+    } else {
+      val = value;
+    }
+
+    return (
+      <input
+        className={styling}
+        value={val}
+        disabled={!editEnabled}
+        onChange={e => update(kind, e.target.value)} />
+    )
+  }
 }
 
 export default InputMeasurement;
