@@ -70,24 +70,3 @@ h1 {
 .pos-rel {
   position: relative;
 }
-
-
-#react-no-print {
-  height: 100%;
-}
-
-@media print{
-  body *{
-    visibility: hidden;
-  }
-
-  #print-mount, #print-mount * {
-    visibility: visible;
-  }
-
-  #print-mount {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-}

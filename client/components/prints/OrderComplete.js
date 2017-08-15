@@ -1,34 +1,59 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import PrintTemplate from 'react-print';
+import logo from '../../images/logo.png';
 
 class OrderComplete extends Component {
-  // render(){
-  //   return (
-  //     <PrintTemplate>
-  //       <div><h1>Order Complete!</h1></div>
-  //     </PrintTemplate>
-  //   )
-  // }
+
+  getAlterationsList(items){
+    return items.map((item, index) => {
+      return item.alterations.map((alt, index) => {
+        return alt.name;
+      });
+    }).join().split(',')
+  }
+
+  renderAlterationListItems(alterations){
+    return alterations.map((alt, index) => {
+      return <li className='print-alteration-li' key={index}>{alt}</li>;
+    })
+  }
+
+  renderAlterationList(items){
+    const alterations = this.renderAlterationListItems(this.getAlterationsList(items));
+    return (
+      <ul className='print-alteration-ul'>
+        {alterations}
+      </ul>
+    );
+  }
+
   render(){
-    // if (this.props.currentPrint === 'OrderComplete') {
-      const {order, store, shippingType} = this.props;
+      const {currentOrder, CurrentStore, shippingType} = this.props;
       const type = shippingType === 'OutgoingShipment' ? 'outgoing_shipment' : 'incoming_shipment';
-      if (order){
+      const {first_name} = currentOrder.customer;
+      const {id} = currentOrder;
+      console.log(currentOrder.items)
+      if (currentOrder){
+
         console.log('order is here in order complete')
         return (
-          <div id="print-mount">
-            <h1>HIiiiiiiiiiiiasdflasdfjasdofjaosfjosadifjasdoijfds</h1>
-            <PrintTemplate>
-              <div>
-                <p>Order Complete</p>
-                <img src={order[type].shipping_label} />
-              </div>
-            </PrintTemplate>
+          <div className='print'>
+            <div className='packing-slip-info'>
+              <img className='packing-slip-label' src={currentOrder[type].shipping_label} />
+              <h3>Thank you for your Air Tailor order, {first_name}</h3>
+              <p>We hope everything arrived exactly as you expected and that you are pleased with our work. If you have any questions or would like to alter/repair more clothes using Air Tailor, please text us or email hello@airtailor.com. We look forward to serving you again soon, {first_name}!</p>
+              <p className='packing-slip-info-orderid'><b>Order: #{id}</b></p>
+              {this.renderAlterationList(currentOrder.items)}
+              <img className='packing-slip-info-img' src={logo} alt='air tailor logo' id='logo' />
+            </div>
           </div>
         );
       } else {
-        return <div></div>;
+        return (
+          <div className='print'>
+            <h1>HIiiiiiiiiiiiasdflasdfjasdofjaosfjosadifjasdoijfds</h1>
+          </div>
+        )
       }
     // }
   }
@@ -37,8 +62,7 @@ class OrderComplete extends Component {
 const mapStateToProps = (store) => {
   return {
     currentStore: store.currentStore,
-    currentOrder: store.currentOrder,
-    currentPrint: store.currentPrint
+    currentOrder: store.currentOrder
   }
 }
 export default connect(mapStateToProps)(OrderComplete);

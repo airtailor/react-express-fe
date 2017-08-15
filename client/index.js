@@ -28,15 +28,7 @@ if (localStorage.AirTailorTokens && localStorage.CurrentUser) {
 
 ReactDOM.render(
   <Provider store={store}>
-    <div>
-      <div id="react-no-print">
-        <Router />
-      </div>
-
-      <div id="print-mount">
-        <MainPrint />
-      </div>
-    </div>
+    <Router />
   </Provider>,
   document.querySelector('#root')
 );

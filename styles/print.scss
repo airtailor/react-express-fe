@@ -1,0 +1,71 @@
+.print {
+  visibility: hidden;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .print, .print * {
+    visibility: visible;
+  }
+
+  .print {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.packing-slip-info {
+  width: 52%;
+  font-family: arial
+}
+
+.packing-slip-info h3 {
+  font-family: alegreya;
+  font-size: 27px;
+  margin-bottom: 20px;
+  padding-top: 20px;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.packing-slip-info p {
+  font-size: 18px;
+  margin-left: 10px;
+  font-family: arial;
+}
+
+.packing-slip-info-orderid {
+  text-align: center;
+  font-weight: bold;
+}
+
+.packing-slip-label {
+  display: block;
+  // width: 100px;
+  width: 100%;
+  margin: auto;
+}
+
+.print-alteration-li {
+  font-family: arial;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.print-alteration-ul {
+  font-family: arial;
+  list-style-type: none;
+  padding-left: 0;
+  text-align: center;
+}
+
+.packing-slip-info-img {
+  display: block;
+  width: 100px;
+  margin: auto;
+  margin-top: 20px;
+}

@@ -303,23 +303,18 @@ class OrdersShow extends Component {
     const printPrompt = this.getPrintButtonPrompt(shippingType, currentOrder);
 
     if (printPrompt.split(' ')[0] === "Print"){
-      const url=currentOrder[this.toSnakeCaseFromCamelCase(this.lowerCaseFirstLetter(shippingType))].shipping_label;
+      const url = currentOrder[this.toSnakeCaseFromCamelCase(this.lowerCaseFirstLetter(shippingType))].shipping_label;
 
       return (
         <div>
           <button className='pink-button' onClick={() => window.print()}>
             {printPrompt}
           </button>
+
+          <OrderComplete shippingType={shippingType}/>
           {/* <OrderComplete order={currentOrder} shippingType={shippingType} /> */}
         </div>
       )
-      // return (
-      //   <a href={url} target='blank'>
-      //     <button className='pink-button'>
-      //       {printPrompt}
-      //     </button>
-      //   </a>
-      // );
     } else if (printPrompt.split(' ')[0] === 'Create'){
       return (
         <button className='pink-button' onClick={() => this.makeShippingLabel(shippingType)}>
