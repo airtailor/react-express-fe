@@ -204,15 +204,25 @@ class OrdersShow extends Component {
   fulfillOrder(){
     const data = { order: {id: this.props.currentOrder.id, store_id: this.props.currentOrder.store_id, fulfilled: true }};
     this.props.updateOrder(data)
+      .then(res => this.refreshCurrentOrder())
       .catch(err => console.log(err));
   }
 
   renderFulfillButton(){
-    if (this.props.currentOrder.arrived){
+    const {arrived, fulfilled} = this.props.currentOrder;
+    if (arrived && !fulfilled){
       return (
         <div>
           <button onClick={() => this.fulfillOrder()} className='pink-button'>
             Fulfill This Order
+          </button>
+        </div>
+      );
+    } else if (arrived && fulfilled){
+      return (
+        <div>
+          <button className='pink-button' disabled={true}>
+            Order Completed ✔️
           </button>
         </div>
       );

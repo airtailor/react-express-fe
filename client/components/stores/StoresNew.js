@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getCompanies, createStore } from '../actions';
-import { storeTypes } from '../utils/constants';
-import FormField from './FormField';
-import FormSelect from './FormSelect';
+import { getCompanies, createStore } from '../../actions';
+import { storeTypes } from '../../utils/constants';
+import FormField from '../FormField';
+import FormSelect from '../FormSelect';
 
 class StoresNew extends Component {
   constructor(props){
@@ -50,48 +50,48 @@ class StoresNew extends Component {
         <div>
           <h3>Store New</h3>
           <form onSubmit={(e) => this.handleSubmit(e)}>
-            <FormField value={name} 
-              fieldName={'name'} title={'Name: '} 
+            <FormField value={name}
+              fieldName={'name'} title={'Name: '}
               onChange={this.updateState} />
 
-            <FormField value={phone} 
-              fieldName={'phone'} title={'Phone: '} 
+            <FormField value={phone}
+              fieldName={'phone'} title={'Phone: '}
               onChange={this.updateState} />
 
-            <FormField value={street1} 
-              fieldName={'street1'} title={'Street:'} 
+            <FormField value={street1}
+              fieldName={'street1'} title={'Street:'}
               onChange={this.updateState} />
 
-            <FormField value={street2} 
-              fieldName={'street2'} title={'Unit:'} 
+            <FormField value={street2}
+              fieldName={'street2'} title={'Unit:'}
               onChange={this.updateState} />
 
-            <FormField value={city} 
-              fieldName={'city'} title={'City:'} 
+            <FormField value={city}
+              fieldName={'city'} title={'City:'}
               onChange={this.updateState} />
 
-            <FormField value={state} 
-              fieldName={'state'} title={'State:'} 
+            <FormField value={state}
+              fieldName={'state'} title={'State:'}
               onChange={this.updateState} />
 
-            <FormField value={zip} 
-              fieldName={'zip'} title={'Zip:'} 
+            <FormField value={zip}
+              fieldName={'zip'} title={'Zip:'}
               onChange={this.updateState} />
 
-            <FormSelect value={company_id} 
+            <FormSelect value={company_id}
               options={this.props.companies}
-              fieldName={'company_id'} title={'Company:'} 
+              fieldName={'company_id'} title={'Company:'}
               onChange={this.updateState} />
 
-            <FormSelect value={type} 
+            <FormSelect value={type}
               options={storeTypes}
-              fieldName={'type'} title={'Store Type:'} 
+              fieldName={'type'} title={'Store Type:'}
               onChange={this.updateState} />
-            
+
             <input type='submit' value='Create New Store' />
 
         </form>
-            
+
         </div>
       );
     } else {

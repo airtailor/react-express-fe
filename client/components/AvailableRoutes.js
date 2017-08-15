@@ -4,11 +4,11 @@ import '../../styles/main.scss';
 import Home from './Home';
 import SignIn from './Signin';
 import SignUp from './SignUp';
-import StoreOrders from './StoreOrders';
+import StoreOrders from './stores/StoresShow';
 import OrdersShow from './orders/show/OrdersShow';
-import OrdersEdit from './OrdersEdit';
-import StoresEdit from './StoresEdit';
-import StoresNew from './StoresNew';
+import OrdersEdit from './orders/OrdersEdit';
+import StoresEdit from './stores/StoresEdit';
+import StoresNew from './stores/StoresNew';
 import CustomerEdit from './CustomerEdit';
 import OrderForm from './OrderForm/RetailerOrderForm';
 

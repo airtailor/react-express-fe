@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import { Redirect, Link } from'react-router-dom';
-import { getStoreOrders } from '../actions';
-import SectionHeader from './SectionHeader';
+import { getStoreOrders } from '../../actions';
+import SectionHeader from '../SectionHeader';
 
 class StoreOrders extends Component {
   componentDidMount(){

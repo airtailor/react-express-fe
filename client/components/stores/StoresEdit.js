@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getCurrentStore, updateStore } from '../actions';
-import FormField from './FormField';
-import SectionHeader from './SectionHeader';
+import { getCurrentStore, updateStore } from '../../actions';
+import FormField from './../FormField';
+import SectionHeader from './../SectionHeader';
 
 class StoresEdit extends Component {
   constructor(props){
@@ -79,7 +79,7 @@ class StoresEdit extends Component {
       return <div>Loading...</div>
     } else {
       return (
-        <div>
+        <div className='pos-rel'>
           <SectionHeader text={`Edit / ${store.name}`} />
           <Link className='backLink' to={backLink}>
               Back

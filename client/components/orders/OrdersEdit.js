@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import FormSelect from './FormSelect';
-import FormField from './FormField';
-import { updateOrder, getTailorList } from '../actions';
+import FormSelect from '../FormSelect';
+import FormField from '../FormField';
+import { updateOrder, getTailorList } from '../../actions';
 
 class OrdersEdit extends Component {
   constructor(props){
