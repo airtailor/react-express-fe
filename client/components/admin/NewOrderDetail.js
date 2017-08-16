@@ -33,7 +33,9 @@ class NewOrderDetail extends Component{
   }
 
   handleSubmit(){
-    this.props.updateOrder({ order: this.state })
+    let obj = this.state;
+    obj.id = this.props.order.id
+    this.props.updateOrder({ order: obj })
       .then(res => this.refreshNewOrdersList({order: {}}))
       .catch(err => console.log('errr', err));
   }
@@ -43,20 +45,29 @@ class NewOrderDetail extends Component{
     if (order.customer){
       const {id, weight, created_at, total, provider_notes, items} = order;
       const orderDate = moment(created_at).format('MM-DD-2017');
-      return (
-        <div className='order-details'>
-          <h3>Order Details:</h3>
-          <p>Order ID: {id}</p>
-          <p>Order Weight: {weight}</p>
-          <p>Order Date: {orderDate}</p>
-          <p>Total Charges: ${total}</p>
-          <p>Order Notes: {provider_notes}</p>
-          <p>{order.customer.first_name}</p>
+      const selectTailor = (
+        <div>
           <p>Alterations:</p>
           {renderAlterationList(order.items, 'new-order-detail')}
-          <SelectTailor onChange={this.updateState} provider_id={order.provider_id} />
+          <SelectTailor onChange={this.updateState} provider_id={order.provider_id} />;
           <button className='button short-button' onClick={this.handleSubmit}>Change Tailor</button>
         </div>
+      );
+      const printLabelButton = (
+        <button className='pink-button'>Print Shipping Label</button>
+      );
+      const display = order.type === 'TailorOrder' ? selectTailor : printLabelButton;
+      return (
+          <div className='order-details'>
+            <h3>Order Details:</h3>
+            <p>Order ID: {id}</p>
+            <p>Order Weight: {weight}</p>
+            <p>Order Date: {orderDate}</p>
+            <p>Total Charges: ${total}</p>
+            <p>Order Notes: {provider_notes}</p>
+            { display}
+
+          </div>
       )
     } else {
       return <div></div>;

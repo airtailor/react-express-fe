@@ -101,7 +101,7 @@ const AvailableRoutes = (props) => {
         )}/>
       </Switch>
 
-      <Route path='/customers/:customer_id' render={(props) => (
+      <Route path='/customers/:customer_id/edit' render={(props) => (
         loggedIn ? (
           <CustomerEdit {...props} />
         ) : (

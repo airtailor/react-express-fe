@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import { getCurrentOrder, updateOrder, createShipment } from '../../../actions';
+import {getShippingType, getPrintButtonPrompt, lowerCaseFirstLetter, toSnakeCaseFromCamelCase} from '../../shipping/shippingFunctions';
 import isEmpty from 'lodash/isEmpty';
 import SectionHeader from '../../SectionHeader';
 import shirtImage from '../../../images/shirt.png';
@@ -39,6 +40,8 @@ class OrdersShow extends Component {
   setNotes(props){
     if (props.currentUser.user.roles[0].name === 'tailor'){
       return props.currentOrder.provider_notes;
+    } else if (props.currentUser.user.roles[0].name === 'admin'){
+      return props.currentOrder.requester_notes;
     }
   }
 
@@ -239,6 +242,57 @@ class OrdersShow extends Component {
     console.log('delete');
   }
 
+  // makeShippingLabel(type){
+  //   const data = { shipment: { type, order_id: this.props.currentOrder.id }};
+  //   createShipment(data)
+  //     .then(res => this.refreshCurrentOrder())
+  //     .catch(err => console.log(err));
+  // }
+
+  // getShippingType(role, orderType){
+  //   if (role === 'tailor'){
+  //     return 'OutgoingShipment';
+  //   } else if (role === 'sales_associate' && orderType !== 'WelcomeKit'){
+  //     return 'IncomingShipment';
+  //   } else if (orderType === 'WelcomeKit'){
+  //     return 'OutgoingShipment';
+  //   } else {
+  //     return 'IncomingShipment';
+  //     // if it gets here, we need to handle an error message
+  //     console.log('wtf fix this - ordersshow renderPrintLabels()');
+  //   }
+  // }
+  //
+  // toSnakeCaseFromCamelCase(string){
+  //  return string.replace(/([A-Z])/g, letter => {
+  //    return `_${letter.toLowerCase()}`;
+  //  });
+  // }
+  //
+  // lowerCaseFirstLetter(string){
+  //   return string.charAt(0).toLowerCase() + string.slice(1);
+  // }
+
+  // labelExists(shippingType, order){
+  //   const key = this.toSnakeCaseFromCamelCase(this.lowerCaseFirstLetter(shippingType));
+  //   if (order[key]){
+  //     return order[key].shipping_label ? true : false
+  //   }
+  //   return false;
+  // }
+
+  // getPrintButtonPrompt(shippingType, order){
+  //   const verb = this.labelExists(shippingType, order) ?
+  //     'Print' :
+  //     'Create';
+  //   return `${verb} Shipping Label`
+  // }
+
+  printShippingLabel(type){
+    const key = toSnakeCaseFromCamelCase(lowerCaseFirstLetter(type));
+    const label = this.props.currentOrder[key];
+  }
+
   makeShippingLabel(type){
     const data = { shipment: { type, order_id: this.props.currentOrder.id }};
     createShipment(data)
@@ -246,64 +300,15 @@ class OrdersShow extends Component {
       .catch(err => console.log(err));
   }
 
-  getShippingType(role, orderType){
-    if (role === 'tailor'){
-      return 'OutgoingShipment';
-    } else if (role === 'sales_associate' && orderType !== 'WelcomeKit'){
-      return 'IncomingShipment';
-    } else if (orderType === 'WelcomeKit'){
-      return 'OutgoingShipment';
-    } else {
-      return 'IncomingShipment';
-      // if it gets here, we need to handle an error message
-      console.log('wtf fix this - ordersshow renderPrintLabels()');
-    }
-  }
-
-  toSnakeCaseFromCamelCase(string){
-   return string.replace(/([A-Z])/g, letter => {
-     return `_${letter.toLowerCase()}`;
-   });
-  }
-
-  lowerCaseFirstLetter(string){
-    return string.charAt(0).toLowerCase() + string.slice(1);
-  }
-
-
-  labelExists(shippingType, order){
-    const key = this.toSnakeCaseFromCamelCase(this.lowerCaseFirstLetter(shippingType));
-    if (order[key]){
-      return order[key].shipping_label ? true : false
-    }
-    return false;
-  }
-
-  getPrintButtonPrompt(shippingType, order){
-    const verb = this.labelExists(shippingType, order) ?
-      'Print' :
-      'Create';
-
-    return `${verb} Shipping Label`
-  }
-
-  printShippingLabel(type){
-    const key = this.toSnakeCaseFromCamelCase(this.lowerCaseFirstLetter(type));
-    const label = this.props.currentOrder[key];
-  }
-
-  // handlePrintClick(){
-  //
-  // }
-
   renderPrintLabels(){
     const { currentUser, currentOrder } = this.props;
     const role = currentUser.user.roles[0].name;
-    const shippingType = this.getShippingType(role, currentOrder.type);
-    const printPrompt = this.getPrintButtonPrompt(shippingType, currentOrder);
+    const shippingType = getShippingType(role, currentOrder.type);
+    const printPrompt = getPrintButtonPrompt(shippingType, currentOrder);
+
 
     if (printPrompt.split(' ')[0] === "Print"){
-      const url = currentOrder[this.toSnakeCaseFromCamelCase(this.lowerCaseFirstLetter(shippingType))].shipping_label;
+      const url = currentOrder[toSnakeCaseFromCamelCase(lowerCaseFirstLetter(shippingType))].shipping_label;
 
       return (
         <div>
@@ -369,7 +374,9 @@ class OrdersShow extends Component {
   }
 
   render(){
+
     const { currentStore, currentOrder} = this.props;
+    console.log(currentOrder)
     const { customer } = currentOrder;
     const orderEditPath = `/orders/${currentOrder.id}/edit`;
     const headerText=`Orders / ${currentStore.name} / #${currentOrder.id}`;

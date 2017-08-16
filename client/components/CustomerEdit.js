@@ -1,26 +1,25 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';  
+import { connect } from 'react-redux';
 import FormField from './FormField.js';
-import { updateCustomer } from '../actions';
+import { updateCustomer, getCustomer } from '../actions';
 
 class CustomerEdit extends Component {
   constructor(props){
     super();
-    const { id, email, first_name, last_name, phone, street1, street2, city, state, zip } = props.customer;
-    this.state = {
-      id, 
-      email,
-      first_name,
-      last_name,
-      phone,
-      street1,
-      street2,
-      city,
-      state,
-      zip
-    }
-
+      const { id, email, first_name, last_name, phone, street1, street2, city, state, zip } = props.customer;
+      this.state = {
+        id,
+        email,
+        first_name,
+        last_name,
+        phone,
+        street1,
+        street2,
+        city,
+        state,
+        zip
+      }
     this.updateState = this.updateState.bind(this);
   }
 
@@ -39,7 +38,7 @@ class CustomerEdit extends Component {
   render(){
     const { currentOrder, customer } = this.props;
     const { email, first_name, last_name, phone, street1, street2, city, state, zip } = customer;
-    const backLink = `/orders/${currentOrder.id}`; 
+    const backLink = `/orders/${currentOrder.id}`;
     return (
       <div>
         <Link to={backLink}>
@@ -47,40 +46,40 @@ class CustomerEdit extends Component {
         </Link>
 
         <form onSubmit={(e) => this.handleSubmit(e)}>
-          <FormField value={this.state.email} 
-            fieldName={'email'} title={'Email'} 
+          <FormField value={this.state.email}
+            fieldName={'email'} title={'Email'}
             onChange={this.updateState} />
 
-          <FormField value={this.state.first_name} 
-            fieldName={'first_name'} title={'First Name'} 
+          <FormField value={this.state.first_name}
+            fieldName={'first_name'} title={'First Name'}
             onChange={this.updateState} />
 
-          <FormField value={this.state.last_name} 
-            fieldName={'last_name'} title={'Last Name'} 
+          <FormField value={this.state.last_name}
+            fieldName={'last_name'} title={'Last Name'}
             onChange={this.updateState} />
 
-          <FormField value={this.state.phone} 
-            fieldName={'phone'} title={'Phone'} 
+          <FormField value={this.state.phone}
+            fieldName={'phone'} title={'Phone'}
             onChange={this.updateState} />
 
-          <FormField value={this.state.street1} 
-            fieldName={'street1'} title={'Street'} 
+          <FormField value={this.state.street1}
+            fieldName={'street1'} title={'Street'}
             onChange={this.updateState} />
 
-          <FormField value={this.state.street2} 
-            fieldName={'street2'} title={'Unit'} 
+          <FormField value={this.state.street2}
+            fieldName={'street2'} title={'Unit'}
             onChange={this.updateState} />
 
-          <FormField value={this.state.city} 
-            fieldName={'city'} title={'City'} 
+          <FormField value={this.state.city}
+            fieldName={'city'} title={'City'}
             onChange={this.updateState} />
 
-          <FormField value={this.state.state} 
-            fieldName={'state'} title={'State'} 
+          <FormField value={this.state.state}
+            fieldName={'state'} title={'State'}
             onChange={this.updateState} />
 
-          <FormField value={this.state.zip} 
-            fieldName={'zip'} title={'Zip'} 
+          <FormField value={this.state.zip}
+            fieldName={'zip'} title={'Zip'}
             onChange={this.updateState} />
 
           <input type='submit' value='Update' />
