@@ -34,7 +34,9 @@ export const lowerCaseFirstLetter = (string) => {
 }
 
 const labelExists = (shippingType, order) => {
+
   const key = toSnakeCaseFromCamelCase(lowerCaseFirstLetter(shippingType));
+  console.log('key', key, 'order[key]', order[key]);
   if (order[key]){
     return order[key].shipping_label ? true : false
   }

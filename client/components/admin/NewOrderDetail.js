@@ -11,7 +11,7 @@ import {
   lowerCaseFirstLetter,
   toSnakeCaseFromCamelCase,
   makeShippingLabel,
-  renderPrintLabels
+  //renderPrintLabels
 } from '../shipping/shippingFunctions';
 import OrderComplete from '../prints/OrderComplete.js';
 import {SetFulfilledButton} from '../orders/orderForms/SetFulfilled';
@@ -76,7 +76,7 @@ class NewOrderDetail extends Component{
     const shippingType = getShippingType(role, order.type);
     const printPrompt = getPrintButtonPrompt(shippingType, order);
 
-
+    console.log('print prompt', order.fulfilled, order, printPrompt)
     if (printPrompt.split(' ')[0] === "Print"){
       const url = order[toSnakeCaseFromCamelCase(lowerCaseFirstLetter(shippingType))].shipping_label;
 
@@ -102,22 +102,36 @@ class NewOrderDetail extends Component{
   setFulfilled(order){
     order.fulfilled = true;
     this.props.updateOrder({ order })
-      .then(res => this.refreshNewOrdersList({order: {}}))
+      .then(res => console.log('res',this.props))
       .catch(err => console.log('errr', err));
   }
 
   welcomeKit(order){
-    return (
-      <div>
-        {this.renderPrintLabels(order)}
-        <SetFulfilledButton order={order} onClick={this.setFulfilled} />
-      </div>
-    )
+    if (!order.fulfilled){
+      return (
+        <div>
+          {this.renderPrintLabels(order)}
+          <SetFulfilledButton order={order} onClick={this.setFulfilled} />
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          {this.renderPrintLabels(order)}
+          <div>
+            <button className='pink-button' disabled={true}>
+              Order Completed ✔️
+            </button>
+          </div>
+        </div>
+      );
+    }
   }
+
 
   render(){
     const {order} = this.props;
-    console.log('order render', order.outgoing_shipment)
+    console.log('order render', order.fulfilled)
     if (order.customer){
       const {id, weight, created_at, total, provider_notes, items} = order;
       const orderDate = moment(created_at).format('MM-DD-2017');
