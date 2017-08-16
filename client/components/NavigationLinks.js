@@ -34,7 +34,7 @@ class NavigationLinks extends Component {
 
           <NavigationLink
             cssClass="orders-link"
-            route="/orders" text="Orders"
+            route="/admin/orders/new" text="Orders"
             image={ordersImage} />
 
           <NavigationLink

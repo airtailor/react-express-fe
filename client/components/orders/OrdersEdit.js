@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import FormSelect from '../FormSelect';
 import FormField from '../FormField';
 import { updateOrder, getTailorList } from '../../actions';
+import SelectTailor from './orderForms/SelectTailor';
 
 class OrdersEdit extends Component {
   constructor(props){
@@ -13,21 +14,19 @@ class OrdersEdit extends Component {
     this.updateState = this.updateState.bind(this);
   }
 
-  componentDidMount(){
-    this.props.getTailorList()
-      .catch(err => console.log(err));
-  }
-
+  // componentDidMount(){
+  //   this.props.getTailorList()
+  //     .catch(err => console.log(err));
+  // }
 
   updateState(field, value){
     this.setState({[field]: value});
   }
 
-
   handleSubmit(e){
     e.preventDefault();
     this.props.updateOrder({ order: this.state })
-      .then(res => console.log('res', res))
+      // .then(res => console.log('res', res))
       .catch(err => console.log('errr', err));
   }
 
@@ -36,9 +35,8 @@ class OrdersEdit extends Component {
     const { first_name, last_name } = customer;
     const customerName = first_name + ' ' + last_name;
     const backLink = `/orders/${this.state.id}`;
-    console.log('state provider', this.state.provider_id);
 
-    if (this.props.tailors && this.props.order){
+    if (this.props.order){
       return (
         <div>
         <Link to={backLink}>
@@ -58,10 +56,7 @@ class OrdersEdit extends Component {
               fieldName={'weight'} title={'Weight (grams):'}
               onChange={this.updateState} />
 
-            <FormSelect value={provider_id}
-              options={this.props.tailors}
-              fieldName={'provider_id'} title={'Tailor Shop:'}
-              onChange={this.updateState} />
+            <SelectTailor provider_id={provider_id} onChange={this.updateState} />
 
             <FormField value={this.state.total}
               fieldName={'total'} title={'Total:'}

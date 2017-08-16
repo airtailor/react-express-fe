@@ -10,7 +10,7 @@ const FormSelect = (props) => {
     <div>
       <label>{props.title}</label>
       <br />
-      <select value={props.value} onChange={(e) => props.onChange(props.fieldName, e.target.value)}>
+      <select defaultValue={props.value} onChange={(e) => props.onChange(props.fieldName, e.target.value)}>
         { renderOptions(selectOptions) }
       </select>
       <br /><br />

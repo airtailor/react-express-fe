@@ -11,7 +11,8 @@ import {
   SET_TAILOR_LIST,
   SET_COMPANY_LIST,
   SET_CUSTOMER_MEASUREMENTS,
-  SET_CURRENT_PRINT
+  SET_CURRENT_PRINT,
+  SET_NEW_ORDERS
 } from '../utils/constants';
 
 const setTokens = (res) => {
@@ -124,6 +125,7 @@ export function getCurrentStore(store_id){
 }
 
 export function updateOrder(data){
+  debugger;
   const url = `${expressApi}/stores/${data.order.store_id}/orders/${data.order.id}/edit`;
   return dispatch => {
     return validateToken()
@@ -229,15 +231,31 @@ export function createCustomerMeasurements(measurement){
 
   const url = `${expressApi}/customers/${measurement.customer_id}/measurements`;
   const data = {measurement};
-  console.log('action - sleeve_length', measurement.sleeve_length)
   return dispatch => {
     return validateToken()
       .then(setTokens)
       .then(() => {
         return Axios.post(url, data)
           .then(res => {
-            console.log('new', res.data.body.id)
             dispatch(setCustomerMeasurements(res.data.body));
+          })
+          .catch(err => {
+            debugger;
+          })
+      })
+  }
+}
+
+export function getNewOrders(){
+  const url = `${expressApi}/new_orders`;
+  console.log('URL!', url);
+  return dispatch => {
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.get(url)
+          .then(res => {
+            dispatch(setNewOrders(res.data.body));
           })
           .catch(err => {
             debugger;
@@ -252,6 +270,13 @@ export function createCustomerMeasurements(measurement){
 //   return: SET_CURRENT_PRINT,
 //
 // }
+
+export function setNewOrders(newOrders){
+  return {
+    type: SET_NEW_ORDERS,
+    newOrders
+  }
+}
 
 export function setCustomerMeasurements(measurements){
   return {

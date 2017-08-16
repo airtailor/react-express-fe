@@ -11,6 +11,7 @@ import StoresEdit from './stores/StoresEdit';
 import StoresNew from './stores/StoresNew';
 import CustomerEdit from './CustomerEdit';
 import OrderForm from './OrderForm/RetailerOrderForm';
+import NewOrders from './admin/NewOrders';
 
 const AvailableRoutes = (props) => {
   const { loggedIn, admin } = props;
@@ -105,6 +106,14 @@ const AvailableRoutes = (props) => {
           <CustomerEdit {...props} />
         ) : (
           <Redirect to='/sign_in' />
+        )
+      )}/>
+
+      <Route exact path='/admin/orders/new' render={props => (
+        admin ? (
+          <NewOrders {...props} />
+        ) : (
+          <Redirect to='/' />
         )
       )}/>
 

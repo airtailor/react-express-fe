@@ -7,6 +7,7 @@ import itemTypesReducer from './itemTypesReducer';
 import tailorListReducer from './tailorListReducer';
 import companyListReducer from './companyListReducer';
 import measurementsReducer from './measurementsReducer';
+import newOrdersReducer from './newOrdersReducer';
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   itemTypes: itemTypesReducer,
   tailorList: tailorListReducer,
   companyList: companyListReducer,
-  measurements: measurementsReducer
+  measurements: measurementsReducer,
+  newOrders: newOrdersReducer
 });
 
 export default rootReducer;

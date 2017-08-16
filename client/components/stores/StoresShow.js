@@ -6,7 +6,7 @@ import { Redirect, Link } from'react-router-dom';
 import { getStoreOrders } from '../../actions';
 import SectionHeader from '../SectionHeader';
 
-class StoreOrders extends Component {
+class StoresShow extends Component {
   componentDidMount(){
     this.props.getStoreOrders(this.props.currentUser.user.store_id).catch(err => console.log(err));
   }
@@ -97,4 +97,4 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({getStoreOrders}, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StoreOrders);
+export default connect(mapStateToProps, mapDispatchToProps)(StoresShow);
