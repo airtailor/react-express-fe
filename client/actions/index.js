@@ -125,7 +125,6 @@ export function getCurrentStore(store_id){
 }
 
 export function updateOrder(data){
-  debugger;
   const url = `${expressApi}/stores/${data.order.store_id}/orders/${data.order.id}/edit`;
   return dispatch => {
     return validateToken()
@@ -248,7 +247,6 @@ export function createCustomerMeasurements(measurement){
 
 export function getNewOrders(){
   const url = `${expressApi}/new_orders`;
-  console.log('URL!', url);
   return dispatch => {
     return validateToken()
       .then(setTokens)

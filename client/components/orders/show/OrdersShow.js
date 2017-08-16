@@ -3,7 +3,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import { getCurrentOrder, updateOrder, createShipment } from '../../../actions';
-import {getShippingType, getPrintButtonPrompt, lowerCaseFirstLetter, toSnakeCaseFromCamelCase} from '../../shipping/shippingFunctions';
+import {
+  getShippingType,
+  getPrintButtonPrompt,
+  lowerCaseFirstLetter,
+  toSnakeCaseFromCamelCase,
+  makeShippingLabel,
+  renderPrintLabels
+} from '../../shipping/shippingFunctions';
 import isEmpty from 'lodash/isEmpty';
 import SectionHeader from '../../SectionHeader';
 import shirtImage from '../../../images/shirt.png';
@@ -288,10 +295,10 @@ class OrdersShow extends Component {
   //   return `${verb} Shipping Label`
   // }
 
-  printShippingLabel(type){
-    const key = toSnakeCaseFromCamelCase(lowerCaseFirstLetter(type));
-    const label = this.props.currentOrder[key];
-  }
+  // printShippingLabel(type){
+  //   const key = toSnakeCaseFromCamelCase(lowerCaseFirstLetter(type));
+  //   const label = this.props.currentOrder[key];
+  // }
 
   makeShippingLabel(type){
     const data = { shipment: { type, order_id: this.props.currentOrder.id }};

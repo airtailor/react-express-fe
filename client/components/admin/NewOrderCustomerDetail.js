@@ -18,7 +18,7 @@ class NewOrderCustomerDetail extends Component {
         </div>
       )
     } else {
-      return <div>...Loading</div>;
+      return <div>Select a Customer</div>
     }
   }
 }

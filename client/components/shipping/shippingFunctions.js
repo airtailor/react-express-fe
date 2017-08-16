@@ -40,3 +40,39 @@ const labelExists = (shippingType, order) => {
   }
   return false;
 }
+
+export const makeShippingLabel = (type) => {
+  const data = { shipment: { type, order_id: this.props.currentOrder.id }};
+  createShipment(data)
+    .then(res => this.refreshCurrentOrder())
+    .catch(err => console.log(err));
+}
+
+export const renderPrintLabels = () => {
+  const { currentUser, currentOrder } = this.props;
+  const role = currentUser.user.roles[0].name;
+  const shippingType = getShippingType(role, currentOrder.type);
+  const printPrompt = getPrintButtonPrompt(shippingType, currentOrder);
+
+
+  if (printPrompt.split(' ')[0] === "Print"){
+    const url = currentOrder[toSnakeCaseFromCamelCase(lowerCaseFirstLetter(shippingType))].shipping_label;
+
+    return (
+      <div>
+        <button className='pink-button' onClick={() => window.print()}>
+          {printPrompt}
+        </button>
+
+        <OrderComplete shippingType={shippingType}/>
+        {/* <OrderComplete order={currentOrder} shippingType={shippingType} /> */}
+      </div>
+    )
+  } else if (printPrompt.split(' ')[0] === 'Create'){
+    return (
+      <button className='pink-button' onClick={() => this.makeShippingLabel(shippingType)}>
+        {printPrompt}
+      </button>
+    );
+  }
+}

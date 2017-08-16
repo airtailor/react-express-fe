@@ -9,17 +9,13 @@ import NewOrderCustomerDetail from './NewOrderCustomerDetail';
 class NewOrders extends Component {
   constructor(){
     super();
-    this.state = {
-      orderDetail: {}
-    }
+    // this.state = {
+    //   orderDetail: {}
+    // }
     this.selectOrderDetail = this.selectOrderDetail.bind(this);
   }
 
   selectOrderDetail(order){
-    console.log(this.props.getCurrentOrder)
-    this.setState({orderDetail: order});
-    console.log('props', this.props, 'order', order)
-
     this.props.getCurrentOrder(order.provider_id, order.id)
       .then(res => console.log('res', res))
       .catch(err => console.log('err', err))
@@ -44,10 +40,10 @@ class NewOrders extends Component {
             {this.renderNewOrders(this.props.newOrders)}
           </div>
           <div className='new-order-detail-container'>
-            <NewOrderDetail order={this.state.orderDetail} getNewOrders={this.props.getNewOrders} />
+            <NewOrderDetail order={this.props.currentOrder} selectOrder={this.selectOrderDetail} getNewOrders={this.props.getNewOrders} />
           </div>
           <div className='new-order-customer-container'>
-            <NewOrderCustomerDetail order={this.state.orderDetail} />
+            <NewOrderCustomerDetail order={this.props.currentOrder} />
           </div>
         </div>
       );

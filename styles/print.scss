@@ -1,5 +1,6 @@
 .print {
   visibility: hidden;
+  display: none;
 }
 
 @media print {
@@ -9,12 +10,14 @@
 
   .print, .print * {
     visibility: visible;
+    display: block;
   }
 
   .print {
     position: absolute;
     top: 0;
     left: 0;
+    display: block;
   }
 }
 
