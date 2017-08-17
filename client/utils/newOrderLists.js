@@ -11,6 +11,8 @@ const renderOrders = (orders, className, selectOrder) => {
         </li>
       )
     });
+  } else {
+     return <p>No New Orders</p>
   }
 }
 

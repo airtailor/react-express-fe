@@ -1,3 +1,19 @@
+.new-orders-li {
+  text-decoration: underline;
+}
 .new-orders-li:hover {
   cursor: pointer;
+}
+
+.new-order{
+  // margin-left: 70px;
+}
+
+.new-order-container{
+  @extend .flex-container;
+  justify-content: space-around;
+}
+
+.new-order-container{
+  flex: 1 0 25%;
 }

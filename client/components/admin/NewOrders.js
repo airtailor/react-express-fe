@@ -5,13 +5,11 @@ import { bindActionCreators } from 'redux'
 import {RenderNewOrderList} from '../../utils/newOrderLists';
 import NewOrderDetail from './NewOrderDetail';
 import NewOrderCustomerDetail from './NewOrderCustomerDetail';
+import SectionHeader from '../SectionHeader';
 
 class NewOrders extends Component {
   constructor(){
     super();
-    // this.state = {
-    //   orderDetail: {}
-    // }
     this.selectOrderDetail = this.selectOrderDetail.bind(this);
   }
 
@@ -34,16 +32,20 @@ class NewOrders extends Component {
 
   render(){
       return (
-        <div>
-          <div className='new-order-listcontainer'>
-            <h1>New Orders</h1>
-            {this.renderNewOrders(this.props.newOrders)}
-          </div>
-          <div className='new-order-detail-container'>
-            <NewOrderDetail order={this.props.currentOrder} selectOrder={this.selectOrderDetail} getNewOrders={this.props.getNewOrders} />
-          </div>
-          <div className='new-order-customer-container'>
-            <NewOrderCustomerDetail order={this.props.currentOrder} />
+        <div className='new-order-page'>
+          <SectionHeader text={`Home / ${this.props.currentStore.name}`} />
+          <div className='new-order-container'>
+              <div className='new-order list-container'>
+                {this.renderNewOrders(this.props.newOrders)}
+              </div>
+              <div className='detail-and-customer'>
+                <div className='new-order detail-container'>
+                  <NewOrderDetail order={this.props.currentOrder} selectOrder={this.selectOrderDetail} getNewOrders={this.props.getNewOrders} />
+                </div>
+                <div className='new-order customer-container'>
+                  <NewOrderCustomerDetail order={this.props.currentOrder} />
+                </div>
+              </div>
           </div>
         </div>
       );
