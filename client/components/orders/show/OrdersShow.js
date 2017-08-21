@@ -88,18 +88,18 @@ class OrdersShow extends Component {
     return <li key={index}>{alteration.name}</li>;
   }
 
-  renderItem(item, index){
-    const renderAlt = this.renderAlteration;
-
-    return (
-      <li className='type-list' key={index}>
-       { item.item_type.name } #{index + 1}
-       <ul>
-         { item.alterations.map(renderAlt)}
-       </ul>
-      </li>
-    )
-  }
+  // renderItem(item, index){
+  //   const renderAlt = this.renderAlteration;
+  //
+  //   return (
+  //     <li className='type-list' key={index}>
+  //      { item.item_type.name } #{index + 1}
+  //      <ul>
+  //        { item.alterations.map(renderAlt)}
+  //      </ul>
+  //     </li>
+  //   )
+  // }
 
   getImageForItemType(name){
     switch (name){
@@ -118,21 +118,40 @@ class OrdersShow extends Component {
     }
   }
 
-  renderList(){
+  // renderList(){
+  //   return this.sortItemsByType().map((itemType, index) => {
+  //     const image = this.getImageForItemType(itemType.name);
+  //     return (
+  //       <div className='card' key={index}>
+  //         <div className='type-heading'>
+  //           <img className='item-type-image' src={image} alt={itemType.name} />
+  //           <h3>{itemType.name.toUpperCase()}</h3>
+  //         </div>
+  //         <ul>
+  //           {itemType.filteredItems.map(this.renderItem.bind(this))}
+  //         </ul>
+  //       </div>
+  //     );
+  //   });
+  // }
+
+  renderList() {
+    const renderAlt = this.renderAlteration;
     return this.sortItemsByType().map((itemType, index) => {
       const image = this.getImageForItemType(itemType.name);
-      return (
-        <div className='card' key={index}>
-          <div className='type-heading'>
-            <img className='item-type-image' src={image} alt={itemType.name} />
-            <h3>{itemType.name.toUpperCase()}</h3>
+      return itemType.filteredItems.map((item, index) => {
+        return (
+          <div className='card' key={index}>
+            <div className='type-heading'>
+              <img className='item-type-image' src={image} alt={itemType.name} />
+              <h3>{ item.item_type.name } #{index + 1}</h3>
+              <ul>
+                { item.alterations.map(renderAlt)}
+              </ul>
+            </div>
           </div>
-
-          <ul>
-            {itemType.filteredItems.map(this.renderItem.bind(this))}
-          </ul>
-        </div>
-      );
+        );
+      })
     });
   }
 
@@ -245,61 +264,6 @@ class OrdersShow extends Component {
     this.setState({ displayNotesForm: value });
   }
 
-  deleteOrder(){
-    console.log('delete');
-  }
-
-  // makeShippingLabel(type){
-  //   const data = { shipment: { type, order_id: this.props.currentOrder.id }};
-  //   createShipment(data)
-  //     .then(res => this.refreshCurrentOrder())
-  //     .catch(err => console.log(err));
-  // }
-
-  // getShippingType(role, orderType){
-  //   if (role === 'tailor'){
-  //     return 'OutgoingShipment';
-  //   } else if (role === 'sales_associate' && orderType !== 'WelcomeKit'){
-  //     return 'IncomingShipment';
-  //   } else if (orderType === 'WelcomeKit'){
-  //     return 'OutgoingShipment';
-  //   } else {
-  //     return 'IncomingShipment';
-  //     // if it gets here, we need to handle an error message
-  //     console.log('wtf fix this - ordersshow renderPrintLabels()');
-  //   }
-  // }
-  //
-  // toSnakeCaseFromCamelCase(string){
-  //  return string.replace(/([A-Z])/g, letter => {
-  //    return `_${letter.toLowerCase()}`;
-  //  });
-  // }
-  //
-  // lowerCaseFirstLetter(string){
-  //   return string.charAt(0).toLowerCase() + string.slice(1);
-  // }
-
-  // labelExists(shippingType, order){
-  //   const key = this.toSnakeCaseFromCamelCase(this.lowerCaseFirstLetter(shippingType));
-  //   if (order[key]){
-  //     return order[key].shipping_label ? true : false
-  //   }
-  //   return false;
-  // }
-
-  // getPrintButtonPrompt(shippingType, order){
-  //   const verb = this.labelExists(shippingType, order) ?
-  //     'Print' :
-  //     'Create';
-  //   return `${verb} Shipping Label`
-  // }
-
-  // printShippingLabel(type){
-  //   const key = toSnakeCaseFromCamelCase(lowerCaseFirstLetter(type));
-  //   const label = this.props.currentOrder[key];
-  // }
-
   makeShippingLabel(type){
     const data = { shipment: { type, order_id: this.props.currentOrder.id }};
     createShipment(data)
@@ -348,17 +312,29 @@ class OrdersShow extends Component {
     }
   }
 
+  editComponents(){
+    if (this.props.currentUser.user.roles[0].name != 'retailer'){
+      return (
+        <div>
+          <button className='pink-button' onClick={() => this.showHideNotesForm()}>{this.state.displayNotesForm ? 'Hide' : 'Add Notes'}</button>
+          { this.notesForm() }
+          { this.renderArrivedButton() }
+          { this.renderFulfillButton() }
+          { this.renderPrintLabels() }
+        </div>
+      )
+    } else {
+      return <div></div>
+    }
+  }
+
   renderOrderDetails(){
     return (
       <div>
         { this.renderList() }
         { this.orderNotes('requester_notes') }
         { this.orderNotes('provider_notes') }
-        <button className='pink-button' onClick={() => this.showHideNotesForm()}>{this.state.displayNotesForm ? 'Hide' : 'Add Notes'}</button>
-        { this.notesForm() }
-        { this.renderArrivedButton() }
-        { this.renderFulfillButton() }
-        { this.renderPrintLabels() }
+        { this.editComponents() }
       </div>
     );
   }
@@ -368,22 +344,24 @@ class OrdersShow extends Component {
     this.setState({showMeasurements: value});
   }
 
-  renderDetailsOrMeasurementsbutton(state){
-    const {showMeasurements} = this.state;
-    const value = showMeasurements ? 'See Order Details' : 'See Measurements';
-    return (
-      <input
-        type='submit'
-        value={value}
-        className='short-button'
-        onClick={() => this.showHideDeatilsOrCustomerMeasurementsButton(showMeasurements)}/>
-    )
+  renderDetailsOrMeasurementsbutton(role, state){
+    if (role != 'retailer'){
+      const {showMeasurements} = this.state;
+      const value = showMeasurements ? 'See Order Details' : 'See Measurements';
+      return (
+        <input
+          type='submit'
+          value={value}
+          className='short-button'
+          onClick={() => this.showHideDeatilsOrCustomerMeasurementsButton(showMeasurements)}/>
+      )
+    } else {
+      return <div></div>
+    }
   }
 
   render(){
-
     const { currentStore, currentOrder} = this.props;
-    console.log(currentOrder)
     const { customer } = currentOrder;
     const orderEditPath = `/orders/${currentOrder.id}/edit`;
     const headerText=`Orders / ${currentStore.name} / #${currentOrder.id}`;
@@ -396,7 +374,7 @@ class OrdersShow extends Component {
           <SectionHeader text={headerText} linkTo={customerRoute} linkText={ customer.first_name + ' ' + customer.last_name} />
           <div className='order-show'>
            { this.renderEditOrder(this.props.currentUser.user.roles[0].name, orderEditPath) }
-           { this.renderDetailsOrMeasurementsbutton(this.state) }
+           { this.renderDetailsOrMeasurementsbutton(this.props.currentUser.user.roles[0].name, this.state) }
 
             { mainContent }
 

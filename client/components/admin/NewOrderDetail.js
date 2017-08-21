@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux';
 import moment from 'moment';
 import {updateOrder, createShipment} from '../../actions';
 import {renderAlterationList} from '../../utils/alterationsLists';
-import SelectTailor from '../orders/orderForms/SelectTailor';
+
 import {
   getShippingType,
   getPrintButtonPrompt,
@@ -13,8 +13,11 @@ import {
   makeShippingLabel,
   //renderPrintLabels
 } from '../shipping/shippingFunctions';
+
 import OrderComplete from '../prints/OrderComplete.js';
 import {SetFulfilledButton} from '../orders/orderForms/SetFulfilled';
+import SelectTailor from '../orders/orderForms/SelectTailor';
+import UpdateNotes from '../orders/orderForms/UpdateNotes';
 
 class NewOrderDetail extends Component{
   constructor(props){
@@ -23,6 +26,7 @@ class NewOrderDetail extends Component{
     this.updateState = this.updateState.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setFulfilled = this.setFulfilled.bind(this);
+    this.updateOrderNotes = this.updateOrderNotes.bind(this);
   }
 
   refreshNewOrdersList(props){
@@ -51,16 +55,22 @@ class NewOrderDetail extends Component{
   handleSubmit(){
     let obj = this.state;
     obj.id = this.props.order.id
-    this.props.updateOrder({ order: obj })
+    this.props.updateOrder({order: obj})
       .then(res => this.refreshNewOrdersList({order: {}}))
       .catch(err => console.log('errr', err));
+  }
+
+  updateOrderNotes(notes, order){
+    order.requester_notes = notes;
+    this.props.updateOrder({order})
+      .then(res => console.log('res', res))
+      .catch(err => console.log('err', err));
   }
 
   makeShippingLabel(type, order){
     const data = { shipment: { type, order_id: order.id }};
     createShipment(data)
       .then(res => {
-        console.log('aaaaaaaasdfasdfasdfasdfasdf', res.data.body)
         const order = res.data.body;
         this.props.updateOrder({order})
           .then(res => this.props.selectOrder(order))
@@ -102,7 +112,7 @@ class NewOrderDetail extends Component{
   setFulfilled(order){
     order.fulfilled = true;
     this.props.updateOrder({ order })
-      .then(res => console.log('res',this.props))
+      //.then(res => console.log('res',this.props))
       .catch(err => console.log('errr', err));
   }
 
@@ -147,6 +157,7 @@ class NewOrderDetail extends Component{
       //   <button className='pink-button'>Print Shipping Label</button>
       // );
       const display = order.type === 'TailorOrder' ? selectTailor : this.welcomeKit(order);
+      console.log('detail', this.props.order.provider_notes)
       return (
           <div className='order-details'>
             <h3>Order Details:</h3>
@@ -155,6 +166,12 @@ class NewOrderDetail extends Component{
             <p>Order Date: {orderDate}</p>
             <p>Total Charges: ${total}</p>
             <p>Order Notes: {provider_notes}</p>
+            <UpdateNotes
+              notes={provider_notes}
+              order={order}
+              role={this.props.currentUser.user.roles[0].name}
+              submitNotes={this.updateOrderNotes} />
+
             { display}
 
           </div>
@@ -167,7 +184,8 @@ class NewOrderDetail extends Component{
 
 const mapStateToProps = (store) => {
   return {
-    tailors: store.tailorList
+    tailors: store.tailorList,
+    currentUser: store.currentUser
   }
 }
 

@@ -21,10 +21,104 @@ class Home extends Component {
     })
   }
 
+  retailerHome(currentStore){
+    const {active_orders_count, late_orders_count} = currentStore;
+    return (
+      <div className='store-boxes'>
+        <OrderCard
+          icon={<OrderCardIcon url={ordersImage} alt='orders' />}
+          count={active_orders_count}
+          type='Current'
+          call='VIEW >'
+          styleClass='current-orders' />
+
+        <OrderCard
+          icon={<OrderCardIcon url={messagesImage} alt='messages' />}
+          count={active_orders_count}
+          type='Unread'
+          call='READ >'
+          styleClass='unread-messages' />
+      </div>
+    )
+  }
+
+  adminHome(currentStore){
+    const {active_orders_count, late_orders_count} = currentStore;
+    return (
+      <div className='store-boxes'>
+        <OrderCard
+          icon={<OrderCardIcon url={exclamationImage} alt='orders' />}
+          count={late_orders_count}
+          type='Late'
+          call='FULFILL >'
+          styleClass='late-orders' />
+
+        <OrderCard
+          icon={<OrderCardIcon url={ordersImage} alt='orders' />}
+          count={active_orders_count}
+          type='Current'
+          call='VIEW >'
+          styleClass='current-orders' />
+
+        <OrderCard
+          icon={<OrderCardIcon url={messagesImage} alt='messages' />}
+          count={active_orders_count}
+          type='Unread'
+          call='READ >'
+          styleClass='unread-messages' />
+      </div>
+    )
+  }
+
+  tailorHome(currentStore){
+    const {active_orders_count, late_orders_count} = currentStore;
+    return (
+      <div className='store-boxes'>
+        <OrderCard
+          icon={<OrderCardIcon url={exclamationImage} alt='orders' />}
+          count={late_orders_count}
+          type='Late'
+          call='FULFILL >'
+          styleClass='late-orders' />
+
+        <OrderCard
+          icon={<OrderCardIcon url={ordersImage} alt='orders' />}
+          count={active_orders_count}
+          type='Current'
+          call='VIEW >'
+          styleClass='current-orders' />
+
+        <OrderCard
+          icon={<OrderCardIcon url={messagesImage} alt='messages' />}
+          count={active_orders_count}
+          type='Unread'
+          call='READ >'
+          styleClass='unread-messages' />
+      </div>
+    )
+  }
+
+  renderCards(role, currentStore){
+    switch (role) {
+      case 'tailor':
+        return this.tailorHome(currentStore);
+        break;
+      case 'admin':
+        return this.adminHome(currentStore);
+        break;
+      case 'retailer':
+        return this.retailerHome(currentStore);
+        break;
+      default:
+        return <div>Store Details</div>;
+    }
+  }
+
   renderStore(){
     if (!isEmpty(this.props.currentStore)){
-      const {currentStore} = this.props;
-      const {id, name, late_orders_count, active_orders_count} = currentStore;
+      const {currentStore, currentUser} = this.props;
+      const {id, name} = currentStore;
+      const role = currentUser.user.roles[0].name;
       const storeEditPath = `/stores/${id}/edit`;
 
       return (
@@ -33,60 +127,7 @@ class Home extends Component {
           <p className='greeting'>
             Here's what's happening with your shop right now.
           </p>
-        {/*  <p>Late Orders: {late_orders_count}</p>
-          <p>Current Orders: {active_orders_count}</p> */}
-
-
-          <div className='store-boxes'>
-            <OrderCard
-              icon={<OrderCardIcon url={exclamationImage} alt='orders' />}
-              count={late_orders_count}
-              type='Late'
-              call='FULFILL >'
-              styleClass='late-orders' />
-
-            <OrderCard
-              icon={<OrderCardIcon url={ordersImage} alt='orders' />}
-              count={active_orders_count}
-              type='Current'
-              call='VIEW >'
-              styleClass='current-orders' />
-
-            <OrderCard
-              icon={<OrderCardIcon url={messagesImage} alt='messages' />}
-              count={active_orders_count}
-              type='Unread'
-              call='READ >'
-              styleClass='unread-messages' />
-
-
-
-            {/*<Link to='#'>
-              <div className='late-orders orders-card'>
-                <span className='late-exclamation'>!</span>
-                <p> Late </p>
-                <p> {late_orders_count} </p>
-                <p> Orders </p>
-              </div>
-            </Link>
-          </div>
-
-            <Link to='#'>
-              <div className='current-orders orders-card'>
-                <p> Current </p>
-                <p> {active_orders_count} </p>
-                <p> Orders </p>
-              </div>
-            </Link>
-
-            <div className='current-orders orders-card'>
-             <Link to='#'>
-              <p> New </p>
-              <p> Messages </p>
-             </Link>
-            </div>
-          */}
-          </div>
+          {this.renderCards(role, currentStore)}
         </div>
       );
     } else {
