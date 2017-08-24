@@ -33,6 +33,7 @@ router.post('/api/sign_in', (req, res) => {
   .then(response => {
    // console.log('return headers sign_in', response.headers);
     res.json({ headers: response.headers, body: response.data.data });
+
   })
   .catch(err => {
     if (err instanceof Error){
@@ -436,6 +437,110 @@ router.get('/api/new_orders', (req, res) => {
     }
   });
 });
+
+router.get('/api/stores/:store_id/orders_and_messages_count', (req, res) => {
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const expiry = req.get('expiry');
+  const headers = { client, ["access-token"]: accessToken, uid, expiry };
+  const {store_id} = req.params;
+  const url = `http://localhost:3000/api/stores/${store_id}/orders_and_messages_count`;
+  Axios.get(url, {
+    headers
+  })
+  .then(response => {
+    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err.response.status);
+      res.json(err.response.status);
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
+
+router.get('/api/stores/:store_id/conversations', (req, res) => {
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const expiry = req.get('expiry');
+  const headers = { client, ["access-token"]: accessToken, uid, expiry };
+  const {store_id} = req.params;
+  const url = `http://localhost:3000/api/stores/${store_id}/conversations`;
+  Axios.get(url, {
+    headers
+  })
+  .then(response => {
+    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err.response.status);
+      res.json(err.response.status);
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
+
+router.get('/api/stores/:store_id/conversations/:conversation_id', (req, res) => {
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const expiry = req.get('expiry');
+  const headers = { client, ["access-token"]: accessToken, uid, expiry };
+  const {store_id,conversation_id} = req.params;
+  const url = `http://localhost:3000/api/stores/${store_id}/conversations/${conversation_id}`;
+  Axios.get(url, {
+    headers
+  })
+  .then(response => {
+    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err.response.status);
+      res.json(err.response.status);
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
+
+router.post('/api/stores/:store_id/conversations/:conversation_id/messages', (req, res) => {
+
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const headers = { client, ["access-token"]: accessToken, uid };
+  const data = req.body;
+  //console.log('outgoing headers get store/id', headers);
+
+  Axios.get(`http://localhost:3000/api/stores/${store_id}/conversations/${conversation_id}/messages`, { headers, data })
+  .then(response => {
+   // console.log('return headers get store/id', response.headers);
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err);
+      res.json({status: err.response.status, error: err});
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
+
 
 router.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));

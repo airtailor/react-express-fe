@@ -8,6 +8,8 @@ import tailorListReducer from './tailorListReducer';
 import companyListReducer from './companyListReducer';
 import measurementsReducer from './measurementsReducer';
 import newOrdersReducer from './newOrdersReducer';
+import conversationsReducer from './conversationsReducer';
+import messagesReducer from './messagesReducer';
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
@@ -18,7 +20,9 @@ const rootReducer = combineReducers({
   tailorList: tailorListReducer,
   companyList: companyListReducer,
   measurements: measurementsReducer,
-  newOrders: newOrdersReducer
+  newOrders: newOrdersReducer,
+  conversations: conversationsReducer,
+  messages: messagesReducer
 });
 
 export default rootReducer;

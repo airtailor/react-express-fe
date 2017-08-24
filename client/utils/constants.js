@@ -11,6 +11,8 @@ export const SET_COMPANY_LIST = 'SET_COMPANY_LIST';
 export const SET_CUSTOMER_MEASUREMENTS = 'SET_CUSTOMER_MEASUREMENTS';
 export const SET_CURRENT_PRINT = 'SET_CURRENT_PRINT';
 export const SET_NEW_ORDERS = 'SET_NEW_ORDERS';
+export const SET_MESSAGES = 'SET_MESSAGES';
+export const SET_CONVERSATIONS = 'SET_CONVERSATIONS';
 
 export const storeTypes = [
   { name: 'Tailor', id: 'tailor' },

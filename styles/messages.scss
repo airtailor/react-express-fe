@@ -1,0 +1,27 @@
+
+.messages-container {
+  margin-left: 50px;
+  @extend .flex-container;
+}
+
+.message {
+  width: 70%;
+  min-width: 200px;
+  border-width: 1px;
+}
+
+.sender {
+  background-color: pink;
+  border: solid #47BB47 2px;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px grey;
+}
+
+.receiver {
+  border: solid #47BB47 2px;
+  background-color: #C7F4C7;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px grey;
+}

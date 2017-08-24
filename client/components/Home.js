@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import { getCurrentStore } from '../actions';
+import { getCurrentStore, getOrderAndMessagesCount } from '../actions';
 import SectionHeader from './SectionHeader';
 import OrderCard from './OrderCard';
 import OrderCardIcon from './OrderCardIcon';
@@ -12,17 +12,30 @@ import messagesImage from '../images/message.png';
 import exclamationImage from '../images/red-exclamation.png';
 
 class Home extends Component {
+  constructor(){
+    super();
+    this.state = {
+      active_orders_count: 0,
+      late_orders_count: 0,
+      unread_messages_count: 0
+    }
+  }
 
   componentDidMount(){
-    const { currentUser, getCurrentStore } = this.props;
+    const {currentUser, getCurrentStore} = this.props;
+    getOrderAndMessagesCount(this.props.currentUser.user.store_id)
+      .then(res => {
+        this.setState(res.data.body)
+      })
     getCurrentStore(currentUser.user.store_id)
-    .catch(err => {
-      console.log(err);
-    })
+      .catch(err => {
+        console.log(err);
+      })
   }
 
   retailerHome(currentStore){
-    const {active_orders_count, late_orders_count} = currentStore;
+    const {active_orders_count, late_orders_count, unread_messages_count} = this.state;
+    //console.log('active', active_orders_count, 'late', late_orders_count, 'unread', unread_messages_count)
     return (
       <div className='store-boxes'>
         <OrderCard
@@ -34,7 +47,7 @@ class Home extends Component {
 
         <OrderCard
           icon={<OrderCardIcon url={messagesImage} alt='messages' />}
-          count={active_orders_count}
+          count={unread_messages_count}
           type='Unread'
           call='READ >'
           styleClass='unread-messages' />
@@ -43,7 +56,8 @@ class Home extends Component {
   }
 
   adminHome(currentStore){
-    const {active_orders_count, late_orders_count} = currentStore;
+    const {active_orders_count, late_orders_count, unread_messages_count} = this.state;
+    debugger;
     return (
       <div className='store-boxes'>
         <OrderCard
@@ -62,7 +76,7 @@ class Home extends Component {
 
         <OrderCard
           icon={<OrderCardIcon url={messagesImage} alt='messages' />}
-          count={active_orders_count}
+          count={unread_messages_count}
           type='Unread'
           call='READ >'
           styleClass='unread-messages' />
@@ -71,7 +85,7 @@ class Home extends Component {
   }
 
   tailorHome(currentStore){
-    const {active_orders_count, late_orders_count} = currentStore;
+    const {active_orders_count, late_orders_count, unread_messages_count} = this.state;
     return (
       <div className='store-boxes'>
         <OrderCard
@@ -90,7 +104,7 @@ class Home extends Component {
 
         <OrderCard
           icon={<OrderCardIcon url={messagesImage} alt='messages' />}
-          count={active_orders_count}
+          count={unread_messages_count}
           type='Unread'
           call='READ >'
           styleClass='unread-messages' />
@@ -116,6 +130,7 @@ class Home extends Component {
 
   renderStore(){
     if (!isEmpty(this.props.currentStore)){
+      console.log('this.props.currentStore', this.props.currentStore)
       const {currentStore, currentUser} = this.props;
       const {id, name} = currentStore;
       const role = currentUser.user.roles[0].name;

@@ -12,7 +12,9 @@ import {
   SET_COMPANY_LIST,
   SET_CUSTOMER_MEASUREMENTS,
   SET_CURRENT_PRINT,
-  SET_NEW_ORDERS
+  SET_NEW_ORDERS,
+  SET_MESSAGES,
+  SET_CONVERSATIONS
 } from '../utils/constants';
 
 const setTokens = (res) => {
@@ -262,12 +264,86 @@ export function getNewOrders(){
   }
 }
 
+export function getOrderAndMessagesCount(store_id){
+  const url = `${expressApi}/stores/${store_id}/orders_and_messages_count`;
+  return Axios.get(url);
+}
+
+export function getConversations(store_id){
+  const url = `${expressApi}/stores/${store_id}/conversations`;
+  return dispatch => {
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.get(url)
+          .then(res => {
+            dispatch(setConversations(res.data.body));
+            return res.data.body;
+          })
+          .catch(err => {
+            debugger;
+          })
+      })
+  }
+}
+
+export function getMessages(store_id, conversation_id){
+  console.log('store_id', store_id, 'conversation_id', conversation_id)
+  const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}`;
+  return dispatch => {
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.get(url)
+          .then(res => {
+            dispatch(setMessages(res.data.body.messages));
+            return res.data.body;
+          })
+          .catch(err => {
+            debugger;
+          })
+      })
+  }
+}
+
+export function createMessage(message){
+  const {store_id, conversation_id, body} = message;
+  const url = `${expressApi}/stores/${message.store_id}/conversations/${message.conversation_id}/messages`;
+  const data = message;
+  return dispatch => {
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.post(url, data)
+          .then(res => {
+            return res;
+          })
+          .catch(err => {
+            debugger;
+          })
+      })
+  }
+}
 // actions
 
 // export function setCurrentPrint(){
 //   return: SET_CURRENT_PRINT,
 //
 // }
+
+export function setMessages(messages){
+  return {
+    type: SET_MESSAGES,
+    messages
+  }
+}
+
+export function setConversations(conversations){
+  return {
+    type: SET_CONVERSATIONS,
+    conversations
+  }
+}
 
 export function setNewOrders(newOrders){
   return {

@@ -144,7 +144,7 @@ class NewOrderDetail extends Component{
     console.log('order render', order.fulfilled)
     if (order.customer){
       const {id, weight, created_at, total, provider_notes, items} = order;
-      const orderDate = moment(created_at).format('MM-DD-2017');
+      const orderDate = moment(created_at).format('MM-DD-YYYY');
       const selectTailor = (
         <div>
           <p>Alterations:</p>
