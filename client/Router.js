@@ -9,13 +9,14 @@ import SignIn from './components/SignIn';
 const Router = (props) => {
   const loggedIn = props.currentUser.isAuthenticated;
   const admin = (props.currentUser.user.roles && props.currentUser.user.roles[0].name === 'admin');
+  const retailer = (props.currentUser.user.roles && props.currentUser.user.roles[0].name === 'retailer');
   const storeName = props.currentStore.name;
   if (loggedIn){
     return (
       <BrowserRouter>
         <div className="container">
-          <NavigationBar loggedIn={loggedIn} admin={admin} />
-          <AvailableRoutes loggedIn={loggedIn} admin={admin} />
+          <NavigationBar retailer={retailer} loggedIn={loggedIn} admin={admin} />
+          <AvailableRoutes retailer={retailer} loggedIn={loggedIn} admin={admin} />
         </div>
       </BrowserRouter>
     );

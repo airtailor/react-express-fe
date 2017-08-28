@@ -44,13 +44,13 @@ class NavigationBar extends Component {
   }
 
   navBar(){
-    const { loggedIn, admin } = this.props;
+    const { loggedIn, admin, retailer } = this.props;
     const { active } = this.state;
     return (
       <nav className="navbar">
         <LogoMessage className='navbar-logo' text='SHOP PORTAL' />
         <div className="navbar-links-container">
-          <NavigationLinks loggedIn={loggedIn} admin={admin} toggleNavState={this.toggleActiveState} navState={active}/>
+          <NavigationLinks loggedIn={loggedIn} retailer={retailer} admin={admin} toggleNavState={this.toggleActiveState} navState={active}/>
         </div>
       </nav>
     );

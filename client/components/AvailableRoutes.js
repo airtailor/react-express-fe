@@ -10,13 +10,15 @@ import OrdersEdit from './orders/OrdersEdit';
 import StoresEdit from './stores/StoresEdit';
 import StoresNew from './stores/StoresNew';
 import CustomerEdit from './CustomerEdit';
-import OrderForm from './OrderForm/RetailerOrderForm';
+//import OrderForm from './OrderForm/RetailerOrderForm';
 import NewOrders from './admin/NewOrders';
 import ConversationsIndex from './conversations/ConversationsIndex';
 import ConversationShow from './conversations/ConversationsShow';
+import OrdersNew from './orders/new/OrdersNew';
+import Checkout from './orders/new/Checkout';
 
 const AvailableRoutes = (props) => {
-  const { loggedIn, admin } = props;
+  const { loggedIn, admin, retailer } = props;
   return (
     <div className='content'>
       <Route exact path='/' render={(props) => (
@@ -54,7 +56,7 @@ const AvailableRoutes = (props) => {
       <Switch>
         <Route exact path='/orders/new' render={(props) => (
           loggedIn ? (
-            <OrderForm {...props} />
+            <OrdersNew {...props} />
           ) : (
             <Redirect to='/sign_in' />
           )
@@ -122,6 +124,14 @@ const AvailableRoutes = (props) => {
       <Route exact path='/messages' render={props => (
         loggedIn ? (
           <ConversationShow {...props} />
+        ) : (
+          <Redirect to='/' />
+        )
+      )}/>
+
+      <Route exact path='/orders/new/checkout' render={props => (
+        (admin || retailer) ? (
+          <Checkout {...props} />
         ) : (
           <Redirect to='/' />
         )

@@ -13,6 +13,10 @@ export const SET_CURRENT_PRINT = 'SET_CURRENT_PRINT';
 export const SET_NEW_ORDERS = 'SET_NEW_ORDERS';
 export const SET_MESSAGES = 'SET_MESSAGES';
 export const SET_CONVERSATIONS = 'SET_CONVERSATIONS';
+export const ADD_GARMENT_TO_CART = 'ADD_GARMENT_TO_CART';
+export const REMOVE_GARMENT_FROM_CART = 'REMOVE_GARMENT_FROM_CART';
+export const UPDATE_CART_CUSTOMER_INFO = 'UPDATE_CART_CUSTOMER_INFO';
+export const UPDATE_CART_SHIP_TO = 'UPDATE_CART_SHIP_TO';
 
 export const storeTypes = [
   { name: 'Tailor', id: 'tailor' },

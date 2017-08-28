@@ -35,7 +35,6 @@ class Home extends Component {
 
   retailerHome(currentStore){
     const {active_orders_count, late_orders_count, unread_messages_count} = this.state;
-    //console.log('active', active_orders_count, 'late', late_orders_count, 'unread', unread_messages_count)
     return (
       <div className='store-boxes'>
         <OrderCard
@@ -130,7 +129,6 @@ class Home extends Component {
 
   renderStore(){
     if (!isEmpty(this.props.currentStore)){
-      console.log('this.props.currentStore', this.props.currentStore)
       const {currentStore, currentUser} = this.props;
       const {id, name} = currentStore;
       const role = currentUser.user.roles[0].name;

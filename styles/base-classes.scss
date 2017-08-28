@@ -83,3 +83,8 @@ h1 {
 .pos-rel {
   position: relative;
 }
+
+.unclickable {
+  /*pointer-events: none;*/
+  background-color: #DCDCDC;
+}

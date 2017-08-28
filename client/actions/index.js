@@ -14,8 +14,14 @@ import {
   SET_CURRENT_PRINT,
   SET_NEW_ORDERS,
   SET_MESSAGES,
-  SET_CONVERSATIONS
+  SET_CONVERSATIONS,
+  ADD_GARMENT_TO_CART,
+  REMOVE_GARMENT_FROM_CART,
+  UPDATE_CART_CUSTOMER_INFO,
+  UPDATE_CART_SHIP_TO
 } from '../utils/constants';
+
+import {removeFalseyValuesFromObject} from '../utils/format';
 
 const setTokens = (res) => {
   if (!res.data.headers['access-token']) { return; }
@@ -90,7 +96,7 @@ export function getStoreOrders(store_id){
 export function getCurrentOrder(store_id, order_id){
   const url =`${expressApi}/stores/${store_id}/orders/${order_id}`;
   return dispatch => {
-    return Axios.post(url)
+    return Axios.get(url)
       .then(res => {
         if (res.data.headers.client && res.data.headers.uid){
           setTokens(res);
@@ -324,12 +330,120 @@ export function createMessage(message){
       })
   }
 }
-// actions
 
-// export function setCurrentPrint(){
-//   return: SET_CURRENT_PRINT,
-//
-// }
+function findOrCreateCustomer(customerInfo){
+  const url = `${expressApi}/customers/find_or_create`;
+  return validateToken()
+    .then(setTokens)
+    .then(() => {
+      return Axios.post(url, {customer: customerInfo});
+    });
+}
+
+function createOrder(order){
+  const url = `${expressApi}/orders`;
+  return validateToken()
+    .then(setTokens)
+    .then(() => {
+      return Axios.post(url, {order});
+    });
+}
+
+function getOrderWeight(cart){
+  return cart.garments.reduce((prev, curr) => {
+    return prev += curr.weight;
+  }, 0);
+}
+
+function getOrderTotal(cart){
+  return cart.garments.reduce((prev, curr) => {
+    return prev += curr.alterations.reduce((prev, curr) => {
+      return prev += curr.price;
+    }, 0);
+  }, 0);
+}
+
+export function submitOrder(props){
+  const {cart, currentStore} = props;
+  const {customerInfo} = props.cart;
+  findOrCreateCustomer(removeFalseyValuesFromObject(customerInfo))
+    .then(res => {
+      const customer_id = res.data.body.id;
+      const requester_id = currentStore.id;
+      const weight = getOrderWeight(cart);
+      const total = getOrderTotal(cart);
+      const source = 'React-Portal';
+      const {garments} = cart;
+      const requester_notes = cart.notes;
+      const type = 'TailorOrder';
+
+      const order = {
+        customer_id,
+        requester_id,
+        weight,
+        total,
+        garments,
+        source,
+        requester_notes,
+        type
+      };
+
+      createOrder(order)
+        .then(res => {
+          debugger;
+        })
+        .catch(err => {
+          debugger;
+        })
+    })
+    .catch(err => {
+      console.log('create order error', err)
+    })
+  //const {store_id, conversation_id, body} = order;
+  // const url = `${expressApi}/stores/${message.store_id}/conversations/${message.conversation_id}/messages`;
+  // const data = message;
+  // return dispatch => {
+  //   return validateToken()
+  //     .then(setTokens)
+  //     .then(() => {
+  //       return Axios.post(url, data)
+  //         .then(res => {
+  //           return res;
+  //         })
+  //         .catch(err => {
+  //           debugger;
+  //         })
+  //     })
+  // }
+}
+
+export function updateCartShipTo(boolean){
+  return {
+    type: UPDATE_CART_SHIP_TO,
+    boolean
+  }
+}
+
+export function updateCartCustomerInfo(customerInfo){
+  return {
+    type: UPDATE_CART_CUSTOMER_INFO,
+    customerInfo
+  }
+}
+
+export function removeGarmentFromCart(index){
+  return {
+    type: REMOVE_GARMENT_FROM_CART,
+    index
+  }
+}
+
+export function addGarmentToCart(garment){
+  return {
+    type: ADD_GARMENT_TO_CART,
+    garment
+  }
+}
 
 export function setMessages(messages){
   return {

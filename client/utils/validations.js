@@ -3,6 +3,17 @@ export const ValidateEmail = (email) => {
   return re.test(email);
 }
 
+export const ValidatePhone = (phone) => {
+  if (phone){
+    return phone.match(/\d/g).length===10;
+  }
+}
+
+export const ValidateZip = (zip) => {
+  const re = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+  return re.test(zip);
+}
+
 export const ValidatePassword = (password) => {
   return password.length > 6;
 }

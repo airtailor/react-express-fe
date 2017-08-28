@@ -113,7 +113,32 @@ router.post('/api/sign_out', (req, res) => {
   });
 });
 
-router.post('/api/stores/:store_id/orders', (req, res) => {
+router.post('/api/orders', (req, res) => {
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const headers = { client, ["access-token"]: accessToken, uid };
+  const {order} = req.body;
+
+  Axios.post(`http://localhost:3000/api/orders`, { headers, order })
+  .then(response => {
+   // console.log('return headers get store/id/orders', response.headers);
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err);
+      res.json(err);
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
+
+
+
+router.get('/api/stores/:store_id/orders', (req, res) => {
   const { store_id } = req.params;
   const client = req.get('client');
   const accessToken = req.get('access-token');
@@ -194,6 +219,35 @@ router.post('/api/stores/:store_id/orders/:order_id/edit', (req, res) => {
     }
   });
 });
+
+router.post('/api/customers/find_or_create', (req, res) => {
+  const {customer_id} = req.params;
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const expiry = req.get('expiry');
+  const headers = { client, ["access-token"]: accessToken, uid, expiry };
+  const data = req.body;
+  console.log('\n\nn\n\n\n******************', data)
+
+  Axios.post(`http://localhost:3000/api/customers/find_or_create`, {
+    customer: data.customer,
+    headers
+  })
+  .then(response => {
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err.response.status);
+      res.json(err.response.status);
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
+
 
 router.put('/api/customers/:customer_id/', (req, res) => {
   const {customer_id} = req.params;

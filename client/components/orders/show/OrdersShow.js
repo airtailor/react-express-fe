@@ -136,7 +136,7 @@ class OrdersShow extends Component {
   // }
 
   renderList() {
-    const renderAlt = this.renderAlteration;
+    const renderAlt = this.renderAlteration;  
     return this.sortItemsByType().map((itemType, index) => {
       const image = this.getImageForItemType(itemType.name);
       return itemType.filteredItems.map((item, index) => {

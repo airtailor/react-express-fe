@@ -1,0 +1,40 @@
+
+.new-order-content {
+  @extend .flex-container;
+  margin-left: 90px;
+}
+
+.stage-section {
+  @extend .flex-container;
+  max-width: 570px;
+}
+
+.garment-image {
+  height: 90px;
+}
+
+.garment-card {
+  @extend .card;
+  @extend .hoverable;
+  width: 120px;
+  height: 120px;
+  text-align: center;
+  display: inline-block;
+  overflow: unset;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  // flex: 1 0 25%;
+}
+
+.garment-card > h2 {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.alteration-card {
+  @extend .card;
+  @extend .hoverable;
+  width: 100%;
+}

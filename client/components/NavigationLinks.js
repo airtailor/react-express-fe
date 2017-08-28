@@ -97,11 +97,55 @@ class NavigationLinks extends Component {
     );
   }
 
+  retailerNavbar(){
+    const {toggleNavState, navState, store} = this.props;
+    const editStoreRoute = `/stores/${store.id}/edit`;
+    return (
+      <div>
+        <SearchBar />
+        <ul className="navbar-links-ul">
+          <NavigationLink
+            cssClass="home-link"
+            route="/" text="Home"
+            image={homeImage} />
+
+          <NavigationLink
+            cssClass="orders-link"
+            route="/orders"
+            text="Orders"
+            image={ordersImage} />
+
+          <NavigationLink
+            cssClass="orders-link"
+            route="/orders/new" text="New Orders"
+            image={ordersImage} />
+
+          <NavigationLink
+            cssClass="edit-store-link"
+            route={editStoreRoute}
+            text="Edit Store"
+            image={editStoreImage} />
+
+
+
+          <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>
+            <img src={logoutImage} alt='logout' /> LOGOUT
+          </a></li>
+
+          <li><a className="navbar-links-li close-menu-link" onClick={() => toggleNavState(navState) }>
+             <img src={logoutImage} alt='logout' /> Close Menu
+          </a></li>
+        </ul>
+      </div>
+    );
+  }
   render() {
     if (this.props.admin) {
       return this.adminNavbar();
+    } else if (this.props.retailer) {
+      return this.retailerNavbar();
     } else if (this.props.loggedIn) {
-      return this.tailorNavbar()
+      return this.tailorNavbar();
     } else {
       return (
         <ul className="navbar-links-ul">

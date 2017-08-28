@@ -10,6 +10,9 @@ import measurementsReducer from './measurementsReducer';
 import newOrdersReducer from './newOrdersReducer';
 import conversationsReducer from './conversationsReducer';
 import messagesReducer from './messagesReducer';
+import garmentsReducer from './garmentsReducer';
+import alterationsReducer from './alterationsReducer';
+import cartReducer from './cartReducer';
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
@@ -22,7 +25,10 @@ const rootReducer = combineReducers({
   measurements: measurementsReducer,
   newOrders: newOrdersReducer,
   conversations: conversationsReducer,
-  messages: messagesReducer
+  messages: messagesReducer,
+  garments: garmentsReducer,
+  alterations: alterationsReducer,
+  cart: cartReducer
 });
 
 export default rootReducer;
