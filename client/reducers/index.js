@@ -13,6 +13,7 @@ import messagesReducer from './messagesReducer';
 import garmentsReducer from './garmentsReducer';
 import alterationsReducer from './alterationsReducer';
 import cartReducer from './cartReducer';
+import confirmedNewOrderReducer from './confirmedNewOrderReducer';
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
@@ -28,7 +29,8 @@ const rootReducer = combineReducers({
   messages: messagesReducer,
   garments: garmentsReducer,
   alterations: alterationsReducer,
-  cart: cartReducer
+  cart: cartReducer,
+  confirmedNewOrder: confirmedNewOrderReducer
 });
 
 export default rootReducer;

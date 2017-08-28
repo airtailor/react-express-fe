@@ -163,7 +163,7 @@ router.get('/api/stores/:store_id/orders', (req, res) => {
 });
 
 
-router.post('/api/stores/:store_id/orders/:order_id', (req, res) => {
+router.get('/api/stores/:store_id/orders/:order_id', (req, res) => {
   const { store_id, order_id } = req.params;
   const client = req.get('client');
   const accessToken = req.get('access-token');

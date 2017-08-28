@@ -1,22 +1,17 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Link, Redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import SectionHeader from '../../SectionHeader';
 import {formatPhone} from '../../../utils/format';
-import {submitOrder} from '../../../actions';
 
-class Checkout extends Component {
-  constructor(){
-    super();
-    this.state = {
-      orderCompleted: false
-    }
+class OrderConfirmation extends Component {
+  componentDidlUnMount(){
+    console.log('clean up cart', 'clean up confirmedNewOrder')
   }
 
-  renderCustomerInfo(props){
-    const {first_name, last_name, phone, email} = props.cart.customerInfo;
-    const {shipToStore} = props.cart;
+  renderCustomerInfo(customer){
+    const {first_name, last_name, phone, email} = customer;
     return (
       <div>
         <h2>Customer Info:</h2>
@@ -29,7 +24,7 @@ class Checkout extends Component {
 
   renderGarmentAlterations(garment){
     return garment.alterations.map((alt, index) => {
-      return <p key={index} className='cart-alteration'>{alt.title}</p>;
+      return <p key={index} className='cart-alteration'>{alt.name}</p>;
     });
   }
 
@@ -38,7 +33,7 @@ class Checkout extends Component {
       return (
         <div key={index}>
           <h3>
-            {garment.title} #{index + 1}
+            {garment.name} #{index + 1}
           </h3>
           {this.renderGarmentAlterations(garment)}
           <hr />
@@ -47,12 +42,12 @@ class Checkout extends Component {
     });
   }
 
-  renderOrderInfo(props){
-    const {garments} = props.cart;
+  renderOrderInfo(confirmedNewOrder){
+    const {items} = confirmedNewOrder;
     return (
       <div>
         <h2>Order Info:</h2>
-        {this.renderGarments(garments)}
+        {this.renderGarments(items)}
       </div>
     );
   }
@@ -72,19 +67,31 @@ class Checkout extends Component {
       })
   }
 
-  renderButtons(props){
+  renderButtons(confirmedNewOrder){
+    const newOrderLink = `/orders/${confirmedNewOrder.id}`;
+
     return (
       <div>
-        <Link to='/orders/new'>
+        <Link to='#'>
           <input type='submit' className='short-button' value='Back' />
         </Link>
-        <input
-          onClick={() => this.submitOrder(this.props)}
-          type='submit'
-          className='short-button'
-          value='Submit' />
+        <Link to={newOrderLink}>
+          <input type='submit' className='short-button' value='View Order' />
+        </Link>
       </div>
     );
+    // return (
+    //   <div>
+    //     <Link to='/orders/new'>
+    //       <input type='submit' className='short-button' value='Back' />
+    //     </Link>
+    //     <input
+    //       onClick={() => this.submitOrder(this.props)}
+    //       type='submit'
+    //       className='short-button'
+    //       value='Submit' />
+    //   </div>
+    // );
   }
 
   renderShipToCustomer(customerInfo){
@@ -100,63 +107,52 @@ class Checkout extends Component {
     );
   }
 
-  renderShipToStore(currentStore){
-    const {name, street1, street2, city, state, zip} = currentStore;
+  renderShipToStore(store){
+    const {name, street1, street2, city, state, zip} = store;
     return (
       <div>
         <h2>Ship To Store:</h2>
         <p>{name}</p>
         <p>{street1}</p>
-        {street2 ? <p>street2</p> : ''}
+        {street2 ? <p>{street2}</p> : ''}
         <p>{city}, {state} {zip}</p>
       </div>
     );
   }
 
-  renderShippingInfo(props){
-    if (props.cart.shipToStore){
-      return this.renderShipToStore(props.currentStore);
-    } else if (!props.shipToStore){
-      return this.renderShipToCustomer(props.cart.customerInfo);
-    }
-  }
-
-  renderOrderCompleteRedirect(state){
-    if (state.orderCompeted){
-      return <Redirect to="/orders/new/order-confirmation" />
+  renderShippingInfo(confirmedNewOrder){
+    const {ship_to_store, retailer, customer} = confirmedNewOrder;
+    if (ship_to_store){
+      return this.renderShipToStore(retailer);
+    } else if (!ship_to_store){
+      return this.renderShipToCustomer(customer);
     }
   }
 
   render(){
+    const {confirmedNewOrder} = this.props;
     return (
       <div>
-       <SectionHeader text='Checkout' />
-        <div className='checkout-container'>
-          {this.renderCustomerInfo(this.props)}
+       <SectionHeader text='Order Completed' />
+        <div className='order-completed-container'>
+          {this.renderCustomerInfo(confirmedNewOrder.customer)}
           <br />
-          {this.renderOrderInfo(this.props)}
+          {this.renderOrderInfo(confirmedNewOrder)}
           <br />
-          {this.renderShippingInfo(this.props)}
+          {this.renderShippingInfo(confirmedNewOrder)}
           <br />
-          {this.renderButtons(this.props)}
-          {this.renderOrderCompleteRedirect(this.state)}
+          {this.renderButtons(confirmedNewOrder)}
         </div>
       </div>
     );
   }
+
 }
 
 const mapStateToProps = (store) => {
   return {
-    cart: store.cart,
-    currentStore: store.currentStore
+    confirmedNewOrder: store.confirmedNewOrder
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    submitOrder
-  }, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
+export default connect(mapStateToProps)(OrderConfirmation);

@@ -118,25 +118,8 @@ class OrdersShow extends Component {
     }
   }
 
-  // renderList(){
-  //   return this.sortItemsByType().map((itemType, index) => {
-  //     const image = this.getImageForItemType(itemType.name);
-  //     return (
-  //       <div className='card' key={index}>
-  //         <div className='type-heading'>
-  //           <img className='item-type-image' src={image} alt={itemType.name} />
-  //           <h3>{itemType.name.toUpperCase()}</h3>
-  //         </div>
-  //         <ul>
-  //           {itemType.filteredItems.map(this.renderItem.bind(this))}
-  //         </ul>
-  //       </div>
-  //     );
-  //   });
-  // }
-
   renderList() {
-    const renderAlt = this.renderAlteration;  
+    const renderAlt = this.renderAlteration;
     return this.sortItemsByType().map((itemType, index) => {
       const image = this.getImageForItemType(itemType.name);
       return itemType.filteredItems.map((item, index) => {

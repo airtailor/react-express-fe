@@ -17,6 +17,7 @@ export const ADD_GARMENT_TO_CART = 'ADD_GARMENT_TO_CART';
 export const REMOVE_GARMENT_FROM_CART = 'REMOVE_GARMENT_FROM_CART';
 export const UPDATE_CART_CUSTOMER_INFO = 'UPDATE_CART_CUSTOMER_INFO';
 export const UPDATE_CART_SHIP_TO = 'UPDATE_CART_SHIP_TO';
+export const SET_CONFIRMED_NEW_ORDER = 'SET_CONFIRMED_NEW_ORDER';
 
 export const storeTypes = [
   { name: 'Tailor', id: 'tailor' },

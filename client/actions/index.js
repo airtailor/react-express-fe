@@ -18,7 +18,8 @@ import {
   ADD_GARMENT_TO_CART,
   REMOVE_GARMENT_FROM_CART,
   UPDATE_CART_CUSTOMER_INFO,
-  UPDATE_CART_SHIP_TO
+  UPDATE_CART_SHIP_TO,
+  SET_CONFIRMED_NEW_ORDER
 } from '../utils/constants';
 
 import {removeFalseyValuesFromObject} from '../utils/format';
@@ -77,7 +78,7 @@ export function signOutCurrentUser(){
 export function getStoreOrders(store_id){
   const url =`${expressApi}/stores/${store_id}/orders`;
   return dispatch => {
-    return Axios.post(url)
+    return Axios.get(url)
       .then(res => {
         if (res.data.headers.client && res.data.headers.uid){
           setTokens(res);
@@ -366,55 +367,54 @@ function getOrderTotal(cart){
 export function submitOrder(props){
   const {cart, currentStore} = props;
   const {customerInfo} = props.cart;
-  findOrCreateCustomer(removeFalseyValuesFromObject(customerInfo))
-    .then(res => {
-      const customer_id = res.data.body.id;
-      const requester_id = currentStore.id;
-      const weight = getOrderWeight(cart);
-      const total = getOrderTotal(cart);
-      const source = 'React-Portal';
-      const {garments} = cart;
-      const requester_notes = cart.notes;
-      const type = 'TailorOrder';
+  return dispatch => {
+    return findOrCreateCustomer(removeFalseyValuesFromObject(customerInfo))
+      .then(res => {
+        if (res.data.body.errors){
+          console.log('errors', res.data.body.errors);
+        } else {
+          const customer_id = res.data.body.id;
+          const requester_id = currentStore.id;
+          const weight = getOrderWeight(cart);
+          const total = getOrderTotal(cart);
+          const source = 'React-Portal';
+          const {garments} = cart;
+          const ship_to_store = cart.shipToStore;
+          const requester_notes = cart.notes;
+          const type = 'TailorOrder';
 
-      const order = {
-        customer_id,
-        requester_id,
-        weight,
-        total,
-        garments,
-        source,
-        requester_notes,
-        type
-      };
+          const order = {
+            customer_id,
+            requester_id,
+            weight,
+            total,
+            garments,
+            source,
+            requester_notes,
+            type,
+            ship_to_store
+          };
 
-      createOrder(order)
-        .then(res => {
-          debugger;
-        })
-        .catch(err => {
-          debugger;
-        })
-    })
-    .catch(err => {
-      console.log('create order error', err)
-    })
-  //const {store_id, conversation_id, body} = order;
-  // const url = `${expressApi}/stores/${message.store_id}/conversations/${message.conversation_id}/messages`;
-  // const data = message;
-  // return dispatch => {
-  //   return validateToken()
-  //     .then(setTokens)
-  //     .then(() => {
-  //       return Axios.post(url, data)
-  //         .then(res => {
-  //           return res;
-  //         })
-  //         .catch(err => {
-  //           debugger;
-  //         })
-  //     })
-  // }
+           return createOrder(order)
+            .then(res => {
+              return dispatch(setConfirmedNewOrder(res.data.body));
+            })
+            .catch(err => {
+              debugger;
+            })
+        }
+      })
+      .catch(err => {
+        console.log('create order error', err)
+      })
+  }
+}
+
+export function setConfirmedNewOrder(order){
+  return {
+    type: SET_CONFIRMED_NEW_ORDER,
+    order
+  }
 }
 
 export function updateCartShipTo(boolean){
