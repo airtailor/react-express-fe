@@ -571,15 +571,15 @@ router.get('/api/stores/:store_id/conversations/:conversation_id', (req, res) =>
 });
 
 router.post('/api/stores/:store_id/conversations/:conversation_id/messages', (req, res) => {
-
+  const {store_id, conversation_id} = req.params;
   const client = req.get('client');
   const accessToken = req.get('access-token');
   const uid = req.get('uid');
   const headers = { client, ["access-token"]: accessToken, uid };
-  const data = req.body;
-  //console.log('outgoing headers get store/id', headers);
+  const {message} = req.body;
+  console.log('o!!!!!!!!!!!!!!!!!!!!!!!!!!/n/n/n/n/nn/n/n/nn/n/n/n*************/n', message);
 
-  Axios.get(`http://localhost:3000/api/stores/${store_id}/conversations/${conversation_id}/messages`, { headers, data })
+  Axios.post(`http://localhost:3000/api/stores/${store_id}/conversations/${conversation_id}/messages`, { headers, message })
   .then(response => {
    // console.log('return headers get store/id', response.headers);
     res.json({ headers: response.headers, body: response.data });

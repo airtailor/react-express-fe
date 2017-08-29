@@ -305,7 +305,7 @@ export function getMessages(store_id, conversation_id){
       .then(() => {
         return Axios.get(url)
           .then(res => {
-            dispatch(setMessages(res.data.body.messages));
+            dispatch(setMessages(res.data.body.messages.reverse()));
             return res.data.body;
           })
           .catch(err => {
@@ -316,15 +316,15 @@ export function getMessages(store_id, conversation_id){
 }
 
 export function createMessage(message){
-  const {store_id, conversation_id, body} = message;
-  const url = `${expressApi}/stores/${message.store_id}/conversations/${message.conversation_id}/messages`;
-  const data = message;
+  const {store_id, conversation_id} = message;
+  const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}/messages`;
   return dispatch => {
     return validateToken()
       .then(setTokens)
       .then(() => {
-        return Axios.post(url, data)
+        return Axios.post(url, {message})
           .then(res => {
+            dispatch(setMessages(res.data.body.messages.reverse()));
             return res;
           })
           .catch(err => {

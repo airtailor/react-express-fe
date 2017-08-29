@@ -35,15 +35,16 @@ class Messages extends Component {
     return messages.map((message, index) => {
       const {body, store_id, store, created_at} = message;
       const className = store_id === user.store_id ? 'sender' : 'receiver';
-      const messageDate = moment(created_at).format('MM-DD-YYYY');
 
-      const time = moment(created_at);
-      const offset = moment().utcOffset() / 60;
-      const local = time.add(offset, 'h');
-      const messageTime = time.format('hh:mm a');
+      //const time = moment(created_at);
+      //const offset = moment().utcOffset() / 60;
+      //const localTime = time.add(offset, 'h');
+
+      const messageTime = moment(created_at).format('hh:mm a');
+      const messageDate = moment(created_at).format('MM-DD-YYYY');
       return (
         <div className={className + ' message'} key={index}>
-          <b>{store.name}</b> // General Message // {messageDate} at {messageTime}
+          <b>{store.name}</b> // General Message // {messageDate} at {messageTime} 
           <hr/>
           {body}
         </div>
@@ -54,13 +55,14 @@ class Messages extends Component {
   submitMessage(e){
     e.preventDefault();
     const {newMessage} = this.state;
-    const {store_id, conversation_id} = this.props.conversations[0];
+    const conversation = this.props.conversations[0];
+    const conversation_id = conversation.id;
+    const store_id = this.props.store.id;
     const message = {body: newMessage, conversation_id, store_id};
-    debugger;
-    createMessage(message)
-      .then(res => {
-        debugger;
-      })
+
+    this.props.createMessage(message)
+      .then(res => this.setState({newMessage: ''}))
+      .catch(err => console.log(err));
   }
 
   updateNewMessage(e){
@@ -69,26 +71,26 @@ class Messages extends Component {
 
   renderMessageForm(){
     return (
-      <form onSubmit={this.submitMessage}>
-        <textarea
-          onChange={(e) => this.updateNewMessage(e.target.value)}
-          value={this.state.newMessage}>
-        </textarea>
-        <br />
+      <div className='messages-form'>
+        <form onSubmit={this.submitMessage}>
+          <textarea
+            onChange={(e) => this.updateNewMessage(e.target.value)}
+            value={this.state.newMessage}>
+          </textarea>
+          <br />
 
-        <input type='submit' className='button short-button' value='submit' />
-      </form>
+          <input type='submit' className='button short-button' value='submit' />
+        </form>
+      </div>
     );
   }
 
   render(){
-    console.log('check', this.props)
     const headerText = `Messages / ${this.props.store.name}`;
     return(
       <div>
         <SectionHeader text={headerText} />
         <div className='content'>
-          Messages
           <div className='messages-container'>
             {this.renderMessageForm()} 
             {this.renderMessages(this.props.messages)}
@@ -109,7 +111,7 @@ const mapStateToProps = (store) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({getConversations, getMessages}, dispatch);
+  return bindActionCreators({getConversations, getMessages, createMessage}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);
