@@ -2,7 +2,9 @@ import {
   ADD_GARMENT_TO_CART,
   REMOVE_GARMENT_FROM_CART,
   UPDATE_CART_CUSTOMER_INFO,
-  UPDATE_CART_SHIP_TO
+  UPDATE_CART_SHIP_TO,
+  RESET_CART,
+  UPDATE_CART_NOTES
 } from '../utils/constants';
 
 const initialState = {
@@ -47,7 +49,33 @@ const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         shipToStore: action.boolean
-      }
+      };
+      break;
+    case UPDATE_CART_NOTES:
+      return {
+        ...state,
+        notes: action.notes
+      };
+      break;
+    case RESET_CART:
+      return {
+        garments: [],
+        customerInfo: {
+          first_name: '',
+          last_name: '',
+          phone: '',
+          email: '',
+          street1: '',
+          street2: '',
+          city: '',
+          state: '',
+          zip: ''
+        },
+        storeInfo: {},
+        shipToStore: true,
+        notes: ''
+      };
+      break;
     default: return state;
   }
 }

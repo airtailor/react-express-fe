@@ -4,10 +4,13 @@ import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
 import SectionHeader from '../../SectionHeader';
 import {formatPhone} from '../../../utils/format';
+import {setConfirmedNewOrder, resetCart} from '../../../actions';
 
 class OrderConfirmation extends Component {
-  componentDidlUnMount(){
-    console.log('clean up cart', 'clean up confirmedNewOrder')
+  componentWillUnmount(){
+    this.props.resetCart()
+    this.props.setConfirmedNewOrder({})
+    console.log('should be deleted', this.props.confirmedNewOrder, this.props.resetCart)
   }
 
   renderCustomerInfo(customer){
@@ -72,26 +75,14 @@ class OrderConfirmation extends Component {
 
     return (
       <div>
-        <Link to='#'>
-          <input type='submit' className='short-button' value='Back' />
+        <Link to='/orders/new'>
+          <input type='submit' className='short-button' value='New Order' />
         </Link>
         <Link to={newOrderLink}>
           <input type='submit' className='short-button' value='View Order' />
         </Link>
       </div>
     );
-    // return (
-    //   <div>
-    //     <Link to='/orders/new'>
-    //       <input type='submit' className='short-button' value='Back' />
-    //     </Link>
-    //     <input
-    //       onClick={() => this.submitOrder(this.props)}
-    //       type='submit'
-    //       className='short-button'
-    //       value='Submit' />
-    //   </div>
-    // );
   }
 
   renderShipToCustomer(customerInfo){
@@ -155,4 +146,10 @@ const mapStateToProps = (store) => {
   }
 }
 
-export default connect(mapStateToProps)(OrderConfirmation);
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    resetCart, setConfirmedNewOrder
+  }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrderConfirmation);

@@ -14,14 +14,12 @@ class OrdersNew extends Component {
     this.state = {
       stage: 1,
       selectedGarment: null,
-      selectedAlterations: [],
-      notes: ''
+      selectedAlterations: []
     }
 
     this.selectGarment = this.selectGarment.bind(this);
     this.renderStageOne = this.renderStageOne.bind(this);
     this.addAlteration = this.addAlteration.bind(this);
-    this.updateNotes = this.updateNotes.bind(this);
     this.addToCart = this.addToCart.bind(this);
     this.renderOrderDetails = this.renderOrderDetails.bind(this);
   }
@@ -56,10 +54,6 @@ class OrdersNew extends Component {
     this.renderStageOne();
   }
 
-  updateNotes(notes){
-    this.setState({notes});
-  }
-
   renderStage(stage){
     switch (this.state.stage) {
       case 1:
@@ -70,8 +64,6 @@ class OrdersNew extends Component {
       case 2:
         return <SelectAlterations
                  addToCart={this.addToCart}
-                 notes={this.state.notes}
-                 updateNotes={this.updateNotes}
                  handleSelect={this.addAlteration}
                  renderOrderDetails={this.renderOrderDetails}
                  selectedAlterations={this.state.selectedAlterations.map(alt => alt.id)}

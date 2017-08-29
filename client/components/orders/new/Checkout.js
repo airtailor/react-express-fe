@@ -48,11 +48,14 @@ class Checkout extends Component {
   }
 
   renderOrderInfo(props){
-    const {garments} = props.cart;
+    const {garments, notes} = props.cart;
+
     return (
       <div>
         <h2>Order Info:</h2>
         {this.renderGarments(garments)}
+        <h3>Order Notes</h3>
+        <p>{notes}</p>
       </div>
     );
   }

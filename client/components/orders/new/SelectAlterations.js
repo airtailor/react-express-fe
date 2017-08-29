@@ -20,13 +20,6 @@ const SelectAlterations = (props) => {
     <div>
       <h2>Select Alterations for {props.garment.title}</h2>
       {renderAlterations(props)}
-      <h3>Order Notes</h3>
-      <textarea
-        value={props.notes}
-        onChange={e => props.updateNotes(e.target.value)}
-        cols={43} rows={10}>
-      </textarea>
-
       <br />
 
       <input type='submit' className='short-button' value='Back' onClick={props.renderStageOne} />

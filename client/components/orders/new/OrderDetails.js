@@ -3,7 +3,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {
   updateCartCustomerInfo,
-  updateCartShipTo
+  updateCartShipTo,
+  updateCartNotes
 } from '../../../actions';
 import FormField from '../../FormField';
 
@@ -50,7 +51,6 @@ class OrderDetails extends Component {
     if (shipToStore){
       // do nothing
     } else {
-      console.log(shipToStore)
       return (
         <div>
           <FormField value={customerInfo.street1}
@@ -106,6 +106,13 @@ class OrderDetails extends Component {
         <h2>ORDER DETAILS</h2>
         {this.renderCustomerInfo(this.props.cart)}
         {this.renderShipTo(this.props.cart)}
+
+        <h3>Order Notes</h3>
+        <textarea
+          value={this.props.cart.notes}
+          onChange={e => this.props.updateCartNotes(e.target.value)}
+          cols={43} rows={10}>
+        </textarea>
       </div>
     );
   }
@@ -121,8 +128,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     updateCartCustomerInfo,
     updateCartShipTo,
-    // updateCartNotes,
-    // updateCartStore,
+    updateCartNotes,
   }, dispatch);
 }
 

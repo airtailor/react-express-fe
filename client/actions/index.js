@@ -19,7 +19,9 @@ import {
   REMOVE_GARMENT_FROM_CART,
   UPDATE_CART_CUSTOMER_INFO,
   UPDATE_CART_SHIP_TO,
-  SET_CONFIRMED_NEW_ORDER
+  SET_CONFIRMED_NEW_ORDER,
+  RESET_CART,
+  UPDATE_CART_NOTES
 } from '../utils/constants';
 
 import {removeFalseyValuesFromObject} from '../utils/format';
@@ -417,10 +419,24 @@ export function setConfirmedNewOrder(order){
   }
 }
 
+export function resetCart(){
+  return {
+    type: RESET_CART,
+    cart: {}
+  }
+}
+
 export function updateCartShipTo(boolean){
   return {
     type: UPDATE_CART_SHIP_TO,
     boolean
+  }
+}
+
+export function updateCartNotes(notes){
+  return {
+    type: UPDATE_CART_NOTES,
+    notes
   }
 }
 
