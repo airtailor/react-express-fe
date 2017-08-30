@@ -12,6 +12,9 @@ const OrderCard = (props) => {
   } else if (styleClass === 'unread-messages'){
     ordersOrMessages = 'Messages';
     link = '/messages'
+  } else if (styleClass === 'unread-messages-admin'){
+    ordersOrMessages = 'Messages';
+    link = '/conversations'
   }
 
   return (

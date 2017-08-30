@@ -65,14 +65,17 @@ export function validateToken(){
 export function signOutCurrentUser(){
   const url = `${expressApi}/sign_out`;
   return dispatch => {
+    delete localStorage.AirTailorTokens
+    setAuthToken({});
+    dispatch(setCurrentUser({ }), setCurrentStore({}));
+    window.location = '/';
+
     return Axios.post(url)
       .then(res => {
-        delete localStorage.AirTailorTokens
-        setAuthToken({});
-        dispatch(setCurrentUser({ }), setCurrentStore({}));
+        console.log('signed out');
       })
       .catch(err => {
-        console.log(err);
+        console.log('error from signOutCurrentUser linke 75', err);
       });
   }
 }
@@ -238,7 +241,6 @@ export function getCustomerMeasurements(data){
 }
 
 export function createCustomerMeasurements(measurement){
-
   const url = `${expressApi}/customers/${measurement.customer_id}/measurements`;
   const data = {measurement};
   return dispatch => {

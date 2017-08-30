@@ -130,6 +130,22 @@ const AvailableRoutes = (props) => {
         )
       )}/>
 
+      <Route exact path='/conversations' render={props => (
+        admin ? (
+          <ConversationsIndex {...props} />
+        ) : (
+          <Redirect to='/' />
+        )
+      )}/>
+
+      <Route exact path='/conversations/:id' render={props => (
+        admin ? (
+          <ConversationShow {...props} />
+        ) : (
+          <Redirect to='/' />
+        )
+      )}/>
+
       <Route exact path='/orders/new/checkout' render={props => (
         (admin || retailer) ? (
           <Checkout {...props} />

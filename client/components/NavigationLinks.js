@@ -38,6 +38,11 @@ class NavigationLinks extends Component {
             image={ordersImage} />
 
           <NavigationLink
+            cssClass="conversations-link"
+            route="/conversations" text="Conversations"
+            image={ordersImage} />
+
+          <NavigationLink
             cssClass="new-store-link"
             route="/stores/new"
             text="New Store"

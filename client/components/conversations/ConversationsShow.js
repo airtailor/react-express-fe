@@ -21,7 +21,8 @@ class Messages extends Component {
     this.props.getConversations(store_id)
       .then(res => {
         if (this.props.store.name === 'Air Tailor'){
-          debugger;
+          console.log("THE STORE IS AIR TAILOR");
+          this.props.getMessages(this.props.store.id, this.props.match.params.id);
         } else {
           const conversation_id = self.props.conversations[0].id;
           this.props.getMessages(store_id, conversation_id)
@@ -65,8 +66,8 @@ class Messages extends Component {
       .catch(err => console.log(err));
   }
 
-  updateNewMessage(e){
-    this.setState({newMessage: e});
+  updateNewMessage(text){
+    this.setState({newMessage: text});
   }
 
   renderMessageForm(){

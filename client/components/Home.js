@@ -56,7 +56,6 @@ class Home extends Component {
 
   adminHome(currentStore){
     const {active_orders_count, late_orders_count, unread_messages_count} = this.state;
-    debugger;
     return (
       <div className='store-boxes'>
         <OrderCard
@@ -78,7 +77,7 @@ class Home extends Component {
           count={unread_messages_count}
           type='Unread'
           call='READ >'
-          styleClass='unread-messages' />
+          styleClass='unread-messages-admin' />
       </div>
     )
   }
