@@ -45,7 +45,7 @@ class Messages extends Component {
       const messageDate = moment(created_at).format('MM-DD-YYYY');
       return (
         <div className={className + ' message'} key={index}>
-          <b>{store.name}</b> // General Message // {messageDate} at {messageTime} 
+          <b>{store.name}</b> // General Message // {messageDate} at {messageTime}
           <hr/>
           {body}
         </div>
@@ -93,7 +93,7 @@ class Messages extends Component {
         <SectionHeader text={headerText} />
         <div className='content'>
           <div className='messages-container'>
-            {this.renderMessageForm()} 
+            {this.renderMessageForm()}
             {this.renderMessages(this.props.messages)}
           </div>
         </div>

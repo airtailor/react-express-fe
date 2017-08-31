@@ -1,9 +1,9 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import webpack from 'webpack';
-import webpackMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
-import webpackConfig from '../webpack.config.js';
+const express = require('express');
+const bodyParser = require('body-parser');
+const webpack = require('webpack');
+const webpackMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const webpackConfig = require('../webpack.config.js');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -16,7 +16,7 @@ app.use(webpackMiddleware(compiler, {
 }));
 
 app.use(webpackHotMiddleware(compiler));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '1000mb'}));
 app.use(express.static('build'));
 app.use(require('./router'));
 
