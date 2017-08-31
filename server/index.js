@@ -6,7 +6,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackConfig from '../webpack.config.js';
 
 const app = express();
-const PORT = process.env.port || 8080;
+const PORT = process.env.PORT || 8080;
 const compiler = webpack(webpackConfig);
 
 app.use(webpackMiddleware(compiler, {
@@ -23,4 +23,3 @@ app.use(require('./router'));
 app.listen(PORT, () => {
   console.log('alive on port', PORT)
 });
-
