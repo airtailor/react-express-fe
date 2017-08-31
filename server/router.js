@@ -5,7 +5,7 @@ const router = express.Router();
 
 const apiUrl = process.env.NODE_ENV === 'production' ?
   'https://prod-airtailor-portal-api.herokuapp.com' :
-  'apiUrl'
+  'http://localhost:3000';
 
 router.post('/api/validate_token', (req, res) => {
   const client = req.get('client');
@@ -13,7 +13,7 @@ router.post('/api/validate_token', (req, res) => {
   const uid = req.get('uid');
   const headers = { client, ["access-token"]: accessToken, uid };
 
-  Axios.get(`apiUrl/auth/validate_token`, { headers })
+  Axios.get(`${apiUrl}/auth/validate_token`, { headers })
   .then(response => {
     res.json({ headers: response.headers, body: response.data.data });
   })
@@ -30,7 +30,7 @@ router.post('/api/validate_token', (req, res) => {
 
 router.post('/api/sign_in', (req, res) => {
   const { email, password } = req.body;
-  Axios.post('apiUrl/auth/sign_in', {
+  Axios.post(`${apiUrl}/auth/sign_in`, {
     email,
     password
   })
@@ -52,7 +52,7 @@ router.post('/api/sign_in', (req, res) => {
 
 router.post('/api/sign_up', (req, res, next) => {
   const { email, password, passwordConfirmation } = req.body;
-  Axios.post('apiUrl/auth', {
+  Axios.post(`${apiUrl}/auth`, {
     email,
     password,
     password_confirmation: passwordConfirmation
@@ -79,7 +79,7 @@ router.post('/api/stores/:id', (req, res) => {
   const headers = { client, ["access-token"]: accessToken, uid };
   //console.log('outgoing headers get store/id', headers);
 
-  Axios.get(`apiUrl/api/stores/${req.params.id}`, { headers })
+  Axios.get(`${apiUrl}/api/stores/${req.params.id}`, { headers })
   .then(response => {
    // console.log('return headers get store/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
@@ -102,7 +102,7 @@ router.post('/api/sign_out', (req, res) => {
   const headers = { client, ["access-token"]: accessToken, uid };
   //console.log('outgoing headers signout', headers);
 
-  Axios.delete('apiUrl/auth/sign_out', { headers })
+  Axios.delete(`${apiUrl}/auth/sign_out`, { headers })
   .then(response => {
     res.json(response.status)
   })
@@ -124,7 +124,7 @@ router.post('/api/orders', (req, res) => {
   const headers = { client, ["access-token"]: accessToken, uid };
   const {order} = req.body;
 
-  Axios.post(`apiUrl/api/orders`, { headers, order })
+  Axios.post(`${apiUrl}/api/orders`, { headers, order })
   .then(response => {
    // console.log('return headers get store/id/orders', response.headers);
     res.json({ headers: response.headers, body: response.data });
@@ -150,7 +150,7 @@ router.get('/api/stores/:store_id/orders', (req, res) => {
   const headers = { client, ["access-token"]: accessToken, uid };
   //console.log('outgoing headers get store/id/orders', headers);
 
-  Axios.get(`apiUrl/api/stores/${store_id}/orders`, { headers })
+  Axios.get(`${apiUrl}/api/stores/${store_id}/orders`, { headers })
   .then(response => {
    // console.log('return headers get store/id/orders', response.headers);
     res.json({ headers: response.headers, body: response.data });
@@ -174,8 +174,8 @@ router.get('/api/stores/:store_id/orders/:order_id', (req, res) => {
   const uid = req.get('uid');
   const headers = { client, ["access-token"]: accessToken, uid };
   //console.log('outgoing headers get store/id/orders/id', headers);
-  //const url = `apiUrl/api/stores/${store_id}/orders/${order_id}`;
-  const url = `apiUrl/api/orders/${order_id}`;
+  //const url = `${apiUrl}/api/stores/${store_id}/orders/${order_id}`;
+  const url = `${apiUrl}/api/orders/${order_id}`;
   Axios.get(url, { headers })
   .then(response => {
     //console.log('return headers get store/id/orders/id', response.headers);
@@ -205,7 +205,7 @@ router.post('/api/stores/:store_id/orders/:order_id/edit', (req, res) => {
   console.log("!!!!! req.body!!", req.body);
   console.log('outgoing headers put store/id/orders/id', headers);
 
-  Axios.put(`apiUrl/api/stores/${store_id}/orders/${order_id}`, {
+  Axios.put(`${apiUrl}/api/stores/${store_id}/orders/${order_id}`, {
     order: data.order,
     headers
   })
@@ -234,7 +234,7 @@ router.post('/api/customers/find_or_create', (req, res) => {
   const data = req.body;
   console.log('\n\nn\n\n\n******************', data)
 
-  Axios.post(`apiUrl/api/customers/find_or_create`, {
+  Axios.post(`${apiUrl}/api/customers/find_or_create`, {
     customer: data.customer,
     headers
   })
@@ -262,7 +262,7 @@ router.put('/api/customers/:customer_id/', (req, res) => {
   const headers = { client, ["access-token"]: accessToken, uid, expiry };
   const data = req.body;
 
-  Axios.put(`apiUrl/api/customers/${customer_id}`, {
+  Axios.put(`${apiUrl}/api/customers/${customer_id}`, {
     customer: data.customer,
     headers
   })
@@ -288,7 +288,7 @@ router.get('/api/tailors', (req, res) => {
   const expiry = req.get('expiry');
   const headers = { client, ["access-token"]: accessToken, uid, expiry };
 
-  Axios.get(`apiUrl/api/tailors`, {
+  Axios.get(`${apiUrl}/api/tailors`, {
     headers
   })
   .then(response => {
@@ -313,7 +313,7 @@ router.get('/api/companies', (req, res) => {
   const expiry = req.get('expiry');
   const headers = { client, ["access-token"]: accessToken, uid, expiry };
 
-  Axios.get(`apiUrl/api/companies`, {
+  Axios.get(`${apiUrl}/api/companies`, {
     headers
   })
   .then(response => {
@@ -340,7 +340,7 @@ router.put('/api/stores/:store_id/', (req, res) => {
   const headers = { client, ["access-token"]: accessToken, uid, expiry };
   const data = req.body;
 
-  Axios.put(`apiUrl/api/stores/${store_id}`, {
+  Axios.put(`${apiUrl}/api/stores/${store_id}`, {
     store: data.store,
     headers
   })
@@ -367,7 +367,7 @@ router.post('/api/stores', (req, res) => {
   const headers = { client, ["access-token"]: accessToken, uid, expiry };
   const data = req.body;
 
-  Axios.post(`apiUrl/api/stores`, {
+  Axios.post(`${apiUrl}/api/stores`, {
     store: data.store,
     headers
   })
@@ -394,7 +394,7 @@ router.post('/api/shipments', (req, res) => {
   const headers = { client, ["access-token"]: accessToken, uid, expiry };
   const data = req.body;
 
-  Axios.post(`apiUrl/api/shipments`, {
+  Axios.post(`${apiUrl}/api/shipments`, {
     shipment: data.shipment,
     headers
   })
@@ -419,7 +419,7 @@ router.get('/api/customers/:customer_id/measurements/last', (req, res) => {
   const accessToken = req.get('access-token');
   const uid = req.get('uid');
   const headers = { client, ["access-token"]: accessToken, uid };
-  const url = `apiUrl/api/customers/${customer_id}/measurements/last`;
+  const url = `${apiUrl}/api/customers/${customer_id}/measurements/last`;
   //console.log('outgoing headers get store/id/orders', headers);
 
   console.log('###################################################', url )
@@ -448,7 +448,7 @@ router.post('/api/customers/:customer_id/measurements', (req, res) => {
   const expiry = req.get('expiry');
   const headers = { client, ["access-token"]: accessToken, uid, expiry };
   const data = req.body;
-  const url = `apiUrl/api/customers/${customer_id}/measurements`;
+  const url = `${apiUrl}/api/customers/${customer_id}/measurements`;
   console.log('!!!!!!!!!!!!!!!!!!!!!!!!,', data)
   Axios.post(url, {
     measurement: data.measurement,
@@ -476,7 +476,7 @@ router.get('/api/new_orders', (req, res) => {
   const expiry = req.get('expiry');
   const headers = { client, ["access-token"]: accessToken, uid, expiry };
   console.log('\n\n\n\n\n\nHIiiiiiiiiiiiasdflasdfjasdofjaosfjosadifjasdoijfds\n\n\n\n\n\n')
-  const url = `apiUrl/api/new_orders`;
+  const url = `${apiUrl}/api/new_orders`;
 
   Axios.get(url, {
     headers
@@ -503,7 +503,7 @@ router.get('/api/stores/:store_id/orders_and_messages_count', (req, res) => {
   const expiry = req.get('expiry');
   const headers = { client, ["access-token"]: accessToken, uid, expiry };
   const {store_id} = req.params;
-  const url = `apiUrl/api/stores/${store_id}/orders_and_messages_count`;
+  const url = `${apiUrl}/api/stores/${store_id}/orders_and_messages_count`;
   Axios.get(url, {
     headers
   })
@@ -529,7 +529,7 @@ router.get('/api/stores/:store_id/conversations', (req, res) => {
   const expiry = req.get('expiry');
   const headers = { client, ["access-token"]: accessToken, uid, expiry };
   const {store_id} = req.params;
-  const url = `apiUrl/api/stores/${store_id}/conversations`;
+  const url = `${apiUrl}/api/stores/${store_id}/conversations`;
   Axios.get(url, {
     headers
   })
@@ -555,7 +555,7 @@ router.get('/api/stores/:store_id/conversations/:conversation_id', (req, res) =>
   const expiry = req.get('expiry');
   const headers = { client, ["access-token"]: accessToken, uid, expiry };
   const {store_id,conversation_id} = req.params;
-  const url = `apiUrl/api/stores/${store_id}/conversations/${conversation_id}`;
+  const url = `${apiUrl}/api/stores/${store_id}/conversations/${conversation_id}`;
   Axios.get(url, {
     headers
   })
@@ -583,7 +583,7 @@ router.post('/api/stores/:store_id/conversations/:conversation_id/messages', (re
   const {message} = req.body;
   console.log('o!!!!!!!!!!!!!!!!!!!!!!!!!!/n/n/n/n/nn/n/n/nn/n/n/n*************/n', message);
 
-  Axios.post(`apiUrl/api/stores/${store_id}/conversations/${conversation_id}/messages`, { headers, message })
+  Axios.post(`${apiUrl}/api/stores/${store_id}/conversations/${conversation_id}/messages`, { headers, message })
   .then(response => {
    // console.log('return headers get store/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
