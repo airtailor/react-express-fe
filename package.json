@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --watch --hot",
     "debug": "nodemon debug --watch server --exec babel-node -- server/index.js",
-    "start": "nodemon --watch server --exec babel-node -- server/index.js"
+    "dev": "nodemon --watch server --exec babel-node -- server/index.js",
+    "start": "node server/index.js"
   },
   "author": "",
   "license": "ISC",
