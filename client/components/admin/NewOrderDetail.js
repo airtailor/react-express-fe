@@ -31,13 +31,18 @@ class NewOrderDetail extends Component{
 
   refreshNewOrdersList(props){
     this.props.getNewOrders()
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+      // .then(res => console.log(res))
+      .catch(err => console.log('error', err))
   }
 
   componentDidMount(){
     this.refreshNewOrdersList(this.props);
   }
+
+  // componentWillUnmount(){
+  //   console.log('\n\n\n\ncomponent did unmount!\n\n\n!!!!!!!!!!')
+  //   this.setState({})
+  // }
 
   resetState(props){
     this.setState(props.order)
@@ -63,7 +68,7 @@ class NewOrderDetail extends Component{
   updateOrderNotes(notes, order){
     order.requester_notes = notes;
     this.props.updateOrder({order})
-      .then(res => console.log('res', res))
+      // .then(res => console.log('res', res))
       .catch(err => console.log('err', err));
   }
 
@@ -76,7 +81,7 @@ class NewOrderDetail extends Component{
           .then(res => this.props.selectOrder(order))
           .catch(err => console.log('err', err))
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log('err', err));
   }
 
   renderPrintLabels(order){
@@ -86,7 +91,7 @@ class NewOrderDetail extends Component{
     const shippingType = getShippingType(role, order.type);
     const printPrompt = getPrintButtonPrompt(shippingType, order);
 
-    console.log('print prompt', order.fulfilled, order, printPrompt)
+    //console.log('print prompt', order.fulfilled, order, printPrompt)
     if (printPrompt.split(' ')[0] === "Print"){
       const url = order[toSnakeCaseFromCamelCase(lowerCaseFirstLetter(shippingType))].shipping_label;
 
@@ -141,7 +146,7 @@ class NewOrderDetail extends Component{
 
   render(){
     const {order} = this.props;
-    console.log('order render', order.fulfilled)
+    //console.log('order render', order.fulfilled)
     if (order.customer){
       const {id, weight, created_at, total, provider_notes, items} = order;
       const orderDate = moment(created_at).format('MM-DD-YYYY');
@@ -157,7 +162,7 @@ class NewOrderDetail extends Component{
       //   <button className='pink-button'>Print Shipping Label</button>
       // );
       const display = order.type === 'TailorOrder' ? selectTailor : this.welcomeKit(order);
-      console.log('detail', this.props.order.provider_notes)
+      //console.log('detail', this.props.order.provider_notes)
       return (
           <div className='order-details'>
             <h3>Order Details:</h3>

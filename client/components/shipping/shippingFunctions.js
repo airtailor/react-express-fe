@@ -34,11 +34,9 @@ export const lowerCaseFirstLetter = (string) => {
 }
 
 const labelExists = (shippingType, order) => {
-
   const key = toSnakeCaseFromCamelCase(lowerCaseFirstLetter(shippingType));
-  console.log('key', key, 'order[key]', order[key]);
   if (order[key]){
-    return order[key].shipping_label ? true : false
+    return order[key].shipping_label ? true : false;
   }
   return false;
 }
@@ -54,6 +52,8 @@ export const renderPrintLabels = () => {
   const { currentUser, currentOrder } = this.props;
   const role = currentUser.user.roles[0].name;
   const shippingType = getShippingType(role, currentOrder.type);
+  debugger;
+  console.log('shippingType', shippingType, 'currentOrder', currentOrder)
   const printPrompt = getPrintButtonPrompt(shippingType, currentOrder);
 
 
