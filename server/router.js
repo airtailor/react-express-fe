@@ -599,6 +599,34 @@ router.post('/api/stores/:store_id/conversations/:conversation_id/messages', (re
   });
 });
 
+router.put('/api/stores/:store_id/conversations/:conversation_id/messages/:message_id', (req, res) => {
+  const {store_id, conversation_id, message_id} = req.params;
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const headers = { client, ["access-token"]: accessToken, uid };
+
+  const {message} = req.body;
+
+  const url = `${apiUrl}/api/stores/${store_id}/conversations/${conversation_id}/messages/${message_id}`;
+  Axios.put(url, { headers, message })
+  .then(response => {
+   // console.log('return headers get store/id', response.headers);
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err);
+      res.json({status: err.response.status, error: err});
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
+
+
+
 
 router.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));

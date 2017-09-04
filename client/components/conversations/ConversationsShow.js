@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import moment from 'moment';
-import {getConversations, getMessages, createMessage} from '../../actions';
+import {getConversations, getMessages, createMessage, updateMessage} from '../../actions';
 import SectionHeader from '../SectionHeader';
 
 class Messages extends Component {
@@ -74,7 +74,9 @@ class Messages extends Component {
     return (
       <div className='messages-form'>
         <form onSubmit={this.submitMessage}>
+          <h2>New Message</h2>
           <textarea
+            cols={43} rows={10}
             onChange={(e) => this.updateNewMessage(e.target.value)}
             value={this.state.newMessage}>
           </textarea>
@@ -86,8 +88,29 @@ class Messages extends Component {
     );
   }
 
+  markMessagesRead(props){
+    if (props.messages.length > 0){
+      const role = props.currentUser.user.roles[0].name;
+      const messageCheck = role === 'admin' ? 'sender_read' : 'recipient_read';
+
+      // find # of unread messages in conversation
+      const unreads = props.messages.filter(mess => {
+        return !mess[messageCheck]
+      });
+
+      // if # of unread messages is > 0 then mark all of them as read
+      if (unreads.length > 0){
+        unreads.forEach(mess => {
+          mess[messageCheck] = true;
+          props.updateMessage(mess)
+        })
+      }
+    }
+  }
+
   render(){
     const headerText = `Messages / ${this.props.store.name}`;
+    this.markMessagesRead(this.props);
     return(
       <div>
         <SectionHeader text={headerText} />
@@ -112,7 +135,7 @@ const mapStateToProps = (store) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({getConversations, getMessages, createMessage}, dispatch);
+  return bindActionCreators({getConversations, getMessages, createMessage, updateMessage}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);
