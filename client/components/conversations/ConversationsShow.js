@@ -56,8 +56,10 @@ class Messages extends Component {
   submitMessage(e){
     e.preventDefault();
     const {newMessage} = this.state;
-    const conversation = this.props.conversations[0];
-    const conversation_id = conversation.id;
+
+    const role = this.props.currentUser.user.roles[0].name;
+    const  conversation_id = role === 'admin' ? this.props.match.params.id : this.props.conversations[0].id;
+
     const store_id = this.props.store.id;
     const message = {body: newMessage, conversation_id, store_id};
 
