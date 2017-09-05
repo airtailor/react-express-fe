@@ -52,7 +52,7 @@ export const renderPrintLabels = () => {
   const { currentUser, currentOrder } = this.props;
   const role = currentUser.user.roles[0].name;
   const shippingType = getShippingType(role, currentOrder.type);
-  debugger;
+
   console.log('shippingType', shippingType, 'currentOrder', currentOrder)
   const printPrompt = getPrintButtonPrompt(shippingType, currentOrder);
 

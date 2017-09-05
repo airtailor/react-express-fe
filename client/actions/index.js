@@ -230,7 +230,6 @@ export function getCustomerMeasurements(data){
       .then(() => {
         return Axios.get(url)
           .then(res => {
-            //debugger;
             dispatch(setCustomerMeasurements(res.data.body));
           })
           .catch(err => {
