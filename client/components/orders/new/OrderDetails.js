@@ -17,9 +17,6 @@ class OrderDetails extends Component {
   updateCustomerInfo(key, value){
     let custInfo = this.props.cart.customerInfo;
     custInfo[key] = value;
-    if (key === 'agrees_to_terms'){
-      debugger;
-    }
     this.props.updateCartCustomerInfo(custInfo);
   }
 
@@ -54,7 +51,7 @@ class OrderDetails extends Component {
             type='checkbox'
             checked={agrees_to_terms}
             onChange={() => this.updateCustomerInfo('agrees_to_terms', !agrees_to_terms)}/>
-          
+
         </div>
       </div>
     )

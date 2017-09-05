@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import { getCurrentOrder, updateOrder, createShipment } from '../../../actions';
+
 import {
   getShippingType,
   getPrintButtonPrompt,
@@ -11,13 +12,15 @@ import {
   makeShippingLabel,
   renderPrintLabels
 } from '../../shipping/shippingFunctions';
+
 import isEmpty from 'lodash/isEmpty';
 import SectionHeader from '../../SectionHeader';
 import shirtImage from '../../../images/shirt.png';
 import pantsImage from '../../../images/pants.png';
 import tieImage from '../../../images/tie.png';
 import dressImage from '../../../images/dress.png';
-import suitJacketImage from '../../../images/suit-jacket.png';
+import skirtImage from '../../../images/dress.png'
+import suitJacketImage from '../../../images/skirt.png';
 import suppliesImage from '../../../images/supplies.png';
 import Measurements from './measurements/Measurements';
 import OrderComplete from '../../prints/OrderComplete.js';
@@ -109,10 +112,12 @@ class OrdersShow extends Component {
         return shirtImage;
       case 'Dress':
         return dressImage;
-      case 'Jacket':
+      case 'Suit Jacket':
         return suitJacketImage;
-      case 'Tie':
+      case 'Neck Tie':
         return tieImage;
+      case 'Skirt':
+          return skirtImage;
       default:
         return suppliesImage;
     }

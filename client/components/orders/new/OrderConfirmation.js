@@ -125,7 +125,7 @@ class OrderConfirmation extends Component {
     return (
       <div>
        <SectionHeader text='Order Completed' />
-        <div className='order-completed-container'>
+        <div className='checkout-container'>
           {this.renderCustomerInfo(confirmedNewOrder.customer)}
           <br />
           {this.renderOrderInfo(confirmedNewOrder)}

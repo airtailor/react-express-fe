@@ -5,6 +5,16 @@ import shirtSleevesLengthTakenUp from '../images/how_to_pin/shirt-sleeves-length
 import shirtSleevesTakenIn from '../images/how_to_pin/shirt-sleeves-taken-in.png';
 import shirtHemTakenUp from '../images/how_to_pin/shirt-hem-taken-up.png';
 import shirtShouldersTakenIn from '../images/how_to_pin/shirt-shoulders-taken-in.png';
+import shortenSkirt from '../images/how_to_pin/shorten-skirt.png';
+import takeInSkirt from '../images/how_to_pin/take-in-skirt.png';
+import shortenDress from '../images/how_to_pin/shorten-dress.png';
+import takeInDress from '../images/how_to_pin/take-in-dress.png';
+import shortenFromDressShoulders from '../images/how_to_pin/shorten-from-dress-shoulders.png';
+import shortenJacketLength from '../images/how_to_pin/shorten-jacket-length.png';
+import shortenSleeveLength from '../images/how_to_pin/shorten-sleeve-length.png';
+import jacketSidesTakenIn from '../images/how_to_pin/jacket-sides-taken-in.png';
+import jacketSleevesTakenIn from '../images/how_to_pin/jacket-sleeves-taken-in.png';
+import shortenTie from '../images/how_to_pin/shorten-tie.png';
 
 export default function(){
  return  { alterations: [
@@ -105,6 +115,97 @@ export default function(){
       title: 'Shirt Shoulders Taken In',
       price: 35.00,
       howToPin: shirtShouldersTakenIn
+    },
+    {
+      id: 15,
+      garmentId: 3,
+      title: 'Shorten Skirt Length',
+      price: 24.00,
+      howToPin: shortenSkirt
+    },
+    {
+      id: 16,
+      garmentId: 3,
+      title: 'Take In Waist',
+      price: 30.00,
+      howToPin: takeInSkirt
+    },
+    {
+      id: 17,
+      garmentId: 4,
+      title: 'Shorten Dress Length',
+      price: 24.00,
+      howToPin: shortenDress
+    },
+    {
+      id: 18,
+      garmentId: 4,
+      title: 'Take In Waist',
+      price: 30.00,
+      howToPin: takeInDress
+    },
+    {
+      id: 19,
+      garmentId: 4,
+      title: 'Shorten Dress Shoulder Straps',
+      price: 15.00,
+      howToPin: shortenFromDressShoulders
+    },
+    {
+      id: 20,
+      garmentId: 5,
+      title: 'Shorten Jacken Length',
+      price: 70.00,
+      howToPin: shortenJacketLength
+    },
+    {
+      id: 21,
+      garmentId: 5,
+      title: 'Shorten Sleeve Length - From Wrist',
+      price: 40.00,
+      howToPin: shortenSleeveLength
+    },
+    {
+      id: 22,
+      garmentId: 5,
+      title: 'Shorten Sleeve Length - From Shoulder',
+      price: 85.00,
+      howToPin: shortenSleeveLength
+    },
+    {
+      id: 23,
+      garmentId: 5,
+      title: 'Jacket Sides Taken In',
+      price: 50.00,
+      howToPin: jacketSidesTakenIn
+    },
+    {
+      id: 24,
+      garmentId: 5,
+      title: 'Jacket Sleeves Taken In',
+      price: 50.00,
+      howToPin: jacketSleevesTakenIn
+    },
+    {
+      id: 25,
+      garmentId: 6,
+      title: 'Shorten Tie Length',
+      price: 25.00,
+      howToPin: shortenTie
+    },
+    {
+      id: 26,
+      garmentId: 6,
+      title: 'Narrow Tie Width',
+      price: 25.00,
+      howToPin: shortenTie
+    },
+    {
+      id: 27,
+      garmentId: 6,
+      title: 'Shorten and Narrow',
+      price: 35.00,
+      howToPin: shortenTie
     },
   ]};
 }
