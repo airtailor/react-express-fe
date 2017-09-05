@@ -17,11 +17,14 @@ class OrderDetails extends Component {
   updateCustomerInfo(key, value){
     let custInfo = this.props.cart.customerInfo;
     custInfo[key] = value;
+    if (key === 'agrees_to_terms'){
+      debugger;
+    }
     this.props.updateCartCustomerInfo(custInfo);
   }
 
   renderCustomerInfo(cart){
-    const {first_name, last_name, phone, email} = cart.customerInfo;
+    const {first_name, last_name, phone, email, agrees_to_terms} = cart.customerInfo;
     return (
       <div>
         <div>
@@ -42,6 +45,16 @@ class OrderDetails extends Component {
             <FormField value={email}
               fieldName={'email'} title={'Email'}
               onChange={this.updateCustomerInfo} />
+        </div>
+
+        <div>
+          <h3>Customer agrees to receive important updates from Air Tailor:</h3>
+          <label>Yes! </label>
+          <input
+            type='checkbox'
+            checked={agrees_to_terms}
+            onChange={() => this.updateCustomerInfo('agrees_to_terms', !agrees_to_terms)}/>
+          
         </div>
       </div>
     )

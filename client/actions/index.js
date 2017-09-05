@@ -298,7 +298,6 @@ export function getConversations(store_id){
 }
 
 export function getMessages(store_id, conversation_id){
-  console.log('store_id', store_id, 'conversation_id', conversation_id)
   const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}`;
   return dispatch => {
     return validateToken()

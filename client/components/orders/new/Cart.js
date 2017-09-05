@@ -43,10 +43,11 @@ const renderCartItems = (props) => {
 
 const readyToCheckout = (props) => {
   const {customerInfo, shipToStore} = props.cart;
-  const {first_name, last_name, phone, email, street1, city, state, zip} = customerInfo;
+  const {first_name, last_name, phone, email, street1, city, state, zip, agrees_to_terms} = customerInfo;
 
   if ( (first_name && last_name && ValidatePhone(phone) && ValidateEmail(email)) &&
-       (shipToStore || (street1, city, state, ValidateZip(zip))) ) {
+       (shipToStore || (street1, city, state, ValidateZip(zip))) &&
+       (agrees_to_terms)) {
         return true;
     } else {
         return false;

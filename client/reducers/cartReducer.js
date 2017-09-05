@@ -18,7 +18,8 @@ const initialState = {
     street2: '',
     city: '',
     state: '',
-    zip: ''
+    zip: '',
+    agrees_to_terms: false
   },
   storeInfo: {},
   shipToStore: true,
@@ -69,7 +70,8 @@ const cartReducer = (state = initialState, action) => {
           street2: '',
           city: '',
           state: '',
-          zip: ''
+          zip: '',
+          agrees_to_terms: false
         },
         storeInfo: {},
         shipToStore: true,
