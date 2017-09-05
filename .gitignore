@@ -8,3 +8,5 @@ node_modules/*
 *.ogv
 *.webm
 *.jpg
+build/*
+!build/bundle.js
