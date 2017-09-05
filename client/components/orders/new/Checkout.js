@@ -113,12 +113,13 @@ class Checkout extends Component {
   renderShipToStore(currentStore){
     const {name, street1, street2, city, state, zip} = currentStore;
     let address2;
+    console.log('street2', street2)
     if (street2){
        address2 = street2.length > 0 ? (<p>{street2}</p>) : '';
     } else {
       address2 = '';
     }
-    
+
     return (
       <div>
         <h2>Ship To Store:</h2>
