@@ -230,7 +230,6 @@ export function getCustomerMeasurements(data){
       .then(() => {
         return Axios.get(url)
           .then(res => {
-            //debugger;
             dispatch(setCustomerMeasurements(res.data.body));
           })
           .catch(err => {
@@ -336,6 +335,25 @@ export function createMessage(message){
   }
 }
 
+export function updateMessage(message){
+  const {store_id, conversation_id, id} = message;
+  const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}/messages/${id}`;
+  return dispatch => {
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.put(url, {message})
+          .then(res => {
+            dispatch(setMessages(res.data.body.messages.reverse()));
+            return res;
+          })
+          .catch(err => {
+            debugger;
+          })
+      })
+  }
+}
+
 function findOrCreateCustomer(customerInfo){
   const url = `${expressApi}/customers/find_or_create`;
   return validateToken()
@@ -413,6 +431,8 @@ export function submitOrder(props){
       })
   }
 }
+
+// actions
 
 export function setConfirmedNewOrder(order){
   return {

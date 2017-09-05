@@ -92,12 +92,13 @@ class Checkout extends Component {
 
   renderShipToCustomer(customerInfo){
     const {first_name, last_name, street1, street2, city, state, zip} = customerInfo;
+    const address2 = street2.length > 0 ? (<p>{street2}</p>) : '';
     return (
       <div>
         <h2>Ship To Customer:</h2>
         <p>{first_name} {last_name}</p>
         <p>{street1}</p>
-        {street2 ? <p>{street2}</p> : ''}
+        {address2}
         <p>{city}, {state} {zip}</p>
       </div>
     );
@@ -105,12 +106,13 @@ class Checkout extends Component {
 
   renderShipToStore(currentStore){
     const {name, street1, street2, city, state, zip} = currentStore;
+    const address2 = street2.length > 0 ? (<p>{street2}</p>) : '';
     return (
       <div>
         <h2>Ship To Store:</h2>
         <p>{name}</p>
         <p>{street1}</p>
-        {street2 ? <p>street2</p> : ''}
+        {address2}
         <p>{city}, {state} {zip}</p>
       </div>
     );

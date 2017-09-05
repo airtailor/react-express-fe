@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 
 const setNotesType = (role, order) => {
+  console.log('setNotesType role order', role, order)
   if (role === 'tailor'){
+    console.log('setNotesType tailor', order.provider_notes)
     return order.provider_notes;
-  } else if (role === 'admin'){
-    return order.requester_notes;
+  } else if ((role === 'admin' ) || (role === 'retailer')){
+    return order.requester_notes || '';
   }
 }
 
 class UpdateNotesForm extends Component{
-  constructor(){
+  constructor(props){
     super();
     this.state = {
       displayNotes: true,
@@ -30,6 +32,7 @@ class UpdateNotesForm extends Component{
   render(){
     const {order, submitNotes, role} = this.props;
     const {displayNotes} = this.state;
+
     if (displayNotes){
       return (
         <form className='notes-form' onSubmit={(e) => this.handleSubmit(e, order)}>
