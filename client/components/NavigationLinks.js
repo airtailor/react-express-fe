@@ -23,6 +23,7 @@ class NavigationLinks extends Component {
   }
 
   adminNavbar(){
+    const {toggleNavState, navState} = this.props;
     return (
       <div>
         <SearchBar />
@@ -57,7 +58,9 @@ class NavigationLinks extends Component {
             <img src={logoutImage} alt='logout' /> LOGOUT
            </a></li>
 
-           <NavigationLink cssClass="close-link" route="#" text="Close" image={homeImage} />
+           <li><a className="navbar-links-li close-menu-link" onClick={() => toggleNavState(navState) }>
+              <img src={logoutImage} alt='logout' /> Close Menu
+           </a></li>
         </ul>
       </div>
     );
