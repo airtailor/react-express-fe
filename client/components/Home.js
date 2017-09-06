@@ -144,7 +144,7 @@ class Home extends Component {
         </div>
       );
     } else {
-      return <h1>No store yet</h1>
+      return <div></div>
     }
   }
 
