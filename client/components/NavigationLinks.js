@@ -98,6 +98,20 @@ class NavigationLinks extends Component {
     );
   }
 
+  closeMenu(props){
+    const {toggleNavState, navState} = props;
+    if (window.innerWidth < 816) {
+      return (
+        <div style={{marginTop: '50%'}}>
+          <li><a className="navbar-links-li close-menu-link" onClick={() => toggleNavState(navState) }>
+             <p>Close Menu</p>
+             <div className='triangle'></div>
+          </a></li>
+        </div>
+      );
+    }
+  }
+
   retailerNavbar(){
     const {toggleNavState, navState, store} = this.props;
     const editStoreRoute = `/stores/${store.id}/edit`;
@@ -126,12 +140,8 @@ class NavigationLinks extends Component {
             route={editStoreRoute}
             text="Account"
             image={editStoreImage} />
-
-          <li><a className="navbar-links-li close-menu-link" onClick={() => toggleNavState(navState) }>
-             <img src={logoutImage} alt='logout' /> Close Menu
-          </a></li>
-
         </ul>
+        {this.closeMenu(this.props)}
       </div>
     );
   }

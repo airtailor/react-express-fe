@@ -104,6 +104,36 @@ nav li a {
   width: 100%;
 }
 
+.close-menu-link {
+  font-size: 11px;
+  line-height: normal;
+  padding: 0;
+  display: inline-block;
+  float: right;
+  width: 100%;
+  padding-top: 10px;
+
+}
+
+
+.close-menu-link > p {
+  display: inline;
+  margin: 0px;
+  padding-left: 50px;
+  line-height: 2;
+}
+
+.triangle {
+  display: inline;
+  width: 0;
+  height: 0;
+  border-top: 22px solid transparent;
+  border-right: 25px solid #000033;
+  border-bottom: 22px solid transparent;
+  float: right;
+  margin-top: -10px;
+}
+
 //
 // @media screen and (max-width: $ipad-break){
 //   .navbar {
