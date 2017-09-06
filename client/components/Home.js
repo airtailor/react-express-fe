@@ -152,7 +152,11 @@ class Home extends Component {
   render(){
     return(
       <div>
-        <SectionHeader text={`Home / ${this.props.currentStore.name}`} />
+        <SectionHeader 
+          text={`Home / ${this.props.currentStore.name}`} 
+          showCart={this.props.currentUser.user.roles[0].name !== 'tailor' ? 
+            true : false}
+           sign={'+'} />
         { this.renderStore() }
       </div>
     );

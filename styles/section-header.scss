@@ -22,8 +22,38 @@
   font-family: $Alegreya;
 }
 
+.cart-ribbon {
+  background-color: #e04b4b;
+  width: 75px;
+  margin-left: auto;
+  margin-right: 10%;
+}
+
+.cart-ribbon-triangle {
+  width: 0;
+  height: 0;
+  border-left: 37px solid transparent;
+  border-right: 38px solid transparent;
+  border-top: 26px solid red;
+}
+
+.cart-ribbon-sign {
+  color: white;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 96px;
+  font-weight: 900;
+  font-family: Raleway;
+}
+
+.small-x {
+  font-size: 50px;
+}
+
 @media screen and (max-width: 816px) {   
   .section-header > h2 {
     padding-left: 80px;
   }
 }
+
+

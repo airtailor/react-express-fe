@@ -79,7 +79,11 @@ class OrdersNew extends Component {
   render(){
     return (
       <div>
-        <SectionHeader text='New Order' />
+        <SectionHeader 
+          text='New Order' 
+          sign='x'
+          showCart={true} />
+
         <div className='new-order-content'>
           <div className='stage-section'>
             {this.renderStage(this.state.stage)}
