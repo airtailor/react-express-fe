@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import NavigationLinks from './NavigationLinks';
 import LogoMessage from './LogoMessage';
 import Hamburger from '../images/hamburger.png';
+import logoutImage from '../images/logout.png';
+import {signOutCurrentUser} from '../actions';
 
 class NavigationBar extends Component {
   constructor(){
@@ -19,6 +22,16 @@ class NavigationBar extends Component {
     // after it is passed to the event listeners in comoponentWillMount and
     // componentDidMount
     this.handleResize = this.handleResize.bind(this);
+  }
+
+  handleSignOut(){
+    this.props.signOutCurrentUser()
+    .then(res => {
+      console.log('signed out');
+    })
+    .catch(err => {
+      console.log('oops something went wrong');
+    })
   }
 
   getNavActive(window){
@@ -53,6 +66,9 @@ class NavigationBar extends Component {
         <div className="navbar-links-container">
           <NavigationLinks loggedIn={loggedIn} retailer={retailer} admin={admin} toggleNavState={this.toggleActiveState} navState={active}/>
         </div>
+        <li className="signout-link"><a className="navbar-links-li" onClick={() => this.handleSignOut() }>
+          <img src={logoutImage} alt='logout' /> LOGOUT
+        </a></li>
       </nav>
     );
   }
@@ -83,4 +99,8 @@ const mapStateToProps = (store) => {
   }
 }
 
-export default connect(mapStateToProps)(NavigationBar);
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({signOutCurrentUser}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar);

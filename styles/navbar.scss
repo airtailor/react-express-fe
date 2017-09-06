@@ -5,6 +5,7 @@
   // position: fixed;
   border-right: 1px solid $primary-blue;
   height: 100%;
+  position: relative;
 }
 
 div.navbar-logo {
@@ -95,6 +96,12 @@ nav li a {
 .navbar-links-li {
   height: 45px;
   padding-top: 2px;
+}
+
+.signout-link {
+  position: absolute;
+  bottom: 5px;
+  width: 100%;
 }
 
 //

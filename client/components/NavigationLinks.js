@@ -1,29 +1,19 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import NavigationLink from './NavigationLink';
-import { signOutCurrentUser } from '../actions';
 import SearchBar from './SearchBar';
 import homeImage from '../images/home.png';
 import ordersImage from '../images/orders.png';
 import logoutImage from '../images/logout.png';
 import editStoreImage from '../images/account.png';
+import messageImage from '../images/message.png';
 
 
 class NavigationLinks extends Component {
-  handleSignOut(){
-    this.props.signOutCurrentUser()
-    .then(res => {
-      console.log('signed out');
-    })
-    .catch(err => {
-      console.log('oops something went wrong');
-    })
-  }
-
   adminNavbar(){
-    const {toggleNavState, navState} = this.props;
+    const {toggleNavState, navState, store} = this.props;
+    const editStoreRoute = `/stores/${store.id}/edit`;
     return (
       <div>
         <SearchBar />
@@ -41,7 +31,14 @@ class NavigationLinks extends Component {
           <NavigationLink
             cssClass="conversations-link"
             route="/conversations" text="Conversations"
-            image={ordersImage} />
+            image={messageImage} />
+
+          <NavigationLink
+            cssClass="edit-store-link"
+            route={editStoreRoute}
+            text="Edit Store"
+            image={editStoreImage} />
+
 
           <NavigationLink
             cssClass="new-store-link"
@@ -53,10 +50,6 @@ class NavigationLinks extends Component {
             cssClass="new-order-link"
             route="/orders/new" text="New Order"
             image={homeImage} />
-
-          <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>
-            <img src={logoutImage} alt='logout' /> LOGOUT
-           </a></li>
 
            <li><a className="navbar-links-li close-menu-link" onClick={() => toggleNavState(navState) }>
               <img src={logoutImage} alt='logout' /> Close Menu
@@ -83,19 +76,19 @@ class NavigationLinks extends Component {
             route="/orders"
             text="Orders"
             image={ordersImage} />
+      
+          <NavigationLink
+            cssClass="messages-link"
+            route="/messages" text="Messages"
+            image={messageImage} />
 
 
           <NavigationLink
             cssClass="edit-store-link"
             route={editStoreRoute}
-            text="Edit Store"
+            text="Account"
             image={editStoreImage} />
 
-
-
-          <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>
-            <img src={logoutImage} alt='logout' /> LOGOUT
-          </a></li>
 
           <li><a className="navbar-links-li close-menu-link" onClick={() => toggleNavState(navState) }>
              <img src={logoutImage} alt='logout' /> Close Menu
@@ -124,25 +117,20 @@ class NavigationLinks extends Component {
             image={ordersImage} />
 
           <NavigationLink
-            cssClass="orders-link"
-            route="/orders/new" text="New Orders"
-            image={ordersImage} />
+            cssClass="messages-link"
+            route="/messages" text="Messages"
+            image={messageImage} />
 
           <NavigationLink
             cssClass="edit-store-link"
             route={editStoreRoute}
-            text="Edit Store"
+            text="Account"
             image={editStoreImage} />
-
-
-
-          <li><a className="navbar-links-li sign-out-link" onClick={() => this.handleSignOut() }>
-            <img src={logoutImage} alt='logout' /> LOGOUT
-          </a></li>
 
           <li><a className="navbar-links-li close-menu-link" onClick={() => toggleNavState(navState) }>
              <img src={logoutImage} alt='logout' /> Close Menu
           </a></li>
+
         </ul>
       </div>
     );
@@ -171,8 +159,5 @@ const mapStateToProps = (store) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({signOutCurrentUser}, dispatch);
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavigationLinks);
+export default connect(mapStateToProps)(NavigationLinks);
