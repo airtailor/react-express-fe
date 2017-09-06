@@ -10,7 +10,7 @@ class OrderConfirmation extends Component {
   componentWillUnmount(){
     this.props.resetCart()
     this.props.setConfirmedNewOrder({})
-    console.log('should be deleted', this.props.confirmedNewOrder, this.props.resetCart)
+    //console.log('should be deleted', this.props.confirmedNewOrder, this.props.resetCart)
   }
 
   renderCustomerInfo(customer){

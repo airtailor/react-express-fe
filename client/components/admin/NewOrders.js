@@ -15,13 +15,13 @@ class NewOrders extends Component {
 
   selectOrderDetail(order){
     this.props.getCurrentOrder(order.provider_id, order.id)
-      .then(res => console.log('res', res))
+      //.then(res => console.log('res', res))
       .catch(err => console.log('err', err))
   }
 
   componentDidMount(){
     this.props.getNewOrders()
-      .then(res => console.log(res))
+      //.then(res => console.log(res))
       .catch(err => console.log(err))
   }
 

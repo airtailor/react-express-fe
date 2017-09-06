@@ -8,15 +8,15 @@ import SectionHeader from '../SectionHeader';
 class ConversationsIndex extends Component {
   componentDidMount(){
     this.props.getConversations(this.props.currentUser.user.store_id)
-      .then(res => console.log('res', this.props.conversations))
+      //.then(res => console.log('res', this.props.conversations))
       .catch(err => console.log('err', err))
   }
 
   renderConversations(props){
     const {conversations} = props;
-    if (conversations.length > 0){
-      console.log(props)
-    }
+   // if (conversations.length > 0){
+   //   console.log(props)
+   // }
 
     return conversations.map((convo, index) => {
       const {id} = convo;

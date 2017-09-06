@@ -21,7 +21,7 @@ class Messages extends Component {
     this.props.getConversations(store_id)
       .then(res => {
         if (this.props.store.name === 'Air Tailor'){
-          console.log("THE STORE IS AIR TAILOR");
+          //console.log("THE STORE IS AIR TAILOR");
           this.props.getMessages(this.props.store.id, this.props.match.params.id);
         } else {
           const conversation_id = self.props.conversations[0].id;

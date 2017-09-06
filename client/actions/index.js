@@ -72,7 +72,7 @@ export function signOutCurrentUser(){
 
     return Axios.post(url)
       .then(res => {
-        console.log('signed out');
+        //console.log('signed out');
       })
       .catch(err => {
         console.log('error from signOutCurrentUser linke 75', err);
@@ -113,7 +113,7 @@ export function getCurrentOrder(store_id, order_id){
         dispatch(setCurrentOrder(res.data.body));
       })
       .catch(err => {
-        console.log('error', err);
+        //console.log('error', err);
       });
   }
 }
@@ -121,20 +121,24 @@ export function getCurrentOrder(store_id, order_id){
 export function getCurrentStore(store_id){
   const url = `${expressApi}/stores/${store_id}`;
   return dispatch => {
-    return Axios.post(url)
-      .then(res => {
-        if (res.data.headers.client && res.data.headers.uid){
-          setTokens(res);
-          setLocalStorageUser(res.data.body);
-        } else {
-          // console.log('getStoreOrders - no new auth headers');
-        }
-        const { company_id, city, id, name, phone, primary_contact_id, state, street1, street2, zip, active_orders_count, late_orders_count } = res.data.body;
-        dispatch(setCurrentStore({ company_id, city, id, name, phone, primary_contact_id, state, street1, street2, zip, active_orders_count, late_orders_count }));
-      })
-      .catch(err => {
-        debugger;
-      })
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+      return Axios.post(url)
+        .then(res => {
+          //if (res.data.headers.client && res.data.headers.uid){
+          //  setTokens(res);
+          //  setLocalStorageUser(res.data.body);
+          //} else {
+          //  // console.log('getStoreOrders - no new auth headers');
+          //}
+          const { company_id, city, id, name, phone, primary_contact_id, state, street1, street2, zip, active_orders_count, late_orders_count } = res.data.body;
+          dispatch(setCurrentStore({ company_id, city, id, name, phone, primary_contact_id, state, street1, street2, zip, active_orders_count, late_orders_count }));
+        })
+        .catch(err => {
+          debugger;
+        })
+    });
   }
 }
 
@@ -152,6 +156,7 @@ export function updateOrder(data){
             debugger;
           })
       })
+      .catch(err => console.log('err index.js line 155', err))
   }
 }
 
@@ -392,14 +397,23 @@ export function submitOrder(props){
     return findOrCreateCustomer(removeFalseyValuesFromObject(customerInfo))
       .then(res => {
         if (res.data.body.errors){
-          console.log('errors', res.data.body.errors);
+          //console.log('errors', res.data.body.errors);
         } else {
           const customer_id = res.data.body.id;
           const requester_id = currentStore.id;
           const weight = getOrderWeight(cart);
           const total = getOrderTotal(cart);
           const source = 'React-Portal';
-          const {garments} = cart;
+
+          const garments = cart.garments.map(garment => {
+            delete garment.image;
+            garment.alterations.map(alt => {
+              delete alt.howToPin;
+              return alt;
+            });
+            return garment;
+          });
+
           const ship_to_store = cart.shipToStore;
           const requester_notes = cart.notes;
           const type = 'TailorOrder';
