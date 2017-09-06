@@ -24,14 +24,14 @@ class CustomerEdit extends Component {
   }
 
   updateState(field, value){
-    console.log('field', field, 'value', value);
+    //console.log('field', field, 'value', value);
     this.setState({[field]: value});
   }
 
   handleSubmit(e){
     e.preventDefault();
     updateCustomer({ customer: this.state })
-      .then(res => console.log(res))
+      //.then(res => console.log(res))
       .catch(err => console.log(err));
   }
 

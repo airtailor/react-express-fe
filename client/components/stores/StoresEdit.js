@@ -15,7 +15,7 @@ class StoresEdit extends Component {
 
   componentDidMount(){
     this.props.getCurrentStore(this.props.match.params.store_id)
-      .then(res => console.log(res))
+      //.then(res => console.log(res))
       .catch(err => console.log(err));
   }
 
@@ -27,7 +27,7 @@ class StoresEdit extends Component {
     e.preventDefault();
     const store = this.state;
     this.props.updateStore({store})
-      .then(res => console.log(res))
+      //.then(res => console.log(res))
       .catch(err => console.log(err));
   }
 
@@ -71,8 +71,8 @@ class StoresEdit extends Component {
   }
 
   render(){
-    console.log('props', this.props);
-    console.log('state', this.state);
+    //console.log('props', this.props);
+    //console.log('state', this.state);
     const {store} = this.props;
     const backLink = `/stores/${store.id}`;
     if (!store){
