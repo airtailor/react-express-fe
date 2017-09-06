@@ -45,10 +45,11 @@ class NavigationBar extends Component {
 
   navBar(){
     const { loggedIn, admin, retailer } = this.props;
+    const logoText = retailer ? 'STORE PORTAL' : 'SHOP PORTAL';
     const { active } = this.state;
     return (
       <nav className="navbar">
-        <LogoMessage className='navbar-logo' text='SHOP PORTAL' />
+        <LogoMessage className='navbar-logo' text={logoText} />
         <div className="navbar-links-container">
           <NavigationLinks loggedIn={loggedIn} retailer={retailer} admin={admin} toggleNavState={this.toggleActiveState} navState={active}/>
         </div>

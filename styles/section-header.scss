@@ -8,16 +8,22 @@
 
 .section-header > h2 {
   color: white;
-  padding-left: 90px;
+  padding-left: 50px;
   margin-top: 0;
   width: 60%;
   font-weight: normal;
-  font-family: alegreya;
+  font-family: $Alegreya;
   letter-spacing: .5px;
   font-size: 21px;
 }
 
 .section-header a {
   color: white;
-  font-family: alegreya;
+  font-family: $Alegreya;
+}
+
+@media screen and (max-width: 816px) {   
+  .section-header > h2 {
+    padding-left: 80px;
+  }
 }

@@ -18,7 +18,7 @@ h2.greeting {
 
 p.greeting {
   font-size: 18px;
-  font-family: arial;
+  font-family: $Raleway;
   margin-top: 10px;
 }
 
@@ -54,12 +54,13 @@ p.greeting {
 
 .order-card-call {
   text-decoration: underline;
+  margin-top: 29px;
+  font-weight: bold;
 }
 
 .order-card-count {
-  font-size: 38px;
-  font-family: alegreya;
-  font-weight: 800;
+  font-size: 45px;
+  font-family: $Alegreya;
   margin: 0;
   padding-top: 30px;
   padding-bottom: 15px;
@@ -76,7 +77,7 @@ p.greeting {
 
 .late-exclamation {
   color: red;
-  font-family: alegreya;
+  font-family: $Alegreya;
   font-size: 48px;
   font-weight: bold;
   line-height: 40px;

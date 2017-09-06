@@ -132,12 +132,13 @@ class Home extends Component {
       const {id, name} = currentStore;
       const role = currentUser.user.roles[0].name;
       const storeEditPath = `/stores/${id}/edit`;
+      const storeOrShop = role === 'retailer' ? 'store' : 'shop';
 
       return (
         <div className='home'>
-          <h2 className='greeting'>Greetings, {name}.</h2>
+          <h2 className='greeting'>Greetings, {name}</h2>
           <p className='greeting'>
-            Here's what's happening with your shop right now.
+            Here's what's happening with your {storeOrShop} right now.
           </p>
           {this.renderCards(role, currentStore)}
         </div>
