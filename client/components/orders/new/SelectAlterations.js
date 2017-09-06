@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import HowToPinModal from './modals/HowToPinModal';
 
 const renderAlterations = (props) => {
   const {garment, alterations} = props;
@@ -8,8 +9,11 @@ const renderAlterations = (props) => {
     const style = props.selectedAlterations.includes(alt.id) ? 'unclickable alteration-card' : 'alteration-card';
 
       return (
-        <div key={index} className={style} onClick={() => props.handleSelect(alt)}>
-          <h3>{alt.title} - ${alt.price.toFixed(2)}</h3>
+        <div key={index}>
+          <div className={style} onClick={() => props.handleSelect(alt)}>
+            <h3>{alt.title} - ${alt.price.toFixed(2)}</h3>
+          </div>
+          <HowToPinModal image={alt.howToPin} />
         </div>
       );
   });
