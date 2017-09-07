@@ -19,7 +19,7 @@ const CartRibbon = (props) => {
   if (props.showCart) {
     return (
       <Link className='cart-ribbon' to={props.link}>
-        <h1 className={`cart-ribbon-sign rotate${rotate}`}>+</h1>
+        <h1 className={`cart-ribbon-sign ${rotate}`}>+</h1>
         <div className='cart-ribbon-triangle'></div>
       </Link>
     );

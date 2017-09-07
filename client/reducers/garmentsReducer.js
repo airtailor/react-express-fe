@@ -2,8 +2,8 @@ import pantsImage from '../images/pants.png';
 import shirtImage from '../images/shirt.png';
 import skirtImage from '../images/skirt.png';
 import dressImage from '../images/dress.png';
-import suitImage from '../images/suit-jacket.png';
-import tieImage from '../images/tie.png';
+import suitImage from '../images/jacket.png';
+import tieImage from '../images/necktie.png';
 
 export default function(){
   return {garments: [

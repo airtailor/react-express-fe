@@ -80,6 +80,16 @@ h1 {
   /*box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);*/
 }
 
+.flatcard {
+  background: #fff;
+  border-radius: 5px;;
+  margin: 50px 0;
+  position: relative;
+  width: 80%;
+  padding: 25px;
+  border: 2px solid $primary-blue;
+}
+
 .pos-rel {
   position: relative;
 }

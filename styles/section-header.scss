@@ -27,6 +27,7 @@
   width: 75px;
   margin-left: auto;
   margin-right: 10%;
+  height: 93px;
 }
 
 .cart-ribbon-triangle {
@@ -44,12 +45,17 @@
   font-size: 96px;
   font-weight: 900;
   font-family: Raleway;
-  -webkit-transition: all 2s linear;
-  transition: all 2s linear;
+  -webkit-transition: transform 1s ease;
+  transition: transform 1s ease;
+}
+
+.rotate {
+  -webkit-transform:rotate(45deg);
+  transform:rotate(45deg);
 }
 
 
-.rotate0 {
+/*.rotate0 {
   -webkit-transform:rotate(0deg);
   transform:rotate(0deg);
 }
@@ -57,7 +63,7 @@
 .rotate45 {
   -webkit-transform:rotate(45deg);
   transform:rotate(45deg);
-}
+}*/
 
 @media screen and (max-width: 816px) {   
   .section-header > h2 {

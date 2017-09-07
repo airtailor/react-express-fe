@@ -1,7 +1,7 @@
 
 .new-order-content {
   @extend .flex-container;
-  margin-left: 90px;
+  margin-left: 50px;
 }
 
 .stage-section {
@@ -9,15 +9,19 @@
   max-width: 570px;
 }
 
+.select-garment {
+  margin-left: 25px;
+}
+
 .garment-image {
   height: 90px;
 }
 
 .garment-card {
-  @extend .card;
+  @extend .flatcard;
   @extend .hoverable;
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   text-align: center;
   display: inline-block;
   overflow: unset;
@@ -30,11 +34,47 @@
 
 .garment-card > h2 {
   margin-top: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+  font-family: Raleway;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
 }
 
 .alteration-card {
-  @extend .card;
+  @extend .garment-card;
   @extend .hoverable;
-  width: 100%;
+  width: 180px;
+  height: 60px;
+  margin-bottom: 5px;
+}
+
+.alt-price-info {
+  padding-right: 50px;
+  margin-top: 0;
+  text-align: right;
+}
+
+.modal-eye {
+  @extend .hoverable;
+  background-color: white;
+  width: 35px;
+}
+
+.how-to-pin-image {
+  height: 460px;
+  display: block;
+  margin: 0 auto;
+}
+
+.close-modal {
+  @extend .hoverable;
+  background-color: white;
+  font-family: Raleway;
+  color: $primary-blue;
+  font-weight: bold;
+}
+
+.how-to-pin-modal-container {
+  display: inline;
 }

@@ -11,9 +11,14 @@ const renderAlterations = (props) => {
       return (
         <div key={index}>
           <div className={style} onClick={() => props.handleSelect(alt)}>
-            <h3>{alt.title} - ${alt.price.toFixed(2)}</h3>
+            <h3>{alt.title}</h3>
           </div>
-          <HowToPinModal image={alt.howToPin} />
+          <div>
+            <h3 className='alt-price-info'>
+              ${alt.price.toFixed(2)} 
+              <HowToPinModal image={alt.howToPin} />
+            </h3>
+          </div>
         </div>
       );
   });
@@ -22,7 +27,7 @@ const renderAlterations = (props) => {
 const SelectAlterations = (props) => {
   return (
     <div>
-      <h2>Select Alterations for {props.garment.title}</h2>
+      <h2>Select {props.garment.title.toLowerCase()} alterations:</h2>
       {renderAlterations(props)}
       <br />
 

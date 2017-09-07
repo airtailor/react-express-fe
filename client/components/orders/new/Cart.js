@@ -86,16 +86,20 @@ const renderNextButton = (props) => {
 }
 
 const Cart = (props) => {
-  return (
-    <div className='cart-container'>
-      <h2 className='cart-title' ><img src={buttonImage} className='cart-icon' /> CART</h2>
-      <hr />
-      <div className='cart-items'>
-        {renderCartItems(props)}
+  if (props.cart.garments.length > 0) {
+    return (
+      <div className='cart-container'>
+        <h2 className='cart-title' ><img src={buttonImage} className='cart-icon' /> CART</h2>
+        <hr />
+        <div className='cart-items'>
+          {renderCartItems(props)}
+        </div>
+        {renderNextButton(props)}
       </div>
-      {renderNextButton(props)}
-    </div>
-  );
+    );
+  } else {
+    return <div></div>
+  }
 }
 
 const mapStateToProps = (store) => {

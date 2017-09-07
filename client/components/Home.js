@@ -157,7 +157,7 @@ class Home extends Component {
           showCart={this.props.currentUser.user.roles[0].name !== 'tailor' ? 
             true : false}
            link={'/orders/new'}
-           rotate={'0'} />
+           rotate={''} />
         { this.renderStore() }
       </div>
     );

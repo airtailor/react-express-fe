@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
+import eyeImage from '../../../../images/eye.png';
 
 class HowToPinModal extends Component {
   constructor(){
@@ -22,20 +23,26 @@ class HowToPinModal extends Component {
 
   render(){
     return (
-      <div>
-        <button onClick={this.openModal}>Open Modal</button>
+      <div className='how-to-pin-modal-container'>
+        <img 
+          className='modal-eye' 
+          alt='how-to-pin' 
+          src={eyeImage} 
+          onClick={this.openModal} />
+
         <Modal
           isOpen={this.state.modalIsOpen}
           style={{backgroundColor: 'blue'}}
           onRequestClose={this.closeModal}
-          contentLabel="Example Modal">
+          contentLabel='Example Modal'>
           
           <div>
-            <p onClick={this.closeModal}>Close</p>
-            <img style={{maxHeight: "500px"}} src={this.props.image} />
+            <p className='close-modal' onClick={this.closeModal}>CLOSE</p>
+            <img 
+              className='how-to-pin-image'
+              alt='how-to-pin-image' 
+              src={this.props.image} />
           </div>
-      
-        
         </Modal>
       </div>
     );

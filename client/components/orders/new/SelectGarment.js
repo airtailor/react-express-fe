@@ -8,7 +8,7 @@ const RenderGarments = (props) => {
         key={index} 
         className='garment-card'
         onClick={() => props.handleSelect(garment)}>
-        <h2>{garment.title}</h2>
+        <h2>{garment.title.toUpperCase()}</h2>
         <img className='garment-image' src={garment.image} />
       </div>
     );
@@ -18,9 +18,11 @@ const RenderGarments = (props) => {
 
 const SelectGarment = (props) => {
   return (
-    <div className='select-garment'>
-       <h2>Add New Garment</h2>
-       {RenderGarments(props)}
+    <div>
+      <h2>Select garment type:</h2>
+      <div className='select-garment'>
+         {RenderGarments(props)}
+      </div>
     </div>
   );
 }
