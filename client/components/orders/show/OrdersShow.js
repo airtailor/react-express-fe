@@ -17,10 +17,10 @@ import isEmpty from 'lodash/isEmpty';
 import SectionHeader from '../../SectionHeader';
 import shirtImage from '../../../images/shirt.png';
 import pantsImage from '../../../images/pants.png';
-import tieImage from '../../../images/tie.png';
+import tieImage from '../../../images/necktie.png';
 import dressImage from '../../../images/dress.png';
 import skirtImage from '../../../images/dress.png'
-import suitJacketImage from '../../../images/skirt.png';
+import suitJacketImage from '../../../images/jacket.png';
 import suppliesImage from '../../../images/supplies.png';
 import Measurements from './measurements/Measurements';
 import OrderComplete from '../../prints/OrderComplete.js';
@@ -105,6 +105,7 @@ class OrdersShow extends Component {
   // }
 
   getImageForItemType(name){
+    console.log('name', name)
     switch (name){
       case 'Pants':
         return pantsImage;
