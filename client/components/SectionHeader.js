@@ -14,15 +14,12 @@ const CustomerLink = (props) => {
 }
 
 const CartRibbon = (props) => {
-  const link = props.sign === '+' ? '/orders/new' : '/';
-  const signClassName = props.sign === '+' ?
-    'cart-ribbon-sign' :
-    'cart-ribbon-sign small-x';
+  const rotate = props.rotate;
 
   if (props.showCart) {
     return (
-      <Link className='cart-ribbon' to={link}>
-        <h1 className={signClassName}>{props.sign}</h1>
+      <Link className='cart-ribbon' to={props.link}>
+        <h1 className={`cart-ribbon-sign rotate${rotate}`}>+</h1>
         <div className='cart-ribbon-triangle'></div>
       </Link>
     );

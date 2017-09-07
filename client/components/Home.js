@@ -156,7 +156,8 @@ class Home extends Component {
           text={`Home / ${this.props.currentStore.name}`} 
           showCart={this.props.currentUser.user.roles[0].name !== 'tailor' ? 
             true : false}
-           sign={'+'} />
+           link={'/orders/new'}
+           rotate={'0'} />
         { this.renderStore() }
       </div>
     );

@@ -81,7 +81,8 @@ class OrdersNew extends Component {
       <div>
         <SectionHeader 
           text='New Order' 
-          sign='x'
+          rotate={'45'}
+          link={'/'}
           showCart={true} />
 
         <div className='new-order-content'>
