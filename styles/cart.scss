@@ -11,13 +11,14 @@
 }
 
 .cart-icon {
-  width: 25px;
+  width: 40px;
   padding-right: 20px;
   vertical-align: -4px;
 }
 
 .cart-title {
   text-align: center;
+  font-family: Raleway;
 }
 
 .remove-from-cart-button {
@@ -33,4 +34,17 @@
 
 .cart-alteration {
   padding-left: 10px;
+}
+
+/*
+.cart-buttons {
+  @extend .flex-container;
+  justify-content: space-between;
+}
+*/
+
+.cart-buttons > input {
+  margin-left: 5px;
+  margin-right: 105px;
+  margin-bottom: 50px;
 }

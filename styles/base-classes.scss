@@ -4,7 +4,7 @@ html, body, #root {
 }
 
 a {
-  font-family: arial;
+  font-family: $sans-serif;
   font-weight: normal;
   color: $primary-blue;
   text-decoration: none;
@@ -26,7 +26,7 @@ ul {
 
 li {
   color: $primary-blue;
-  font-family: arial;
+  font-family: $sans-serif;
   margin: auto;
   line-height: 1.8;
   // margin-top: 20px;
@@ -62,7 +62,7 @@ h1 {
   display: inline-block;
   position: absolute;
   font-size: 20px;
-  font-family: arial;
+  font-family: $sans-serif;
   text-decoration: underline;
   margin-left: 90px;
   margin-top: 50px;
@@ -97,4 +97,8 @@ h1 {
 .unclickable {
   /*pointer-events: none;*/
   background-color: #DCDCDC;
+}
+
+.full-width {
+  width: 100%;
 }

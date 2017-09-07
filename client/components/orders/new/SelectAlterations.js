@@ -26,13 +26,16 @@ const renderAlterations = (props) => {
 
 const SelectAlterations = (props) => {
   return (
-    <div>
-      <h2>Select {props.garment.title.toLowerCase()} alterations:</h2>
+    <div className='alteration-select'>
+      <h2 className='full-width'>Select {props.garment.title.toLowerCase()} alterations:</h2>
+      <br />
       {renderAlterations(props)}
       <br />
 
-      <input type='submit' className='short-button' value='Back' onClick={props.renderStageOne} />
-      <input type='submit' className='short-button' value='Add To Cart' onClick={props.addToCart} />
+      <div className='cart-buttons full-width'>
+        <input type='submit' className='short-button' value='Back' onClick={props.renderStageOne} />
+        <input type='submit' className='short-button' value='Add To Cart' onClick={props.addToCart} />
+      </div>
     </div>
   );
 }

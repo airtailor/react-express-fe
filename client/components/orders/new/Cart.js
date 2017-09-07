@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
 import {removeGarmentFromCart} from '../../../actions';
-import buttonImage from '../../../images/button.png';
+import basketImage from '../../../images/basket.png';
 import {ValidateEmail, ValidatePhone, ValidateZip} from '../../../utils/validations';
 
 const renderGarmentAlterations = (garment) => {
@@ -89,7 +89,7 @@ const Cart = (props) => {
   if (props.cart.garments.length > 0) {
     return (
       <div className='cart-container'>
-        <h2 className='cart-title' ><img src={buttonImage} className='cart-icon' /> CART</h2>
+        <h2 className='cart-title' ><img src={basketImage} className='cart-icon' /> BASKET</h2>
         <hr />
         <div className='cart-items'>
           {renderCartItems(props)}

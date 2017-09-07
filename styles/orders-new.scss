@@ -2,15 +2,21 @@
 .new-order-content {
   @extend .flex-container;
   margin-left: 50px;
+  justify-content: flex-start;
 }
 
 .stage-section {
+  margin-right: 40px;
+}
+
+.alteration-select {
   @extend .flex-container;
   max-width: 570px;
+  justify-content: flex-start;
 }
 
 .select-garment {
-  margin-left: 25px;
+  max-width: 675px;
 }
 
 .garment-image {
@@ -78,3 +84,4 @@
 .how-to-pin-modal-container {
   display: inline;
 }
+

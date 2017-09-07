@@ -188,20 +188,27 @@ export default function(){
     },
     {
       id: 25,
+      garmentId: 5,
+      title: 'Jacket Take Shoulders In',
+      price: 50.00,
+      howToPin: jacketSleevesTakenIn
+    },
+    {
+      id: 26,
       garmentId: 6,
       title: 'Shorten Tie Length',
       price: 25.00,
       howToPin: shortenTie
     },
     {
-      id: 26,
+      id: 27,
       garmentId: 6,
       title: 'Narrow Tie Width',
       price: 25.00,
       howToPin: shortenTie
     },
     {
-      id: 27,
+      id: 28,
       garmentId: 6,
       title: 'Shorten and Narrow',
       price: 35.00,
