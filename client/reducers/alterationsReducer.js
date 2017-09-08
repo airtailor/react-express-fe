@@ -154,7 +154,7 @@ export default function(){
     {
       id: 20,
       garmentId: 5,
-      title: 'Shorten Jacken Length',
+      title: 'Shorten Jacket Length',
       price: 70.00,
       howToPin: shortenJacketLength
     },
@@ -189,7 +189,7 @@ export default function(){
     {
       id: 25,
       garmentId: 5,
-      title: 'Jacket Take Shoulders In',
+      title: 'Take Shoulders In',
       price: 50.00,
       howToPin: jacketSleevesTakenIn
     },

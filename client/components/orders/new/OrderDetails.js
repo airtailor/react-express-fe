@@ -27,30 +27,36 @@ class OrderDetails extends Component {
         <div>
             <FormField value={first_name}
               fieldName={'first_name'} title={'First Name'}
+              className='order-details-input'
               onChange={this.updateCustomerInfo} />
 
               <FormField value={last_name}
                 fieldName={'last_name'} title={'Last Name'}
+                className='order-details-input'
                 onChange={this.updateCustomerInfo} />
         </div>
 
         <div>
             <FormField value={phone}
               fieldName={'phone'} title={'Phone'}
+              className='order-details-input'
               onChange={this.updateCustomerInfo} />
 
             <FormField value={email}
               fieldName={'email'} title={'Email'}
+              className='order-details-input'
               onChange={this.updateCustomerInfo} />
         </div>
 
         <div>
-          <h3>Customer agrees to receive important updates from Air Tailor:</h3>
-          <label>Yes! </label>
+      {/*     <h3 className='customer-agrees-prompt'>Customer agrees to receive important updates from Air Tailor:</h3>
+      <label>Yes! </label> i*/}
+
           <input
             type='checkbox'
             checked={agrees_to_terms}
             onChange={() => this.updateCustomerInfo('agrees_to_terms', !agrees_to_terms)}/>
+          <label className='customer-agrees-prompt'> Customer agrees to receive important updates from Air Tailor</label>
 
         </div>
       </div>

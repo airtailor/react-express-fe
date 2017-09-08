@@ -6,7 +6,7 @@
 }
 
 .stage-section {
-  margin-right: 40px;
+  margin-right: 30px;
 }
 
 .alteration-select {
@@ -85,3 +85,20 @@
   display: inline;
 }
 
+.order-details {
+  max-width: 325px;
+}
+
+.order-details-input {
+  width: 264px;
+}
+
+.customer-agrees-prompt {
+  font-size: 20px;
+  word-wrap: break-word;
+  font-family: $serif;
+  color: $primary-blue;
+  font-weight: bold;
+  line-height: 1.5;
+
+}

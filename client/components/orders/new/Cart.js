@@ -22,7 +22,7 @@ const renderCartItems = (props) => {
   if (garments.length > 0) {
     return garments.map((garment, index) => {
       return (
-        <div key={index}>
+        <div style={{marginLeft: '15px'}}key={index}>
           <h3>
             {garment.title}
             <span
@@ -32,7 +32,7 @@ const renderCartItems = (props) => {
             </span>
           </h3>
           {renderGarmentAlterations(garment)}
-          <hr />
+          <hr className='alteration-hr' />
         </div>
       )
     });
@@ -90,7 +90,7 @@ const Cart = (props) => {
     return (
       <div className='cart-container'>
         <h2 className='cart-title' ><img src={basketImage} className='cart-icon' /> BASKET</h2>
-        <hr />
+        <hr className='cart-line' />
         <div className='cart-items'>
           {renderCartItems(props)}
         </div>
