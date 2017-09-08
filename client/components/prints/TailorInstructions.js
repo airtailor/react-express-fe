@@ -5,30 +5,6 @@ import isEmpty from 'lodash';
 import {renderAlterationList} from '../../utils/alterationsLists';
 
 class OrderComplete extends Component {
-
-  // getAlterationsList(items){
-  //   return items.map((item, index) => {
-  //     return item.alterations.map((alt, index) => {
-  //       return alt.name;
-  //     });
-  //   }).join().split(',')
-  // }
-  //
-  // renderAlterationListItems(alterations){
-  //   return alterations.map((alt, index) => {
-  //     return <li className='print-alteration-li' key={index}>{alt}</li>;
-  //   })
-  // }
-  //
-  // renderAlterationList(items){
-  //   const alterations = this.renderAlterationListItems(this.getAlterationsList(items));
-  //   return (
-  //     <ul className='print-alteration-ul'>
-  //       {alterations}
-  //     </ul>
-  //   );
-  // }
-
   render(){
       const {currentOrder, CurrentStore, shippingType} = this.props;
       const type = shippingType === 'OutgoingShipment' ? 'outgoing_shipment' : 'incoming_shipment';
@@ -52,7 +28,7 @@ class OrderComplete extends Component {
       } else {
         return (
           <div className='print'>
-            Oops something went wrong
+            <h1>HIiiiiiiiiiiiasdflasdfjasdofjaosfjosadifjasdoijfds</h1>
           </div>
         )
       }

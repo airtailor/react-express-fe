@@ -22,6 +22,7 @@ import dressImage from '../../../images/dress.png';
 import skirtImage from '../../../images/dress.png'
 import suitJacketImage from '../../../images/jacket.png';
 import suppliesImage from '../../../images/supplies.png';
+import logoImage from '../../../images/logo.png';
 import Measurements from './measurements/Measurements';
 import OrderComplete from '../../prints/OrderComplete.js';
 
@@ -105,7 +106,6 @@ class OrdersShow extends Component {
   // }
 
   getImageForItemType(name){
-    console.log('name', name)
     switch (name){
       case 'Pants':
         return pantsImage;
@@ -261,6 +261,10 @@ class OrdersShow extends Component {
   }
 
   renderPrintLabels(){
+    if (!this.props.currentOrder.fulfilled){
+      return;
+    }
+
     const { currentUser, currentOrder } = this.props;
     const role = currentUser.user.roles[0].name;
     const shippingType = getShippingType(role, currentOrder.type);
@@ -308,6 +312,7 @@ class OrdersShow extends Component {
           <button className='pink-button' onClick={() => this.showHideNotesForm()}>{this.state.displayNotesForm ? 'Hide' : 'Add Notes'}</button>
           { this.notesForm() }
           { this.renderArrivedButton() }
+          { this.renderPrintInstructions() }
           { this.renderFulfillButton() }
           { this.renderPrintLabels() }
         </div>
@@ -326,6 +331,31 @@ class OrdersShow extends Component {
         { this.editComponents() }
       </div>
     );
+  }
+
+  renderPrintInstructions(){
+    if (!this.props.currentOrder.fulfilled){
+      const {requester_notes, provider_notes} = this.props.currentOrder;
+      const orderNotes = requester_notes ? requester_notes : 'n/a';
+      const tailorNotes = provider_notes ? provider_notes : 'n/a';
+
+      return (
+        <div>
+          <button className='pink-button' onClick={() => window.print()}>
+            Print Instructions
+          </button>
+
+          <div className='print'>
+            <div><img src={logoImage} style={{maxWidth: '200px'}}/></div>
+            <h2>Alterations for Order #{this.props.currentOrder.id}</h2>
+            <h4>Customer Name: {this.props.currentOrder.customer.first_name} {this.props.currentOrder.customer.last_name}</h4>
+            { this.renderList() }
+            <h3>Order Notes: <p style={{display: 'inline'}}>{orderNotes}</p></h3>
+            <h3>Taior Notes: <p style={{display: 'inline'}}>{tailorNotes}</p></h3>
+          </div>
+        </div>
+      );
+    }
   }
 
   showHideDeatilsOrCustomerMeasurementsButton(boolean){

@@ -76,24 +76,19 @@ class NavigationLinks extends Component {
             route="/orders"
             text="Orders"
             image={ordersImage} />
-      
+
           <NavigationLink
             cssClass="messages-link"
             route="/messages" text="Messages"
             image={messageImage} />
-
 
           <NavigationLink
             cssClass="edit-store-link"
             route={editStoreRoute}
             text="Account"
             image={editStoreImage} />
-
-
-          <li><a className="navbar-links-li close-menu-link" onClick={() => toggleNavState(navState) }>
-             <img src={logoutImage} alt='logout' /> Close Menu
-          </a></li>
         </ul>
+          {this.closeMenu(this.props)}
       </div>
     );
   }
