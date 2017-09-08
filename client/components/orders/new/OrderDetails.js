@@ -125,6 +125,7 @@ class OrderDetails extends Component {
 
         <br />
         <br />
+        
         <Checkbox
           checked={!shipToStore}
           text='Ship To Customer'
