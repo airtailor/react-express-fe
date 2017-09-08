@@ -123,6 +123,8 @@ class OrderDetails extends Component {
           name='ship-to-store'
           onChange={() => this.props.updateCartShipTo(!shipToStore)} />
 
+        <br />
+        <br />
         <Checkbox
           checked={!shipToStore}
           text='Ship To Customer'
