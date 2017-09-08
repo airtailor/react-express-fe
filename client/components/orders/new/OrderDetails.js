@@ -7,11 +7,13 @@ import {
   updateCartNotes
 } from '../../../actions';
 import FormField from '../../FormField';
+import Checkbox from '../../Checkbox';
 
 class OrderDetails extends Component {
   constructor(){
     super();
     this.updateCustomerInfo = this.updateCustomerInfo.bind(this);
+    //this.props.updateCartShipTo = this.props.updateCartShipTo.bind(this);
   }
 
   updateCustomerInfo(key, value){
@@ -52,12 +54,23 @@ class OrderDetails extends Component {
       {/*     <h3 className='customer-agrees-prompt'>Customer agrees to receive important updates from Air Tailor:</h3>
       <label>Yes! </label> i*/}
 
-          <input
+          {/*<input
             type='checkbox'
             checked={agrees_to_terms}
-            onChange={() => this.updateCustomerInfo('agrees_to_terms', !agrees_to_terms)}/>
-          <label className='customer-agrees-prompt'> Customer agrees to receive important updates from Air Tailor</label>
+            onChange={() => this.updateCustomerInfo('agrees_to_terms', !agrees_to_terms)}/>*/}
 
+        <Checkbox
+            checked={agrees_to_terms}
+            fieldName={'agrees_to_terms'}
+            name='agrees-to-terms'
+            text='Customer agrees to receive important updates from Air Tailor'
+            onChange={this.updateCustomerInfo} />
+
+         {/*<input type="checkbox" id="check" name="check" value="" />
+          <label htmlFor="check" className="customer-agrees-prompt">
+            <span></span>
+            Customer agrees to receive important updates from Air Tailor
+          </label>*/}
         </div>
       </div>
     )
@@ -71,22 +84,27 @@ class OrderDetails extends Component {
         <div>
           <FormField value={customerInfo.street1}
             fieldName={'street1'} title={'Address 1'}
+            className='order-details-input'
             onChange={this.updateCustomerInfo} />
 
             <FormField value={customerInfo.street2}
               fieldName={'street2'} title={'Address 2'}
+              className='order-details-input'
               onChange={this.updateCustomerInfo} />
 
             <FormField value={customerInfo.city}
               fieldName={'city'} title={'City'}
+              className='order-details-input'
               onChange={this.updateCustomerInfo} />
 
             <FormField value={customerInfo.state}
               fieldName={'state'} title={'State'}
+              className='order-details-input'
               onChange={this.updateCustomerInfo} />
 
             <FormField value={customerInfo.zip}
               fieldName={'zip'} title={'Zip'}
+              className='order-details-input'
               onChange={this.updateCustomerInfo} />
         </div>
       );
@@ -97,9 +115,21 @@ class OrderDetails extends Component {
     const {shipToStore, customerInfo} = cart;
     return (
       <div>
-        <h3>Ship To:</h3>
+        <br />
         <div>
-          <label>To Store: </label>
+        <Checkbox
+          checked={shipToStore}
+          text='Ship To Store'
+          name='ship-to-store'
+          onChange={() => this.props.updateCartShipTo(!shipToStore)} />
+
+        <Checkbox
+          checked={!shipToStore}
+          text='Ship To Customer'
+          name='ship-to-customer'
+          onChange={() => this.props.updateCartShipTo(!shipToStore)} />
+
+          {/*<label>To Store: </label>
           <input
             type='checkbox'
             checked={shipToStore}
@@ -109,7 +139,7 @@ class OrderDetails extends Component {
           <input
             type='checkbox'
             checked={!shipToStore}
-            onChange={() => this.props.updateCartShipTo(!shipToStore)}/>
+            onChange={() => this.props.updateCartShipTo(!shipToStore)}/>*/}
         </div>
         {this.renderCustomerAddress(shipToStore, customerInfo)}
       </div>
@@ -125,9 +155,10 @@ class OrderDetails extends Component {
 
         <h3>Order Notes</h3>
         <textarea
+          className='order-details-notes-textarea'
           value={this.props.cart.notes}
           onChange={e => this.props.updateCartNotes(e.target.value)}
-          cols={43} rows={10}>
+          cols={36} rows={10}>
         </textarea>
       </div>
     );
