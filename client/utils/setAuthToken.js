@@ -9,9 +9,11 @@ export default function setAuthToken(token){
     Axios.defaults.headers.common['expiry'] = expiry;
     return true;
   } else {
+    debugger;
     delete Axios.defaults.headers.common['client'];
     delete Axios.defaults.headers.common['uid'];
     delete Axios.defaults.headers.common['access-token'];
+    delete Axios.defaults.headers.common['expiry'];
     return false
   }
 }

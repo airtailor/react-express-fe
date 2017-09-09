@@ -15,15 +15,16 @@ router.post('/api/validate_token', (req, res) => {
 
   Axios.get(`${apiUrl}/auth/validate_token`, { headers })
   .then(response => {
+    console.log('successful response!!!!!!!!!!!!!!!!!!!!!!', response)
     res.json({ headers: response.headers, body: response.data.data });
   })
   .catch(err => {
     if (err instanceof Error){
       console.log("\n\n\n\n\n\n\n\n@@@@@@@@@@@@@", err);
-      res.json(err);
+      res.json({err});
     } else {
       console.log("error: ", err);
-      res.json(err);
+      res.json({err});
     }
   });
 });

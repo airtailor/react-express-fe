@@ -30,9 +30,10 @@ const setTokens = (res) => {
   if (!res.data.headers['access-token']) { return; }
   const { client, uid, expiry } = res.data.headers;
   const accessToken = res.data.headers['access-token'];
-  const AirTailorTokens = { accessToken, client, uid, expiry }
+  const AirTailorTokens = { accessToken, client, uid, expiry };
   setAuthToken(AirTailorTokens);
   setLocalStorageAuth(AirTailorTokens);
+  //console.log('new token', AirTailorTokens.accessToken)
 }
 
 const resetTokens = () => {
@@ -83,38 +84,47 @@ export function signOutCurrentUser(){
 export function getStoreOrders(store_id){
   const url =`${expressApi}/stores/${store_id}/orders`;
   return dispatch => {
-    return Axios.get(url)
-      .then(res => {
-        if (res.data.headers.client && res.data.headers.uid){
-          setTokens(res);
-          setLocalStorageUser(res.data.body);
-        } else {
-          // console.log('getStoreOrders - no new auth headers');
-        }
-        dispatch(setStoreOrders(res.data.body));
+    return validateToken()
+      .catch(err => console.log('line 88', err))
+      .then(setTokens)
+      .then(() => {
+        return Axios.get(url)
+          .then(res => {
+            // if (res.data.headers.client && res.data.headers.uid){
+            //   setTokens(res);
+            //   setLocalStorageUser(res.data.body);
+            // } else {
+            //   // console.log('getStoreOrders - no new auth headers');
+            // }
+            dispatch(setStoreOrders(res.data.body));
+          })
+          .catch(err => {
+            console.log('error',err);
+          });
       })
-      .catch(err => {
-        console.log('error',err);
-      });
   }
 }
 
 export function getCurrentOrder(store_id, order_id){
   const url =`${expressApi}/stores/${store_id}/orders/${order_id}`;
   return dispatch => {
-    return Axios.get(url)
-      .then(res => {
-        if (res.data.headers.client && res.data.headers.uid){
-          setTokens(res);
-          setLocalStorageUser(res.data.body);
-        } else {
-          // console.log('getStoreOrders - no new auth headers');
-        }
-        dispatch(setCurrentOrder(res.data.body));
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.get(url)
+          .then(res => {
+        // if (res.data.headers.client && res.data.headers.uid){
+        //   setTokens(res);
+        //   setLocalStorageUser(res.data.body);
+        // } else {
+        //   // console.log('getStoreOrders - no new auth headers');
+        // }
+            dispatch(setCurrentOrder(res.data.body));
+          })
+          .catch(err => {
+            console.log('error', err);
+          });
       })
-      .catch(err => {
-        //console.log('error', err);
-      });
   }
 }
 
@@ -163,12 +173,20 @@ export function updateOrder(data){
 
 export function updateCustomer(data){
   const url = `${expressApi}/customers/${data.customer.id}`;
-  return Axios.put(url, data)
+  return validateToken()
+    .then(setTokens)
+    .then(() => {
+      return Axios.put(url, data)
+    })
 }
 
 export function createStore(data){
-  const url = `${expressApi}/stores/`;
-  return Axios.post(url, data)
+  return validateToken()
+    .then(setTokens)
+    .then(() => {
+      const url = `${expressApi}/stores/`;
+      return Axios.post(url, data)
+    })
 }
 
 export function getTailorList(){
@@ -223,8 +241,12 @@ export function getCompanies(){
 }
 
 export function createShipment(data){
-  const url = `${expressApi}/shipments`;
-  return Axios.post(url, data)
+  return validateToken()
+    .then(setTokens)
+    .then(() => {
+      const url = `${expressApi}/shipments`;
+      return Axios.post(url, data)
+    });
 }
 
 export function getCustomerMeasurements(data){
@@ -280,8 +302,12 @@ export function getNewOrders(){
 }
 
 export function getOrderAndMessagesCount(store_id){
-  const url = `${expressApi}/stores/${store_id}/orders_and_messages_count`;
-  return Axios.get(url);
+  return validateToken()
+    .then(setTokens)
+    .then(() => {
+      const url = `${expressApi}/stores/${store_id}/orders_and_messages_count`;
+      return Axios.get(url);
+    });
 }
 
 export function getConversations(store_id){
@@ -397,7 +423,7 @@ export function submitOrder(props){
     return findOrCreateCustomer(removeFalseyValuesFromObject(customerInfo))
       .then(res => {
         if (res.data.body.errors){
-          //console.log('errors', res.data.body.errors);
+          console.log('errors', res.data.body.errors);
         } else {
           const customer_id = res.data.body.id;
           const requester_id = currentStore.id;
