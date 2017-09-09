@@ -471,6 +471,29 @@ export function submitOrder(props){
   }
 }
 
+export function updatePassword(data){
+  const url = `${expressApi}/users/update_password`;
+  return dispatch => {
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.put(url, data)
+          .then(res => {
+            if (res.data.body.email){
+              dispatch(setCurrentUser(res.data.body));
+            } else {
+              console.log('hmmm something went wrong', res)
+            }
+          })
+          .catch(err => {
+            debugger;
+          })
+      })
+      .catch(err => console.log('err index.js line 488', err))
+  }
+}
+
+
 // actions
 
 export function setConfirmedNewOrder(order){

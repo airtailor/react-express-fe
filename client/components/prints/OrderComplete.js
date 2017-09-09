@@ -65,4 +65,5 @@ const mapStateToProps = (store) => {
     currentOrder: store.currentOrder
   }
 }
+
 export default connect(mapStateToProps)(OrderComplete);

@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { getCurrentStore, updateStore } from '../../actions';
 import FormField from './../FormField';
 import SectionHeader from './../SectionHeader';
+import UsersEdit from '../users/UsersEdit';
 
 class StoresEdit extends Component {
   constructor(props){
@@ -88,6 +89,10 @@ class StoresEdit extends Component {
             <h3>Edit Store</h3>
 
             { this.renderForm(this.state) }
+            <br />
+            <hr />
+            <br />
+            <UsersEdit />
           </div>
         </div>
       );
