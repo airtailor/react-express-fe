@@ -1,8 +1,20 @@
-export const getPrintButtonPrompt = (shippingType, order) =>{
-  const verb = labelExists(shippingType, order) ?
-    'Print' :
-    'Create';
-  return `${verb} Shipping Label`
+export const getPrintButtonPrompt = (shippingType, order, loadingLabel) => {
+  let verb;
+  const label = labelExists(shippingType, order);
+  if (label) {
+    verb = 'Print';
+  } else {
+    if (loadingLabel) {
+      verb = 'Creating';
+    } else {
+      verb = 'Create';
+    }
+  }
+  // const verb = labelExists(shippingType, order) ?
+  //   'Print' :
+  //   'Create';
+  // return `${verb} Shipping Label`
+  return `${verb} Shipping Label`;
 }
 
 export const getShippingType = (role, orderType) =>{

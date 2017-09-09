@@ -15,7 +15,6 @@ router.post('/api/validate_token', (req, res) => {
 
   Axios.get(`${apiUrl}/auth/validate_token`, { headers })
   .then(response => {
-    console.log('successful response!!!!!!!!!!!!!!!!!!!!!!', response)
     res.json({ headers: response.headers, body: response.data.data });
   })
   .catch(err => {
@@ -202,16 +201,16 @@ router.post('/api/stores/:store_id/orders/:order_id/edit', (req, res) => {
   const expiry = req.get('expiry');
   const headers = { client, ["access-token"]: accessToken, uid, expiry };
   const data = req.body;
-  console.log("!!!!! DATA!!", data);
-  console.log("!!!!! req.body!!", req.body);
-  console.log('outgoing headers put store/id/orders/id', headers);
+  // console.log("!!!!! DATA!!", data);
+  // console.log("!!!!! req.body!!", req.body);
+  // console.log('outgoing headers put store/id/orders/id', headers);
 
   Axios.put(`${apiUrl}/api/stores/${store_id}/orders/${order_id}`, {
     order: data.order,
     headers
   })
   .then(response => {
-    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {
@@ -268,7 +267,7 @@ router.put('/api/customers/:customer_id/', (req, res) => {
     headers
   })
   .then(response => {
-    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    //console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {
@@ -293,7 +292,7 @@ router.get('/api/tailors', (req, res) => {
     headers
   })
   .then(response => {
-    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    //console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {
@@ -318,7 +317,7 @@ router.get('/api/companies', (req, res) => {
     headers
   })
   .then(response => {
-    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {
@@ -346,7 +345,7 @@ router.put('/api/stores/:store_id/', (req, res) => {
     headers
   })
   .then(response => {
-    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {
@@ -373,7 +372,7 @@ router.post('/api/stores', (req, res) => {
     headers
   })
   .then(response => {
-    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {
@@ -400,7 +399,7 @@ router.post('/api/shipments', (req, res) => {
     headers
   })
   .then(response => {
-    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {
@@ -456,7 +455,7 @@ router.post('/api/customers/:customer_id/measurements', (req, res) => {
     headers
   })
   .then(response => {
-    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {
@@ -483,7 +482,7 @@ router.get('/api/new_orders', (req, res) => {
     headers
   })
   .then(response => {
-    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {
@@ -509,7 +508,7 @@ router.get('/api/stores/:store_id/orders_and_messages_count', (req, res) => {
     headers
   })
   .then(response => {
-    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {
@@ -535,7 +534,7 @@ router.get('/api/stores/:store_id/conversations', (req, res) => {
     headers
   })
   .then(response => {
-    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {
@@ -561,7 +560,7 @@ router.get('/api/stores/:store_id/conversations/:conversation_id', (req, res) =>
     headers
   })
   .then(response => {
-    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
+    // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {

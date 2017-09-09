@@ -32,7 +32,8 @@ class OrdersShow extends Component {
     this.state = {
       notes: '',
       displayNotesForm: false,
-      showMeasurements: false
+      showMeasurements: false,
+      loadingLabel: false
     }
   }
 
@@ -222,8 +223,17 @@ class OrdersShow extends Component {
 
   fulfillOrder(){
     const data = { order: {id: this.props.currentOrder.id, store_id: this.props.currentOrder.store_id, fulfilled: true }};
+    this.setState({loadingLabel: true});
     this.props.updateOrder(data)
-      .then(res => this.refreshCurrentOrder())
+      .then(res => {
+        // this.refreshCurrentOrder();
+        const role = this.props.currentUser.user.roles[0].name;
+        const type = this.props.currentOrder.type;
+        const shippingType = getShippingType(role, type);
+        this.makeShippingLabel(shippingType)
+        //this.refreshCurrentOrder();
+        //this.setState({loadingLabel: false})
+      })
       .catch(err => console.log(err));
   }
 
@@ -256,8 +266,11 @@ class OrdersShow extends Component {
   makeShippingLabel(type){
     const data = { shipment: { type, order_id: this.props.currentOrder.id }};
     createShipment(data)
-      .then(res => this.refreshCurrentOrder())
-      .catch(err => console.log(err));
+      .then(res => {
+        this.setState({loadingLabel: false})
+        this.refreshCurrentOrder();
+      })
+      .catch(err => console.log('err', err));
   }
 
   renderPrintLabels(){
@@ -268,12 +281,10 @@ class OrdersShow extends Component {
     const { currentUser, currentOrder } = this.props;
     const role = currentUser.user.roles[0].name;
     const shippingType = getShippingType(role, currentOrder.type);
-    const printPrompt = getPrintButtonPrompt(shippingType, currentOrder);
-
+    const printPrompt = getPrintButtonPrompt(shippingType, currentOrder, this.state.loadingLabel);
 
     if (printPrompt.split(' ')[0] === "Print"){
-      const url = currentOrder[toSnakeCaseFromCamelCase(lowerCaseFirstLetter(shippingType))].shipping_label;
-
+      const url = this.props.currentOrder[toSnakeCaseFromCamelCase(lowerCaseFirstLetter(shippingType))].shipping_label;
       return (
         <div>
           <button className='pink-button' onClick={() => window.print()}>
@@ -284,9 +295,22 @@ class OrdersShow extends Component {
           {/* <OrderComplete order={currentOrder} shippingType={shippingType} /> */}
         </div>
       )
+    } else if (printPrompt.split(' ')[0] === 'Creating'){
+      return (
+        <button
+          className='pink-button'
+          disabled={this.state.loadingLabel}>
+
+          {printPrompt}
+        </button>
+      );
     } else if (printPrompt.split(' ')[0] === 'Create'){
       return (
-        <button className='pink-button' onClick={() => this.makeShippingLabel(shippingType)}>
+        <button
+          className='pink-button'
+          disabled={this.state.loadingLabel}
+          onClick={() => this.makeShippingLabel(shippingType)}>
+
           {printPrompt}
         </button>
       );
@@ -334,7 +358,7 @@ class OrdersShow extends Component {
   }
 
   renderPrintInstructions(){
-    if (!this.props.currentOrder.fulfilled){
+    if (!this.props.currentOrder.fulfilled && this.props.currentOrder.arrived){
       const {requester_notes, provider_notes} = this.props.currentOrder;
       const orderNotes = requester_notes ? requester_notes : 'n/a';
       const tailorNotes = provider_notes ? provider_notes : 'n/a';
