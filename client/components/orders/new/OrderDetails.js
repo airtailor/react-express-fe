@@ -8,6 +8,8 @@ import {
 } from '../../../actions';
 import FormField from '../../FormField';
 import Checkbox from '../../Checkbox';
+import Zippopotam from '../../../lib/zippopotam';
+import {ValidateZip} from '../../../utils/validations';
 
 class OrderDetails extends Component {
   constructor(){
@@ -80,6 +82,21 @@ class OrderDetails extends Component {
     if (shipToStore){
       // do nothing
     } else {
+
+      const zippo = ValidateZip(customerInfo.zip) ? 
+        Zippopotam.get(customerInfo.zip) : 
+        '';
+
+      if (zippo.then && (!customerInfo.city && !customerInfo.state)) {
+        zippo.then(res => {
+          const formatted_address = res.results[0].formatted_address;
+          const city = formatted_address.split(', ')[0];
+          const state = formatted_address.split(', ')[1].match(/[a-zA-Z]+/g)[0];
+          this.updateCustomerInfo('city', city);
+          this.updateCustomerInfo('state', state);
+        });
+      }
+      
       return (
         <div>
           <FormField value={customerInfo.street1}
