@@ -24,6 +24,18 @@ const renderAlterations = (props) => {
   });
 }
 
+const renderAddToCart = (props) => {
+  if (props.selectedAlterations.length > 0) {
+    return (
+      <input 
+        type='submit' 
+        className='short-button' 
+        value='Add To Cart' 
+        onClick={props.addToCart} />
+    );
+  }
+}
+
 const SelectAlterations = (props) => {
   return (
     <div className='alteration-select'>
@@ -34,7 +46,7 @@ const SelectAlterations = (props) => {
 
       <div className='cart-buttons full-width'>
         <input type='submit' className='short-button' value='Back' onClick={props.renderStageOne} />
-        <input type='submit' className='short-button' value='Add To Cart' onClick={props.addToCart} />
+        {renderAddToCart(props)}
       </div>
     </div>
   );
