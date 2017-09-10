@@ -638,7 +638,6 @@ router.put('/api/users/update_password', (req, res) => {
     headers
   })
   .then(response => {
-    //console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
     res.json({ headers: response.headers, body: response.data });
   })
   .catch(err => {
@@ -652,6 +651,31 @@ router.put('/api/users/update_password', (req, res) => {
   });
 });
 
+
+router.get('/api/orders/search/:query', (req, res) => {
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const expiry = req.get('expiry');
+  const headers = { client, ["access-token"]: accessToken, uid };
+  const {query} = req.params;
+
+  Axios.get(`${apiUrl}/api/orders/search/${query}`, {
+    headers
+  })
+  .then(response => {
+    res.json({ headers: response.headers, body: response.data });
+  })
+  .catch(err => {
+    if (err instanceof Error){
+      console.log("@@@@@@@@@@@@@", err.response.status);
+      res.json(err.response.status);
+    } else {
+      console.log("error: ", err);
+      res.json(err);
+    }
+  });
+});
 
 router.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));

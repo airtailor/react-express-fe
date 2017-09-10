@@ -20,6 +20,7 @@ export const UPDATE_CART_SHIP_TO = 'UPDATE_CART_SHIP_TO';
 export const SET_CONFIRMED_NEW_ORDER = 'SET_CONFIRMED_NEW_ORDER';
 export const RESET_CART = 'RESET_CART';
 export const UPDATE_CART_NOTES = 'UPDATE_CART_NOTES';
+export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
 
 export const storeTypes = [
   { name: 'Tailor', id: 'tailor' },

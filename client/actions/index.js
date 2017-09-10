@@ -21,7 +21,8 @@ import {
   UPDATE_CART_SHIP_TO,
   SET_CONFIRMED_NEW_ORDER,
   RESET_CART,
-  UPDATE_CART_NOTES
+  UPDATE_CART_NOTES,
+  SET_SEARCH_RESULTS
 } from '../utils/constants';
 
 import {removeFalseyValuesFromObject} from '../utils/format';
@@ -494,7 +495,36 @@ export function updatePassword(data){
 }
 
 
+export function searchOrders(query){
+  const url = `${expressApi}/orders/search/${query}`;
+  return dispatch => {
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.get(url)
+          .then(res => {
+            if (!res.data.body.errors){
+              dispatch(setSearchResults(res.data.body));
+              return res.data.body;
+            } else {
+              console.log('hmmm something went wrong', res)
+            }
+          })
+          .catch(err => {
+            debugger;
+          })
+      })
+      .catch(err => console.log('err index.js line 488', err))
+  }
+}
 // actions
+
+export function setSearchResults(orders){
+  return {
+    type: SET_SEARCH_RESULTS,
+    orders
+  }
+}
 
 export function setConfirmedNewOrder(order){
   return {

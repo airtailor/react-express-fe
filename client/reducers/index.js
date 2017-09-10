@@ -14,6 +14,7 @@ import garmentsReducer from './garmentsReducer';
 import alterationsReducer from './alterationsReducer';
 import cartReducer from './cartReducer';
 import confirmedNewOrderReducer from './confirmedNewOrderReducer';
+import searchResultsReducer from './searchResultsReducer';
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
@@ -30,7 +31,8 @@ const rootReducer = combineReducers({
   garments: garmentsReducer,
   alterations: alterationsReducer,
   cart: cartReducer,
-  confirmedNewOrder: confirmedNewOrderReducer
+  confirmedNewOrder: confirmedNewOrderReducer,
+  searchResults: searchResultsReducer
 });
 
 export default rootReducer;
