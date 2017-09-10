@@ -14,16 +14,15 @@ const CustomerLink = (props) => {
 }
 
 const CartRibbon = (props) => {
-  const rotate = props.rotate;
-
-  if (props.showCart) {
-    return (
-      <Link className='cart-ribbon' to={props.link}>
-        <h1 className={`cart-ribbon-sign ${rotate}`}>+</h1>
-        <div className='cart-ribbon-triangle'></div>
-      </Link>
-    );
-  }
+  const {rotate} = props;
+  let link = props.link;
+  if (!link) {link = '/orders/new'}
+  return (
+    <Link className='cart-ribbon' to={link}>
+      <h1 className={`cart-ribbon-sign ${rotate}`}>+</h1>
+      <div className='cart-ribbon-triangle'></div>
+    </Link>
+  );
 }
 
 const SectionHeader = (props) => {
