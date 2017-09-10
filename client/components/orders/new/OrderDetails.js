@@ -171,7 +171,6 @@ class OrderDetails extends Component {
       <div className='order-details'>
         <h2>ORDER DETAILS</h2>
         {this.renderCustomerInfo(this.props.cart)}
-        {this.renderShipTo(this.props.cart)}
 
         <h3>Order Notes</h3>
         <textarea
@@ -180,6 +179,9 @@ class OrderDetails extends Component {
           onChange={e => this.props.updateCartNotes(e.target.value)}
           cols={36} rows={10}>
         </textarea>
+
+        <h3>Shipping</h3>
+        {this.renderShipTo(this.props.cart)}
       </div>
     );
   }
