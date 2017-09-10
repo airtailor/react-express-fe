@@ -30,7 +30,7 @@ const renderAddToCart = (props) => {
       <input 
         type='submit' 
         className='short-button' 
-        value='Add To Cart' 
+        value='Add To Basket' 
         onClick={props.addToCart} />
     );
   }

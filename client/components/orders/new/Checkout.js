@@ -79,7 +79,7 @@ class Checkout extends Component {
     return (
       <div>
         <Link to='/orders/new'>
-          <input type='submit' className='short-button' value='Back' />
+          <input type='submit' className='short-button' value='Make Changes' />
         </Link>
         <input
           onClick={() => this.submitOrder(this.props)}
