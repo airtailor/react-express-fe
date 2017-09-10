@@ -95,7 +95,7 @@ class NavigationLinks extends Component {
 
   closeMenu(props){
     const {toggleNavState, navState} = props;
-    if (window.innerWidth < 816) {
+    if (window.innerWidth < 981) {
       return (
         <div style={{marginTop: '50%'}}>
           <li><a className="navbar-links-li close-menu-link" onClick={() => toggleNavState(navState) }>

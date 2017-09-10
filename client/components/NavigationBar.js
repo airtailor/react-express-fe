@@ -35,7 +35,8 @@ class NavigationBar extends Component {
   }
 
   getNavActive(window){
-    return window.innerWidth < 816 ? false : true;
+    console.log('window', window.innerWidth);
+    return window.innerWidth < 981 ? false : true;
   }
 
   handleResize(){
