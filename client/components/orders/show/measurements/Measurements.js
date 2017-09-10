@@ -185,11 +185,36 @@ class Measurements extends Component {
       } else {
         return (
           <div>
-            <InputMeasurement disabled={editEnabled} kind='back_width' value={measurements.back_width} />
-            <InputMeasurement disabled={editEnabled} kind='bicep' value={measurements.bicep} />
-            <InputMeasurement disabled={editEnabled} kind='elbow' value={measurements.elbow} />
-            <InputMeasurement disabled={editEnabled} kind='forearm' value={measurements.forearm} />
-            <InputMeasurement disabled={editEnabled} kind='inseam' value={measurements.inseam} />
+            <InputMeasurement 
+              update={this.updateMeasurement}
+              disabled={editEnabled} 
+              kind='back_width' 
+              value={measurements.back_width} />
+
+            <InputMeasurement 
+              update={this.updateMeasurement}
+              disabled={editEnabled} 
+              kind='bicep' 
+              value={measurements.bicep} />
+
+            <InputMeasurement 
+              update={this.updateMeasurement}
+              disabled={editEnabled} 
+              kind='elbow' 
+              value={measurements.elbow} />
+
+            <InputMeasurement 
+              update={this.updateMeasurement}
+              disabled={editEnabled} 
+              kind='forearm' 
+              value={measurements.forearm} />
+
+            <InputMeasurement 
+              update={this.updateMeasurement}
+              disabled={editEnabled} 
+              kind='inseam' 
+              value={measurements.inseam} />
+
           </div>
         )
       }
