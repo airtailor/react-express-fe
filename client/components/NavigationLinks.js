@@ -8,7 +8,7 @@ import ordersImage from '../images/orders.png';
 import logoutImage from '../images/logout.png';
 import editStoreImage from '../images/account.png';
 import messageImage from '../images/message.png';
-
+import Intercom from 'react-intercom';
 
 class NavigationLinks extends Component {
   adminNavbar(){
@@ -108,7 +108,13 @@ class NavigationLinks extends Component {
   }
 
   retailerNavbar(){
-    const {toggleNavState, navState, store} = this.props;
+    const {currentUser, toggleNavState, navState, store} = this.props;
+    const user = {
+      user_id: currentUser.user.id,
+      email: currentUser.user.email,
+      name: currentUser.user.email
+    };
+
     const editStoreRoute = `/stores/${store.id}/edit`;
     return (
       <div>
@@ -137,10 +143,14 @@ class NavigationLinks extends Component {
             image={editStoreImage} />
         </ul>
         {this.closeMenu(this.props)}
+        <div className="add">
+          <Intercom appID="j5szofcq" {...user} />
+        </div>
       </div>
     );
   }
   render() {
+
     if (this.props.admin) {
       return this.adminNavbar();
     } else if (this.props.retailer) {
@@ -160,6 +170,7 @@ class NavigationLinks extends Component {
 
 const mapStateToProps = (store) => {
   return {
+    currentUser: store.currentUser,
     store: store.currentStore
   }
 }

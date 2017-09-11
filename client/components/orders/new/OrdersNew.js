@@ -7,6 +7,7 @@ import SectionHeader from '../../SectionHeader';
 import SelectAlterations from './SelectAlterations';
 import Cart from './Cart';
 import OrderDetails from './OrderDetails';
+import Intercom from 'react-intercom';
 
 class OrdersNew extends Component {
   constructor(){
@@ -77,10 +78,18 @@ class OrdersNew extends Component {
   }
 
   render(){
+    const { currentUser } = this.props;
+
+    const user = {
+      user_id: currentUser.user.id,
+      email: currentUser.user.email,
+      name: currentUser.user.email
+    };
+
     return (
       <div>
-        <SectionHeader 
-          text='New Order' 
+        <SectionHeader
+          text='New Order'
           rotate={'rotate'}
           link={'/'}
           showCart={true} />
@@ -108,4 +117,6 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({addGarmentToCart}, dispatch);
 }
 
+// app id
+// j5szofcq
 export default connect(mapStateToProps, mapDispatchToProps)(OrdersNew);
