@@ -18,6 +18,7 @@ import OrdersNew from './orders/new/OrdersNew';
 import Checkout from './orders/new/Checkout';
 import OrderConfirmation from './orders/new/OrderConfirmation';
 import SearchResults from './search/searchResults';
+import SelectAlterations from './orders/new/SelectAlterations';
 
 const AvailableRoutes = (props) => {
   const { loggedIn, admin, retailer } = props;
@@ -64,6 +65,14 @@ const AvailableRoutes = (props) => {
           )
         )}/>
 
+        <Route exact path='/orders/new/:stage/:index' render={props => (
+         (admin || retailer) ? (
+            <OrdersNew {...props} />
+          ) : (
+            <Redirect to='/' />
+          )
+        )}/>
+
         <Route exact path='/orders/:order_id' render={(props) => (
           loggedIn ? (
             <OrdersShow {...props} />
@@ -72,6 +81,7 @@ const AvailableRoutes = (props) => {
           )
         )}/>
       </Switch>
+
 
       <Route path='/orders/:order_id/edit' render={(props) => (
         loggedIn ? (
@@ -122,6 +132,7 @@ const AvailableRoutes = (props) => {
           <Redirect to='/' />
         )
       )}/>
+
 
       <Route exact path='/messages' render={props => (
         loggedIn ? (

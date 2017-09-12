@@ -4,7 +4,9 @@ import {
   UPDATE_CART_CUSTOMER_INFO,
   UPDATE_CART_SHIP_TO,
   RESET_CART,
-  UPDATE_CART_NOTES
+  UPDATE_CART_NOTES,
+  UPDATE_GARMENT_IN_CART
+
 } from '../utils/constants';
 
 const initialState = {
@@ -27,6 +29,7 @@ const initialState = {
 };
 
 const cartReducer = (state = initialState, action) => {
+  console.log('cart reducer', action.type);
   switch (action.type) {
     case ADD_GARMENT_TO_CART:
       return {
@@ -78,6 +81,8 @@ const cartReducer = (state = initialState, action) => {
         notes: ''
       };
       break;
+    case UPDATE_GARMENT_IN_CART:
+      //debugger;
     default: return state;
   }
 }

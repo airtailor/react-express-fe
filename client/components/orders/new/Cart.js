@@ -18,23 +18,47 @@ const renderGarmentAlterations = (garment) => {
 
 const renderCartItems = (props) => {
   const {garments} = props.cart;
-  const {removeGarmentFromCart} = props;
-  if (garments.length > 0) {
-    return garments.map((garment, index) => {
+  const garmentList = garments;
+  const {removeGarmentFromCart, renderSelectAlterations} = props;
+  if (garmentList.length > 0) {
+    return garmentList.map((garment, index) => {
+      // pass 2 as the stage for OrdersNew to go directly to
+      // the SelectAlterations stage
+      //
+      // pass the index of the garment in the cart so that the
+      // SelectAlterations page will render that garment in the cart
+      const stage = 2; 
+      const link = `/orders/new/${stage}/${index}`;
       return (
-        <div style={{marginLeft: '15px'}}key={index}>
+        <div 
+          key={index}
+          style={{marginLeft: '15px'}}>
+
           <h3>
-            {garment.title}
             <span
+             className="cart-item cart-item-title" 
+              onClick={() => {
+                renderSelectAlterations(index, garment, garment.alterations)
+              }}>
+              {garment.title}
+            </span>
+            <span
+              className="cart-item" 
               onClick={() => removeGarmentFromCart(index)}
               className='remove-from-cart-button'>
               X
             </span>
           </h3>
-          {renderGarmentAlterations(garment)}
+          <span 
+            className="cart-item" 
+            onClick={() => {
+              renderSelectAlterations(index, garment, garment.alterations)
+            }}>
+            {renderGarmentAlterations(garment)}
+          </span>
           <hr className='alteration-hr' />
         </div>
-      )
+      );
     });
   } else {
     return <div></div>;

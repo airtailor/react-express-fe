@@ -62,4 +62,13 @@
   width: 90%;
 }
 
+.cart-item {
+  @extend .hoverable;
+  background-color: white;
+}
+
+.cart-item-title {
+  padding-right: 180px;
+}
+
 

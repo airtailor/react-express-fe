@@ -15,7 +15,7 @@ const config = {
             test: /\.js$/,
             include: path.join(__dirname, '/client'),
             exclude: /node_modules/,
-            loaders: ['react-hot-loader', 'babel-loader']
+            loaders: ['babel-loader']
           },
           {
             test: /\.scss$/,

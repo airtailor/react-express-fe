@@ -22,7 +22,8 @@ import {
   SET_CONFIRMED_NEW_ORDER,
   RESET_CART,
   UPDATE_CART_NOTES,
-  SET_SEARCH_RESULTS
+  SET_SEARCH_RESULTS,
+  UPDATE_GARMENT_IN_CART
 } from '../utils/constants';
 
 import {removeFalseyValuesFromObject} from '../utils/format';
@@ -517,7 +518,17 @@ export function searchOrders(query){
       .catch(err => console.log('err index.js line 488', err))
   }
 }
+
 // actions
+//
+export function setGarment(garment, index){
+  return {
+    type: UPDATE_GARMENT_IN_CART,
+    garment,
+    index
+  }
+}
+
 
 export function setSearchResults(orders){
   return {

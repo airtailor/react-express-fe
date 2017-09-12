@@ -26,13 +26,23 @@ const renderAlterations = (props) => {
 
 const renderAddToCart = (props) => {
   if (props.selectedAlterations.length > 0) {
-    return (
-      <input 
-        type='submit' 
-        className='short-button' 
-        value='Add To Basket' 
-        onClick={props.addToCart} />
-    );
+    if (typeof(props.garmentIndex) === 'number') {
+      return (
+        <input 
+          type='submit'
+          className='short-button'
+          value='Update Garment'
+          onClick={props.updateGarment} />
+      );
+    } else {
+      return (
+        <input 
+          type='submit' 
+          className='short-button' 
+          value='Add To Basket' 
+          onClick={props.addToCart} />
+      );
+    }
   }
 }
 
@@ -54,7 +64,8 @@ const SelectAlterations = (props) => {
 
 const mapStateToProps = (store) => {
   return {
-    alterations: store.alterations.alterations
+    alterations: store.alterations.alterations,
+    cart: store.cart
   }
 }
 

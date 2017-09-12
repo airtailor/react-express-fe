@@ -9,6 +9,3 @@ node_modules/*
 *.webm
 *.jpg
 *.hot-update.*
-build/*.json
-build/*.js
-!build/bundle.js
