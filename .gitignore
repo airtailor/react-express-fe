@@ -8,6 +8,7 @@ node_modules/*
 *.ogv
 *.webm
 *.jpg
+*.hot-update.*
 build/*.json
 build/*.js
 !build/bundle.js
