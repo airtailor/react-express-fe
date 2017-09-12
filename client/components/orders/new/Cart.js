@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
 import {removeGarmentFromCart} from '../../../actions';
-import basketImage from '../../../images/basket.png';
 import {ValidateEmail, ValidatePhone, ValidateZip} from '../../../utils/validations';
+import {basketImage} from '../../../images';
 
 const renderGarmentAlterations = (garment) => {
   if (garment.alterations.length > 0) {

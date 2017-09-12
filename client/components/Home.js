@@ -7,9 +7,7 @@ import { getCurrentStore, getOrderAndMessagesCount } from '../actions';
 import SectionHeader from './SectionHeader';
 import OrderCard from './OrderCard';
 import OrderCardIcon from './OrderCardIcon';
-import ordersImage from '../images/orders.png';
-import messagesImage from '../images/message.png';
-import exclamationImage from '../images/red-exclamation.png';
+import {ordersImage, messageImage, exclamationImage} from '../images';
 
 class Home extends Component {
   constructor(){
@@ -45,7 +43,7 @@ class Home extends Component {
           styleClass='current-orders' />
 
         <OrderCard
-          icon={<OrderCardIcon url={messagesImage} alt='messages' />}
+          icon={<OrderCardIcon url={messageImage} alt='messages' />}
           count={unread_messages_count}
           type='Unread'
           call='READ >'
@@ -73,7 +71,7 @@ class Home extends Component {
           styleClass='current-orders' />
 
         <OrderCard
-          icon={<OrderCardIcon url={messagesImage} alt='messages' />}
+          icon={<OrderCardIcon url={messageImage} alt='messages' />}
           count={unread_messages_count}
           type='Unread'
           call='READ >'
@@ -101,7 +99,7 @@ class Home extends Component {
           styleClass='current-orders' />
 
         <OrderCard
-          icon={<OrderCardIcon url={messagesImage} alt='messages' />}
+          icon={<OrderCardIcon url={messageImage} alt='messages' />}
           count={unread_messages_count}
           type='Unread'
           call='READ >'
@@ -152,9 +150,9 @@ class Home extends Component {
   render(){
     return(
       <div>
-        <SectionHeader 
-          text={`Home / ${this.props.currentStore.name}`} 
-          showCart={this.props.currentUser.user.roles[0].name !== 'tailor' ? 
+        <SectionHeader
+          text={`Home / ${this.props.currentStore.name}`}
+          showCart={this.props.currentUser.user.roles[0].name !== 'tailor' ?
             true : false}
            link={'/orders/new'}
            rotate={''} />

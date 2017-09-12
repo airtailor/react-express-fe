@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import NavigationLinks from './NavigationLinks';
 import LogoMessage from './LogoMessage';
 import Hamburger from '../images/hamburger.png';
-import logoutImage from '../images/logout.png';
+import {logoutImage} from '../images';
 import {signOutCurrentUser} from '../actions';
 
 class NavigationBar extends Component {

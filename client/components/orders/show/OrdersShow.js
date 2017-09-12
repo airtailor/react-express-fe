@@ -15,12 +15,16 @@ import {
 
 import isEmpty from 'lodash/isEmpty';
 import SectionHeader from '../../SectionHeader';
-import shirtImage from '../../../images/shirt.png';
-import pantsImage from '../../../images/pants.png';
-import tieImage from '../../../images/necktie.png';
-import dressImage from '../../../images/dress.png';
-import skirtImage from '../../../images/dress.png'
-import suitJacketImage from '../../../images/jacket.png';
+
+import {
+  tieImage,
+  shirtImage,
+  suitImage,
+  skirtImage,
+  dressImage,
+  pantsImage
+} from '../../../images/garments';
+
 import suppliesImage from '../../../images/supplies.png';
 import logoImage from '../../../images/logo.png';
 import Measurements from './measurements/Measurements';
@@ -115,7 +119,7 @@ class OrdersShow extends Component {
       case 'Dress':
         return dressImage;
       case 'Suit Jacket':
-        return suitJacketImage;
+        return suitImage;
       case 'Neck Tie':
         return tieImage;
       case 'Skirt':

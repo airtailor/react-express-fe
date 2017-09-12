@@ -1,23 +1,65 @@
-import takeUpPantHemImage from '../images/how_to_pin/take-up-pant-hem.png';
-import taperPantLegImage from '../images/how_to_pin/taper-pant-leg.png';
-import pantsSeatWaistbandTakenInImage from '../images/how_to_pin/pants-seat-waistband-taken-in.png';
-import shirtSleevesLengthTakenUp from '../images/how_to_pin/shirt-sleeves-length-taken-up.png';
-import shirtSleevesTakenIn from '../images/how_to_pin/shirt-sleeves-taken-in.png';
-import shirtHemTakenUp from '../images/how_to_pin/shirt-hem-taken-up.png';
-import tShirtHemTakenUp from '../images/how_to_pin/t-shirt-hem-taken-up.png';
-import shirtShouldersTakenIn from '../images/how_to_pin/shirt-shoulders-taken-in.png';
-import shortenSkirt from '../images/how_to_pin/shorten-skirt.png';
-import takeInSkirt from '../images/how_to_pin/take-in-skirt.png';
-import shortenDress from '../images/how_to_pin/shorten-dress.png';
-import takeInDress from '../images/how_to_pin/take-in-dress.png';
-import shortenFromDressShoulders from '../images/how_to_pin/shorten-from-dress-shoulders.png';
-import shortenJacketLength from '../images/how_to_pin/shorten-jacket-length.png';
-import shortenSleeveLength from '../images/how_to_pin/shorten-sleeve-length.png';
-import jacketSidesTakenIn from '../images/how_to_pin/jacket-sides-taken-in.png';
-import jacketSleevesTakenIn from '../images/how_to_pin/jacket-sleeves-taken-in.png';
-import shortenTie from '../images/how_to_pin/shorten-tie.png';
-import jeansSeatWaistbandTakenInImage from '../images/how_to_pin/jeans-seat-waistband-taken-in.png';
-import shirtSideSeamsTakenIn from '../images/how_to_pin/shirt-side-seams-taken-in.png';
+// import takeUpPantHemImage from '../images/how_to_pin/take-up-pant-hem.png';
+// import taperPantLegImage from '../images/how_to_pin/taper-pant-leg.png';
+// import pantsSeatWaistbandTakenInImage from '../images/how_to_pin/pants-seat-waistband-taken-in.png';
+// import shirtSleevesLengthTakenUp from '../images/how_to_pin/shirt-sleeves-length-taken-up.png';
+// import shirtSleevesTakenIn from '../images/how_to_pin/shirt-sleeves-taken-in.png';
+// import shirtHemTakenUp from '../images/how_to_pin/shirt-hem-taken-up.png';
+// import tShirtHemTakenUp from '../images/how_to_pin/t-shirt-hem-taken-up.png';
+// import shirtShouldersTakenIn from '../images/how_to_pin/shirt-shoulders-taken-in.png';
+// import shortenSkirt from '../images/how_to_pin/shorten-skirt.png';
+// import takeInSkirt from '../images/how_to_pin/take-in-skirt.png';
+// import shortenDress from '../images/how_to_pin/shorten-dress.png';
+// import takeInDress from '../images/how_to_pin/take-in-dress.png';
+// import shortenFromDressShoulders from '../images/how_to_pin/shorten-from-dress-shoulders.png';
+// import shortenJacketLength from '../images/how_to_pin/shorten-jacket-length.png';
+// import shortenSleeveLength from '../images/how_to_pin/shorten-sleeve-length.png';
+// import jacketSidesTakenIn from '../images/how_to_pin/jacket-sides-taken-in.png';
+// import jacketSleevesTakenIn from '../images/how_to_pin/jacket-sleeves-taken-in.png';
+// import shortenTie from '../images/how_to_pin/shorten-tie.png';
+// import jeansSeatWaistbandTakenInImage from '../images/how_to_pin/jeans-seat-waistband-taken-in.png';
+// import shirtSideSeamsTakenIn from '../images/how_to_pin/shirt-side-seams-taken-in.png';
+
+import {
+  takeUpPantHemImage,
+  taperPantLegImage,
+  pantsSeatWaistbandTakenInImage,
+  shirtSleevesLengthTakenUp,
+  shirtSleevesTakenIn,
+  shirtHemTakenUp,
+  tShirtHemTakenUp,
+  shirtShouldersTakenIn,
+  shortenSkirt,
+  takeInSkirt,
+  shortenDress,
+  takeInDress,
+  shortenFromDressShoulders,
+  shortenJacketLength,
+  shortenSleeveLength,
+  jacketSidesTakenIn,
+  jacketSleevesTakenIn,
+  shortenTie,
+  jeansSeatWaistbandTakenInImage,
+  shirtSideSeamsTakenIn
+} from '../images/how_to_pin';
+// import pantsSeatWaistbandTakenInImage from '../images/how_to_pin/pants-seat-waistband-taken-in.png';
+
+//import shirtSleevesLengthTakenUp from '../images/how_to_pin/shirt-sleeves-length-taken-up.png';
+//import shirtSleevesTakenIn from '../images/how_to_pin/shirt-sleeves-taken-in.png';
+//import shirtHemTakenUp from '../images/how_to_pin/shirt-hem-taken-up.png';
+//import tShirtHemTakenUp from '../images/how_to_pin/t-shirt-hem-taken-up.png';
+//import shirtShouldersTakenIn from '../images/how_to_pin/shirt-shoulders-taken-in.png';
+//import shortenSkirt from '../images/how_to_pin/shorten-skirt.png';
+//import takeInSkirt from '../images/how_to_pin/take-in-skirt.png';
+//import shortenDress from '../images/how_to_pin/shorten-dress.png';
+//import takeInDress from '../images/how_to_pin/take-in-dress.png';
+//import shortenFromDressShoulders from '../images/how_to_pin/shorten-from-dress-shoulders.png';
+//import shortenJacketLength from '../images/how_to_pin/shorten-jacket-length.png';
+//import shortenSleeveLength from '../images/how_to_pin/shorten-sleeve-length.png';
+//import jacketSidesTakenIn from '../images/how_to_pin/jacket-sides-taken-in.png';
+//import jacketSleevesTakenIn from '../images/how_to_pin/jacket-sleeves-taken-in.png';
+//import shortenTie from '../images/how_to_pin/shorten-tie.png';
+//import jeansSeatWaistbandTakenInImage from '../images/how_to_pin/jeans-seat-waistband-taken-in.png';
+//import shirtSideSeamsTakenIn from '../images/how_to_pin/shirt-side-seams-taken-in.png';
 
 
 export default function(){

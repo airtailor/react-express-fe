@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import NavigationLink from './NavigationLink';
 import SearchBar from './SearchBar';
-import homeImage from '../images/home.png';
-import ordersImage from '../images/orders.png';
-import logoutImage from '../images/logout.png';
-import editStoreImage from '../images/account.png';
-import messageImage from '../images/message.png';
 import Intercom from 'react-intercom';
+import {
+  editStoreImage,
+  logoutImage,
+  messageImage,
+  homeImage,
+  ordersImage
+} from '../images';
 
 class NavigationLinks extends Component {
   adminNavbar(){

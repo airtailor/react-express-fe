@@ -3,9 +3,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
 import { getCustomerMeasurements, createCustomerMeasurements } from '../../../../actions';
-import FrontImage from '../../../../images/clothes-front-red.png';
-import BackImage from '../../../../images/clothes-back-red.png';
 import InputMeasurement from './InputMeasurement';
+// import FrontImage from '../../../../images/clothes-front-red.png';
+// import BackImage from '../../../../images/clothes-back-red.png';
+import {
+  FrontImage,
+  BackImage
+} from '../../../../images/measurements';
 
 class Measurements extends Component {
   constructor(props){
@@ -185,34 +189,34 @@ class Measurements extends Component {
       } else {
         return (
           <div>
-            <InputMeasurement 
+            <InputMeasurement
               update={this.updateMeasurement}
-              disabled={editEnabled} 
-              kind='back_width' 
+              disabled={editEnabled}
+              kind='back_width'
               value={measurements.back_width} />
 
-            <InputMeasurement 
+            <InputMeasurement
               update={this.updateMeasurement}
-              disabled={editEnabled} 
-              kind='bicep' 
+              disabled={editEnabled}
+              kind='bicep'
               value={measurements.bicep} />
 
-            <InputMeasurement 
+            <InputMeasurement
               update={this.updateMeasurement}
-              disabled={editEnabled} 
-              kind='elbow' 
+              disabled={editEnabled}
+              kind='elbow'
               value={measurements.elbow} />
 
-            <InputMeasurement 
+            <InputMeasurement
               update={this.updateMeasurement}
-              disabled={editEnabled} 
-              kind='forearm' 
+              disabled={editEnabled}
+              kind='forearm'
               value={measurements.forearm} />
 
-            <InputMeasurement 
+            <InputMeasurement
               update={this.updateMeasurement}
-              disabled={editEnabled} 
-              kind='inseam' 
+              disabled={editEnabled}
+              kind='inseam'
               value={measurements.inseam} />
 
           </div>

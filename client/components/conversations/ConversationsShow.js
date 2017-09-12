@@ -11,7 +11,6 @@ class Messages extends Component {
     this.state = {
       newMessage: ''
     }
-
     this.submitMessage = this.submitMessage.bind(this);
   }
 
