@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {addGarmentToCart, setGarment} from '../../../actions';
 import SelectGarment from './SelectGarment';
@@ -9,14 +9,14 @@ import Cart from './Cart';
 import OrderDetails from './OrderDetails';
 
 class OrdersNew extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       stage: 1,
       selectedGarment: null,
       selectedAlterations: [],
-      selectedGarmentIndex: null
-    }
+      selectedGarmentIndex: null,
+    };
 
     this.selectGarment = this.selectGarment.bind(this);
     this.renderStageOne = this.renderStageOne.bind(this);
@@ -26,22 +26,22 @@ class OrdersNew extends Component {
     this.renderSelectAlerations = this.renderSelectAlterations.bind(this);
   }
 
-
-  selectGarment(garment){
+  selectGarment(garment) {
     this.setState({selectedGarment: garment, stage: 2});
   }
 
-  renderStageOne(){
+  renderStageOne() {
     this.setState({
       selectedGarment: null,
       selectedAlterations: [],
       stage: 1,
-      selectedGarmentIndex: null})//, notes: ''});
+      selectedGarmentIndex: null,
+    }); //, notes: ''});
   }
 
-  renderSelectAlterations(index, garment, alterations){
+  renderSelectAlterations(index, garment, alterations) {
     console.log('cart here', this.props.cart.garments);
-    delete garment.alterations
+    delete garment.alterations;
 
     console.log('renderSelectAlterations', garment);
     console.log('cart here', this.props.cart.garments);
@@ -49,29 +49,30 @@ class OrdersNew extends Component {
       selectedGarment: garment,
       selectedAlterations: alterations,
       selectedGarmentIndex: index,
-      stage: 2
+      stage: 2,
     });
   }
 
-  renderOrderDetails(){
+  renderOrderDetails() {
     this.setState({stage: 3});
   }
 
-
-  alterationsIncludeNewSelection(newSelectedAlterations, alteration){
-    for (var i = 0; i < newSelectedAlterations.length; i++){
-      if (newSelectedAlterations[i] === alteration){
+  alterationsIncludeNewSelection(newSelectedAlterations, alteration) {
+    for (var i = 0; i < newSelectedAlterations.length; i++) {
+      if (newSelectedAlterations[i] === alteration) {
         return true;
       }
     }
-    return false
+    return false;
   }
 
-  addAlteration(alteration){
+  addAlteration(alteration) {
     console.log('addAlteration');
     const newSelectedAlterations = this.state.selectedAlterations;
     let newList;
-    if (!this.alterationsIncludeNewSelection(newSelectedAlterations, alteration)) {
+    if (
+      !this.alterationsIncludeNewSelection(newSelectedAlterations, alteration)
+    ) {
       newList = newSelectedAlterations;
       newList.push(alteration);
     } else {
@@ -80,7 +81,7 @@ class OrdersNew extends Component {
     this.setState({selectedAlterations: newList});
   }
 
-  addToCart(){
+  addToCart() {
     const {selectedGarment, selectedAlterations} = this.state;
     const garmentForCart = this.state.selectedGarment;
     garmentForCart.alterations = selectedAlterations;
@@ -88,82 +89,104 @@ class OrdersNew extends Component {
     this.renderStageOne();
   }
 
-  updateGarment(){
-    const {selectedGarment, selectedGarmentIndex, selectedAlterations} = this.state;
+  updateGarment() {
+    const {
+      selectedGarment,
+      selectedGarmentIndex,
+      selectedAlterations,
+    } = this.state;
     const garmentForCart = this.state.selectedGarment;
     garmentForCart.alterations = selectedAlterations;
     this.props.setGarment(garmentForCart, selectedGarmentIndex);
-    this.setState({stage: 1, selectedGarmentIndex: null, selectedGarment: null, selectedAlterations: []});
+    this.setState({
+      stage: 1,
+      selectedGarmentIndex: null,
+      selectedGarment: null,
+      selectedAlterations: [],
+    });
   }
 
-  renderStage(stage){
+  renderStage(stage) {
     switch (this.state.stage) {
       case 1:
-        return <SelectGarment
-                 handleSelect={this.selectGarment}
-                 garments={this.props.garments} />
+        return (
+          <SelectGarment
+            handleSelect={this.selectGarment}
+            garments={this.props.garments}
+          />
+        );
         break;
       case 2:
-        return <SelectAlterations
-                 addToCart={this.addToCart}
-                 handleSelect={this.addAlteration}
-                 renderOrderDetails={this.renderOrderDetails}
-                 selectedAlterations={this.state.selectedAlterations.map(alt => alt.id)}
-                 renderStageOne={this.renderStageOne}
-                 garmentIndex={this.state.selectedGarmentIndex}
-                 updateGarment={this.updateGarment.bind(this)}
-                 garment={this.state.selectedGarment} />
+        return (
+          <SelectAlterations
+            addToCart={this.addToCart}
+            handleSelect={this.addAlteration}
+            renderOrderDetails={this.renderOrderDetails}
+            selectedAlterations={this.state.selectedAlterations.map(
+              alt => alt.id
+            )}
+            renderStageOne={this.renderStageOne}
+            garmentIndex={this.state.selectedGarmentIndex}
+            updateGarment={this.updateGarment.bind(this)}
+            garment={this.state.selectedGarment}
+          />
+        );
         break;
       case 3:
-        return <OrderDetails />
+        return <OrderDetails />;
         break;
       case 4:
-        return <OrderConfirmation />
+        return <OrderConfirmation />;
         break;
     }
   }
 
-  render(){
-    if (!this.state.selectedGarment && this.props.match.params.index){
+  render() {
+    if (!this.state.selectedGarment && this.props.match.params.index) {
       //this.editGarment();
     }
-    console.log('garments', this.props.cart.garments.length)
+    console.log('garments', this.props.cart.garments.length);
     if (this.props.cart.garments.length > 0) {
-      console.log('alterations', this.props.cart.garments[0].alterations.length);
+      console.log(
+        'alterations',
+        this.props.cart.garments[0].alterations.length
+      );
     }
     return (
       <div>
         <SectionHeader
-          text='New Order'
+          text="New Order"
           rotate={'rotate'}
           link={'/'}
-          showCart={true} />
+          showCart={true}
+        />
 
-        <div className='new-order-content'>
-          <div className='stage-section'>
+        <div className="new-order-content">
+          <div className="stage-section">
             {this.renderStage(this.state.stage)}
           </div>
           <Cart
             renderSelectAlterations={this.renderSelectAlterations.bind(this)}
             stage={this.state.stage}
-            renderOrderDetails={this.renderOrderDetails} />
+            renderOrderDetails={this.renderOrderDetails}
+          />
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = (store) => {
+const mapStateToProps = store => {
   return {
     currentUser: store.currentUser,
     currentStore: store.currentStore,
     cart: store.cart,
-    garments: store.garments.garments
-  }
-}
+    garments: store.garments.garments,
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators({addGarmentToCart, setGarment}, dispatch);
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrdersNew);
