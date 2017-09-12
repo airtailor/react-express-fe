@@ -7,6 +7,7 @@ import SectionHeader from '../../SectionHeader';
 import SelectAlterations from './SelectAlterations';
 import Cart from './Cart';
 import OrderDetails from './OrderDetails';
+import Intercom from 'react-intercom';
 
 class OrdersNew extends Component {
   constructor() {
@@ -39,19 +40,35 @@ class OrdersNew extends Component {
     }); //, notes: ''});
   }
 
-  renderSelectAlterations(index, garment, alterations) {
-    console.log('cart here', this.props.cart.garments);
-    delete garment.alterations;
+  // going to try to just pull up the garment type of the item instad of injecting the item from props
 
-    console.log('renderSelectAlterations', garment);
-    console.log('cart here', this.props.cart.garments);
+  renderSelectAlterations(index, garment, alterations) {
+    const selectedGarment = this.props.garments.filter(
+      g => g.id === garment.id
+    )[0];
+
     this.setState({
-      selectedGarment: garment,
+      selectedGarment,
       selectedAlterations: alterations,
       selectedGarmentIndex: index,
       stage: 2,
     });
   }
+
+  // renderSelectAlterations(index, garment, alterations) {
+  //   debugger;
+  //   console.log('cart here', this.props.cart.garments);
+  //   delete garment.alterations;
+  //
+  //   console.log('renderSelectAlterations', garment);
+  //   console.log('cart here', this.props.cart.garments);
+  //   this.setState({
+  //     selectedGarment: garment,
+  //     selectedAlterations: alterations,
+  //     selectedGarmentIndex: index,
+  //     stage: 2,
+  //   });
+  // }
 
   renderOrderDetails() {
     this.setState({stage: 3});
@@ -142,16 +159,15 @@ class OrdersNew extends Component {
   }
 
   render() {
-    if (!this.state.selectedGarment && this.props.match.params.index) {
-      //this.editGarment();
-    }
     console.log('garments', this.props.cart.garments.length);
     if (this.props.cart.garments.length > 0) {
       console.log(
         'alterations',
-        this.props.cart.garments[0].alterations.length
+        this.props.cart.garments[this.props.cart.garments.length - 1]
+          .alterations.length
       );
     }
+
     return (
       <div>
         <SectionHeader
@@ -189,4 +205,6 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators({addGarmentToCart, setGarment}, dispatch);
 };
 
+// app id
+// j5szofcq
 export default connect(mapStateToProps, mapDispatchToProps)(OrdersNew);
