@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import NavigationBar from './components/NavigationBar';
 import AvailableRoutes from './components/AvailableRoutes';
 import SignIn from './components/SignIn';
+import Growler from './components/growler';
 
 const Router = (props) => {
   const loggedIn = props.currentUser.isAuthenticated;
@@ -15,6 +16,7 @@ const Router = (props) => {
     return (
       <BrowserRouter>
         <div className="container">
+          <Growler />
           <NavigationBar retailer={retailer} loggedIn={loggedIn} admin={admin} />
           <AvailableRoutes retailer={retailer} loggedIn={loggedIn} admin={admin} />
         </div>
@@ -24,6 +26,7 @@ const Router = (props) => {
     return (
       <BrowserRouter>
         <div>
+          <Growler />
           <SignIn />
         </div>
       </BrowserRouter>

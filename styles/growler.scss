@@ -1,0 +1,63 @@
+.growl {
+  position: fixed;
+  top: 5px;
+  left: 236px;
+  height: 120px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  min-width: 500px;
+  background-color: #dcdcdc;
+}
+
+.growl-header {
+  background-color: #f5f5f5;
+  height: 45px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  line-height: 1px;
+  display: flex;
+  align-items: center;
+}
+
+.growl-title {
+  display: inline-block;
+  font-family: $sans-serif;
+  padding-left: 20px;
+  text-transform: uppercase;
+}
+
+.growl-body {
+  display: flex;
+  align-items: center;
+  position: absolute;
+}
+
+.growl-text {
+  padding-top: 10px;
+  font-family: $sans-serif;
+  padding-left: 20px;
+}
+
+.notice-growl {
+  color: #000033;
+}
+
+.warning-growl {
+  color: #de0421;
+}
+
+.success-growl {
+  color: green;
+}
+
+/*@media screen and (max-width: 981px){
+  .growl {
+    left: 77px;
+  }
+}*/
+
+.empty-div {
+  display: none;
+}
