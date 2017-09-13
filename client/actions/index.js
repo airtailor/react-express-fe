@@ -23,7 +23,9 @@ import {
   RESET_CART,
   UPDATE_CART_NOTES,
   SET_SEARCH_RESULTS,
-  UPDATE_GARMENT_IN_CART
+  UPDATE_GARMENT_IN_CART,
+  SET_GROWLER,
+  REMOVE_GROWLER,
 } from '../utils/constants';
 
 import {removeFalseyValuesFromObject} from '../utils/format';
@@ -520,7 +522,20 @@ export function searchOrders(query){
 }
 
 // actions
-//
+
+export function removeGrowler(){
+  return {
+    type: REMOVE_GROWLER
+  }
+}
+
+export function setGrowler(growl) {
+  return {
+    type: SET_GROWLER,
+    growl,
+  };
+}
+
 export function setGarment(garment, index){
   return {
     type: UPDATE_GARMENT_IN_CART,

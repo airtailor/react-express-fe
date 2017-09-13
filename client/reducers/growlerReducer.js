@@ -1,4 +1,4 @@
-import {SET_GROWLER} from '../utils/constants';
+import {SET_GROWLER, REMOVE_GROWLER} from '../utils/constants';
 
 const initialState = {
   kind: 'success',
@@ -9,6 +9,10 @@ const growlerReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_GROWLER:
       return action.growl;
+      break;
+    case REMOVE_GROWLER:
+      return {};
+      break;
     default:
       return state;
   }
