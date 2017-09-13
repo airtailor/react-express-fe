@@ -11,8 +11,8 @@ import setAuthToken from './utils/setAuthToken';
 import {setCurrentUser} from './actions/';
 
 // uncomment below to toggle on/off redux logger
-const store = createStore(rootReducer, applyMiddleware(thunk, logger));
-// const store = createStore(rootReducer, applyMiddleware(thunk));
+//const store = createStore(rootReducer, applyMiddleware(thunk, logger));
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 if (localStorage.AirTailorTokens && localStorage.CurrentUser) {
   console.log('main indexjs line 20');

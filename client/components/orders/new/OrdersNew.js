@@ -46,6 +46,12 @@ class OrdersNew extends Component {
     const selectedGarment = this.props.garments.filter(
       g => g.id === garment.id
     )[0];
+    console.log(
+      'selected Garment',
+      selectedGarment,
+      this.props.garments,
+      this.props.cart.garments
+    );
 
     this.setState({
       selectedGarment,
@@ -76,7 +82,7 @@ class OrdersNew extends Component {
 
   alterationsIncludeNewSelection(newSelectedAlterations, alteration) {
     for (var i = 0; i < newSelectedAlterations.length; i++) {
-      if (newSelectedAlterations[i] === alteration) {
+      if (newSelectedAlterations[i].id === alteration.id) {
         return true;
       }
     }
@@ -84,15 +90,16 @@ class OrdersNew extends Component {
   }
 
   addAlteration(alteration) {
-    console.log('addAlteration');
     const newSelectedAlterations = this.state.selectedAlterations;
     let newList;
     if (
       !this.alterationsIncludeNewSelection(newSelectedAlterations, alteration)
     ) {
+      console.log('SHOULD ADD!!!');
       newList = newSelectedAlterations;
       newList.push(alteration);
     } else {
+      console.log('SHOULD REMOVE!!!');
       newList = newSelectedAlterations.filter(alt => alt.id !== alteration.id);
     }
     this.setState({selectedAlterations: newList});
@@ -159,14 +166,14 @@ class OrdersNew extends Component {
   }
 
   render() {
-    console.log('garments', this.props.cart.garments.length);
-    if (this.props.cart.garments.length > 0) {
-      console.log(
-        'alterations',
-        this.props.cart.garments[this.props.cart.garments.length - 1]
-          .alterations.length
-      );
-    }
+    //console.log('garments', this.props.cart.garments.length);
+    // if (this.props.cart.garments.length > 0) {
+    //   console.log(
+    //     'alterations',
+    //     this.props.cart.garments[this.props.cart.garments.length - 1]
+    //       .alterations.length
+    //   );
+    // }
 
     return (
       <div>

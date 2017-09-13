@@ -12,7 +12,7 @@ import {basketImage} from '../../../images';
 
 class Cart extends Component {
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps');
+    //console.log('componentWillReceiveProps');
     if (
       nextProps.cart.garments.length > 0 &&
       nextProps.cart.garments[0].alterations &&
@@ -24,7 +24,7 @@ class Cart extends Component {
 
   renderGarmentAlterations(garment) {
     // this garment is being injected from the menu, not the car
-    console.log('cart js 10', garment);
+    //console.log('cart js 10', garment);
     if (garment.alterations.length > 0) {
       return garment.alterations.map((alt, index) => {
         return (
