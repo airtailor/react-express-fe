@@ -186,6 +186,7 @@ export function getCurrentStore(store_id) {
                 late_orders_count,
               })
             );
+            return res;
           })
           .catch(err => {
             debugger;
@@ -256,10 +257,13 @@ export function updateStore(data) {
       .then(() => {
         return Axios.put(url, data)
           .then(res => {
-            dispatch(setCurrentStore(res.data.body));
+            if (!res.data.body.errors) {
+              dispatch(setCurrentStore(res.data.body));
+            }
+            return res;
           })
           .catch(err => {
-            debugger;
+            return res;
           });
       });
   };
@@ -684,6 +688,7 @@ export function setCurrentUser(user) {
     user: user,
   };
 }
+
 export function setCurrentStore(store) {
   return {
     type: SET_CURRENT_STORE,
