@@ -1,9 +1,6 @@
 import {SET_GROWLER, REMOVE_GROWLER} from '../utils/constants';
 
-const initialState = {
-  kind: 'success',
-  message: 'Order placed successfully!',
-};
+const initialState = {};
 
 const growlerReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -11,7 +8,7 @@ const growlerReducer = (state = initialState, action) => {
       return action.growl;
       break;
     case REMOVE_GROWLER:
-      return {};
+      return initialState;
       break;
     default:
       return state;
