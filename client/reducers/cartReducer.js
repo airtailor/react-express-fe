@@ -8,6 +8,8 @@ import {
   UPDATE_GARMENT_IN_CART,
 } from '../utils/constants';
 
+import {updateObjectInArray, removeItem} from '../utils/reducerHelpers';
+
 const initialState = {
   garments: [],
   customerInfo: {
@@ -37,9 +39,9 @@ const cartReducer = (state = initialState, action) => {
       };
       break;
     case REMOVE_GARMENT_FROM_CART:
-      state.garments.splice(action.index, 1);
       return {
         ...state,
+        garments: removeItem(state.garments, action),
       };
       break;
     case UPDATE_CART_CUSTOMER_INFO:
@@ -80,31 +82,14 @@ const cartReducer = (state = initialState, action) => {
         notes: '',
       };
       break;
+
     case UPDATE_GARMENT_IN_CART:
-      const {garments} = state;
+      const newGarments = updateObjectInArray(
+        state.garments,
+        action,
+        'garment'
+      );
 
-      function updateObjectInArray(array, action, item_name) {
-        return array.map((item, index) => {
-          if (index !== action.index) {
-            // This isn't the item we care about - keep it as-is
-            return item;
-          }
-          // Otherwise, this is the one we want - return an updated value
-          return {
-            ...item,
-            ...action[item_name],
-          };
-        });
-      }
-
-      const newGarments = updateObjectInArray(garments, action, 'garment');
-
-      // function removeItem(array, action) {
-      //   return [
-      //     ...array.slice(0, action.index),
-      //     ...array.slice(action.index + 1)
-      //   ];
-      // }
       const newState = {
         ...state,
         garments: newGarments,
