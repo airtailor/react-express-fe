@@ -18,7 +18,7 @@ class Growler extends Component {
       const titleClass = `growl-title ${kind}-growl`;
       const messageClass = `growl-text ${kind}-growl`;
       return (
-        <div className="growl">
+        <div onClick={() => this.props.removeGrowler()} className="growl">
           <div className="growl-header">
             <h4 className={titleClass}>{kind}</h4>
           </div>
