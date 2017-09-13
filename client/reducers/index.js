@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 import currentUserReducer from './currentUserReducer';
 import currentStoreReducer from './currentStoreReducer';
 import storeOrdersReducer from './storeOrdersReducer';
@@ -15,6 +15,7 @@ import alterationsReducer from './alterationsReducer';
 import cartReducer from './cartReducer';
 import confirmedNewOrderReducer from './confirmedNewOrderReducer';
 import searchResultsReducer from './searchResultsReducer';
+import growlerReducer from './growlerReducer';
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
@@ -32,7 +33,8 @@ const rootReducer = combineReducers({
   alterations: alterationsReducer,
   cart: cartReducer,
   confirmedNewOrder: confirmedNewOrderReducer,
-  searchResults: searchResultsReducer
+  searchResults: searchResultsReducer,
+  growl: growlerReducer,
 });
 
 export default rootReducer;
