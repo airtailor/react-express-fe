@@ -30,7 +30,6 @@ const initialState = {
 };
 
 const cartReducer = (state = initialState, action) => {
-  console.log('cart reducer', action.type);
   switch (action.type) {
     case ADD_GARMENT_TO_CART:
       return {

@@ -46,12 +46,6 @@ class OrdersNew extends Component {
     const selectedGarment = this.props.garments.filter(
       g => g.id === garment.id
     )[0];
-    console.log(
-      'selected Garment',
-      selectedGarment,
-      this.props.garments,
-      this.props.cart.garments
-    );
 
     this.setState({
       selectedGarment,
@@ -60,21 +54,6 @@ class OrdersNew extends Component {
       stage: 2,
     });
   }
-
-  // renderSelectAlterations(index, garment, alterations) {
-  //   debugger;
-  //   console.log('cart here', this.props.cart.garments);
-  //   delete garment.alterations;
-  //
-  //   console.log('renderSelectAlterations', garment);
-  //   console.log('cart here', this.props.cart.garments);
-  //   this.setState({
-  //     selectedGarment: garment,
-  //     selectedAlterations: alterations,
-  //     selectedGarmentIndex: index,
-  //     stage: 2,
-  //   });
-  // }
 
   renderOrderDetails() {
     this.setState({stage: 3});
@@ -95,14 +74,15 @@ class OrdersNew extends Component {
     if (
       !this.alterationsIncludeNewSelection(newSelectedAlterations, alteration)
     ) {
-      console.log('SHOULD ADD!!!');
-      newList = newSelectedAlterations;
+      // spread operator is needed here in order to create a copy of the array
+      // that does not point to the array in redux.
+      newList = [...newSelectedAlterations];
       newList.push(alteration);
     } else {
-      console.log('SHOULD REMOVE!!!');
       newList = newSelectedAlterations.filter(alt => alt.id !== alteration.id);
     }
-    this.setState({selectedAlterations: newList});
+    const alts = [...newList];
+    this.setState({selectedAlterations: alts});
   }
 
   addToCart() {
@@ -166,15 +146,6 @@ class OrdersNew extends Component {
   }
 
   render() {
-    //console.log('garments', this.props.cart.garments.length);
-    // if (this.props.cart.garments.length > 0) {
-    //   console.log(
-    //     'alterations',
-    //     this.props.cart.garments[this.props.cart.garments.length - 1]
-    //       .alterations.length
-    //   );
-    // }
-
     return (
       <div>
         <SectionHeader

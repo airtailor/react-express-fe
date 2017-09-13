@@ -15,7 +15,6 @@ import {setCurrentUser} from './actions/';
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 if (localStorage.AirTailorTokens && localStorage.CurrentUser) {
-  console.log('main indexjs line 20');
   const parsedToken = JSON.parse(localStorage.AirTailorTokens);
   setAuthToken(parsedToken);
   const parsedUser = JSON.parse(localStorage.CurrentUser);
