@@ -470,6 +470,10 @@ export function submitOrder(props) {
       .then(res => {
         if (res.data.body.errors) {
           console.log('errors', res.data.body.errors);
+          return {
+            errors: true,
+            message: res.data.body.errors,
+          };
         } else {
           const customer_id = res.data.body.id;
           const requester_id = currentStore.id;

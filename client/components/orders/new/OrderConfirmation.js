@@ -4,34 +4,46 @@ import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
 import SectionHeader from '../../SectionHeader';
 import {formatPhone} from '../../../utils/format';
-import {setConfirmedNewOrder, resetCart} from '../../../actions';
+import {setConfirmedNewOrder, resetCart, setGrowler} from '../../../actions';
 
 class OrderConfirmation extends Component {
-  componentWillUnmount(){
-    this.props.resetCart()
-    this.props.setConfirmedNewOrder({})
+  componentDidMount() {
+    const kind = 'success';
+    const message = 'Order completed!';
+    this.props.setGrowler({kind, message});
+  }
+
+  componentWillUnmount() {
+    this.props.resetCart();
+    this.props.setConfirmedNewOrder({});
     //console.log('should be deleted', this.props.confirmedNewOrder, this.props.resetCart)
   }
 
-  renderCustomerInfo(customer){
+  renderCustomerInfo(customer) {
     const {first_name, last_name, phone, email} = customer;
     return (
       <div>
         <h2>Customer Info:</h2>
-        <p>{first_name} {last_name}</p>
+        <p>
+          {first_name} {last_name}
+        </p>
         <p>{formatPhone(phone)}</p>
         <p>{email}</p>
       </div>
     );
   }
 
-  renderGarmentAlterations(garment){
+  renderGarmentAlterations(garment) {
     return garment.alterations.map((alt, index) => {
-      return <p key={index} className='cart-alteration'>{alt.name}</p>;
+      return (
+        <p key={index} className="cart-alteration">
+          {alt.name}
+        </p>
+      );
     });
   }
 
-  renderGarments(garments){
+  renderGarments(garments) {
     return garments.map((garment, index) => {
       return (
         <div key={index}>
@@ -41,11 +53,11 @@ class OrderConfirmation extends Component {
           {this.renderGarmentAlterations(garment)}
           <hr />
         </div>
-      )
+      );
     });
   }
 
-  renderOrderInfo(confirmedNewOrder){
+  renderOrderInfo(confirmedNewOrder) {
     const {items} = confirmedNewOrder;
     return (
       <div>
@@ -55,50 +67,63 @@ class OrderConfirmation extends Component {
     );
   }
 
-  submitOrder(props){
-    this.props.submitOrder(props)
-      .then(res => {
-        if (!res){
-          console.log('errors')
-        } else {
-          this.setState({orderCompeted: true})
-          console.log('success', res)
-        }
-      })
-      .catch(err => {
-        debugger;
-      })
-  }
+  // submitOrder(props) {
+  //   this.props
+  //     .submitOrder(props)
+  //     .then(res => {
+  //       if (res.errors) {
+  //         console.log('errors', res);
+  //       } else if (res.data.body) {
+  //         this.setState({orderCompeted: true});
+  //         console.log('success', res);
+  //       }
+  //     })
+  //     .catch(err => {
+  //       debugger;
+  //     });
+  // }
 
-  renderButtons(confirmedNewOrder){
+  renderButtons(confirmedNewOrder) {
     const newOrderLink = `/orders/${confirmedNewOrder.id}`;
 
     return (
       <div>
-        <Link to='/orders/new'>
-          <input type='submit' className='short-button' value='New Order' />
+        <Link to="/orders/new">
+          <input type="submit" className="short-button" value="New Order" />
         </Link>
         <Link to={newOrderLink}>
-          <input type='submit' className='short-button' value='View Order' />
+          <input type="submit" className="short-button" value="View Order" />
         </Link>
       </div>
     );
   }
 
-  renderShipToCustomer(customerInfo){
-    const {first_name, last_name, street1, street2, city, state, zip} = customerInfo;
+  renderShipToCustomer(customerInfo) {
+    const {
+      first_name,
+      last_name,
+      street1,
+      street2,
+      city,
+      state,
+      zip,
+    } = customerInfo;
     return (
       <div>
         <h2>Ship To Customer:</h2>
-        <p>{first_name} {last_name}</p>
+        <p>
+          {first_name} {last_name}
+        </p>
         <p>{street1}</p>
         {street2 ? <p>{street2}</p> : ''}
-        <p>{city}, {state} {zip}</p>
+        <p>
+          {city}, {state} {zip}
+        </p>
       </div>
     );
   }
 
-  renderShipToStore(store){
+  renderShipToStore(store) {
     const {name, street1, street2, city, state, zip} = store;
     return (
       <div>
@@ -106,26 +131,28 @@ class OrderConfirmation extends Component {
         <p>{name}</p>
         <p>{street1}</p>
         {street2 ? <p>{street2}</p> : ''}
-        <p>{city}, {state} {zip}</p>
+        <p>
+          {city}, {state} {zip}
+        </p>
       </div>
     );
   }
 
-  renderShippingInfo(confirmedNewOrder){
+  renderShippingInfo(confirmedNewOrder) {
     const {ship_to_store, retailer, customer} = confirmedNewOrder;
-    if (ship_to_store){
+    if (ship_to_store) {
       return this.renderShipToStore(retailer);
-    } else if (!ship_to_store){
+    } else if (!ship_to_store) {
       return this.renderShipToCustomer(customer);
     }
   }
 
-  render(){
+  render() {
     const {confirmedNewOrder} = this.props;
     return (
       <div>
-       <SectionHeader text='Order Completed' />
-        <div className='checkout-container'>
+        <SectionHeader text="Order Completed" />
+        <div className="checkout-container">
           {this.renderCustomerInfo(confirmedNewOrder.customer)}
           <br />
           {this.renderOrderInfo(confirmedNewOrder)}
@@ -137,19 +164,23 @@ class OrderConfirmation extends Component {
       </div>
     );
   }
-
 }
 
-const mapStateToProps = (store) => {
+const mapStateToProps = store => {
   return {
-    confirmedNewOrder: store.confirmedNewOrder
-  }
-}
+    confirmedNewOrder: store.confirmedNewOrder,
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    resetCart, setConfirmedNewOrder
-  }, dispatch);
-}
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      resetCart,
+      setConfirmedNewOrder,
+      setGrowler,
+    },
+    dispatch
+  );
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderConfirmation);

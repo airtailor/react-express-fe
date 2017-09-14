@@ -4,36 +4,42 @@ import {bindActionCreators} from 'redux';
 import {Link, Redirect} from 'react-router-dom';
 import SectionHeader from '../../SectionHeader';
 import {formatPhone} from '../../../utils/format';
-import {submitOrder} from '../../../actions';
+import {submitOrder, setGrowler} from '../../../actions';
 
 class Checkout extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
-      orderCompleted: false
-    }
+      orderCompleted: false,
+    };
   }
 
-  renderCustomerInfo(props){
+  renderCustomerInfo(props) {
     const {first_name, last_name, phone, email} = props.cart.customerInfo;
     const {shipToStore} = props.cart;
     return (
       <div>
         <h2>Customer Info:</h2>
-        <p>{first_name} {last_name}</p>
+        <p>
+          {first_name} {last_name}
+        </p>
         <p>{formatPhone(phone)}</p>
         <p>{email}</p>
       </div>
     );
   }
 
-  renderGarmentAlterations(garment){
+  renderGarmentAlterations(garment) {
     return garment.alterations.map((alt, index) => {
-      return <p key={index} className='cart-alteration'>{alt.title}</p>;
+      return (
+        <p key={index} className="cart-alteration">
+          {alt.title}
+        </p>
+      );
     });
   }
 
-  renderGarments(garments){
+  renderGarments(garments) {
     return garments.map((garment, index) => {
       return (
         <div key={index}>
@@ -43,11 +49,11 @@ class Checkout extends Component {
           {this.renderGarmentAlterations(garment)}
           <hr />
         </div>
-      )
+      );
     });
   }
 
-  renderOrderInfo(props){
+  renderOrderInfo(props) {
     const {garments, notes} = props.cart;
 
     return (
@@ -60,41 +66,54 @@ class Checkout extends Component {
     );
   }
 
-  submitOrder(props){
-    this.props.submitOrder(props)
+  submitOrder(props) {
+    this.props
+      .submitOrder(props)
       .then(res => {
-        if (!res){
-          console.log('errors')
+        if (res.errors) {
+          console.log('errors', res);
+          const kind = 'warning';
+          const message = res.message.customer[0];
+          this.props.setGrowler({message, kind});
         } else {
-          this.setState({orderCompeted: true})
+          this.setState({orderCompeted: true});
           //console.log('success', res)
         }
       })
       .catch(err => {
         debugger;
-      })
+      });
   }
 
-  renderButtons(props){
+  renderButtons(props) {
     return (
       <div>
-        <Link to='/orders/new'>
-          <input type='submit' className='short-button' value='Make Changes' />
+        <Link to="/orders/new">
+          <input type="submit" className="short-button" value="Make Changes" />
         </Link>
         <input
           onClick={() => this.submitOrder(this.props)}
-          type='submit'
-          className='short-button'
-          value='Submit' />
+          type="submit"
+          className="short-button"
+          value="Submit"
+        />
       </div>
     );
   }
 
-  renderShipToCustomer(customerInfo){
-    const {first_name, last_name, street1, street2, city, state, zip} = customerInfo;
+  renderShipToCustomer(customerInfo) {
+    const {
+      first_name,
+      last_name,
+      street1,
+      street2,
+      city,
+      state,
+      zip,
+    } = customerInfo;
     let address2;
-    if (street2){
-       address2 = street2.length > 0 ? (<p>{street2}</p>) : '';
+    if (street2) {
+      address2 = street2.length > 0 ? <p>{street2}</p> : '';
     } else {
       address2 = '';
     }
@@ -102,20 +121,24 @@ class Checkout extends Component {
     return (
       <div>
         <h2>Ship To Customer:</h2>
-        <p>{first_name} {last_name}</p>
+        <p>
+          {first_name} {last_name}
+        </p>
         <p>{street1}</p>
         {address2}
-        <p>{city}, {state} {zip}</p>
+        <p>
+          {city}, {state} {zip}
+        </p>
       </div>
     );
   }
 
-  renderShipToStore(currentStore){
+  renderShipToStore(currentStore) {
     const {name, street1, street2, city, state, zip} = currentStore;
     let address2;
 
-    if (street2){
-       address2 = street2.length > 0 ? (<p>{street2}</p>) : '';
+    if (street2) {
+      address2 = street2.length > 0 ? <p>{street2}</p> : '';
     } else {
       address2 = '';
     }
@@ -126,30 +149,32 @@ class Checkout extends Component {
         <p>{name}</p>
         <p>{street1}</p>
         {address2}
-        <p>{city}, {state} {zip}</p>
+        <p>
+          {city}, {state} {zip}
+        </p>
       </div>
     );
   }
 
-  renderShippingInfo(props){
-    if (props.cart.shipToStore){
+  renderShippingInfo(props) {
+    if (props.cart.shipToStore) {
       return this.renderShipToStore(props.currentStore);
-    } else if (!props.shipToStore){
+    } else if (!props.shipToStore) {
       return this.renderShipToCustomer(props.cart.customerInfo);
     }
   }
 
-  renderOrderCompleteRedirect(state){
-    if (state.orderCompeted){
-      return <Redirect to="/orders/new/order-confirmation" />
+  renderOrderCompleteRedirect(state) {
+    if (state.orderCompeted) {
+      return <Redirect to="/orders/new/order-confirmation" />;
     }
   }
 
-  render(){
+  render() {
     return (
       <div>
-       <SectionHeader text='Checkout' />
-        <div className='checkout-container'>
+        <SectionHeader text="Checkout" />
+        <div className="checkout-container">
           {this.renderCustomerInfo(this.props)}
           <br />
           {this.renderOrderInfo(this.props)}
@@ -164,17 +189,21 @@ class Checkout extends Component {
   }
 }
 
-const mapStateToProps = (store) => {
+const mapStateToProps = store => {
   return {
     cart: store.cart,
-    currentStore: store.currentStore
-  }
-}
+    currentStore: store.currentStore,
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    submitOrder
-  }, dispatch);
-}
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      submitOrder,
+      setGrowler,
+    },
+    dispatch
+  );
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
