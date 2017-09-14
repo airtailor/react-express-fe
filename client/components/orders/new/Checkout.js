@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Link, Redirect} from 'react-router-dom';
-import SectionHeader from '../../SectionHeader';
 import {formatPhone} from '../../../utils/format';
 import {submitOrder, setGrowler} from '../../../actions';
 
@@ -75,6 +74,7 @@ class Checkout extends Component {
           const kind = 'warning';
           const message = res.message.customer[0];
           this.props.setGrowler({message, kind});
+          this.props.renderOrderDetails();
         } else {
           this.setState({orderCompeted: true});
           //console.log('success', res)
@@ -88,9 +88,13 @@ class Checkout extends Component {
   renderButtons(props) {
     return (
       <div>
-        <Link to="/orders/new">
-          <input type="submit" className="short-button" value="Make Changes" />
-        </Link>
+        <input
+          onClick={() => props.renderStageOne()}
+          type="submit"
+          className="short-button"
+          value="Make Changes"
+        />
+
         <input
           onClick={() => this.submitOrder(this.props)}
           type="submit"
@@ -173,7 +177,6 @@ class Checkout extends Component {
   render() {
     return (
       <div>
-        <SectionHeader text="Checkout" />
         <div className="checkout-container">
           {this.renderCustomerInfo(this.props)}
           <br />

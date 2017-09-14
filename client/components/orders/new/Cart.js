@@ -51,13 +51,15 @@ class Cart extends Component {
                 className="cart-item cart-item-title"
                 onClick={() => {
                   renderSelectAlterations(index, garment, garment.alterations);
-                }}>
+                }}
+              >
                 {garment.title}
               </span>
               <span
                 className="cart-item"
                 onClick={() => removeGarmentFromCart(index)}
-                className="remove-from-cart-button">
+                className="remove-from-cart-button"
+              >
                 X
               </span>
             </h3>
@@ -65,7 +67,8 @@ class Cart extends Component {
               className="cart-item"
               onClick={() => {
                 renderSelectAlterations(index, garment, garment.alterations);
-              }}>
+              }}
+            >
               {this.renderGarmentAlterations(garment)}
             </span>
             <hr className="alteration-hr" />
@@ -107,27 +110,39 @@ class Cart extends Component {
 
   renderNextButton(props) {
     if (props.cart.garments.length > 0) {
-      if (this.readyToCheckout(props) && props.stage !== 3) {
+      if (props.stage === 4) {
+        return <div />;
+      } else if (this.readyToCheckout(props) && props.stage !== 3) {
         return (
           <div>
             <input
               onClick={props.renderOrderDetails}
               className="short-buton"
               type="submit"
-              value="Add Order Details"
+              value="Edit Order Details"
             />
 
-            <Link to="/orders/new/checkout">
-              <input className="short-button" type="submit" value="Checkout" />
-            </Link>
+            <div>
+              <input
+                onClick={() => this.props.renderCheckout()}
+                className="short-button"
+                type="submit"
+                value="Checkout"
+              />
+            </div>
           </div>
         );
       } else if (this.readyToCheckout(props) && props.stage == 3) {
         return (
           <div>
-            <Link to="/orders/new/checkout">
-              <input className="short-button" type="submit" value="Checkout" />
-            </Link>
+            <div>
+              <input
+                onClick={() => this.props.renderCheckout()}
+                className="short-button"
+                type="submit"
+                value="Checkout"
+              />
+            </div>
           </div>
         );
       } else if (props.stage === 2 || props.stage === 1) {
