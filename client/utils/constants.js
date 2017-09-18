@@ -1,4 +1,4 @@
-export const expressApi = "/api";
+export const expressApi = '/api';
 
 export const USER_SIGN_UP_REQUEST = 'USER_SIGN_UP_REQUEST';
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
@@ -22,8 +22,10 @@ export const RESET_CART = 'RESET_CART';
 export const UPDATE_CART_NOTES = 'UPDATE_CART_NOTES';
 export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
 export const UPDATE_GARMENT_IN_CART = 'UPDATE_GARMENT_IN_CART';
+export const SET_GROWLER = 'SET_GROWLER';
+export const REMOVE_GROWLER = 'REMOVE_GROWLER';
 
 export const storeTypes = [
-  { name: 'Tailor', id: 'tailor' },
-  { name: 'Retailer', id: 'retailer'}
+  {name: 'Tailor', id: 'tailor'},
+  {name: 'Retailer', id: 'retailer'},
 ];

@@ -6,6 +6,7 @@ import SelectGarment from './SelectGarment';
 import SectionHeader from '../../SectionHeader';
 import SelectAlterations from './SelectAlterations';
 import Cart from './Cart';
+import Checkout from './Checkout';
 import OrderDetails from './OrderDetails';
 import Intercom from 'react-intercom';
 
@@ -25,6 +26,7 @@ class OrdersNew extends Component {
     this.addToCart = this.addToCart.bind(this);
     this.renderOrderDetails = this.renderOrderDetails.bind(this);
     this.renderSelectAlerations = this.renderSelectAlterations.bind(this);
+    this.renderCheckout = this.renderCheckout.bind(this);
   }
 
   selectGarment(garment) {
@@ -57,6 +59,10 @@ class OrdersNew extends Component {
 
   renderOrderDetails() {
     this.setState({stage: 3});
+  }
+
+  renderCheckout() {
+    this.setState({stage: 4});
   }
 
   alterationsIncludeNewSelection(newSelectedAlterations, alteration) {
@@ -140,16 +146,36 @@ class OrdersNew extends Component {
         return <OrderDetails />;
         break;
       case 4:
-        return <OrderConfirmation />;
+        return (
+          <Checkout
+            renderStageOne={this.renderStageOne}
+            renderOrderDetails={this.renderOrderDetails}
+          />
+        );
         break;
     }
   }
 
   render() {
+    let headerText;
+    switch (this.state.stage) {
+      case 1:
+        headerText = 'New Garment';
+        break;
+      case 2:
+        headerText = 'Select Alterations';
+        break;
+      case 3:
+        headerText = 'Order Details';
+        break;
+      case 4:
+        headerText = 'Order Review';
+        break;
+    }
     return (
       <div>
         <SectionHeader
-          text="New Order"
+          text={headerText}
           rotate={'rotate'}
           link={'/'}
           showCart={true}
@@ -160,6 +186,8 @@ class OrdersNew extends Component {
             {this.renderStage(this.state.stage)}
           </div>
           <Cart
+            renderCheckout={this.renderCheckout}
+            renderStageOne={this.renderStageOne}
             renderSelectAlterations={this.renderSelectAlterations.bind(this)}
             stage={this.state.stage}
             renderOrderDetails={this.renderOrderDetails}

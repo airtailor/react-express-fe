@@ -5,7 +5,11 @@ const router = express.Router();
 
 const apiUrl =
   process.env.NODE_ENV === 'production'
+<<<<<<< HEAD
     ? process.env.API_URL
+=======
+    ? 'https://prod-airtailor-portal-api.herokuapp.com'
+>>>>>>> 2nd-growler-branch
     : 'http://localhost:3000';
 
 router.post('/api/validate_token', (req, res) => {
@@ -37,7 +41,11 @@ router.post('/api/sign_in', (req, res) => {
   })
     .then(response => {
       // console.log('return headers sign_in', response.headers);
+<<<<<<< HEAD
       res.json({headers: response.headers, body: response.data.data});
+=======
+      res.json({headers: response.headers, body: response.data});
+>>>>>>> 2nd-growler-branch
     })
     .catch(err => {
       if (err instanceof Error) {
