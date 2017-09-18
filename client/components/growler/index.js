@@ -5,7 +5,7 @@ import {removeGrowler} from '../../actions';
 import {isEmpty} from 'lodash';
 
 class Growler extends Component {
-  setTimer(){
+  setTimer() {
     setTimeout(() => {
       this.props.removeGrowler();
     }, 4000);
@@ -28,7 +28,7 @@ class Growler extends Component {
         </div>
       );
     } else {
-      return <div className='empty-div'/>;
+      return <div className="empty-div" />;
     }
   }
 }

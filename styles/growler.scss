@@ -53,11 +53,12 @@
   color: green;
 }
 
-/*@media screen and (max-width: 981px){
+@media screen and (min-width: 981px) {
   .growl {
-    left: 77px;
+    left: 50%;
+    margin-left: -175px;
   }
-}*/
+}
 
 .empty-div {
   display: none;
