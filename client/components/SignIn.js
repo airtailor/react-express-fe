@@ -28,9 +28,7 @@ class SignIn extends Component {
       .userSignIn(this.state.email.text, this.state.password.text)
       .then(res => {
         if (res.success) {
-          const kind = 'success';
-          const message = 'Hi, Welcome Back!';
-          this.props.setGrowler({kind, message});
+          // do nothing
         } else if (res.errors) {
           const kind = 'warning';
           const message = 'Email/password combination is incorrect. Try again!';
