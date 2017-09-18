@@ -8,7 +8,8 @@
     visibility: hidden;
   }
 
-  .print, .print * {
+  .print,
+  .print * {
     visibility: visible;
     display: block;
   }
@@ -23,7 +24,7 @@
 
 .packing-slip-info {
   width: 52%;
-  font-family: arial
+  font-family: arial;
 }
 
 .packing-slip-info h3 {
@@ -71,4 +72,41 @@
   width: 100px;
   margin: auto;
   margin-top: 20px;
+}
+
+.print-instructions {
+  width: 90%;
+}
+
+.print-instructions > h2 {
+  font-size: 20px;
+}
+
+.print-instructions > h4 {
+  font-size: 14px;
+}
+
+.print .card {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  width: 100%;
+  padding-right: 10px;
+}
+
+.print .card .item-type-image {
+  width: 50px;
+  height: 50px;
+  padding-right: 0px;
+}
+
+.print .card ul {
+  padding-left: 10px;
+  margin-bottom: 0px;
+}
+
+.print .card ul li {
+  font-size: 10px;
 }
