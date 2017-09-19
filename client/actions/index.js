@@ -538,6 +538,7 @@ export function updatePassword(data) {
           .then(res => {
             if (res.data.body.email) {
               dispatch(setCurrentUser(res.data.body));
+              return res;
             } else {
               console.log('hmmm something went wrong', res);
             }
