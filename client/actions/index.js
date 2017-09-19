@@ -472,7 +472,7 @@ export function submitOrder(props) {
           console.log('errors', res.data.body.errors);
           return {
             errors: true,
-            message: res.data.body.errors,
+            message: res.data.body.errors.customer[0],
           };
         } else {
           const customer_id = res.data.body.id;
@@ -508,6 +508,13 @@ export function submitOrder(props) {
 
           return createOrder(order)
             .then(res => {
+              if (res.data.body.errors) {
+                console.log('errors', res.data.body.errors);
+                return {
+                  errors: true,
+                  message: res.data.body.errors,
+                };
+              }
               return dispatch(setConfirmedNewOrder(res.data.body));
             })
             .catch(err => {
