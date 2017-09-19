@@ -218,9 +218,10 @@ export function updateCustomer(data) {
   const url = `${expressApi}/customers/${data.customer.id}`;
   return validateToken()
     .then(setTokens)
-    .then(() => {
+    .then(res => {
       return Axios.put(url, data);
-    });
+    })
+    .catch(err => console.log(err));
 }
 
 export function createStore(data) {

@@ -1,100 +1,182 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import FormField from './FormField.js';
-import { updateCustomer, getCustomer } from '../actions';
+import {
+  updateCustomer,
+  getCustomer,
+  setGrowler,
+  getCurrentOrder,
+} from '../actions';
+import {ValidateEmail} from '../utils/validations';
 
 class CustomerEdit extends Component {
-  constructor(props){
+  constructor(props) {
     super();
-      const { id, email, first_name, last_name, phone, street1, street2, city, state, zip } = props.customer;
-      this.state = {
-        id,
-        email,
-        first_name,
-        last_name,
-        phone,
-        street1,
-        street2,
-        city,
-        state,
-        zip
-      }
+    const {
+      id,
+      email,
+      first_name,
+      last_name,
+      phone,
+      street1,
+      street2,
+      city,
+      state,
+      zip,
+    } = props.customer;
+    this.state = {
+      id,
+      email,
+      first_name,
+      last_name,
+      phone,
+      street1,
+      street2,
+      city,
+      state,
+      zip,
+    };
     this.updateState = this.updateState.bind(this);
   }
 
-  updateState(field, value){
+  updateState(field, value) {
     //console.log('field', field, 'value', value);
     this.setState({[field]: value});
   }
 
-  handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault();
-    updateCustomer({ customer: this.state })
-      //.then(res => console.log(res))
-      .catch(err => console.log(err));
+    const {
+      currentStore,
+      currentOrder,
+      getCurrentOrder,
+      setGrowler,
+    } = this.props;
+    const {email} = this.state;
+
+    if (ValidateEmail(email)) {
+      updateCustomer({customer: this.state})
+        .then(res => {
+          let kind, message;
+          if (res.data.body.errors) {
+            kind = 'warning';
+            message = res.data.body.errors[0];
+          } else {
+            kind = 'success';
+            message = 'Customer Updated';
+            getCurrentOrder(currentStore.id, currentOrder.id);
+          }
+          setGrowler({kind, message});
+        })
+        .catch(err => {});
+    } else {
+      const kind = 'warning';
+      const message = 'Email must be valid';
+      this.props.setGrowler({kind, message});
+    }
   }
 
-  render(){
-    const { currentOrder, customer } = this.props;
-    const { email, first_name, last_name, phone, street1, street2, city, state, zip } = customer;
+  render() {
+    const {currentOrder, customer} = this.props;
+    const {
+      email,
+      first_name,
+      last_name,
+      phone,
+      street1,
+      street2,
+      city,
+      state,
+      zip,
+    } = customer;
     const backLink = `/orders/${currentOrder.id}`;
     return (
       <div>
-        <Link to={backLink}>
-          Back
-        </Link>
+        <Link to={backLink}>Back</Link>
 
-        <form onSubmit={(e) => this.handleSubmit(e)}>
-          <FormField value={this.state.email}
-            fieldName={'email'} title={'Email'}
-            onChange={this.updateState} />
+        <form onSubmit={e => this.handleSubmit(e)}>
+          <FormField
+            value={this.state.email}
+            fieldName={'email'}
+            title={'Email'}
+            onChange={this.updateState}
+          />
 
-          <FormField value={this.state.first_name}
-            fieldName={'first_name'} title={'First Name'}
-            onChange={this.updateState} />
+          <FormField
+            value={this.state.first_name}
+            fieldName={'first_name'}
+            title={'First Name'}
+            onChange={this.updateState}
+          />
 
-          <FormField value={this.state.last_name}
-            fieldName={'last_name'} title={'Last Name'}
-            onChange={this.updateState} />
+          <FormField
+            value={this.state.last_name}
+            fieldName={'last_name'}
+            title={'Last Name'}
+            onChange={this.updateState}
+          />
 
-          <FormField value={this.state.phone}
-            fieldName={'phone'} title={'Phone'}
-            onChange={this.updateState} />
+          <FormField
+            value={this.state.phone}
+            fieldName={'phone'}
+            title={'Phone'}
+            onChange={this.updateState}
+          />
 
-          <FormField value={this.state.street1}
-            fieldName={'street1'} title={'Street'}
-            onChange={this.updateState} />
+          <FormField
+            value={this.state.street1}
+            fieldName={'street1'}
+            title={'Street'}
+            onChange={this.updateState}
+          />
 
-          <FormField value={this.state.street2}
-            fieldName={'street2'} title={'Unit'}
-            onChange={this.updateState} />
+          <FormField
+            value={this.state.street2}
+            fieldName={'street2'}
+            title={'Unit'}
+            onChange={this.updateState}
+          />
 
-          <FormField value={this.state.city}
-            fieldName={'city'} title={'City'}
-            onChange={this.updateState} />
+          <FormField
+            value={this.state.city}
+            fieldName={'city'}
+            title={'City'}
+            onChange={this.updateState}
+          />
 
-          <FormField value={this.state.state}
-            fieldName={'state'} title={'State'}
-            onChange={this.updateState} />
+          <FormField
+            value={this.state.state}
+            fieldName={'state'}
+            title={'State'}
+            onChange={this.updateState}
+          />
 
-          <FormField value={this.state.zip}
-            fieldName={'zip'} title={'Zip'}
-            onChange={this.updateState} />
+          <FormField
+            value={this.state.zip}
+            fieldName={'zip'}
+            title={'Zip'}
+            onChange={this.updateState}
+          />
 
-          <input type='submit' value='Update' />
+          <input type="submit" value="Update" />
         </form>
       </div>
-
     );
   }
 }
 
-const mapStateToProps = (store) => {
+const mapStateToProps = store => {
   return {
     currentOrder: store.currentOrder,
-    customer: store.currentOrder.customer
-  }
+    customer: store.currentOrder.customer,
+    currentStore: store.currentStore,
+  };
+};
 
-}
-export default connect(mapStateToProps)(CustomerEdit);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({setGrowler, getCurrentOrder}, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerEdit);
