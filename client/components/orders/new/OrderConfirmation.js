@@ -149,6 +149,7 @@ class OrderConfirmation extends Component {
 
   render() {
     const {confirmedNewOrder} = this.props;
+
     return (
       <div>
         <SectionHeader text="Order Completed" />

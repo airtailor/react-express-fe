@@ -470,7 +470,6 @@ export function submitOrder(props) {
     return findOrCreateCustomer(removeFalseyValuesFromObject(customerInfo))
       .then(res => {
         if (res.data.body.errors) {
-          console.log('errors', res.data.body.errors);
           return {
             errors: true,
             message: res.data.body.errors.customer[0],
@@ -510,7 +509,6 @@ export function submitOrder(props) {
           return createOrder(order)
             .then(res => {
               if (res.data.body.errors) {
-                console.log('errors', res.data.body.errors);
                 return {
                   errors: true,
                   message: res.data.body.errors,
