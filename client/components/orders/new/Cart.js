@@ -114,71 +114,67 @@ class Cart extends Component {
         return <div />;
       } else if (this.readyToCheckout(props) && props.stage !== 3) {
         return (
-          <div>
+          <div className="cart-buttons-container">
             <input
               onClick={props.renderOrderDetails}
-              className="short-buton"
+              className="short-button"
               type="submit"
               value="Edit Order Details"
             />
 
-            <div>
-              <input
-                onClick={() => this.props.renderCheckout()}
-                className="short-button"
-                type="submit"
-                value="Checkout"
-              />
-            </div>
+            <input
+              onClick={() => this.props.renderCheckout()}
+              className="short-button"
+              type="submit"
+              value="Checkout"
+            />
           </div>
         );
       } else if (this.readyToCheckout(props) && props.stage === 3) {
         return (
-          <div>
-            <div>
-              <input
-                onClick={() => this.props.renderCheckout()}
-                className="short-button"
-                type="submit"
-                value="Checkout"
-              />
-              <input
-                onClick={() => this.props.renderStageOne()}
-                className="short-button"
-                type="submit"
-                value="Add More Items"
-              />
-            </div>
+          <div className="cart-buttons-container">
+            <input
+              onClick={() => this.props.renderCheckout()}
+              className="short-button"
+              type="submit"
+              value="Checkout"
+            />
+            <input
+              onClick={() => this.props.renderStageOne()}
+              className="short-button"
+              type="submit"
+              value="Add More Items"
+            />
           </div>
         );
       } else if (!this.readyToCheckout(props) && props.stage === 3) {
         return (
-          <div>
-            <div>
-              <input
-                onClick={() => this.props.renderCheckout()}
-                className="short-button"
-                type="submit"
-                value="Checkout"
-                disabled={true}
-              />
-              <input
-                onClick={() => this.props.renderStageOne()}
-                className="short-button"
-                type="submit"
-                value="Add More Items"
-              />
-            </div>
+          <div className="cart-buttons-container">
+            <input
+              onClick={() => this.props.renderCheckout()}
+              className="short-button"
+              type="submit"
+              value="Checkout"
+              disabled={true}
+            />
+            <input
+              onClick={() => this.props.renderStageOne()}
+              className="short-button"
+              type="submit"
+              value="Add More Items"
+            />
           </div>
         );
       } else if (props.stage === 2 || props.stage === 1) {
         return (
-          <input
-            onClick={props.renderOrderDetails}
-            className="short-buton"
-            type="submit"
-            value="Add Order Details"
-          />
+          <div className="cart-buttons-container">
+            <input
+              onClick={props.renderOrderDetails}
+              className="short-button"
+              type="submit"
+              value="Add Order Details"
+            />
+          </div>
         );
       }
     }
@@ -193,6 +189,10 @@ class Cart extends Component {
           </h2>
           <hr className="cart-line" />
           <div className="cart-items">{this.renderCartItems(this.props)}</div>
+          <p className="customer-agrees-prompt">
+            By submitting this form, customer agrees to receive production
+            status updates via text
+          </p>
           {this.renderNextButton(this.props)}
         </div>
       );

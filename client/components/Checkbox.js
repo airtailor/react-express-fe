@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Checkbox = (props) => {
+const Checkbox = props => {
   const {onChange, checked, fieldName, text, name} = props;
-  if (!fieldName){
+  if (!fieldName) {
     return (
       <div style={{display: 'inline'}}>
         <input
@@ -10,10 +10,11 @@ const Checkbox = (props) => {
           id={`${name}-check`}
           name={name}
           checked={checked}
-          onChange={onChange}/>
+          onChange={onChange}
+        />
 
-        <label htmlFor={`${name}-check`} className="customer-agrees-prompt">
-           <span></span>
+        <label htmlFor={`${name}-check`} className="checkbox-label">
+          <span />
           {text}
         </label>
       </div>
@@ -27,14 +28,15 @@ const Checkbox = (props) => {
         id={`${name}-check`}
         name={name}
         checked={checked}
-        onChange={() => onChange(fieldName, !checked)}/>
+        onChange={() => onChange(fieldName, !checked)}
+      />
 
-      <label htmlFor={`${name}-check`} className="customer-agrees-prompt">
-         <span></span>
+      <label htmlFor={`${name}-check`} className="checkbox-label">
+        <span />
         {text}
       </label>
     </div>
   );
-}
+};
 
 export default Checkbox;

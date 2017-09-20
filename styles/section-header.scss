@@ -13,7 +13,7 @@
   width: 60%;
   font-weight: normal;
   font-family: $Alegreya;
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
   font-size: 21px;
 }
 
@@ -23,7 +23,7 @@
 }
 
 .cart-ribbon {
-  background-color: #DE0421;
+  background-color: $primary-red;
   width: 75px;
   margin-left: auto;
   margin-right: 10%;
@@ -35,7 +35,7 @@
   height: 0;
   border-left: 37px solid transparent;
   border-right: 38px solid transparent;
-  border-top: 26px solid #DE0421;
+  border-top: 26px solid $primary-red;
 }
 
 .cart-ribbon-sign {
@@ -50,10 +50,9 @@
 }
 
 .rotate {
-  -webkit-transform:rotate(45deg);
-  transform:rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
-
 
 /*.rotate0 {
   -webkit-transform:rotate(0deg);
@@ -65,14 +64,13 @@
   transform:rotate(45deg);
 }*/
 
-
 @media screen and (max-width: 981px) {
   .section-header > h2 {
     padding-left: 80px;
   }
 }
 
-@media screen and (max-width: 1039px){
+@media screen and (max-width: 1039px) {
   .section-header > h2 {
     max-width: 418px;
   }
