@@ -452,10 +452,11 @@ class OrdersShow extends Component {
   }
 
   render() {
-    const {currentStore, currentOrder} = this.props;
+    const {currentStore, currentOrder, currentUser} = this.props;
     const {customer} = currentOrder;
     const orderEditPath = `/orders/${currentOrder.id}/edit`;
     const headerText = `Orders / ${currentStore.name} / #${currentOrder.id}`;
+    const role = currentUser.user.roles[0].name;
 
     if (!isEmpty(currentOrder)) {
       const customerRoute = `/customers/${customer.id}/edit`;
@@ -467,20 +468,14 @@ class OrdersShow extends Component {
       return (
         <div>
           <SectionHeader
+            role={role}
             text={headerText}
             linkTo={customerRoute}
             linkText={customer.first_name + ' ' + customer.last_name}
           />
           <div className="order-show">
-            {this.renderEditOrder(
-              this.props.currentUser.user.roles[0].name,
-              orderEditPath
-            )}
-            {this.renderDetailsOrMeasurementsbutton(
-              this.props.currentUser.user.roles[0].name,
-              this.state
-            )}
-
+            {this.renderEditOrder(role, orderEditPath)}
+            {this.renderDetailsOrMeasurementsbutton(role, this.state)}
             {mainContent}
           </div>
         </div>
