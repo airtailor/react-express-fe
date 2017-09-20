@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 
 const CustomerLink = props => {
@@ -24,6 +25,10 @@ const CartRibbon = props => {
     link = '/orders/new';
   }
 
+  if (props.currentUser.user.roles[0].name === 'tailor') {
+    return <div />;
+  }
+
   return (
     <Link className="cart-ribbon" to={link}>
       <h1 className={`cart-ribbon-sign ${rotate}`}>+</h1>
@@ -42,4 +47,10 @@ const SectionHeader = props => {
   );
 };
 
-export default SectionHeader;
+const mapStateToProps = store => {
+  return {
+    currentUser: store.currentUser,
+  };
+};
+
+export default connect(mapStateToProps)(SectionHeader);
