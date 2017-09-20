@@ -180,8 +180,20 @@ class Cart extends Component {
     }
   }
 
+  customerAgreesPrompt(stage) {
+    if (stage === 3) {
+      return (
+        <p className="customer-agrees-prompt">
+          By submitting this form, customer agrees to receive production status
+          updates via text
+        </p>
+      );
+    }
+  }
+
   render() {
-    if (this.props.cart.garments.length > 0) {
+    const {cart, stage} = this.props;
+    if (cart.garments.length > 0) {
       return (
         <div className="cart-container">
           <h2 className="cart-title">
@@ -189,10 +201,8 @@ class Cart extends Component {
           </h2>
           <hr className="cart-line" />
           <div className="cart-items">{this.renderCartItems(this.props)}</div>
-          <p className="customer-agrees-prompt">
-            By submitting this form, customer agrees to receive production
-            status updates via text
-          </p>
+          {this.customerAgreesPrompt(stage)}
+
           {this.renderNextButton(this.props)}
         </div>
       );
