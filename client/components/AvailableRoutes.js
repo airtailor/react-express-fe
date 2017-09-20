@@ -20,7 +20,7 @@ import SearchResults from './search/searchResults';
 import SelectAlterations from './orders/new/SelectAlterations';
 
 const AvailableRoutes = props => {
-  const {loggedIn, admin, retailer} = props;
+  const {loggedIn, admin, retailer, tailor} = props;
   return (
     <div className="content">
       <Route
@@ -91,7 +91,11 @@ const AvailableRoutes = props => {
       <Route
         path="/customers/:customer_id/edit"
         render={props =>
-          loggedIn ? <CustomerEdit {...props} /> : <Redirect to="/sign_in" />}
+          admin || tailor ? (
+            <CustomerEdit {...props} />
+          ) : (
+            <Redirect to="/sign_in" />
+          )}
       />
 
       <Route
