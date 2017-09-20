@@ -71,16 +71,12 @@ class Checkout extends Component {
       .submitOrder(props)
       .then(res => {
         if (res.errors) {
-          console.log('errors', res);
           const kind = 'warning';
-          //const message = res.message.customer[0];
           const message = res.message;
-          console.log('message', message);
           this.props.setGrowler({message, kind});
           this.props.renderOrderDetails();
         } else {
           this.setState({orderCompeted: true});
-          //console.log('success', res)
         }
       })
       .catch(err => {
