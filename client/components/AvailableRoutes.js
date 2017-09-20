@@ -14,7 +14,6 @@ import NewOrders from './admin/NewOrders';
 import ConversationsIndex from './conversations/ConversationsIndex';
 import ConversationShow from './conversations/ConversationsShow';
 import OrdersNew from './orders/new/OrdersNew';
-import Checkout from './orders/new/Checkout';
 import OrderConfirmation from './orders/new/OrderConfirmation';
 import SearchResults from './search/searchResults';
 import SelectAlterations from './orders/new/SelectAlterations';
@@ -51,7 +50,11 @@ const AvailableRoutes = props => {
           exact
           path="/orders/new"
           render={props =>
-            loggedIn ? <OrdersNew {...props} /> : <Redirect to="/sign_in" />}
+            admin || retailer ? (
+              <OrdersNew {...props} />
+            ) : (
+              <Redirect to="/sign_in" />
+            )}
         />
 
         <Route
@@ -124,13 +127,6 @@ const AvailableRoutes = props => {
         path="/conversations/:id"
         render={props =>
           admin ? <ConversationShow {...props} /> : <Redirect to="/" />}
-      />
-
-      <Route
-        exact
-        path="/orders/new/checkout"
-        render={props =>
-          admin || retailer ? <Checkout {...props} /> : <Redirect to="/" />}
       />
 
       <Route
