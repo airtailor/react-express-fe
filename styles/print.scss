@@ -1,6 +1,7 @@
 .print {
   visibility: hidden;
   display: none;
+  margin-left: 10px;
 }
 
 @media print {
@@ -36,7 +37,7 @@
 }
 
 .packing-slip-info p {
-  font-size: 18px;
+  font-size: 10px;
   margin-left: 10px;
   font-family: arial;
 }
@@ -55,7 +56,7 @@
 
 .print-alteration-li {
   font-family: arial;
-  font-size: 13px;
+  font-size: 10px;
   line-height: 1.2;
 }
 
@@ -108,4 +109,27 @@
 
 .print .card ul li {
   font-size: 10px;
+}
+
+.print h2 {
+  font-size: 15px;
+}
+
+.print h3 {
+  font-size: 12px;
+}
+
+.print h4 {
+  font-size: 10px;
+}
+
+.print .card .type-heading img,
+.print .card .type-heading h3,
+.print .card .type-heading ul,
+.print .card .type-heading li {
+  display: inline;
+}
+
+.print .card .type-heading h3 {
+  padding-left: 20px;
 }
