@@ -25,13 +25,7 @@ class OrderDetails extends Component {
   }
 
   renderCustomerInfo(cart) {
-    const {
-      first_name,
-      last_name,
-      phone,
-      email,
-      agrees_to_terms,
-    } = cart.customerInfo;
+    const {first_name, last_name, phone, email} = cart.customerInfo;
 
     return (
       <div>
@@ -80,13 +74,13 @@ class OrderDetails extends Component {
             checked={agrees_to_terms}
             onChange={() => this.updateCustomerInfo('agrees_to_terms', !agrees_to_terms)}/>*/}
 
-          <Checkbox
+          {/*<Checkbox
             checked={agrees_to_terms}
             fieldName={'agrees_to_terms'}
             name="agrees-to-terms"
             text="Customer agrees to receive important updates from Air Tailor"
             onChange={this.updateCustomerInfo}
-          />
+          />*/}
 
           {/*<input type="checkbox" id="check" name="check" value="" />
           <label htmlFor="check" className="customer-agrees-prompt">

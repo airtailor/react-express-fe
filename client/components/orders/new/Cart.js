@@ -91,7 +91,6 @@ class Cart extends Component {
       city,
       state,
       zip,
-      agrees_to_terms,
     } = customerInfo;
 
     if (
@@ -99,8 +98,9 @@ class Cart extends Component {
       last_name &&
       ValidatePhone(phone) &&
       ValidateEmail(email) &&
-      (shipToStore || (street1, city, state, ValidateZip(zip))) &&
-      agrees_to_terms
+      // Condition Below:
+      // Tailor will ship to store, OR customer has provided address
+      (shipToStore || (street1, city, state, ValidateZip(zip)))
     ) {
       return true;
     } else {
