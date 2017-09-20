@@ -143,7 +143,7 @@ class OrdersNew extends Component {
         );
         break;
       case 3:
-        return <OrderDetails />;
+        return <OrderDetails renderStageOne={this.renderStageOne} />;
         break;
       case 4:
         return (

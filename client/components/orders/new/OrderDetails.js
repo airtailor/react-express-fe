@@ -10,6 +10,7 @@ import FormField from '../../FormField';
 import Checkbox from '../../Checkbox';
 import Zippopotam from '../../../lib/zippopotam';
 import {ValidateZip} from '../../../utils/validations';
+import {redirectToStageOneIfNoAlterations} from '../ordersHelper';
 
 class OrderDetails extends Component {
   constructor() {
@@ -207,6 +208,7 @@ class OrderDetails extends Component {
   render() {
     return (
       <div className="order-details">
+        {redirectToStageOneIfNoAlterations(this.props)}
         <h2>ORDER DETAILS</h2>
         {this.renderCustomerInfo(this.props.cart)}
 

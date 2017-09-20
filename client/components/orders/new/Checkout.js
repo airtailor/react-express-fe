@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import {Link, Redirect} from 'react-router-dom';
 import {formatPhone} from '../../../utils/format';
 import {submitOrder, setGrowler} from '../../../actions';
+import {redirectToStageOneIfNoAlterations} from '../ordersHelper';
 
 class Checkout extends Component {
   constructor() {
@@ -180,6 +181,7 @@ class Checkout extends Component {
     return (
       <div>
         <div className="checkout-container">
+          {redirectToStageOneIfNoAlterations(this.props)}
           {this.renderCustomerInfo(this.props)}
           <br />
           {this.renderOrderInfo(this.props)}
