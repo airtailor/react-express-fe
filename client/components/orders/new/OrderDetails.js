@@ -100,6 +100,12 @@ class OrderDetails extends Component {
         ? Zippopotam.get(customerInfo.zip)
         : '';
 
+      // if (zippo.catch) {
+      //   zippo.catch(err => {
+      //     debugger;
+      //   });
+      // }
+
       if (zippo.then && (!customerInfo.city && !customerInfo.state)) {
         zippo.then(res => {
           const formatted_address = res.results[0].formatted_address;

@@ -100,7 +100,7 @@ class Cart extends Component {
       ValidateEmail(email) &&
       // Condition Below:
       // Tailor will ship to store, OR customer has provided address
-      (shipToStore || (street1, city, state, ValidateZip(zip)))
+      (shipToStore || (street1 && city && state && ValidateZip(zip)))
     ) {
       return true;
     } else {
@@ -132,7 +132,7 @@ class Cart extends Component {
             </div>
           </div>
         );
-      } else if (this.readyToCheckout(props) && props.stage == 3) {
+      } else if (this.readyToCheckout(props) && props.stage === 3) {
         return (
           <div>
             <div>
@@ -141,6 +141,32 @@ class Cart extends Component {
                 className="short-button"
                 type="submit"
                 value="Checkout"
+              />
+              <input
+                onClick={() => this.props.renderStageOne()}
+                className="short-button"
+                type="submit"
+                value="Add More Items"
+              />
+            </div>
+          </div>
+        );
+      } else if (!this.readyToCheckout(props) && props.stage === 3) {
+        return (
+          <div>
+            <div>
+              <input
+                onClick={() => this.props.renderCheckout()}
+                className="short-button"
+                type="submit"
+                value="Checkout"
+                disabled={true}
+              />
+              <input
+                onClick={() => this.props.renderStageOne()}
+                className="short-button"
+                type="submit"
+                value="Add More Items"
               />
             </div>
           </div>
