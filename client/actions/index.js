@@ -583,15 +583,20 @@ export function searchOrders(query) {
       .then(() => {
         return Axios.get(url)
           .then(res => {
-            if (!res.data.body.errors) {
+            if (!res.data.body.errors && !res.data === 500) {
               dispatch(setSearchResults(res.data.body));
               return res.data.body;
             } else {
               console.log('hmmm something went wrong', res);
+              const message = 'Hmm something went wrong with your search.';
+              const kind = 'warning';
+              dispatch(setGrowler({kind, message}));
             }
           })
           .catch(err => {
-            debugger;
+            const message = 'Hmm something went wrong with your search.';
+            const kind = 'warning';
+            dispatch(setGrowler({kind, message}));
           });
       })
       .catch(err => console.log('err index.js line 488', err));
