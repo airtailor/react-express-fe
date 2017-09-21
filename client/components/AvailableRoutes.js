@@ -7,6 +7,7 @@ import SignUp from './SignUp';
 import StoreOrders from './stores/StoresShow';
 import OrdersShow from './orders/show/OrdersShow';
 import OrdersEdit from './orders/OrdersEdit';
+import ArchivedOrders from './orders/ArchivedOrders';
 import StoresEdit from './stores/StoresEdit';
 import StoresNew from './stores/StoresNew';
 import CustomerEdit from './CustomerEdit';
@@ -66,16 +67,30 @@ const AvailableRoutes = props => {
       </Switch>
 
       <Route
+        exact
         path="/orders/:order_id/edit"
         render={props =>
           loggedIn ? <OrdersEdit {...props} /> : <Redirect to="/sign_in" />}
       />
+      <Switch>
+        <Route
+          exact
+          path="/stores/:store_id/edit"
+          render={props =>
+            loggedIn ? <StoresEdit {...props} /> : <Redirect to="/sign_in" />}
+        />
 
-      <Route
-        path="/stores/:store_id/edit"
-        render={props =>
-          loggedIn ? <StoresEdit {...props} /> : <Redirect to="/sign_in" />}
-      />
+        <Route
+          exact
+          path="/stores/:store_id/orders/archived"
+          render={props =>
+            loggedIn ? (
+              <ArchivedOrders {...props} />
+            ) : (
+              <Redirect to="/sign_in" />
+            )}
+        />
+      </Switch>
 
       <Switch>
         <Route

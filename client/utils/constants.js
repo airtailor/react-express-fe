@@ -24,6 +24,7 @@ export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
 export const UPDATE_GARMENT_IN_CART = 'UPDATE_GARMENT_IN_CART';
 export const SET_GROWLER = 'SET_GROWLER';
 export const REMOVE_GROWLER = 'REMOVE_GROWLER';
+export const SET_ARCHIVED_ORDERS = 'SET_ARCHIVED_ORDERS';
 
 export const storeTypes = [
   {name: 'Tailor', id: 'tailor'},

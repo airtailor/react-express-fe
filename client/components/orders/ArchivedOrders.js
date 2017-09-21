@@ -1,0 +1,96 @@
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import moment from 'moment';
+import {Redirect, Link} from 'react-router-dom';
+import SectionHeader from '../SectionHeader';
+import {getArchivedOrders} from '../../actions';
+
+class ArchivedOrders extends Component {
+  componentDidMount() {
+    this.props.getArchivedOrders();
+  }
+
+  formatDueDate(fulfilledDate) {
+    const todaysDate = moment(new Date());
+    const momentDueDate = moment(fulfilledDate);
+    const diff = momentDueDate.diff(todaysDate, 'days');
+
+    const additionalString = 'days ago';
+    const status = (diff + additionalString).toUpperCase();
+    return status;
+  }
+
+  getOrderStatus(order) {
+    let dueTime = this.formatDueDate(order.fulfilled_date);
+    return {status: dueTime, color: 'green'};
+  }
+
+  renderOrderRows() {
+    const {archivedOrders} = this.props;
+    if (archivedOrders) {
+      return archivedOrders.map((order, i) => {
+        const orderStatus = this.getOrderStatus(order);
+        const {id, customer, alterations_count} = order;
+        const {first_name, last_name} = customer;
+        const {color, status} = orderStatus;
+        const route = `/orders/${id}`;
+        return (
+          <div key={id}>
+            <div className="order-row">
+              <Link to={route} className="flex-container">
+                <div className="order-data">#{id}</div>
+                <div className="order-data" style={{color}}>
+                  {status}
+                </div>
+                <div className="order-data">
+                  {first_name} {last_name}
+                </div>
+                <div className="order-data">{alterations_count}</div>
+              </Link>
+            </div>
+            <hr className="order-row-hr" />
+          </div>
+        );
+      });
+    } else {
+      return <div>Loading...</div>;
+    }
+  }
+
+  render() {
+    if (!this.props.currentStore) {
+      return <Redirect to="/" />;
+    }
+    const headerText = `Archived Orders / ${this.props.currentStore.name}`;
+    return (
+      <div>
+        <SectionHeader text={headerText} />
+        <div className="orders">
+          <div className="order-row-header">
+            <h3 className="order-column">Order</h3>
+            <h3 className="order-column">Status</h3>
+            <h3 className="order-column">Customer</h3>
+            <h3 className="order-column">Quantity</h3>
+          </div>
+          <hr className="order-header-hr" />
+          <div className="order-rows">{this.renderOrderRows()}</div>
+        </div>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = store => {
+  return {
+    currentUser: store.currentUser,
+    currentStore: store.currentStore,
+    archivedOrders: store.archivedOrders,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({getArchivedOrders}, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ArchivedOrders);

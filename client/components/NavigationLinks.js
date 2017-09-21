@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import NavigationLink from './NavigationLink';
 import SearchBar from './SearchBar';
 import Intercom from 'react-intercom';
@@ -9,11 +9,12 @@ import {
   logoutImage,
   messageImage,
   homeImage,
-  ordersImage
+  ordersImage,
+  archivedImage,
 } from '../images';
 
 class NavigationLinks extends Component {
-  adminNavbar(){
+  adminNavbar() {
     const {toggleNavState, navState, store} = this.props;
     const editStoreRoute = `/stores/${store.id}/edit`;
     return (
@@ -22,46 +23,60 @@ class NavigationLinks extends Component {
         <ul className="navbar-links-ul">
           <NavigationLink
             cssClass="home-link"
-            route="/" text="Home"
-            image={homeImage} />
+            route="/"
+            text="Home"
+            image={homeImage}
+          />
 
           <NavigationLink
             cssClass="orders-link"
-            route="/admin/orders/new" text="Orders"
-            image={ordersImage} />
+            route="/admin/orders/new"
+            text="Orders"
+            image={ordersImage}
+          />
 
           <NavigationLink
             cssClass="conversations-link"
-            route="/conversations" text="Conversations"
-            image={messageImage} />
+            route="/conversations"
+            text="Conversations"
+            image={messageImage}
+          />
 
           <NavigationLink
             cssClass="edit-store-link"
             route={editStoreRoute}
             text="Edit Store"
-            image={editStoreImage} />
-
+            image={editStoreImage}
+          />
 
           <NavigationLink
             cssClass="new-store-link"
             route="/stores/new"
             text="New Store"
-            image={homeImage} />
+            image={homeImage}
+          />
 
           <NavigationLink
             cssClass="new-order-link"
-            route="/orders/new" text="New Order"
-            image={homeImage} />
+            route="/orders/new"
+            text="New Order"
+            image={homeImage}
+          />
 
-           <li><a className="navbar-links-li close-menu-link" onClick={() => toggleNavState(navState) }>
-              <img src={logoutImage} alt='logout' /> Close Menu
-           </a></li>
+          <li>
+            <a
+              className="navbar-links-li close-menu-link"
+              onClick={() => toggleNavState(navState)}
+            >
+              <img src={logoutImage} alt="logout" /> Close Menu
+            </a>
+          </li>
         </ul>
       </div>
     );
   }
 
-  tailorNavbar(){
+  tailorNavbar() {
     const {toggleNavState, navState, store} = this.props;
     const editStoreRoute = `/stores/${store.id}/edit`;
     return (
@@ -70,51 +85,69 @@ class NavigationLinks extends Component {
         <ul className="navbar-links-ul">
           <NavigationLink
             cssClass="home-link"
-            route="/" text="Home"
-            image={homeImage} />
+            route="/"
+            text="Home"
+            image={homeImage}
+          />
 
           <NavigationLink
             cssClass="orders-link"
             route="/orders"
             text="Orders"
-            image={ordersImage} />
+            image={ordersImage}
+          />
+
+          <NavigationLink
+            cssClass="orders-link"
+            route={`/stores/${store.di}/orders/archived`}
+            text="Archive"
+            image={archivedImage}
+          />
 
           <NavigationLink
             cssClass="messages-link"
-            route="/messages" text="Messages"
-            image={messageImage} />
+            route="/messages"
+            text="Messages"
+            image={messageImage}
+          />
 
           <NavigationLink
             cssClass="edit-store-link"
             route={editStoreRoute}
             text="Account"
-            image={editStoreImage} />
+            image={editStoreImage}
+          />
         </ul>
-          {this.closeMenu(this.props)}
+        {this.closeMenu(this.props)}
       </div>
     );
   }
 
-  closeMenu(props){
+  closeMenu(props) {
     const {toggleNavState, navState} = props;
     if (window.innerWidth < 981) {
       return (
         <div style={{marginTop: '50%'}}>
-          <li><a className="navbar-links-li close-menu-link" onClick={() => toggleNavState(navState) }>
-             <p>Close Menu</p>
-             <div className='triangle'></div>
-          </a></li>
+          <li>
+            <a
+              className="navbar-links-li close-menu-link"
+              onClick={() => toggleNavState(navState)}
+            >
+              <p>Close Menu</p>
+              <div className="triangle" />
+            </a>
+          </li>
         </div>
       );
     }
   }
 
-  retailerNavbar(){
+  retailerNavbar() {
     const {currentUser, toggleNavState, navState, store} = this.props;
     const user = {
       user_id: currentUser.user.id,
       email: currentUser.user.email,
-      name: currentUser.user.email
+      name: currentUser.user.email,
     };
 
     const editStoreRoute = `/stores/${store.id}/edit`;
@@ -124,25 +157,31 @@ class NavigationLinks extends Component {
         <ul className="navbar-links-ul">
           <NavigationLink
             cssClass="home-link"
-            route="/" text="Home"
-            image={homeImage} />
+            route="/"
+            text="Home"
+            image={homeImage}
+          />
 
           <NavigationLink
             cssClass="orders-link"
             route="/orders"
             text="Orders"
-            image={ordersImage} />
+            image={ordersImage}
+          />
 
           <NavigationLink
             cssClass="messages-link"
-            route="/messages" text="Messages"
-            image={messageImage} />
+            route="/messages"
+            text="Messages"
+            image={messageImage}
+          />
 
           <NavigationLink
             cssClass="edit-store-link"
             route={editStoreRoute}
             text="Account"
-            image={editStoreImage} />
+            image={editStoreImage}
+          />
         </ul>
         {this.closeMenu(this.props)}
         <div className="add">
@@ -152,7 +191,6 @@ class NavigationLinks extends Component {
     );
   }
   render() {
-
     if (this.props.admin) {
       return this.adminNavbar();
     } else if (this.props.retailer) {
@@ -162,20 +200,27 @@ class NavigationLinks extends Component {
     } else {
       return (
         <ul className="navbar-links-ul">
-          <NavigationLink cssClass="sign-in-link" route="/sign_in" text="Sign In" />
-          <NavigationLink cssClass="sign-up-link" route="/sign_up" text="Sign Up" />
+          <NavigationLink
+            cssClass="sign-in-link"
+            route="/sign_in"
+            text="Sign In"
+          />
+          <NavigationLink
+            cssClass="sign-up-link"
+            route="/sign_up"
+            text="Sign Up"
+          />
         </ul>
       );
     }
   }
 }
 
-const mapStateToProps = (store) => {
+const mapStateToProps = store => {
   return {
     currentUser: store.currentUser,
-    store: store.currentStore
-  }
-}
-
+    store: store.currentStore,
+  };
+};
 
 export default connect(mapStateToProps)(NavigationLinks);

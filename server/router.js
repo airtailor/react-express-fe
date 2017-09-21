@@ -695,6 +695,29 @@ router.get('/api/orders/search/:query', (req, res) => {
     });
 });
 
+router.get('/api/orders/archived', (req, res) => {
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const expiry = req.get('expiry');
+  const headers = {client, ['access-token']: accessToken, uid};
+
+  Axios.get(`${apiUrl}/api/orders/archived`, {
+    headers,
+  })
+    .then(response => {
+      res.json({headers: response.headers, body: response.data});
+    })
+    .catch(err => {
+      if (err instanceof Error) {
+        console.log('@@@@@@@@@@@@@', err.response.status);
+        res.json(err.response.status);
+      } else {
+        console.log('error: ', err);
+        res.json(err);
+      }
+    });
+});
 router.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));
 });

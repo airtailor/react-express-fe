@@ -29,6 +29,7 @@ import {
   UPDATE_GARMENT_IN_CART,
   SET_GROWLER,
   REMOVE_GROWLER,
+  SET_ARCHIVED_ORDERS,
 } from '../utils/constants';
 
 import {removeFalseyValuesFromObject} from '../utils/format';
@@ -573,6 +574,29 @@ export function searchOrders(query) {
   };
 }
 
+export function getArchivedOrders() {
+  const url = `${expressApi}/orders/archived`;
+  return dispatch => {
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.get(url)
+          .then(res => {
+            if (!res.data.body.errors) {
+              debugger;
+              //dispatch(setSearchResults(res.data.body));
+              return res.data.body;
+            } else {
+              console.log('hmmm something went wrong', res);
+            }
+          })
+          .catch(err => {
+            debugger;
+          });
+      })
+      .catch(err => console.log('err index.js line 488', err));
+  };
+}
 // actions
 
 export function removeGrowler() {
