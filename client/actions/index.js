@@ -583,7 +583,7 @@ export function searchOrders(query) {
       .then(() => {
         return Axios.get(url)
           .then(res => {
-            if (!res.data.body.errors && !res.data === 500) {
+            if (!res.data.body.errors && !(res.data === 500)) {
               dispatch(setSearchResults(res.data.body));
               return res.data.body;
             } else {
