@@ -3,6 +3,7 @@ import setAuthToken from '../utils/setAuthToken';
 import {
   setLocalStorageAuth,
   setLocalStorageUser,
+  setLocalStorageStore,
 } from '../utils/setLocalStorage';
 import {
   expressApi,
@@ -49,6 +50,7 @@ const setTokens = res => {
 const resetTokens = () => {
   setAuthToken({});
   setLocalStorageAuth({});
+  setLocalStorageStore({});
 };
 
 export const userSignIn = (email, password) => {
@@ -171,6 +173,22 @@ export function getCurrentStore(store_id) {
               active_orders_count,
               late_orders_count,
             } = res.data.body;
+
+            setLocalStorageStore({
+              company_id,
+              city,
+              id,
+              name,
+              phone,
+              primary_contact_id,
+              state,
+              street1,
+              street2,
+              zip,
+              active_orders_count,
+              late_orders_count,
+            });
+
             dispatch(
               setCurrentStore({
                 company_id,
