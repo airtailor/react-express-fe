@@ -16,6 +16,7 @@ import cartReducer from './cartReducer';
 import confirmedNewOrderReducer from './confirmedNewOrderReducer';
 import searchResultsReducer from './searchResultsReducer';
 import growlerReducer from './growlerReducer';
+import archivedOrdersReducer from './archivedOrdersReducer';
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   confirmedNewOrder: confirmedNewOrderReducer,
   searchResults: searchResultsReducer,
   growl: growlerReducer,
+  archivedOrders: archivedOrdersReducer,
 });
 
 export default rootReducer;

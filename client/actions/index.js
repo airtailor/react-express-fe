@@ -583,8 +583,7 @@ export function getArchivedOrders() {
         return Axios.get(url)
           .then(res => {
             if (!res.data.body.errors) {
-              debugger;
-              //dispatch(setSearchResults(res.data.body));
+              dispatch(setArchivedOrders(res.data.body));
               return res.data.body;
             } else {
               console.log('hmmm something went wrong', res);
@@ -598,6 +597,13 @@ export function getArchivedOrders() {
   };
 }
 // actions
+
+export function setArchivedOrders(orders) {
+  return {
+    type: SET_ARCHIVED_ORDERS,
+    orders,
+  };
+}
 
 export function removeGrowler() {
   return {
