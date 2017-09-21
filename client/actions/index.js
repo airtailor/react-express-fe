@@ -84,6 +84,8 @@ export function signOutCurrentUser() {
   const url = `${expressApi}/sign_out`;
   return dispatch => {
     delete localStorage.AirTailorTokens;
+    delete localStorage.CurrentUser;
+    delete localStorage.CurrentStore;
     setAuthToken({});
     dispatch(setCurrentUser({}), setCurrentStore({}));
     window.location = '/';
