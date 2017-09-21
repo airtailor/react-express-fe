@@ -14,9 +14,9 @@ class ArchivedOrders extends Component {
   formatDueDate(fulfilledDate) {
     const todaysDate = moment(new Date());
     const momentDueDate = moment(fulfilledDate);
-    const diff = momentDueDate.diff(todaysDate, 'days');
+    const diff = Math.abs(momentDueDate.diff(todaysDate, 'days'));
 
-    const additionalString = 'days ago';
+    const additionalString = ' days ago';
     const status = (diff + additionalString).toUpperCase();
     return status;
   }
