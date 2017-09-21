@@ -36,7 +36,11 @@ import {
 import {removeFalseyValuesFromObject} from '../utils/format';
 
 const setTokens = res => {
-  if (!res.data.headers['access-token']) {
+  // if we get a 401 from the server, then log out the current user
+  if (!res.data.headers || !res.data.headers['access-token']) {
+    if (res.data.body.status === 401) {
+      resetTokens();
+    }
     return;
   }
   const {client, uid, expiry} = res.data.headers;
@@ -48,9 +52,9 @@ const setTokens = res => {
 };
 
 const resetTokens = () => {
-  setAuthToken({});
-  setLocalStorageAuth({});
-  setLocalStorageStore({});
+  delete localStorage.AirTailorTokens;
+  delete localStorage.CurrentUser;
+  delete localStorage.CurrentStore;
 };
 
 export const userSignIn = (email, password) => {

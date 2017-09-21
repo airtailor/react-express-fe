@@ -20,8 +20,11 @@ router.post('/api/validate_token', (req, res) => {
     })
     .catch(err => {
       if (err instanceof Error) {
-        console.log('\n\n\n\n\n\n\n\n@@@@@@@@@@@@@', err);
-        res.json({err});
+        //console.log('\n\n', err.response);
+        console.log('\n\n', 'status: ' + err.response.status);
+        //console.log('\n\n\n\n\n\n\n\n@@@@@@@@@@@@@', err);
+        res.json({status: err.response.status});
+        //res.json({err});
       } else {
         console.log('error: ', err);
         res.json({err});
