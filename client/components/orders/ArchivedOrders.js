@@ -13,11 +13,22 @@ class ArchivedOrders extends Component {
 
   renderOrderRows() {
     const {archivedOrders} = this.props;
-    if (archivedOrders) {
+    if (archivedOrders.length > 0) {
       return archivedOrders.map((order, i) => {
         const fulfilledDate = moment(order.fulfilled_date).format('MM-DD-YYYY');
-        const {id, customer, alterations_count} = order;
-        const {first_name, last_name} = customer;
+        let nameOrTailor, alterationsCountOrRetailer;
+        const {id, tailor, retailer, customer, alterations_count} = order;
+
+        if (tailor) {
+          nameOrTailor = tailor.name;
+          alterationsCountOrRetailer = retailer.name;
+        } else {
+          const {first_name, last_name} = customer;
+          const name = `${first_name} ${last_name}`;
+          nameOrTailor = name;
+          alterationsCountOrRetailer = alterations_count;
+        }
+
         const route = `/orders/${id}`;
         return (
           <div key={id}>
@@ -27,10 +38,8 @@ class ArchivedOrders extends Component {
                 <div className="order-data" style={{color: 'green'}}>
                   {fulfilledDate}
                 </div>
-                <div className="order-data">
-                  {first_name} {last_name}
-                </div>
-                <div className="order-data">{alterations_count}</div>
+                <div className="order-data">{nameOrTailor}</div>
+                <div className="order-data">{alterationsCountOrRetailer}</div>
               </Link>
             </div>
             <hr className="order-row-hr" />
