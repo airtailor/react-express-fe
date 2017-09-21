@@ -8,20 +8,25 @@ import Router from './Router';
 import MainPrint from './components/prints/MainPrint';
 import rootReducer from './reducers';
 import setAuthToken from './utils/setAuthToken';
-import {setCurrentUser} from './actions/';
+import {setCurrentUser, setCurrentStore} from './actions/';
 
 // uncomment below to toggle on/off redux logger
 //const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 const store = createStore(rootReducer, applyMiddleware(thunk));
+const {AirTailorTokens, CurrentUser, CurrentStore} = localStorage;
 
-if (localStorage.AirTailorTokens && localStorage.CurrentUser) {
-  const parsedToken = JSON.parse(localStorage.AirTailorTokens);
+if (AirTailorTokens && CurrentUser && CurrentStore) {
+  const parsedToken = JSON.parse(AirTailorTokens);
+  const parsedUser = JSON.parse(CurrentUser);
+  const parsedStore = JSON.parse(CurrentStore);
+
   setAuthToken(parsedToken);
-  const parsedUser = JSON.parse(localStorage.CurrentUser);
   store.dispatch(setCurrentUser(parsedUser));
+  store.dispatch(setCurrentStore(parsedStore));
 } else {
   delete localStorage.AirTailorToken;
   delete localStorage.CurrentUser;
+  delete localStorage.CurrentStore;
 }
 
 ReactDOM.render(
