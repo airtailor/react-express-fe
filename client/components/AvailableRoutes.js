@@ -115,13 +115,20 @@ const AvailableRoutes = props => {
             <Redirect to="/sign_in" />
           )}
       />
-
-      <Route
-        exact
-        path="/admin/orders/new"
-        render={props =>
-          admin ? <NewOrders {...props} /> : <Redirect to="/" />}
-      />
+      <Switch>
+        <Route
+          exact
+          path="/admin/orders/new"
+          render={props =>
+            admin ? <NewOrders {...props} /> : <Redirect to="/" />}
+        />
+        <Route
+          exact
+          path="/admin/orders/archived"
+          render={props =>
+            admin ? <ArchivedOrders {...props} /> : <Redirect to="/sign_in" />}
+        />
+      </Switch>
 
       <Route
         exact

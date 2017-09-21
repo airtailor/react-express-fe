@@ -11,37 +11,21 @@ class ArchivedOrders extends Component {
     this.props.getArchivedOrders();
   }
 
-  formatDueDate(fulfilledDate) {
-    const todaysDate = moment(new Date());
-    const momentDueDate = moment(fulfilledDate);
-    const diff = Math.abs(momentDueDate.diff(todaysDate, 'days'));
-
-    const additionalString = ' days ago';
-    const status = (diff + additionalString).toUpperCase();
-    return status;
-  }
-
-  getOrderStatus(order) {
-    let dueTime = this.formatDueDate(order.fulfilled_date);
-    return {status: dueTime, color: 'green'};
-  }
-
   renderOrderRows() {
     const {archivedOrders} = this.props;
     if (archivedOrders) {
       return archivedOrders.map((order, i) => {
-        const orderStatus = this.getOrderStatus(order);
+        const fulfilledDate = moment(order.fulfilled_date).format('MM-DD-YYYY');
         const {id, customer, alterations_count} = order;
         const {first_name, last_name} = customer;
-        const {color, status} = orderStatus;
         const route = `/orders/${id}`;
         return (
           <div key={id}>
             <div className="order-row">
               <Link to={route} className="flex-container">
                 <div className="order-data">#{id}</div>
-                <div className="order-data" style={{color}}>
-                  {status}
+                <div className="order-data" style={{color: 'green'}}>
+                  {fulfilledDate}
                 </div>
                 <div className="order-data">
                   {first_name} {last_name}
@@ -69,7 +53,7 @@ class ArchivedOrders extends Component {
         <div className="orders">
           <div className="order-row-header">
             <h3 className="order-column">Order</h3>
-            <h3 className="order-column">Status</h3>
+            <h3 className="order-column">FulFilled Date</h3>
             <h3 className="order-column">Customer</h3>
             <h3 className="order-column">Quantity</h3>
           </div>

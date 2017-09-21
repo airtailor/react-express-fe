@@ -36,6 +36,13 @@ class NavigationLinks extends Component {
           />
 
           <NavigationLink
+            cssClass="orders-link"
+            route={`/admin/orders/archived`}
+            text="Archive"
+            image={archivedImage}
+          />
+
+          <NavigationLink
             cssClass="conversations-link"
             route="/conversations"
             text="Conversations"
@@ -99,7 +106,7 @@ class NavigationLinks extends Component {
 
           <NavigationLink
             cssClass="orders-link"
-            route={`/stores/${store.di}/orders/archived`}
+            route={`/stores/${store.id}/orders/archived`}
             text="Archive"
             image={archivedImage}
           />
