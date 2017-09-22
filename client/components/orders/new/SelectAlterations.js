@@ -2,71 +2,82 @@ import React from 'react';
 import {connect} from 'react-redux';
 import HowToPinModal from './modals/HowToPinModal';
 
-const renderAlterations = (props) => {
+const renderAlterations = props => {
   const {garment, alterations} = props;
-  const altsForGarment = alterations.filter(alt => alt.garmentId === garment.id);
+  const altsForGarment = alterations.filter(
+    alt => alt.garmentId === garment.id
+  );
   return altsForGarment.map((alt, index) => {
-    const style = props.selectedAlterations.includes(alt.id) ? 'unclickable alteration-card' : 'alteration-card';
+    const style = props.selectedAlterations.includes(alt.id)
+      ? 'unclickable alteration-card'
+      : 'alteration-card';
 
-      return (
-        <div key={index}>
-          <div className={style} onClick={() => props.handleSelect(alt)}>
-            <h3>{alt.title}</h3>
-          </div>
-          <div>
-            <h3 className='alt-price-info'>
-              ${alt.price.toFixed(2)} 
-              <HowToPinModal image={alt.howToPin} />
-            </h3>
-          </div>
+    return (
+      <div key={index}>
+        <div className={style} onClick={() => props.handleSelect(alt)}>
+          <h3>{alt.title}</h3>
         </div>
-      );
+        <div className="price-how-to-pin-container">
+          <h3 className="alt-price-info">${alt.price.toFixed(2)}</h3>
+          <HowToPinModal image={alt.howToPin} />
+        </div>
+      </div>
+    );
   });
-}
+};
 
-const renderAddToCart = (props) => {
+const renderAddToCart = props => {
   if (props.selectedAlterations.length > 0) {
-    if (typeof(props.garmentIndex) === 'number') {
+    if (typeof props.garmentIndex === 'number') {
       return (
-        <input 
-          type='submit'
-          className='short-button'
-          value='Update Garment'
-          onClick={props.updateGarment} />
+        <input
+          type="submit"
+          className="short-button"
+          value="Update Garment"
+          onClick={props.updateGarment}
+        />
       );
     } else {
       return (
-        <input 
-          type='submit' 
-          className='short-button' 
-          value='Add To Basket' 
-          onClick={props.addToCart} />
+        <input
+          type="submit"
+          className="short-button"
+          value="Add To Basket"
+          onClick={props.addToCart}
+        />
       );
     }
   }
-}
+};
 
-const SelectAlterations = (props) => {
+const SelectAlterations = props => {
   return (
-    <div className='alteration-select'>
-      <h2 className='full-width'>Select {props.garment.title.toLowerCase()} alterations:</h2>
+    <div className="alteration-select">
+      <h2 className="full-width">
+        Select {props.garment.title.toLowerCase()} alterations:
+      </h2>
       <br />
       {renderAlterations(props)}
       <br />
 
-      <div className='cart-buttons full-width'>
-        <input type='submit' className='short-button' value='Back' onClick={props.renderStageOne} />
+      <div className="cart-buttons full-width">
+        <input
+          type="submit"
+          className="short-button"
+          value="Back"
+          onClick={props.renderStageOne}
+        />
         {renderAddToCart(props)}
       </div>
     </div>
   );
-}
+};
 
-const mapStateToProps = (store) => {
+const mapStateToProps = store => {
   return {
     alterations: store.alterations.alterations,
-    cart: store.cart
-  }
-}
+    cart: store.cart,
+  };
+};
 
 export default connect(mapStateToProps)(SelectAlterations);
