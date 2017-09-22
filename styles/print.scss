@@ -1,7 +1,8 @@
 .print {
   visibility: hidden;
   display: none;
-  margin-left: 10px;
+  margin-top: 20px;
+  margin-left: 20px;
 }
 
 @media print {
@@ -25,6 +26,13 @@
 
 .packing-slip-info {
   font-family: arial;
+}
+
+.packing-slip-info h3,
+.packing-slip-info p,
+.packing-slip-info-img,
+.print-alteration {
+  margin-right: 30px;
 }
 
 .packing-slip-info h3 {
@@ -87,12 +95,10 @@
 }
 
 .print .card {
-  margin-top: 20px;
-  margin-bottom: 20px;
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 10px;
-  width: 100%;
+  margin: 20px;
   padding-right: 10px;
 }
 
@@ -123,13 +129,13 @@
   font-size: 10px;
 }
 
-.print .card .type-heading img,
+// .print .card .type-heading img,
 .print .card .type-heading h3,
 .print .card .type-heading ul,
 .print .card .type-heading li {
   display: inline;
 }
 
-.print .card .type-heading h3 {
-  padding-left: 20px;
-}
+// .print .card .type-heading h3 {
+//   padding-left: 20px;
+// }
