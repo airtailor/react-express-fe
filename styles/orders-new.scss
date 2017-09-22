@@ -2,6 +2,7 @@
   @extend .flex-container;
   margin-left: 50px;
   justify-content: flex-start;
+  margin-bottom: 50px;
 }
 
 .stage-section {
@@ -104,10 +105,10 @@
   background-color: rgba(216, 237, 252, 0.5);
   margin-top: 10px;
   height: 107px;
-  width: 284px;
-  padding-left: 20px;
+  width: calc(100% - 30px);
   border-radius: 5px;
   border: 1px solid #000033;
+  padding-left: 10px;
 }
 
 .price-how-to-pin-container {

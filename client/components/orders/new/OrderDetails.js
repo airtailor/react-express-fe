@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {
-  updateCartCustomerInfo,
-  updateCartShipTo,
-  updateCartNotes,
-} from '../../../actions';
+import {updateCartCustomerInfo, updateCartShipTo} from '../../../actions';
 import FormField from '../../FormField';
 import Checkbox from '../../Checkbox';
 import Zippopotam from '../../../lib/zippopotam';
@@ -16,7 +12,6 @@ class OrderDetails extends Component {
   constructor() {
     super();
     this.updateCustomerInfo = this.updateCustomerInfo.bind(this);
-    //this.props.updateCartShipTo = this.props.updateCartShipTo.bind(this);
   }
 
   updateCustomerInfo(key, value) {
@@ -65,30 +60,6 @@ class OrderDetails extends Component {
             onChange={this.updateCustomerInfo}
           />
         </div>
-
-        <div>
-          {/*     <h3 className='customer-agrees-prompt'>Customer agrees to receive important updates from Air Tailor:</h3>
-      <label>Yes! </label> i*/}
-
-          {/*<input
-            type='checkbox'
-            checked={agrees_to_terms}
-            onChange={() => this.updateCustomerInfo('agrees_to_terms', !agrees_to_terms)}/>*/}
-
-          {/*<Checkbox
-            checked={agrees_to_terms}
-            fieldName={'agrees_to_terms'}
-            name="agrees-to-terms"
-            text="Customer agrees to receive important updates from Air Tailor"
-            onChange={this.updateCustomerInfo}
-          />*/}
-
-          {/*<input type="checkbox" id="check" name="check" value="" />
-          <label htmlFor="check" className="customer-agrees-prompt">
-            <span></span>
-            Customer agrees to receive important updates from Air Tailor
-          </label>*/}
-        </div>
       </div>
     );
   }
@@ -100,12 +71,6 @@ class OrderDetails extends Component {
       const zippo = ValidateZip(customerInfo.zip)
         ? Zippopotam.get(customerInfo.zip)
         : '';
-
-      // if (zippo.catch) {
-      //   zippo.catch(err => {
-      //     debugger;
-      //   });
-      // }
 
       if (zippo.then && (!customerInfo.city && !customerInfo.state)) {
         zippo.then(res => {
@@ -187,18 +152,6 @@ class OrderDetails extends Component {
           />
           <br />
           <br />
-
-          {/*<label>To Store: </label>
-          <input
-            type='checkbox'
-            checked={shipToStore}
-            onChange={() => this.props.updateCartShipTo(!shipToStore)}/>
-          <br />
-          <label>To Customer: </label>
-          <input
-            type='checkbox'
-            checked={!shipToStore}
-            onChange={() => this.props.updateCartShipTo(!shipToStore)}/>*/}
         </div>
         {this.renderCustomerAddress(shipToStore, customerInfo)}
       </div>
@@ -209,17 +162,9 @@ class OrderDetails extends Component {
     return (
       <div className="order-details">
         {redirectToStageOneIfNoAlterations(this.props)}
+
         <h2>ORDER DETAILS</h2>
         {this.renderCustomerInfo(this.props.cart)}
-
-        <h3>Order Notes</h3>
-        <textarea
-          className="order-details-notes-textarea"
-          value={this.props.cart.notes}
-          onChange={e => this.props.updateCartNotes(e.target.value)}
-          cols={36}
-          rows={10}
-        />
 
         <h3>Shipping</h3>
         {this.renderShipTo(this.props.cart)}
@@ -239,7 +184,6 @@ const mapDispatchToProps = dispatch => {
     {
       updateCartCustomerInfo,
       updateCartShipTo,
-      updateCartNotes,
     },
     dispatch
   );

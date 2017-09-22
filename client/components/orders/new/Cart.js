@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
-import {removeGarmentFromCart} from '../../../actions';
+import {removeGarmentFromCart, updateCartNotes} from '../../../actions';
 import {
   ValidateEmail,
   ValidatePhone,
@@ -191,6 +191,21 @@ class Cart extends Component {
     }
   }
 
+  renderOrderNotes(props) {
+    return (
+      <div style={{marginLeft: '15px'}}>
+        <h3>Order Notes</h3>
+        <textarea
+          className="order-details-notes-textarea"
+          value={this.props.cart.notes}
+          onChange={e => this.props.updateCartNotes(e.target.value)}
+          cols={36}
+          rows={10}
+        />
+      </div>
+    );
+  }
+
   render() {
     const {cart, stage} = this.props;
     if (cart.garments.length > 0) {
@@ -201,6 +216,8 @@ class Cart extends Component {
           </h2>
           <hr className="cart-line" />
           <div className="cart-items">{this.renderCartItems(this.props)}</div>
+
+          {this.renderOrderNotes(this.props)}
           {this.customerAgreesPrompt(stage)}
 
           {this.renderNextButton(this.props)}
@@ -219,7 +236,7 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({removeGarmentFromCart}, dispatch);
+  return bindActionCreators({removeGarmentFromCart, updateCartNotes}, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);
