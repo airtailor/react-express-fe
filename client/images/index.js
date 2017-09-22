@@ -7,3 +7,4 @@ export const basketImage = 'https://i.imgur.com/bH0HuMx.png';
 export const exclamationImage = 'https://i.imgur.com/8BHeWZK.png';
 export const eyeImage = 'https://i.imgur.com/LA3D9sC.png';
 export const archivedImage = 'https://i.imgur.com/02s7Y1c.png';
+export const infoImage = 'https://i.imgur.com/RcRyJzA.png';
