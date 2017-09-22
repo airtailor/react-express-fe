@@ -125,6 +125,17 @@ input[type='submit']:disabled {
   font-family: $Alegreya;
 }
 
-.fake-link {
-  @extend .link;
+.blue-link {
+  color: $primary-blue;
+  font-family: $sans-serif;
+  font-size: 16px;
+}
+
+.blue-link {
+  padding-bottom: 20px;
+  padding-left: 20px;
+}
+
+.blue-link a:hover {
+  text-decoration: underline;
 }
