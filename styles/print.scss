@@ -32,6 +32,7 @@
 .packing-slip-info p,
 .packing-slip-info-img,
 .print-alteration {
+  margin-left: -30px;
   margin-right: 30px;
 }
 
@@ -73,13 +74,14 @@
   list-style-type: none;
   padding-left: 0;
   text-align: center;
+  margin-right: 30px;
 }
 
 .packing-slip-info-img {
   display: block;
   width: 100px;
-  margin: auto;
-  margin-top: 20px;
+  margin: 20px auto;
+  padding-right: 30px;
 }
 
 .print-instructions {
