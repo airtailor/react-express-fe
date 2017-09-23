@@ -96,19 +96,6 @@ class OrdersShow extends Component {
     return <li key={index}>{alteration.name}</li>;
   }
 
-  // renderItem(item, index){
-  //   const renderAlt = this.renderAlteration;
-  //
-  //   return (
-  //     <li className='type-list' key={index}>
-  //      { item.item_type.name } #{index + 1}
-  //      <ul>
-  //        { item.alterations.map(renderAlt)}
-  //      </ul>
-  //     </li>
-  //   )
-  // }
-
   getImageForItemType(name) {
     switch (name) {
       case 'Pants':
@@ -153,7 +140,7 @@ class OrdersShow extends Component {
   }
 
   orderNotes(party_notes) {
-    const notes = this.props.currentOrder[party_notes] || 'N/A';
+    const notes = this.props.currentOrder[party_notes] || 'Not Provided';
     const title =
       party_notes === 'provider_notes' ? 'Tailor Notes:' : 'Order Notes:';
     return (
@@ -255,13 +242,10 @@ class OrdersShow extends Component {
     this.props
       .updateOrder(data)
       .then(res => {
-        // this.refreshCurrentOrder();
         const role = this.props.currentUser.user.roles[0].name;
         const type = this.props.currentOrder.type;
         const shippingType = getShippingType(role, type);
         this.makeShippingLabel(shippingType);
-        //this.refreshCurrentOrder();
-        //this.setState({loadingLabel: false})
       })
       .catch(err => console.log(err));
   }
@@ -397,8 +381,8 @@ class OrdersShow extends Component {
   renderPrintInstructions() {
     if (!this.props.currentOrder.fulfilled && this.props.currentOrder.arrived) {
       const {requester_notes, provider_notes} = this.props.currentOrder;
-      const orderNotes = requester_notes ? requester_notes : 'n/a';
-      const tailorNotes = provider_notes ? provider_notes : 'n/a';
+      const orderNotes = requester_notes ? requester_notes : 'Not Provided';
+      const tailorNotes = provider_notes ? provider_notes : 'Not Provided';
 
       return (
         <div>
@@ -481,7 +465,6 @@ class OrdersShow extends Component {
         </div>
       );
     } else {
-      //debugger;
       return (
         <div>
           <SectionHeader text={headerText} />
