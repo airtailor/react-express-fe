@@ -1,40 +1,64 @@
-
 .messages-container {
-  margin-left: 50px;
-  margin-top: 50px;
   @extend .flex-container;
+  margin: 15px auto;
+  width: 500px;
+}
+
+.message-list {
+  height: calc(100vh - 223px);
+  overflow: scroll;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .messages-form {
   width: 100%;
- }
-
+  background-color: lightgrey;
+  height: 100px;
+}
 
 .message {
-  width: 70%;
-  min-width: 200px;
-  border-width: 1px;
+  width: 400px;
+  border: 1px solid $primary-blue;
   margin-bottom: 20px;
   margin-top: 20px;
-  max-width: 500px;
+  @extend .flatcard;
+  padding: 15px;
+  padding-bottom: 0px;
+}
+
+// .message-date {
+//   <hr class="hr-text" data-content="AND">
+// }
+
+.message-heading {
+  display: flex;
+  justify-content: space-between;
+}
+
+.message h4 {
+  text-transform: uppercase;
+  font-family: $sans-serif;
+  font-weight: bolder;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.message p {
+  font-family: $serif;
+  color: $primary-blue;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin: 10px auto;
+  font-size: 15px;
 }
 
 .sender {
-  background-color: pink;
-  border: solid pink 2px;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px grey;
-  margin-left: auto;
-  margin-right: 50px;
+  align-self: flex-end;
 }
 
 .receiver {
-  border: solid #47BB47 2px;
-  background-color: #C7F4C7;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px grey;
-  margin-right: auto;
-  margin-left: 50px;
+  align-self: flex-start;
 }

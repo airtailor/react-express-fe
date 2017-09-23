@@ -38,7 +38,7 @@ import {removeFalseyValuesFromObject} from '../utils/format';
 const setTokens = res => {
   // if we get a 401 from the server, then log out the current user
   if (!res.data.headers || !res.data.headers['access-token']) {
-    if (res.data.body.status === 401) {
+    if (!res.data.body || res.data.body.status === 401) {
       resetTokens();
     }
     return;
@@ -408,7 +408,7 @@ export function getMessages(store_id, conversation_id) {
       .then(() => {
         return Axios.get(url)
           .then(res => {
-            dispatch(setMessages(res.data.body.messages.reverse()));
+            dispatch(setMessages(res.data.body.messages));
             return res.data.body;
           })
           .catch(err => {
@@ -427,7 +427,7 @@ export function createMessage(message) {
       .then(() => {
         return Axios.post(url, {message})
           .then(res => {
-            dispatch(setMessages(res.data.body.messages.reverse()));
+            dispatch(setMessages(res.data.body.messages));
             return res;
           })
           .catch(err => {
@@ -446,7 +446,7 @@ export function updateMessage(message) {
       .then(() => {
         return Axios.put(url, {message})
           .then(res => {
-            dispatch(setMessages(res.data.body.messages.reverse()));
+            dispatch(setMessages(res.data.body.messages));
             return res;
           })
           .catch(err => {
