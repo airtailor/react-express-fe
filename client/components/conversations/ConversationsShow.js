@@ -114,13 +114,19 @@ class Messages extends Component {
     return (
       <div className="messages-form">
         <form onSubmit={this.submitMessage}>
-          <textarea
-            className="text-area"
-            onChange={e => this.updateNewMessage(e.target.value)}
-            value={this.state.newMessage}
-          />
+          <div className="messages-form-inner-box">
+            <textarea
+              className="text-area"
+              onChange={e => this.updateNewMessage(e.target.value)}
+              value={this.state.newMessage}
+            />
 
-          <input type="submit" className="button short-button" value="Send" />
+            <input
+              type="submit"
+              className="button message-button"
+              value="SEND"
+            />
+          </div>
         </form>
       </div>
     );
