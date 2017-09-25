@@ -36,6 +36,8 @@
   border-left: 37px solid transparent;
   border-right: 38px solid transparent;
   border-top: 26px solid $primary-red;
+  position: relative;
+  z-index: 10000;
 }
 
 .cart-ribbon-sign {
