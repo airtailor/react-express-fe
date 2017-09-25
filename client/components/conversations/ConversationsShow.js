@@ -49,10 +49,10 @@ class Messages extends Component {
       .catch(err => console.log('err', err));
   }
 
-  renderDate(date) {
+  renderDate(date, className) {
     return (
       <div className="message-date">
-        <h3>{date}</h3>
+        <h3 className={className}>{date}</h3>
       </div>
     );
   }
@@ -66,7 +66,7 @@ class Messages extends Component {
       const className = store_id === user.store_id ? 'sender' : 'receiver';
 
       const messageTime = moment(created_at).format('hh:mm a');
-      const momentDate = moment(created_at).format('MM-DD-YYYY');
+      const momentDate = moment(created_at).format('MMMM DD');
 
       if (messageDate !== momentDate) {
         messageDate = momentDate;
@@ -75,7 +75,7 @@ class Messages extends Component {
 
       return (
         <div key={index} className={className}>
-          {showDate ? this.renderDate(messageDate) : ''}
+          {showDate ? this.renderDate(messageDate, className) : ''}
           <div className={className + ' message'}>
             <div className="message-heading">
               <h4>{store.name}</h4> <h4>{messageTime}</h4>

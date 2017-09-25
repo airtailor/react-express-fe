@@ -28,9 +28,20 @@
   padding-bottom: 0px;
 }
 
-// .message-date {
-//   <hr class="hr-text" data-content="AND">
-// }
+.message-date h3 {
+  text-align: center;
+  margin-bottom: 36px;
+  font-weight: bold;
+  font-family: $sans-serif;
+}
+
+.message-date h3.sender {
+  margin-right: 50px;
+}
+
+.message-date h3.receiver {
+  margin-left: 50px;
+}
 
 .message-heading {
   display: flex;
