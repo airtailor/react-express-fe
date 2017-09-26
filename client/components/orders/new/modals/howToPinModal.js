@@ -37,9 +37,13 @@ class HowToPinModal extends Component {
           contentLabel="Example Modal"
         >
           <div>
-            <p className="close-modal" onClick={this.closeModal}>
-              CLOSE
-            </p>
+            <input
+              value="CLOSE"
+              type="submit"
+              className="short-button"
+              onClick={this.closeModal}
+            />
+
             <img
               className="how-to-pin-image"
               alt="how-to-pin-image"
