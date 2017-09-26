@@ -111,14 +111,35 @@
   padding-left: 10px;
 }
 
+.disabled-alt {
+  opacity: 0.3;
+  @extend .unclickable;
+}
+
+.disabled-alt * {
+  @extend .unclickable;
+}
+
+.selected-alt {
+  background-color: #dcdcdc;
+  cursor: pointer;
+}
+
+.selected-alt * {
+  background-color: #dcdcdc;
+  cursor: pointer;
+}
+
 .price-how-to-pin-container {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   padding-right: 15px;
+  background-color: white;
+  cursor: pointer;
 }
 
-.disabled-alt {
-  opacity: 0.3;
-  @extend .unclickable;
+.price-how-to-pin-container * {
+  background-color: white;
+  cursor: pointer;
 }

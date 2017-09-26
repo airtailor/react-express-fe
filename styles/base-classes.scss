@@ -103,6 +103,7 @@ h1 {
 }
 
 .unclickable {
+  /*pointer-events: none;*/
   cursor: not-allowed;
 }
 

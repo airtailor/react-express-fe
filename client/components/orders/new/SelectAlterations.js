@@ -8,29 +8,37 @@ const renderAlterations = props => {
     alt => alt.garmentId === garment.id
   );
   return altsForGarment.map((alt, index) => {
-    // array of selected alteration ids
-    // props.selectedAlterations
+    // array of selected alteration ids - props.selectedAlterations
 
-    // array of those alterations
+    // array of those alterations vvv
     const arr = props.selectedAlterations.map(alt => {
       return props.alterations.filter(a => a.id === alt)[0];
     });
 
     const altTypes = arr.map(alt => alt.type);
 
+    const style = props.selectedAlterations.includes(alt.id)
+      ? 'unclickable alteration-card'
+      : 'alteration-card';
+
     const disabled =
       altTypes.includes(alt.type) && !props.selectedAlterations.includes(alt.id)
         ? 'disabled-alt'
         : '';
 
-    const style =
-      altTypes.includes(alt.type) && !props.selectedAlterations.includes(alt.id)
-        ? 'unclickable alteration-card'
-        : 'alteration-card';
+    const selected = props.selectedAlterations.includes(alt.id)
+      ? 'selected-alt'
+      : '';
+
+    let handleClick;
+
+    if (!disabled) {
+      handleClick = () => props.handleSelect(alt);
+    }
 
     return (
-      <div key={index} className={disabled}>
-        <div className={style} onClick={() => props.handleSelect(alt)}>
+      <div key={index} className={`${disabled}`}>
+        <div className={`${style} ${selected}`} onClick={handleClick}>
           <h3>{alt.title}</h3>
         </div>
         <div className="price-how-to-pin-container">
