@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {getCurrentStore, updateStore, setGrowler} from '../../actions';
@@ -113,16 +112,12 @@ class StoresEdit extends Component {
 
   render() {
     const {store} = this.props;
-    const backLink = `/stores/${store.id}`;
     if (!store) {
       return <div>Loading...</div>;
     } else {
       return (
         <div className="pos-rel">
           <SectionHeader text={`Edit / ${store.name}`} />
-          <Link className="backLink" to={backLink}>
-            Back
-          </Link>
           <div className="form-container">
             <h3>Edit Store</h3>
 
