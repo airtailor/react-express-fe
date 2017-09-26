@@ -2,21 +2,21 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 
-const CustomerLink = props => {
-  const {linkTo, linkText, role} = props;
-
-  if (linkTo && linkText) {
-    if (role !== 'retailer') {
-      return (
-        <Link className="link" to={props.linkTo}>
-          {props.linkText}
-        </Link>
-      );
-    } else {
-      return <h3 className="fake-link">{props.linkText}</h3>;
-    }
-  }
-};
+// const CustomerLink = props => {
+//   const {linkTo, linkText, role} = props;
+//
+//   if (linkTo && linkText) {
+//     if (role !== 'retailer') {
+//       return (
+//         <Link className="link" to={props.linkTo}>
+//           {props.linkText}
+//         </Link>
+//       );
+//     } else {
+//       return <h3 className="fake-link">{props.linkText}</h3>;
+//     }
+//   }
+// };
 
 const CartRibbon = props => {
   const {rotate} = props;
@@ -41,7 +41,7 @@ const SectionHeader = props => {
   return (
     <div className="section-header">
       <h2>{props.text}</h2>
-      {CustomerLink(props)}
+      {/*CustomerLink(props)*/}
       {CartRibbon(props)}
     </div>
   );

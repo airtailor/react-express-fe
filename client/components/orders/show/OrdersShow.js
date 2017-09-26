@@ -139,6 +139,32 @@ class OrdersShow extends Component {
     });
   }
 
+  customerLink() {
+    const {first_name, last_name, id} = this.props.currentOrder.customer;
+    const linkToCustomer = `/customers/${id}/edit`;
+    const name = `${first_name} ${last_name}`;
+
+    const role = this.props.currentUser.user.roles[0].name;
+
+    if (role === 'retailer') {
+      return (
+        <div>
+          <h3>Customer:</h3>
+          <h3 className="blue-link">{name}</h3>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <h3>Customer:</h3>
+          <h3 className="blue-link">
+            <Link to={linkToCustomer}>{name}</Link>
+          </h3>
+        </div>
+      );
+    }
+  }
+
   orderNotes(party_notes) {
     const notes = this.props.currentOrder[party_notes] || 'Not Provided';
     const title =
@@ -371,6 +397,7 @@ class OrdersShow extends Component {
     return (
       <div>
         {this.renderList()}
+        {this.customerLink()}
         {this.orderNotes('requester_notes')}
         {this.orderNotes('provider_notes')}
         {this.editComponents()}
@@ -451,12 +478,7 @@ class OrdersShow extends Component {
       );
       return (
         <div>
-          <SectionHeader
-            role={role}
-            text={headerText}
-            linkTo={customerRoute}
-            linkText={customer.first_name + ' ' + customer.last_name}
-          />
+          <SectionHeader text={headerText} />
           <div className="order-show">
             {this.renderEditOrder(role, orderEditPath)}
             {this.renderDetailsOrMeasurementsbutton(role, this.state)}
