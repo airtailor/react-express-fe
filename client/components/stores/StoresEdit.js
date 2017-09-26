@@ -118,7 +118,7 @@ class StoresEdit extends Component {
       return (
         <div className="pos-rel">
           <SectionHeader text={`Edit / ${store.name}`} />
-          <div className="form-container">
+          <div className="form-container edit-account">
             <h3>Edit Store</h3>
 
             {this.renderForm(this.state)}
