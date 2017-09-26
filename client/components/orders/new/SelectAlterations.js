@@ -8,12 +8,28 @@ const renderAlterations = props => {
     alt => alt.garmentId === garment.id
   );
   return altsForGarment.map((alt, index) => {
-    const style = props.selectedAlterations.includes(alt.id)
-      ? 'unclickable alteration-card'
-      : 'alteration-card';
+    // array of selected alteration ids
+    // props.selectedAlterations
+
+    // array of those alterations
+    const arr = props.selectedAlterations.map(alt => {
+      return props.alterations.filter(a => a.id === alt)[0];
+    });
+
+    const altTypes = arr.map(alt => alt.type);
+
+    const disabled =
+      altTypes.includes(alt.type) && !props.selectedAlterations.includes(alt.id)
+        ? 'disabled-alt'
+        : '';
+
+    const style =
+      altTypes.includes(alt.type) && !props.selectedAlterations.includes(alt.id)
+        ? 'unclickable alteration-card'
+        : 'alteration-card';
 
     return (
-      <div key={index}>
+      <div key={index} className={disabled}>
         <div className={style} onClick={() => props.handleSelect(alt)}>
           <h3>{alt.title}</h3>
         </div>

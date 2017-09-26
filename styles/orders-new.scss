@@ -117,3 +117,8 @@
   justify-content: flex-end;
   padding-right: 15px;
 }
+
+.disabled-alt {
+  opacity: 0.3;
+  @extend .unclickable;
+}

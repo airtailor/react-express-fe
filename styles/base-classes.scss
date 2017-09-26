@@ -103,8 +103,7 @@ h1 {
 }
 
 .unclickable {
-  /*pointer-events: none;*/
-  background-color: #dcdcdc;
+  cursor: not-allowed;
 }
 
 .full-width {
