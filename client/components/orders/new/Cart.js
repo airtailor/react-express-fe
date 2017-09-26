@@ -134,16 +134,17 @@ class Cart extends Component {
         return (
           <div className="cart-buttons-container">
             <input
-              onClick={() => this.props.renderCheckout()}
-              className="short-button"
-              type="submit"
-              value="Checkout"
-            />
-            <input
               onClick={() => this.props.renderStageOne()}
               className="short-button"
               type="submit"
               value="Add More Items"
+            />
+
+            <input
+              onClick={() => this.props.renderCheckout()}
+              className="short-button"
+              type="submit"
+              value="Checkout"
             />
           </div>
         );
@@ -151,17 +152,18 @@ class Cart extends Component {
         return (
           <div className="cart-buttons-container">
             <input
+              onClick={() => this.props.renderStageOne()}
+              className="short-button"
+              type="submit"
+              value="Add More Items"
+            />
+
+            <input
               onClick={() => this.props.renderCheckout()}
               className="short-button"
               type="submit"
               value="Checkout"
               disabled={true}
-            />
-            <input
-              onClick={() => this.props.renderStageOne()}
-              className="short-button"
-              type="submit"
-              value="Add More Items"
             />
           </div>
         );
