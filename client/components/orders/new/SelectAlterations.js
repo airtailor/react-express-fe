@@ -51,26 +51,27 @@ const renderAlterations = props => {
 };
 
 const renderAddToCart = props => {
-  if (props.selectedAlterations.length > 0) {
-    if (typeof props.garmentIndex === 'number') {
-      return (
-        <input
-          type="submit"
-          className="short-button"
-          value="Update Garment"
-          onClick={props.updateGarment}
-        />
-      );
-    } else {
-      return (
-        <input
-          type="submit"
-          className="short-button"
-          value="Add To Basket"
-          onClick={props.addToCart}
-        />
-      );
-    }
+  const disabled = props.selectedAlterations.length > 0 ? false : true;
+  if (typeof props.garmentIndex === 'number') {
+    return (
+      <input
+        disabled={disabled}
+        type="submit"
+        className="short-button"
+        value="Update Garment"
+        onClick={props.updateGarment}
+      />
+    );
+  } else {
+    return (
+      <input
+        disabled={disabled}
+        type="submit"
+        className="short-button"
+        value="Add To Basket"
+        onClick={props.addToCart}
+      />
+    );
   }
 };
 
