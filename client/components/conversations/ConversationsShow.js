@@ -49,10 +49,10 @@ class Messages extends Component {
       .catch(err => console.log('err', err));
   }
 
-  renderDate(date, className) {
+  renderDate(date) {
     return (
       <div className="message-date">
-        <h3 className={className}>{date}</h3>
+        <h3>{date}</h3>
       </div>
     );
   }
@@ -74,8 +74,8 @@ class Messages extends Component {
       }
 
       return (
-        <div key={index} className={className}>
-          {showDate ? this.renderDate(messageDate, className) : ''}
+        <div key={index}>
+          {showDate ? this.renderDate(messageDate) : ''}
           <div className={className + ' message'}>
             <div className="message-heading">
               <h4>{store.name}</h4> <h4>{messageTime}</h4>
