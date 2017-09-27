@@ -11,16 +11,16 @@ import {
 import {basketImage} from '../../../images';
 
 class Cart extends Component {
-  componentWillReceiveProps(nextProps) {
-    //console.log('componentWillReceiveProps');
-    if (
-      nextProps.cart.garments.length > 0 &&
-      nextProps.cart.garments[0].alterations &&
-      nextProps.cart.garments[0].alterations.length > 1
-    ) {
-      // debugger;
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   //console.log('componentWillReceiveProps');
+  //   if (
+  //     nextProps.cart.garments.length > 0 &&
+  //     nextProps.cart.garments[0].alterations &&
+  //     nextProps.cart.garments[0].alterations.length > 1
+  //   ) {
+  //     // debugger;
+  //   }
+  // }
 
   renderGarmentAlterations(garment) {
     // this garment is being injected from the menu, not the car
@@ -29,7 +29,7 @@ class Cart extends Component {
       return garment.alterations.map((alt, index) => {
         return (
           <p key={index} className="cart-alteration">
-            {alt.title}
+            {alt.title} - ${alt.price.toFixed(2)}
           </p>
         );
       });
