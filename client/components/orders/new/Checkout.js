@@ -3,7 +3,12 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Link, Redirect} from 'react-router-dom';
 import {formatPhone} from '../../../utils/format';
-import {submitOrder, setGrowler} from '../../../actions';
+import {
+  submitOrder,
+  setGrowler,
+  setLoader,
+  removeLoader,
+} from '../../../actions';
 import {redirectToStageOneIfNoAlterations} from '../ordersHelper';
 
 class Checkout extends Component {
@@ -66,6 +71,7 @@ class Checkout extends Component {
   }
 
   submitOrder(props) {
+    this.props.setLoader();
     this.props
       .submitOrder(props)
       .then(res => {
@@ -80,7 +86,8 @@ class Checkout extends Component {
       })
       .catch(err => {
         debugger;
-      });
+      })
+      .then(() => this.props.removeLoader());
   }
 
   renderButtons(props) {
@@ -203,6 +210,8 @@ const mapDispatchToProps = dispatch => {
     {
       submitOrder,
       setGrowler,
+      setLoader,
+      removeLoader,
     },
     dispatch
   );

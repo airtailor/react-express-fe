@@ -2,7 +2,13 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
-import {getCurrentOrder, updateOrder, createShipment} from '../../../actions';
+import {
+  getCurrentOrder,
+  updateOrder,
+  createShipment,
+  setLoader,
+  removeLoader,
+} from '../../../actions';
 
 import {
   getShippingType,
@@ -42,10 +48,13 @@ class OrdersShow extends Component {
   }
 
   refreshCurrentOrder() {
+    this.props.setLoader();
     const {order_id} = this.props.match.params;
     const store_id = this.props.currentStore.id;
     const {getCurrentOrder} = this.props;
-    getCurrentOrder(store_id, order_id).catch(err => console.log(err));
+    getCurrentOrder(store_id, order_id)
+      .then(() => this.props.removeLoader())
+      .catch(err => console.log(err));
   }
 
   componentDidMount() {
@@ -257,6 +266,7 @@ class OrdersShow extends Component {
   }
 
   fulfillOrder() {
+    this.props.setLoader();
     const data = {
       order: {
         id: this.props.currentOrder.id,
@@ -304,6 +314,7 @@ class OrdersShow extends Component {
 
   makeShippingLabel(type) {
     const data = {shipment: {type, order_id: this.props.currentOrder.id}};
+    this.props.setLoader();
     createShipment(data)
       .then(res => {
         this.setState({loadingLabel: false});
@@ -337,7 +348,6 @@ class OrdersShow extends Component {
           </button>
 
           <OrderComplete shippingType={shippingType} />
-          {/* <OrderComplete order={currentOrder} shippingType={shippingType} /> */}
         </div>
       );
     } else if (printPrompt.split(' ')[0] === 'Creating') {
@@ -507,7 +517,15 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({getCurrentOrder, updateOrder}, dispatch);
+  return bindActionCreators(
+    {
+      getCurrentOrder,
+      updateOrder,
+      setLoader,
+      removeLoader,
+    },
+    dispatch
+  );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrdersShow);
