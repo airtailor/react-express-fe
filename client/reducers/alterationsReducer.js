@@ -118,7 +118,7 @@ export default function() {
         title: 'Shorten Dress Shirt Length',
         price: 24.0,
         howToPin: shirtHemTakenUp,
-        type: 'dressLength',
+        type: 'shirtLength',
       },
       {
         id: 13,
@@ -238,7 +238,7 @@ export default function() {
         title: 'Narrow Tie Width',
         price: 25.0,
         howToPin: shortenTie,
-        type: 'jacketSleevesTakenIn',
+        type: 'tie',
       },
       {
         id: 28,
@@ -246,7 +246,7 @@ export default function() {
         title: 'Shorten and Narrow',
         price: 35.0,
         howToPin: shortenTie,
-        type: 'jacketSleevesTakenIn',
+        type: 'tie',
       },
     ],
   };
