@@ -9,6 +9,7 @@ import {
   ValidateZip,
 } from '../../../utils/validations';
 import {basketImage} from '../../../images';
+import {flatten} from 'lodash';
 
 class Cart extends Component {
   // componentWillReceiveProps(nextProps) {
@@ -208,8 +209,19 @@ class Cart extends Component {
     );
   }
 
+  getTotal(cart) {
+    const alterations = cart.garments.reduce((prev, curr) => {
+      prev.push(curr.alterations);
+      prev = flatten(prev);
+      return prev;
+    }, []);
+    const price = alterations.reduce((prev, curr) => (prev += curr.price), 0);
+    return price.toFixed(2);
+  }
+
   render() {
     const {cart, stage} = this.props;
+
     if (cart.garments.length > 0) {
       return (
         <div className="cart-container">
@@ -221,6 +233,10 @@ class Cart extends Component {
 
           {this.renderOrderNotes(this.props)}
           {this.customerAgreesPrompt(stage)}
+
+          <div style={{marginLeft: '15px'}}>
+            <h3>Total: ${this.getTotal(cart)}</h3>
+          </div>
 
           {this.renderNextButton(this.props)}
         </div>
