@@ -6,6 +6,7 @@ import NavigationBar from './components/NavigationBar';
 import AvailableRoutes from './components/AvailableRoutes';
 import SignIn from './components/SignIn';
 import Growler from './components/growler';
+import Loader from './components/loader';
 
 const Router = props => {
   const loggedIn = props.currentUser.isAuthenticated;
@@ -26,6 +27,7 @@ const Router = props => {
       <BrowserRouter>
         <div className="container">
           <Growler />
+          <Loader />
           <NavigationBar
             retailer={retailer}
             loggedIn={loggedIn}
