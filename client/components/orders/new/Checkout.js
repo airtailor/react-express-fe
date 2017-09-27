@@ -10,6 +10,7 @@ import {
   removeLoader,
 } from '../../../actions';
 import {redirectToStageOneIfNoAlterations} from '../ordersHelper';
+import {getTotal} from './utils';
 
 class Checkout extends Component {
   constructor() {
@@ -189,6 +190,8 @@ class Checkout extends Component {
           {this.renderOrderInfo(this.props)}
           <br />
           {this.renderShippingInfo(this.props)}
+          <br />
+          <h2>Total: ${getTotal(this.props.cart)}</h2>
           <br />
           {this.renderButtons(this.props)}
           {this.renderOrderCompleteRedirect(this.state)}
