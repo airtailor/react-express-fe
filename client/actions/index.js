@@ -31,6 +31,8 @@ import {
   SET_GROWLER,
   REMOVE_GROWLER,
   SET_ARCHIVED_ORDERS,
+  SET_LOADER,
+  REMOVE_LOADER,
 } from '../utils/constants';
 
 import {removeFalseyValuesFromObject} from '../utils/format';
@@ -626,6 +628,18 @@ export function getArchivedOrders() {
   };
 }
 // actions
+
+export function removeLoader() {
+  return {
+    type: REMOVE_LOADER,
+  };
+}
+
+export function setLoader() {
+  return {
+    type: SET_LOADER,
+  };
+}
 
 export function setArchivedOrders(orders) {
   return {

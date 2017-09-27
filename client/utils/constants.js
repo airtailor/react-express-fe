@@ -25,6 +25,8 @@ export const UPDATE_GARMENT_IN_CART = 'UPDATE_GARMENT_IN_CART';
 export const SET_GROWLER = 'SET_GROWLER';
 export const REMOVE_GROWLER = 'REMOVE_GROWLER';
 export const SET_ARCHIVED_ORDERS = 'SET_ARCHIVED_ORDERS';
+export const SET_LOADER = 'SET_LOADER';
+export const REMOVE_LOADER = 'REMOVE_LOADER';
 
 export const storeTypes = [
   {name: 'Tailor', id: 'tailor'},

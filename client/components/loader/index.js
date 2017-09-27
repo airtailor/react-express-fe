@@ -1,8 +1,19 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {isEmpty} from 'lodash';
 import './loader.scss';
 
 const Loader = props => {
-  return <div className="loader" />;
+  if (!isEmpty(props.loader)) {
+    return <div className="loader" />;
+  }
+  return <div className="empty-div" />;
 };
 
-export default Loader;
+const mapStateToProps = store => {
+  return {
+    loader: store.loader,
+  };
+};
+
+export default connect(mapStateToProps)(Loader);

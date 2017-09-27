@@ -1,7 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {getCurrentStore, updateStore, setGrowler} from '../../actions';
+import {
+  getCurrentStore,
+  updateStore,
+  setGrowler,
+  setLoader,
+  removeLoader,
+} from '../../actions';
 import FormField from './../FormField';
 import SectionHeader from './../SectionHeader';
 import UsersEdit from '../users/UsersEdit';
@@ -31,6 +37,7 @@ class StoresEdit extends Component {
     e.preventDefault();
     var self = this;
     const store = this.state;
+    this.props.setLoader();
     this.props
       .updateStore({store})
       .then(res => {
@@ -47,6 +54,7 @@ class StoresEdit extends Component {
           this.props.setGrowler({kind, message});
         }
       })
+      .then(() => this.props.removeLoader())
       .catch(err => console.log(err));
   }
 
@@ -141,7 +149,7 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    {getCurrentStore, updateStore, setGrowler},
+    {getCurrentStore, updateStore, setGrowler, setLoader, removeLoader},
     dispatch
   );
 };
