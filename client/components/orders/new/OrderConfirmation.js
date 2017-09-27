@@ -16,7 +16,6 @@ class OrderConfirmation extends Component {
   componentWillUnmount() {
     this.props.resetCart();
     this.props.setConfirmedNewOrder({});
-    //console.log('should be deleted', this.props.confirmedNewOrder, this.props.resetCart)
   }
 
   renderCustomerInfo(customer) {
@@ -149,7 +148,6 @@ class OrderConfirmation extends Component {
 
   render() {
     const {confirmedNewOrder} = this.props;
-
     return (
       <div>
         <SectionHeader text="Order Completed" />
@@ -159,6 +157,8 @@ class OrderConfirmation extends Component {
           {this.renderOrderInfo(confirmedNewOrder)}
           <br />
           {this.renderShippingInfo(confirmedNewOrder)}
+          <br />
+          <h2>Total: ${confirmedNewOrder.total.toFixed(2)}</h2>
           <br />
           {this.renderButtons(confirmedNewOrder)}
         </div>

@@ -191,7 +191,7 @@ class Checkout extends Component {
           <br />
           {this.renderShippingInfo(this.props)}
           <br />
-          <h2>Total: ${getTotal(this.props.cart)}</h2>
+          <h2>Total: ${getTotal(this.props.cart.garments)}</h2>
           <br />
           {this.renderButtons(this.props)}
           {this.renderOrderCompleteRedirect(this.state)}

@@ -1,7 +1,7 @@
 import {flatten} from 'lodash';
 
-export const getTotal = cart => {
-  const alterations = cart.garments.reduce((prev, curr) => {
+export const getTotal = garments => {
+  const alterations = garments.reduce((prev, curr) => {
     prev.push(curr.alterations);
     prev = flatten(prev);
     return prev;

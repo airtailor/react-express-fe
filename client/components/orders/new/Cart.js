@@ -225,7 +225,7 @@ class Cart extends Component {
           {this.customerAgreesPrompt(stage)}
 
           <div style={{marginLeft: '15px'}}>
-            <h3>Total: ${getTotal(cart)}</h3>
+            <h3>Total: ${getTotal(cart.garments)}</h3>
           </div>
 
           {this.renderNextButton(this.props)}
