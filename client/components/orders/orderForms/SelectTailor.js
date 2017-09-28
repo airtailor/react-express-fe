@@ -1,45 +1,40 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux'
+import {bindActionCreators} from 'redux';
 import {getTailorList} from '../../../actions';
 import FormSelect from '../../FormSelect';
 
 class SelectTailor extends Component {
-  componentDidMount(){
-    this.props.getTailorList()
-      .catch(err => console.log(err));
+  componentDidMount() {
+    this.props.getTailorList().catch(err => console.log(err));
   }
-  render(){
+  render() {
     const {tailors, onChange, provider_id, handleSubmit} = this.props;
-    if (tailors){
+    if (tailors) {
       return (
-        <div className='SelectTailor'>
+        <div className="SelectTailor">
           <h3>Select Tailor</h3>
-          <FormSelect value={provider_id}
+          <FormSelect
+            value={provider_id}
             options={tailors}
-            fieldName={'provider_id'} title={'Tailor Shop:'}
-            onChange={onChange} />
+            fieldName={'provider_id'}
+            title={'Tailor Shop:'}
+            onChange={onChange}
+          />
         </div>
       );
     }
   }
 }
 
-const mapStateToProps = (store) => {
+const mapStateToProps = store => {
   return {
-    tailors: store.tailorList
-  }
-}
+    tailors: store.tailorList,
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators({getTailorList}, dispatch);
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectTailor)
-
-
-
-// <FormSelect value={provider_id}
-//   options={this.props.tailors}
-//   fieldName={'provider_id'} title={'Tailor Shop:'}
-//   onChange={this.updateState} />
+export default connect(mapStateToProps, mapDispatchToProps)(SelectTailor);

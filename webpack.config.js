@@ -59,7 +59,11 @@ const config = {
     //  }]
     // }]
   },
-  plugins: [new ExtractTextPlugin('style.css'), new UglifyJSPlugin()],
+  plugins: [
+    new ExtractTextPlugin('style.css'),
+    new UglifyJSPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({name: 'vendor'}),
+  ],
 };
 
 module.exports = config;
