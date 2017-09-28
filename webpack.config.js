@@ -2,6 +2,7 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const VENDOR_LIBS = [
   'axios',
@@ -26,7 +27,7 @@ const config = {
   },
   output: {
     path: path.resolve('public'),
-    filename: '[name].js',
+    filename: '[name].[chunkhash].js',
   },
   module: {
     loaders: [
@@ -62,7 +63,10 @@ const config = {
   plugins: [
     new ExtractTextPlugin('style.css'),
     new UglifyJSPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({name: 'vendor'}),
+    new webpack.optimize.CommonsChunkPlugin({names: ['vendor', 'manifest']}),
+    new HtmlWebpackPlugin({
+      template: 'client/index.html',
+    }),
   ],
 };
 

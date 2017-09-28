@@ -1,114 +1,132 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import { getCurrentStore, getOrderAndMessagesCount } from '../actions';
+import {getCurrentStore, getOrderAndMessagesCount} from '../actions';
 import SectionHeader from './SectionHeader';
 import OrderCard from './OrderCard';
 import OrderCardIcon from './OrderCardIcon';
 import {ordersImage, messageImage, exclamationImage} from '../images';
 
 class Home extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       active_orders_count: 0,
       late_orders_count: 0,
-      unread_messages_count: 0
-    }
+      unread_messages_count: 0,
+    };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const {currentUser, getCurrentStore} = this.props;
-    getOrderAndMessagesCount(this.props.currentUser.user.store_id)
-      .then(res => {
-        this.setState(res.data.body)
-      })
-    getCurrentStore(currentUser.user.store_id)
-      .catch(err => {
-        console.log(err);
-      })
+    getOrderAndMessagesCount(this.props.currentUser.user.store_id).then(res => {
+      this.setState(res.data.body);
+    });
+    getCurrentStore(currentUser.user.store_id).catch(err => {
+      console.log(err);
+    });
   }
 
-  retailerHome(currentStore){
-    const {active_orders_count, late_orders_count, unread_messages_count} = this.state;
+  retailerHome(currentStore) {
+    const {
+      active_orders_count,
+      late_orders_count,
+      unread_messages_count,
+    } = this.state;
     return (
-      <div className='store-boxes'>
+      <div className="store-boxes">
         <OrderCard
-          icon={<OrderCardIcon url={ordersImage} alt='orders' />}
+          icon={<OrderCardIcon url={ordersImage} alt="orders" />}
           count={active_orders_count}
-          type='Current'
-          call='VIEW >'
-          styleClass='current-orders' />
+          type="Current"
+          call="VIEW >"
+          styleClass="current-orders"
+        />
 
         <OrderCard
-          icon={<OrderCardIcon url={messageImage} alt='messages' />}
+          icon={<OrderCardIcon url={messageImage} alt="messages" />}
           count={unread_messages_count}
-          type='Unread'
-          call='READ >'
-          styleClass='unread-messages' />
+          type="Unread"
+          call="READ >"
+          styleClass="unread-messages"
+        />
       </div>
-    )
+    );
   }
 
-  adminHome(currentStore){
-    const {active_orders_count, late_orders_count, unread_messages_count} = this.state;
+  adminHome(currentStore) {
+    const {
+      active_orders_count,
+      late_orders_count,
+      unread_messages_count,
+    } = this.state;
     return (
-      <div className='store-boxes'>
+      <div className="store-boxes">
         <OrderCard
-          icon={<OrderCardIcon url={exclamationImage} alt='orders' />}
+          icon={<OrderCardIcon url={exclamationImage} alt="orders" />}
           count={late_orders_count}
-          type='Late'
-          call='FULFILL >'
-          styleClass='late-orders' />
+          type="Late"
+          call="FULFILL >"
+          styleClass="late-orders"
+        />
 
         <OrderCard
-          icon={<OrderCardIcon url={ordersImage} alt='orders' />}
+          icon={<OrderCardIcon url={ordersImage} alt="orders" />}
           count={active_orders_count}
-          type='Current'
-          call='VIEW >'
-          styleClass='current-orders' />
+          type="Current"
+          call="VIEW >"
+          styleClass="current-orders"
+        />
 
         <OrderCard
-          icon={<OrderCardIcon url={messageImage} alt='messages' />}
+          icon={<OrderCardIcon url={messageImage} alt="messages" />}
           count={unread_messages_count}
-          type='Unread'
-          call='READ >'
-          styleClass='unread-messages-admin' />
+          type="Unread"
+          call="READ >"
+          styleClass="unread-messages-admin"
+        />
       </div>
-    )
+    );
   }
 
-  tailorHome(currentStore){
-    const {active_orders_count, late_orders_count, unread_messages_count} = this.state;
+  tailorHome(currentStore) {
+    const {
+      active_orders_count,
+      late_orders_count,
+      unread_messages_count,
+    } = this.state;
     return (
-      <div className='store-boxes'>
+      <div className="store-boxes">
         <OrderCard
-          icon={<OrderCardIcon url={exclamationImage} alt='orders' />}
+          icon={<OrderCardIcon url={exclamationImage} alt="orders" />}
           count={late_orders_count}
-          type='Late'
-          call='FULFILL >'
-          styleClass='late-orders' />
+          type="Late"
+          call="FULFILL >"
+          styleClass="late-orders"
+        />
 
         <OrderCard
-          icon={<OrderCardIcon url={ordersImage} alt='orders' />}
+          icon={<OrderCardIcon url={ordersImage} alt="orders" />}
           count={active_orders_count}
-          type='Current'
-          call='VIEW >'
-          styleClass='current-orders' />
+          type="Current"
+          call="VIEW >"
+          styleClass="current-orders"
+        />
 
         <OrderCard
-          icon={<OrderCardIcon url={messageImage} alt='messages' />}
+          icon={<OrderCardIcon url={messageImage} alt="messages" />}
           count={unread_messages_count}
-          type='Unread'
-          call='READ >'
-          styleClass='unread-messages' />
+          type="Unread"
+          call="READ >"
+          styleClass="unread-messages"
+        />
       </div>
-    )
+    );
   }
 
-  renderCards(role, currentStore){
+  renderCards(role, currentStore) {
     switch (role) {
       case 'tailor':
         return this.tailorHome(currentStore);
@@ -124,8 +142,8 @@ class Home extends Component {
     }
   }
 
-  renderStore(){
-    if (!isEmpty(this.props.currentStore)){
+  renderStore() {
+    if (!isEmpty(this.props.currentStore)) {
       const {currentStore, currentUser} = this.props;
       const {id, name} = currentStore;
       const role = currentUser.user.roles[0].name;
@@ -133,44 +151,49 @@ class Home extends Component {
       const storeOrShop = role === 'retailer' ? 'store' : 'shop';
 
       return (
-        <div className='home'>
-          <h2 className='greeting'>Greetings, {name}</h2>
-          <p className='greeting'>
+        <div className="home">
+          <h2 className="greeting">Greetings, {name}</h2>
+          <p className="greeting">
             Here's what's happening with your {storeOrShop} right now.
           </p>
           {this.renderCards(role, currentStore)}
         </div>
       );
     } else {
-      return <div></div>
+      return <div />;
     }
   }
 
-
-  render(){
-    return(
+  render() {
+    return (
       <div>
         <SectionHeader
           text={`Home / ${this.props.currentStore.name}`}
-          showCart={this.props.currentUser.user.roles[0].name !== 'tailor' ?
-            true : false}
-           link={'/orders/new'}
-           rotate={''} />
-        { this.renderStore() }
+          showCart={
+            this.props.currentUser.user.roles[0].name !== 'tailor' ? (
+              true
+            ) : (
+              false
+            )
+          }
+          link={'/orders/new'}
+          rotate={''}
+        />
+        {this.renderStore()}
       </div>
     );
   }
 }
 
-const mapStateToProps = (store) => {
+const mapStateToProps = store => {
   return {
     currentUser: store.currentUser,
-    currentStore: store.currentStore
-  }
-}
+    currentStore: store.currentStore,
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators({getCurrentStore}, dispatch);
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

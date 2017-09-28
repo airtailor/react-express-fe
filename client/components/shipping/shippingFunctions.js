@@ -10,10 +10,6 @@ export const getPrintButtonPrompt = (shippingType, order, loadingLabel) => {
       verb = 'Create';
     }
   }
-  // const verb = labelExists(shippingType, order) ?
-  //   'Print' :
-  //   'Create';
-  // return `${verb} Shipping Label`
   return `${verb} Shipping Label`;
 };
 
@@ -80,7 +76,6 @@ export const renderPrintLabels = () => {
         </button>
 
         <OrderComplete shippingType={shippingType} />
-        {/* <OrderComplete order={currentOrder} shippingType={shippingType} /> */}
       </div>
     );
   } else if (printPrompt.split(' ')[0] === 'Create') {

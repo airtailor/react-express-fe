@@ -1,10 +1,12 @@
 {
-  "name": "webpack-intro",
+  "name": "air-tailor-portal",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --watch --hot",
+    "clean":
+      "rimraf public/bundle.*.js && rimraf public/manifest.*.js && rimraf public/vendor.*.js",
+    "build": "npm run clean && webpack",
     "start": "node server/index.js"
   },
   "author": "",
@@ -20,26 +22,19 @@
     "css-loader": "^0.28.0",
     "enzyme": "^2.9.1",
     "enzyme-to-json": "^1.5.1",
-    "eslint": "^4.1.1",
-    "eslint-config-airbnb": "^15.0.1",
-    "eslint-loader": "^1.8.0",
-    "eslint-plugin-import": "^2.6.0",
-    "eslint-plugin-jsx-a11y": "^6.0.0",
-    "eslint-plugin-react": "^7.1.0",
     "extract-text-webpack-plugin": "^2.0.0",
     "file-loader": "^0.11.2",
+    "html-webpack-plugin": "^2.30.1",
     "jest": "^21.0.2",
     "node-sass": "^4.5.3",
     "react-addons-test-utils": "^15.6.0",
     "react-hot-loader": "^1.3.1",
+    "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.16.1",
     "uglifyjs-webpack-plugin": "^0.4.6",
     "url-loader": "^0.5.9",
-    "webpack": "^2.6.1",
-    "webpack-dev-middleware": "^1.11.0",
-    "webpack-dev-server": "^2.4.5",
-    "webpack-hot-middleware": "^2.18.0"
+    "webpack": "^2.2.0-rc.3"
   },
   "dependencies": {
     "axios": "^0.16.1",

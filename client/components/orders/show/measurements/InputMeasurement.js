@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 class InputMeasurement extends Component {
   render() {
@@ -7,7 +7,7 @@ class InputMeasurement extends Component {
     const styling = `input-measurement ${kind}`;
     let val;
 
-    if (value){
+    if (value) {
       val = editEnabled ? `${value}` : `${value}"`;
     } else {
       val = value;
@@ -18,8 +18,9 @@ class InputMeasurement extends Component {
         className={styling}
         value={val}
         disabled={!editEnabled}
-        onChange={e => update(kind, e.target.value)} />
-    )
+        onChange={e => update(kind, e.target.value)}
+      />
+    );
   }
 }
 

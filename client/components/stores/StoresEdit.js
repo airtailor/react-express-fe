@@ -25,7 +25,6 @@ class StoresEdit extends Component {
     this.setState(store);
     this.props
       .getCurrentStore(this.props.match.params.store_id)
-      //.then(res => console.log(res))
       .catch(err => console.log(err));
   }
 
@@ -111,7 +110,6 @@ class StoresEdit extends Component {
             title={'Zip:'}
             onChange={this.updateState}
           />
-
           <input className="short-button" type="submit" value="Update Store" />
         </form>
       </div>

@@ -1,22 +1,26 @@
 import React from 'react';
 
 const renderOrders = (orders, className, selectOrder) => {
-  if (orders.length > 0){
+  if (orders.length > 0) {
     return orders.map((order, index) => {
       const {id, customer, total} = order;
       const {first_name, last_name} = customer;
       return (
-        <li className={`${className}-li`} key={index} onClick={() => selectOrder(order)}>
+        <li
+          className={`${className}-li`}
+          key={index}
+          onClick={() => selectOrder(order)}
+        >
           #{order.id} - {first_name} {last_name} - ${total}
         </li>
-      )
+      );
     });
   } else {
-     return <p>No New Orders</p>
+    return <p>No New Orders</p>;
   }
-}
+};
 
-export const RenderNewOrderList = (props) => {
+export const RenderNewOrderList = props => {
   const {orders, className, selectOrder} = props;
   return (
     <div className={`${className}-div`}>
@@ -31,4 +35,4 @@ export const RenderNewOrderList = (props) => {
       </ul>
     </div>
   );
-}
+};
