@@ -9,3 +9,4 @@ node_modules/*
 *.webm
 *.jpg
 *.hot-update.*
+public/vendor.js
