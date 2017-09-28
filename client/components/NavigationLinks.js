@@ -20,7 +20,10 @@ class NavigationLinks extends Component {
     return (
       <div>
         <SearchBar />
-        <ul className="navbar-links-ul">
+        <ul
+          className="navbar-links-ul"
+          onClick={() => toggleNavState(navState)}
+        >
           <NavigationLink
             cssClass="home-link"
             route="/"
@@ -89,7 +92,10 @@ class NavigationLinks extends Component {
     return (
       <div>
         <SearchBar />
-        <ul className="navbar-links-ul">
+        <ul
+          className="navbar-links-ul"
+          onClick={() => toggleNavState(navState)}
+        >
           <NavigationLink
             cssClass="home-link"
             route="/"
@@ -161,7 +167,10 @@ class NavigationLinks extends Component {
     return (
       <div>
         <SearchBar />
-        <ul className="navbar-links-ul">
+        <ul
+          className="navbar-links-ul"
+          onClick={() => toggleNavState(navState)}
+        >
           <NavigationLink
             cssClass="home-link"
             route="/"

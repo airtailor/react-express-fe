@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import NavigationLinks from './NavigationLinks';
 import LogoMessage from './LogoMessage';
 import Hamburger from '../images/hamburger.png';
@@ -9,11 +9,11 @@ import {logoutImage} from '../images';
 import {signOutCurrentUser} from '../actions';
 
 class NavigationBar extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
-      active: this.getNavActive(window)
-    }
+      active: this.getNavActive(window),
+    };
     // Need to bind toggleActiveState in order to pass it down as a prop to
     // the NavigationLinks component
     this.toggleActiveState = this.toggleActiveState.bind(this);
@@ -24,68 +24,81 @@ class NavigationBar extends Component {
     this.handleResize = this.handleResize.bind(this);
   }
 
-  handleSignOut(){
-    this.props.signOutCurrentUser()
-    .then(res => {
-      console.log('signed out');
-    })
-    .catch(err => {
-      console.log('oops something went wrong');
-    })
+  handleSignOut() {
+    this.props
+      .signOutCurrentUser()
+      .then(res => {
+        console.log('signed out');
+      })
+      .catch(err => {
+        console.log('oops something went wrong');
+      });
   }
 
-  getNavActive(window){
+  getNavActive(window) {
     return window.innerWidth < 981 ? false : true;
   }
 
-  handleResize(){
+  handleResize() {
     const state = this.getNavActive(window);
     this.setState({active: state});
   }
 
-  componentDidMount(){
+  componentDidMount() {
     window.addEventListener('resize', this.handleResize);
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
   }
 
-  toggleActiveState(boolean){
-    const state = !boolean;
-    this.setState({active: state});
+  toggleActiveState(boolean) {
+    // If the Nav Bar should NOT be open by default (based on the window size)
+    if (!this.getNavActive(window)) {
+      const state = !boolean;
+      this.setState({active: state});
+    }
   }
 
-  navBar(){
-    const { loggedIn, admin, retailer } = this.props;
+  navBar() {
+    const {loggedIn, admin, retailer} = this.props;
     const logoText = retailer ? 'STORE PORTAL' : 'SHOP PORTAL';
-    const { active } = this.state;
+    const {active} = this.state;
     return (
       <nav className="navbar">
-        <LogoMessage className='navbar-logo' text={logoText} />
+        <LogoMessage className="navbar-logo" text={logoText} />
         <div className="navbar-links-container">
-          <NavigationLinks loggedIn={loggedIn} retailer={retailer} admin={admin} toggleNavState={this.toggleActiveState} navState={active}/>
+          <NavigationLinks
+            loggedIn={loggedIn}
+            retailer={retailer}
+            admin={admin}
+            toggleNavState={this.toggleActiveState}
+            navState={active}
+          />
         </div>
-        <li className="signout-link"><a className="navbar-links-li" onClick={() => this.handleSignOut() }>
-          <img src={logoutImage} alt='logout' /> LOGOUT
-        </a></li>
+        <li className="signout-link">
+          <a className="navbar-links-li" onClick={() => this.handleSignOut()}>
+            <img src={logoutImage} alt="logout" /> LOGOUT
+          </a>
+        </li>
       </nav>
     );
   }
 
-  hamburger(){
+  hamburger() {
     return (
       <img
-        className='hamburger'
+        className="hamburger"
         src={Hamburger}
-        alt='menu'
-        onClick={() => this.toggleActiveState(this.state.active)} />
-    )
+        alt="menu"
+        onClick={() => this.toggleActiveState(this.state.active)}
+      />
+    );
   }
 
-  render(){
-    const { active } = this.state;
-    if (active){
+  render() {
+    const {active} = this.state;
+    if (active) {
       return this.navBar();
     } else {
       return this.hamburger();
@@ -93,14 +106,14 @@ class NavigationBar extends Component {
   }
 }
 
-const mapStateToProps = (store) => {
+const mapStateToProps = store => {
   return {
-    currentUser: store.currentUser
-  }
-}
+    currentUser: store.currentUser,
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators({signOutCurrentUser}, dispatch);
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar);
