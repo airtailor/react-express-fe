@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
-import logger from 'redux-logger';
 import Router from './Router';
 import MainPrint from './components/prints/MainPrint';
 import rootReducer from './reducers';
@@ -11,6 +10,7 @@ import setAuthToken from './utils/setAuthToken';
 import {setCurrentUser, setCurrentStore} from './actions/';
 
 // uncomment below to toggle on/off redux logger
+// import logger from 'redux-logger';
 //const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 const store = createStore(rootReducer, applyMiddleware(thunk));
 const {AirTailorTokens, CurrentUser, CurrentStore} = localStorage;

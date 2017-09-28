@@ -12,19 +12,8 @@ import {basketImage} from '../../../images';
 import {getTotal} from './utils';
 
 class Cart extends Component {
-  // componentWillReceiveProps(nextProps) {
-  //   //console.log('componentWillReceiveProps');
-  //   if (
-  //     nextProps.cart.garments.length > 0 &&
-  //     nextProps.cart.garments[0].alterations &&
-  //     nextProps.cart.garments[0].alterations.length > 1
-  //   ) {
-  //     // debugger;
-  //   }
-  // }
-
   renderGarmentAlterations(garment) {
-    // this garment is being injected from the menu, not the car
+    // this garment is being injected from the menu, not the Cart
     //console.log('cart js 10', garment);
     if (garment.alterations.length > 0) {
       return garment.alterations.map((alt, index) => {
