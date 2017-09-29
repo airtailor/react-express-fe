@@ -1,7 +1,6 @@
 import React from 'react';
 import {BrowserRouter, Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
-
 import NavigationBar from './components/NavigationBar';
 import AvailableRoutes from './components/AvailableRoutes';
 import SignIn from './components/SignIn';
