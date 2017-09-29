@@ -9,7 +9,6 @@ import Loader from './components/loader';
 
 const Router = props => {
   const loggedIn = props.currentUser.isAuthenticated;
-
   const admin =
     props.currentUser.user.roles &&
     props.currentUser.user.roles[0].name === 'admin';
