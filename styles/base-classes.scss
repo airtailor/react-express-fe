@@ -150,3 +150,7 @@ input[type='submit']:disabled {
 .ReactModal__Overlay.ReactModal__Overlay--after-open {
   z-index: 100;
 }
+
+.red {
+  color: $primary-red;
+}

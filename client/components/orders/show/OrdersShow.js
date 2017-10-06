@@ -102,7 +102,27 @@ class OrdersShow extends Component {
   }
 
   renderAlteration(alteration, index) {
-    return <li key={index}>{alteration.name}</li>;
+    // original, blind stitch, and cuffed hems should be red
+    const hemAlts = [
+      'Shorten Pant Length - Original Hem',
+      'Shorten Pant Length - Blind Stitch Hem',
+      'Shorten Pant Length - Cuffed Hem',
+    ];
+
+    const className = hemAlts.includes(alteration.name) ? 'red' : '';
+    const splitAlt = alteration.name.split(' - ');
+    const alt = {name: splitAlt[0] + ' - ', specific: splitAlt[1]};
+
+    if (splitAlt[1]) {
+      return (
+        <li key={index}>
+          {alt.name}
+          <span className={className}>{alt.specific}</span>
+        </li>
+      );
+    } else {
+      return <li key={index}>{alteration.name}</li>;
+    }
   }
 
   getImageForItemType(name) {
