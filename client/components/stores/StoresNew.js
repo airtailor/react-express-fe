@@ -15,11 +15,11 @@ class StoresNew extends Component {
       name: '',
       primary_contact_id: '',
       phone: '',
-      street1: '',
-      street2: '',
+      street: '',
+      street_two: '',
       city: '',
-      state: '',
-      zip: '',
+      state_province: '',
+      zip_code: '',
     };
     this.updateState = this.updateState.bind(this);
   }
@@ -44,8 +44,8 @@ class StoresNew extends Component {
       type,
       name,
       phone,
-      street1,
-      street2,
+      street,
+      street_two,
       city,
       state,
       zip,
@@ -70,15 +70,15 @@ class StoresNew extends Component {
             />
 
             <FormField
-              value={street1}
-              fieldName={'street1'}
+              value={street}
+              fieldName={'street'}
               title={'Street:'}
               onChange={this.updateState}
             />
 
             <FormField
-              value={street2}
-              fieldName={'street2'}
+              value={street_two}
+              fieldName={'street_two'}
               title={'Unit:'}
               onChange={this.updateState}
             />
@@ -91,15 +91,15 @@ class StoresNew extends Component {
             />
 
             <FormField
-              value={state}
-              fieldName={'state'}
+              value={state_province}
+              fieldName={'state_province'}
               title={'State:'}
               onChange={this.updateState}
             />
 
             <FormField
-              value={zip}
-              fieldName={'zip'}
+              value={zip_code}
+              fieldName={'zip_code'}
               title={'Zip:'}
               onChange={this.updateState}
             />

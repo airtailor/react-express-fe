@@ -58,7 +58,7 @@ class StoresEdit extends Component {
   }
 
   renderForm(data) {
-    const {name, phone, street1, street2, city, state, zip} = data;
+    const {name, phone, street, street_two, city, state_province, zip_code} = data;
     return (
       <div>
         <form onSubmit={e => this.handleSubmit(e)}>
@@ -77,15 +77,15 @@ class StoresEdit extends Component {
           />
 
           <FormField
-            value={street1}
-            fieldName={'street1'}
+            value={street}
+            fieldName={'street'}
             title={'Street:'}
             onChange={this.updateState}
           />
 
           <FormField
-            value={street2}
-            fieldName={'street2'}
+            value={street_two}
+            fieldName={'street_two'}
             title={'Unit:'}
             onChange={this.updateState}
           />
@@ -98,16 +98,16 @@ class StoresEdit extends Component {
           />
 
           <FormField
-            value={state}
-            fieldName={'state'}
+            value={state_province}
+            fieldName={'state_province'}
             title={'State:'}
             onChange={this.updateState}
           />
 
           <FormField
-            value={zip}
-            fieldName={'zip'}
-            title={'Zip:'}
+            value={zip_code}
+            fieldName={'zip_code'}
+            title={'Zip Code:'}
             onChange={this.updateState}
           />
           <input className="short-button" type="submit" value="Update Store" />

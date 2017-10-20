@@ -115,17 +115,17 @@ class Checkout extends Component {
     const {
       first_name,
       last_name,
-      street1,
-      street2,
+      street,
+      street_two,
       city,
-      state,
-      zip,
+      state_province,
+      zip_code,
     } = customerInfo;
-    let address2;
-    if (street2) {
-      address2 = street2.length > 0 ? <p>{street2}</p> : '';
+    let address_two;
+    if (street_two) {
+      address_two = street_two.length > 0 ? <p>{street_two}</p> : '';
     } else {
-      address2 = '';
+      address_two = '';
     }
 
     return (
@@ -134,33 +134,33 @@ class Checkout extends Component {
         <p>
           {first_name} {last_name}
         </p>
-        <p>{street1}</p>
-        {address2}
+        <p>{street}</p>
+        {address_two}
         <p>
-          {city}, {state} {zip}
+          {city}, {state_province} {zip_code}
         </p>
       </div>
     );
   }
 
   renderShipToStore(currentStore) {
-    const {name, street1, street2, city, state, zip} = currentStore;
-    let address2;
+    const {name, street, street_two, city, state_province, zip_code} = currentStore;
+    let address_two
 
-    if (street2) {
-      address2 = street2.length > 0 ? <p>{street2}</p> : '';
+    if (street_two) {
+      address_two = street_two.length > 0 ? <p>{street_two}</p> : '';
     } else {
-      address2 = '';
+      address_two = '';
     }
 
     return (
       <div>
         <h2>Ship To Store:</h2>
         <p>{name}</p>
-        <p>{street1}</p>
-        {address2}
+        <p>{street}</p>
+        {address_two}
         <p>
-          {city}, {state} {zip}
+          {city}, {state_province} {zip_code}
         </p>
       </div>
     );
@@ -175,7 +175,7 @@ class Checkout extends Component {
   }
 
   renderOrderCompleteRedirect(state) {
-    if (state.orderCompeted) {
+    if (state.orderCompleted) {
       return <Redirect to="/orders/new/order-confirmation" />;
     }
   }
