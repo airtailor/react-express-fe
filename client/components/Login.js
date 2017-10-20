@@ -55,9 +55,9 @@ class Login extends Component {
   }
 
   updateStore(store){
-    const { id, company_id, phone, street1, street2, city, zip, name } = store;
+    const { id, company_id, phone, street, street_two, city, zip_code, name } = store;
     this.setState({
-      store: { id, company_id, phone, street1, street2, city, zip, name }
+      store: { id, company_id, phone, street, street_two, city, zip_code, name }
     });
   }
 
@@ -142,14 +142,14 @@ class Login extends Component {
     if (!this.state.store) {
       return <div></div>;
     } else {
-      const {name, street1, street2, city, state, company_id} = this.state.store;
+      const {name, street, street_two, city, state_province, company_id} = this.state.store;
       return (
         <div>
           <h3>{ name }</h3>
-          <p> { street1 } </p>
-          <p> { street2 } </p>
+          <p> { street } </p>
+          <p> { street_two } </p>
           <p> { city } </p>
-          <p> { state } </p>
+          <p> { state_province } </p>
           <p> company id: { company_id } </p>
         </div>
       );
@@ -266,4 +266,3 @@ class Login extends Component {
 }
 
 export default Login;
-
