@@ -2,7 +2,7 @@ import React from 'react';
 import {Route, Redirect, Switch} from 'react-router-dom';
 import '../../styles/main.scss';
 import Home from './Home';
-import SignIn from './Signin';
+import SignIn from './SignIn';
 import SignUp from './SignUp';
 import StoreOrders from './stores/StoresShow';
 import OrdersShow from './orders/show/OrdersShow';
