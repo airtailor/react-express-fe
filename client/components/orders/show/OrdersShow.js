@@ -29,6 +29,7 @@ import {
   skirtImage,
   dressImage,
   pantsImage,
+  coatImage,
 } from '../../../images/garments';
 
 import suppliesImage from '../../../images/supplies.png';
@@ -137,9 +138,14 @@ class OrdersShow extends Component {
         return suitImage;
       case 'Necktie':
         return tieImage;
+      case 'Tie':
+        return tieImage;
       case 'Skirt':
         return skirtImage;
+      case 'Coat / Jacket':
+        return coatImage;
       default:
+        console.log('!!!!!!!!', name);
         return suppliesImage;
     }
   }

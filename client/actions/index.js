@@ -232,6 +232,7 @@ export function updateOrder(data) {
         return Axios.post(url, data)
           .then(res => {
             dispatch(setCurrentOrder(res.data.body));
+            return res.data;
           })
           .catch(err => {
             debugger;
