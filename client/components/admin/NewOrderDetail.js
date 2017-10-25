@@ -21,13 +21,15 @@ import {
 import OrderComplete from '../prints/OrderComplete.js';
 import {SetFulfilledButton} from '../orders/orderForms/SetFulfilled';
 import SelectTailor from '../orders/orderForms/SelectTailor';
-import UpdateNotes from '../orders/orderForms/UpdateNotes';
+//import UpdateNotes from '../orders/orderForms/UpdateNotes';
 
 class NewOrderDetail extends Component {
   constructor(props) {
     super();
-    this.state = props.order;
-    this.state.loadingLabel = false;
+    this.state = {
+      loadingLabel: false,
+      nots: '',
+    };
     this.updateState = this.updateState.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setFulfilled = this.setFulfilled.bind(this);
@@ -160,7 +162,6 @@ class NewOrderDetail extends Component {
   }
 
   renderFulfillButton() {
-    console.log('render fulfill button', this.props);
     if (this.props.order.outgoingShipment) {
       return this.renderPrintLabels(this.props.order);
     } else {
@@ -183,7 +184,6 @@ class NewOrderDetail extends Component {
     if (!order.fulfilled) {
       return (
         <div>
-          {/*this.renderFulfillButton()*/}
           <SetFulfilledButton order={order} onClick={this.fulfillOrder} />
         </div>
       );
@@ -192,9 +192,51 @@ class NewOrderDetail extends Component {
     }
   }
 
+  updateNotes(notes) {
+    this.setState({notes});
+  }
+
+  submitNotes(event) {
+    event.preventDefault();
+
+    const data = {
+      order: {
+        requester_notes: this.state.notes,
+        id: this.props.order.id,
+        store_id: this.props.order.store_id,
+      },
+    };
+
+    const kind = 'success';
+    const message = 'Notes Updated Successfully';
+    this.props
+      .updateOrder(data)
+      .then(res => this.props.setGrowler({kind, message}))
+      .catch(err => console.log(err));
+  }
+
+  renderNotes() {
+    return (
+      <form className="notes-form" onSubmit={e => this.submitNotes(e)}>
+        <label>
+          <h3>Order Notes:</h3>
+          <br />
+          <textarea
+            cols={43}
+            rows={10}
+            defaultValue={this.props.order['requester_notes']}
+            onChange={e => this.updateNotes(e.target.value)}
+          />
+        </label>
+        <br />
+        <input className="short-button" type="submit" value="Submit" />
+        <hr />
+      </form>
+    );
+  }
+
   render() {
     const {order} = this.props;
-
     if (order.customer) {
       const {id, weight, created_at, total, provider_notes, items} = order;
       const orderDate = moment(created_at).format('MM-DD-YYYY');
@@ -223,13 +265,7 @@ class NewOrderDetail extends Component {
           <p>Order Date: {orderDate}</p>
           <p>Total Charges: ${total}</p>
           <p>Order Notes:</p>
-          <UpdateNotes
-            notes={provider_notes}
-            order={order}
-            role={this.props.currentUser.user.roles[0].name}
-            submitNotes={this.updateOrderNotes}
-          />
-
+          {this.renderNotes()}
           {display}
         </div>
       );
