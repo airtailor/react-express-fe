@@ -18,7 +18,7 @@ import {
   toSnakeCaseFromCamelCase,
 } from '../shipping/shippingFunctions';
 
-import OrderComplete from '../prints/OrderComplete.js';
+import WelcomeKitPrint from '../prints/WelcomeKitPrint.js';
 import {SetFulfilledButton} from '../orders/orderForms/SetFulfilled';
 import SelectTailor from '../orders/orderForms/SelectTailor';
 //import UpdateNotes from '../orders/orderForms/UpdateNotes';
@@ -118,7 +118,7 @@ class NewOrderDetail extends Component {
             {printPrompt}
           </button>
 
-          <OrderComplete shippingType={shippingType} />
+          <WelcomeKitPrint />
         </div>
       );
     } else if (printPrompt.split(' ')[0] === 'Creating') {
