@@ -59,6 +59,7 @@ class NewOrderDetail extends Component {
   }
 
   handleSubmit() {
+    this.props.setLoader();
     let obj = this.state;
     obj.id = this.props.order.id;
     this.props
@@ -68,6 +69,7 @@ class NewOrderDetail extends Component {
         const message = 'Tailor Assigned';
         const kind = 'success';
         this.props.setGrowler({kind, message});
+        this.props.removeLoader();
       })
       .catch(err => console.log('errr', err));
   }

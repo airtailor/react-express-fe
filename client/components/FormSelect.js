@@ -11,7 +11,7 @@ const FormSelect = props => {
       <label>{props.title}</label>
       <br />
       <select
-        value={props.value}
+        defaultValue={props.value}
         onChange={e => props.onChange(props.fieldName, e.target.value)}
       >
         {renderOptions(selectOptions)}
