@@ -8,8 +8,10 @@ class SelectTailor extends Component {
   componentDidMount() {
     this.props.getTailorList().catch(err => console.log(err));
   }
+
   render() {
     const {tailors, onChange, provider_id, handleSubmit} = this.props;
+    console.log('provider_id', provider_id);
     if (tailors) {
       return (
         <div className="SelectTailor">

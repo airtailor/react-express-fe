@@ -238,16 +238,23 @@ class NewOrderDetail extends Component {
   render() {
     const {order} = this.props;
     if (order.customer) {
-      const {id, weight, created_at, total, provider_notes, items} = order;
+      const {
+        id,
+        weight,
+        created_at,
+        total,
+        provider_notes,
+        items,
+        provider_id,
+      } = order;
+
+      const tailorId = provider_id ? provider_id : '';
       const orderDate = moment(created_at).format('MM-DD-YYYY');
       const selectTailor = (
         <div>
           <p>Alterations:</p>
           {renderAlterationList(order.items, 'new-order-detail')}
-          <SelectTailor
-            onChange={this.updateState}
-            provider_id={order.provider_id}
-          />
+          <SelectTailor onChange={this.updateState} provider_id={tailorId} />
           <button className="button short-button" onClick={this.handleSubmit}>
             Change Tailor
           </button>
