@@ -28,7 +28,7 @@ class NewOrderDetail extends Component {
     super();
     this.state = {
       loadingLabel: false,
-      nots: '',
+      notes: '',
     };
     this.updateState = this.updateState.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
