@@ -82,7 +82,7 @@ class Checkout extends Component {
           this.props.setGrowler({message, kind});
           this.props.renderOrderDetails();
         } else {
-          this.setState({orderCompeted: true});
+          this.setState({orderCompleted: true});
         }
       })
       .catch(err => {

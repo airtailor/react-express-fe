@@ -1,4 +1,4 @@
-import {SET_LOADER, REMOVE_LOADER} from '../utils/constants';
+import {RETAILER_TO_TAILOR, TAILOR_TO_RETAILER, CUSTOMER_TO_TAILOR, TAILOR_TO_CUSTOMER} from '../utils/constants';
 
 const initialState = {};
 

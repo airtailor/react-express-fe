@@ -28,6 +28,11 @@ export const SET_ARCHIVED_ORDERS = 'SET_ARCHIVED_ORDERS';
 export const SET_LOADER = 'SET_LOADER';
 export const REMOVE_LOADER = 'REMOVE_LOADER';
 
+export const SHIP_RETAILER_TO_TAILOR = 'SHIP_RETAILER_TO_TAILOR'
+export const SHIP_TAILOR_TO_RETAILER = 'SHIP_TAILOR_TO_RETAILER'
+export const SHIP_CUSTOMER_TO_TAILOR = 'SHIP_CUSTOMER_TO_TAILOR'
+export const SHIP_TAILOR_TO_CUSTOMER = 'SHIP_TAILOR_TO_CUSTOMER'
+
 export const storeTypes = [
   {name: 'Tailor', id: 'tailor'},
   {name: 'Retailer', id: 'retailer'},
