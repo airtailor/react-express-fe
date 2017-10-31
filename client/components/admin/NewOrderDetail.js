@@ -9,7 +9,7 @@ import {
   removeLoader,
   setGrowler,
 } from '../../actions';
-import {renderAlterationList} from '../../utils/alterationsLists';
+//import {renderAlterationList} from '../../utils/alterationsLists';
 
 import {
   getShippingType,
@@ -237,6 +237,28 @@ class NewOrderDetail extends Component {
     );
   }
 
+  renderGarmentAlterations(garment) {
+    return garment.alterations.map((alt, index) => {
+      return (
+        <p key={index} className="cart-alteration">
+          {alt.name}
+        </p>
+      );
+    });
+  }
+
+  renderGarments(garments) {
+    return garments.map((garment, index) => {
+      return (
+        <div key={index}>
+          <h3>{garment.name}</h3>
+          {this.renderGarmentAlterations(garment)}
+          <hr />
+        </div>
+      );
+    });
+  }
+
   render() {
     const {order} = this.props;
     if (order.customer) {
@@ -252,10 +274,14 @@ class NewOrderDetail extends Component {
 
       const tailorId = provider_id ? provider_id : '';
       const orderDate = moment(created_at).format('MM-DD-YYYY');
+
+      console.log(order.items);
+
       const selectTailor = (
         <div>
           <p>Alterations:</p>
-          {renderAlterationList(order.items, 'new-order-detail')}
+
+          {this.renderGarments(order.items)}
           <SelectTailor onChange={this.updateState} provider_id={tailorId} />
           <button className="button short-button" onClick={this.handleSubmit}>
             Change Tailor
