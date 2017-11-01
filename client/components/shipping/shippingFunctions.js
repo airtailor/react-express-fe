@@ -13,14 +13,14 @@ export const getPrintButtonPrompt = (shippingType, order, loadingLabel) => {
   return `${verb} Shipping Label`;
 };
 
-export const getShippingType = (role, orderType) => {
+export const getShippingType = (roles, orderType) => {
   // Tailors should only make outgoing shipments
   // Admin should only make outgoing shipments
-  if (role === 'tailor') {
+  if (roles.tailor) {
     return 'OutgoingShipment';
-  } else if (role === 'admin') {
+  } else if (roles.admin) {
     return 'OutgoingShipment';
-  } else if (role === 'sales_associate' && orderType !== 'WelcomeKit') {
+  } else if (roles.retailer && orderType !== 'WelcomeKit') {
     return 'IncomingShipment';
   } else if (orderType === 'WelcomeKit') {
     return 'OutgoingShipment';
@@ -56,36 +56,36 @@ export const makeShippingLabel = type => {
     .catch(err => console.log(err));
 };
 
-export const renderPrintLabels = () => {
-  const {currentUser, currentOrder} = this.props;
-  const role = currentUser.user.roles[0].name;
-  const shippingType = getShippingType(role, currentOrder.type);
-
-  console.log('shippingType', shippingType, 'currentOrder', currentOrder);
-  const printPrompt = getPrintButtonPrompt(shippingType, currentOrder);
-
-  if (printPrompt.split(' ')[0] === 'Print') {
-    const url =
-      currentOrder[toSnakeCaseFromCamelCase(lowerCaseFirstLetter(shippingType))]
-        .shipping_label;
-
-    return (
-      <div>
-        <button className="pink-button" onClick={() => window.print()}>
-          {printPrompt}
-        </button>
-
-        <OrderComplete shippingType={shippingType} />
-      </div>
-    );
-  } else if (printPrompt.split(' ')[0] === 'Create') {
-    return (
-      <button
-        className="pink-button"
-        onClick={() => this.makeShippingLabel(shippingType)}
-      >
-        {printPrompt}
-      </button>
-    );
-  }
-};
+// export const renderPrintLabels = () => {
+//   const {currentUser, currentOrder, userRoles} = this.props;
+//   const roles = userRoles
+//   const shippingType = getShippingType(role, currentOrder.type);
+//
+//   console.log('shippingType', shippingType, 'currentOrder', currentOrder);
+//   const printPrompt = getPrintButtonPrompt(shippingType, currentOrder);
+//
+//   if (printPrompt.split(' ')[0] === 'Print') {
+//     const url =
+//       currentOrder[toSnakeCaseFromCamelCase(lowerCaseFirstLetter(shippingType))]
+//         .shipping_label;
+//
+//     return (
+//       <div>
+//         <button className="pink-button" onClick={() => window.print()}>
+//           {printPrompt}
+//         </button>
+//
+//         <OrderComplete shippingType={shippingType} />
+//       </div>
+//     );
+//   } else if (printPrompt.split(' ')[0] === 'Create') {
+//     return (
+//       <button
+//         className="pink-button"
+//         onClick={() => this.makeShippingLabel(shippingType)}
+//       >
+//         {printPrompt}
+//       </button>
+//     );
+//   }
+// };

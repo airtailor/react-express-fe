@@ -78,6 +78,8 @@ export const userSignIn = (email, password) => {
           setTokens(res);
           setLocalStorageUser(res.data.body.data);
           const {id, email, store_id, roles, uid} = res.data.body.data;
+          // right now, the code assumes that a user has a single role, but it's
+          // written to work with multiple roles if/when that becomes necessary.
           dispatch(setUserRole(roles[0].name));
           dispatch(setCurrentUser({id, email, store_id, roles}));
           return {success: true};

@@ -6,16 +6,16 @@ import {
   SHIP_RETAILER_TO_CUSTOMER
 } from '../utils/constants';
 
-const shipmentActions = (order, role) => {
+const shipmentActions = (order, roles) => {
   const {ship_to_store} = order;
 
-  if (ship_to_store && role == "tailor"){
+  if (ship_to_store && roles.tailor){
     return SHIP_TAILOR_TO_RETAILER;
-  } else if (!ship_to_store && role == "tailor"){
+  } else if (!ship_to_store && roles.tailor){
     return SHIP_TAILOR_TO_CUSTOMER;
-  } else if (role === "retailer" && order.type == "TailorOrder"){
+  } else if (roles.retailer && order.type == "TailorOrder"){
     return SHIP_RETAILER_TO_TAILOR;
-  } else if (role == "admin" ){
+  } else if (roles.admin ){
     if (order.type == "WelcomeKit") {
       return SHIP_RETAILER_TO_CUSTOMER;
     } else if (order.type == "TailorOrder") {

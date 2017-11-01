@@ -56,9 +56,10 @@ class ArchivedOrders extends Component {
       return <Redirect to="/" />;
     }
     const headerText = `Archived Orders / ${this.props.currentStore.name}`;
-    const role = this.props.currentUser.user.roles[0].name;
+    const role = this.props.userRoles;
     let customerOrTailor, quantityOrSource;
-    if (role === 'admin') {
+    
+    if (role.admin) {
       customerOrTailor = 'Tailor';
       quantityOrSource = 'Source';
     } else {
@@ -88,6 +89,7 @@ const mapStateToProps = store => {
     currentUser: store.currentUser,
     currentStore: store.currentStore,
     archivedOrders: store.archivedOrders,
+    userRoles: store.userRoles,
   };
 };
 

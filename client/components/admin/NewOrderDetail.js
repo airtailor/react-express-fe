@@ -79,8 +79,8 @@ class NewOrderDetail extends Component {
   }
 
   renderPrintLabels(order) {
-    const role = 'admin';
-    const shippingType = getShippingType(role, order.type);
+    const roles = this.props.userRoles
+    const shippingType = getShippingType(roles, order.type);
     const printPrompt = getPrintButtonPrompt(shippingType, order);
 
     if (printPrompt.split(' ')[0] === 'Print') {

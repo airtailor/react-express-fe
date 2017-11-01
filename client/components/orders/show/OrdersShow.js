@@ -62,9 +62,9 @@ class OrdersShow extends Component {
   }
 
   setNotes(props) {
-    if (props.currentUser.user.roles[0].name === 'tailor') {
+    if (props.userRoles.tailor) {
       return props.currentOrder.provider_notes;
-    } else if (props.currentUser.user.roles[0].name === 'admin') {
+    } else if (props.userRoles.admin) {
       return props.currentOrder.requester_notes;
     }
   }
@@ -173,9 +173,9 @@ class OrdersShow extends Component {
     const linkToCustomer = `/customers/${id}/edit`;
     const name = `${first_name} ${last_name}`;
 
-    const role = this.props.currentUser.user.roles[0].name;
+    const roles = this.props.userRoles;
 
-    if (role === 'retailer') {
+    if (roles.retailer)) {
       return (
         <div>
           <h3>Customer:</h3>
@@ -213,9 +213,7 @@ class OrdersShow extends Component {
   submitNotes(event) {
     event.preventDefault();
     const key =
-      this.props.currentUser.user.roles[0].name === 'tailor'
-        ? 'provider_notes'
-        : 'requester_notes';
+      this.props.userRoles.tailor ? 'provider_notes' : 'requester_notes';
     const data = {
       order: {
         [key]: this.state.notes,
@@ -228,14 +226,14 @@ class OrdersShow extends Component {
 
   notesForm() {
     if (this.state.displayNotesForm) {
-      const role = this.props.currentUser.user.roles[0].name;
+      const role = this.props.userRoles;
       let prompt;
       let party;
 
-      if (role === 'tailor') {
+      if (role.tailor) {
         prompt = 'Add Tailor Notes?';
         party = 'provider_notes';
-      } else if (role === 'admin') {
+      } else if (role.admin) {
         prompt = 'Add Admin Notes?';
         party = 'requester_notes';
       }
@@ -298,9 +296,9 @@ class OrdersShow extends Component {
     this.props
       .updateOrder(data)
       .then(res => {
-        const role = this.props.currentUser.user.roles[0].name;
+        const roles = this.props.userRoles;
         const type = this.props.currentOrder.type;
-        const shippingType = getShippingType(role, type);
+        const shippingType = getShippingType(roles, type);
         this.makeShippingLabel(shippingType);
       })
       .catch(err => console.log(err));
@@ -390,8 +388,8 @@ class OrdersShow extends Component {
     }
   }
 
-  renderEditOrder(role, orderEditPath) {
-    if (role === 'admin') {
+  renderEditOrder(roles, orderEditPath) {
+    if (roles.admin) {
       return (
         <div>
           <Link to={orderEditPath}>
@@ -403,7 +401,7 @@ class OrdersShow extends Component {
   }
 
   editComponents() {
-    if (this.props.currentUser.user.roles[0].name != 'retailer') {
+    if (!this.props.userRoles.retailer) {
       return (
         <div>
           <button
@@ -475,8 +473,8 @@ class OrdersShow extends Component {
     this.setState({showMeasurements: value});
   }
 
-  renderDetailsOrMeasurementsbutton(role, state) {
-    if (role != 'retailer') {
+  renderDetailsOrMeasurementsButton(roles, state) {
+    if (!roles.retailer) {
       const {showMeasurements} = this.state;
       const value = showMeasurements ? 'See Order Details' : 'See Measurements';
       return (
@@ -494,11 +492,11 @@ class OrdersShow extends Component {
   }
 
   render() {
-    const {currentStore, currentOrder, currentUser} = this.props;
+    const {currentStore, currentOrder, currentUser, userRoles} = this.props;
     const {customer} = currentOrder;
     const orderEditPath = `/orders/${currentOrder.id}/edit`;
     const headerText = `Orders / ${currentStore.name} / #${currentOrder.id}`;
-    const role = currentUser.user.roles[0].name;
+    const roles = userRoles;
 
     if (!isEmpty(currentOrder)) {
       const customerRoute = `/customers/${customer.id}/edit`;
@@ -511,8 +509,8 @@ class OrdersShow extends Component {
         <div>
           <SectionHeader text={headerText} />
           <div className="order-show">
-            {this.renderEditOrder(role, orderEditPath)}
-            {this.renderDetailsOrMeasurementsbutton(role, this.state)}
+            {this.renderEditOrder(roles, orderEditPath)}
+            {this.renderDetailsOrMeasurementsButton(roles, this.state)}
             {mainContent}
           </div>
         </div>
@@ -534,6 +532,7 @@ const mapStateToProps = store => {
     currentStore: store.currentStore,
     openOrders: store.storeOrders,
     currentOrder: store.currentOrder,
+    userRoles: store.userRoles
   };
 };
 
