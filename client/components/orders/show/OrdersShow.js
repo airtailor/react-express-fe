@@ -11,12 +11,11 @@ import {
 } from '../../../actions';
 
 import {
-  getShippingType,
   getPrintButtonPrompt,
   lowerCaseFirstLetter,
   toSnakeCaseFromCamelCase,
   makeShippingLabel,
-  renderPrintLabels,
+  shipmentActions
 } from '../../shipping/shippingFunctions';
 
 import isEmpty from 'lodash/isEmpty';
@@ -175,7 +174,7 @@ class OrdersShow extends Component {
 
     const roles = this.props.userRoles;
 
-    if (roles.retailer)) {
+    if (roles.retailer) {
       return (
         <div>
           <h3>Customer:</h3>
@@ -347,45 +346,41 @@ class OrdersShow extends Component {
       return;
     }
 
-    const {currentUser, currentOrder} = this.props;
-    const role = currentUser.user.roles[0].name;
-    const shippingType = getShippingType(role, currentOrder.type);
+    const {currentUser, currentOrder, userRoles} = this.props;
+    const roles = userRoles;
+    //const shippingType = getShippingType(role, currentOrder.type);
+    const shipmentAction = shipmentActions(currentOrder, roles)
     const printPrompt = getPrintButtonPrompt(
-      shippingType,
+      roles,
       currentOrder,
       this.state.loadingLabel
     );
 
-    if (printPrompt.split(' ')[0] === 'Print') {
-      const url = this.props.currentOrder[
-        toSnakeCaseFromCamelCase(lowerCaseFirstLetter(shippingType))
-      ].shipping_label;
-      return (
-        <div>
-          <button className="pink-button" onClick={() => window.print()}>
-            {printPrompt}
-          </button>
+    const printKeyword = printPrompt.split(' ')[0];
+    const disabled = this.state.loadingLabel;
+    let onClick = null;
+    let orderComplete = null;
 
-          <OrderComplete shippingType={shippingType} />
-        </div>
-      );
-    } else if (printPrompt.split(' ')[0] === 'Creating') {
-      return (
-        <button className="pink-button" disabled={this.state.loadingLabel}>
-          {printPrompt}
-        </button>
-      );
-    } else if (printPrompt.split(' ')[0] === 'Create') {
-      return (
-        <button
-          className="pink-button"
-          disabled={this.state.loadingLabel}
-          onClick={() => this.makeShippingLabel(shippingType)}
-        >
-          {printPrompt}
-        </button>
-      );
+    switch(printKeyword) {
+      case 'Create':
+        onClick = this.makeShippingLabel(shipmentAction);
+        break;
+      case 'Print':
+        onClick = () => window.print();
+        orderComplete = (<OrderComplete shippingType={shippingType} />);
+        break;
+      default:
+        break;
     }
+
+    return (
+      <div>
+        <button className="pink-button" onClick={onClick} disabled={disabled}>
+          {printPrompt}
+        </button>
+        {orderComplete}
+      </div>
+    );
   }
 
   renderEditOrder(roles, orderEditPath) {

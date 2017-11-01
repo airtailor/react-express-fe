@@ -75,12 +75,14 @@ export const userSignIn = (email, password) => {
         if (res.data.status === 401) {
           return {errors: true, status: 401};
         } else if (res.data.body) {
+          const dataRes = res.data.body.data
+          const {id, email, store_id, roles, uid} = dataRes;
           setTokens(res);
-          setLocalStorageUser(res.data.body.data);
-          const {id, email, store_id, roles, uid} = res.data.body.data;
+          dispatch(setUserRole(roles[0].name));
+          setLocalStorageUser(dataRes);
+
           // right now, the code assumes that a user has a single role, but it's
           // written to work with multiple roles if/when that becomes necessary.
-          dispatch(setUserRole(roles[0].name));
           dispatch(setCurrentUser({id, email, store_id, roles}));
           return {success: true};
         }
@@ -328,7 +330,9 @@ export function createShipment(data) {
   return validateToken()
     .then(setTokens)
     .then(() => {
-      const type = setShipmentType(data.typeString)
+      console.log(data)
+      debugger
+      
       const url = `${expressApi}/shipments`;
       return Axios.post(url, data);
     });

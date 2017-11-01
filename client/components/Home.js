@@ -127,18 +127,12 @@ class Home extends Component {
   }
 
   renderCards(roles, currentStore) {
-    switch (roles) {
-      case roles.tailor:
-        return this.tailorHome(currentStore);
-        break;
-      case roles.admin:
-        return this.adminHome(currentStore);
-        break;
-      case roles.retailer:
-        return this.retailerHome(currentStore);
-        break;
-      default:
-        return <div>Store Details</div>;
+    if (roles.tailor) {
+      return this.tailorHome(currentStore);
+    } else if (roles.admin) {
+      return this.adminHome(currentStore);
+    } else if (roles.retailer) {
+      return this.retailerHome(currentStore);
     }
   }
 
@@ -148,7 +142,7 @@ class Home extends Component {
       const {id, name} = currentStore;
       const roles = userRoles;
       const storeEditPath = `/stores/${id}/edit`;
-      const storeOrShop = roles.retaileratom ? 'store' : 'shop';
+      const storeOrShop = roles.retailer ? 'store' : 'shop';
 
       return (
         <div className="home">
