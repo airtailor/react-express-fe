@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import moment from 'moment';
 import {updateOrder, createShipment} from '../../actions';
 import {renderAlterationList} from '../../utils/alterationsLists';
+import shipmentActions from '../../utils/shipmentActions';
 
 import {
   getShippingType,
@@ -65,6 +66,7 @@ class NewOrderDetail extends Component {
 
   makeShippingLabel(type, order) {
     const data = {shipment: {type, order_id: order.id}};
+    // here, we pass in our shipment stuff
     createShipment(data)
       .then(res => {
         const order = res.data.body;
@@ -167,7 +169,7 @@ class NewOrderDetail extends Component {
           <UpdateNotes
             notes={provider_notes}
             order={order}
-            role={this.props.currentUser.user.roles[0].name}
+            roles={this.props.userRoles}
             submitNotes={this.updateOrderNotes}
           />
 
@@ -184,6 +186,7 @@ const mapStateToProps = store => {
   return {
     tailors: store.tailorList,
     currentUser: store.currentUser,
+    userRoles: store.userRoles
   };
 };
 

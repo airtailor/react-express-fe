@@ -126,15 +126,15 @@ class Home extends Component {
     );
   }
 
-  renderCards(role, currentStore) {
-    switch (role) {
-      case 'tailor':
+  renderCards(roles, currentStore) {
+    switch (roles) {
+      case roles.tailor:
         return this.tailorHome(currentStore);
         break;
-      case 'admin':
+      case roles.admin:
         return this.adminHome(currentStore);
         break;
-      case 'retailer':
+      case roles.retailer:
         return this.retailerHome(currentStore);
         break;
       default:
@@ -144,11 +144,11 @@ class Home extends Component {
 
   renderStore() {
     if (!isEmpty(this.props.currentStore)) {
-      const {currentStore, currentUser} = this.props;
+      const {currentStore, currentUser, userRoles} = this.props;
       const {id, name} = currentStore;
-      const role = currentUser.user.roles[0].name;
+      const roles = userRoles;
       const storeEditPath = `/stores/${id}/edit`;
-      const storeOrShop = role === 'retailer' ? 'store' : 'shop';
+      const storeOrShop = roles.retaileratom ? 'store' : 'shop';
 
       return (
         <div className="home">
@@ -156,7 +156,7 @@ class Home extends Component {
           <p className="greeting">
             Here's what's happening with your {storeOrShop} right now.
           </p>
-          {this.renderCards(role, currentStore)}
+          {this.renderCards(roles, currentStore)}
         </div>
       );
     } else {
@@ -169,13 +169,7 @@ class Home extends Component {
       <div>
         <SectionHeader
           text={`Home / ${this.props.currentStore.name}`}
-          showCart={
-            this.props.currentUser.user.roles[0].name !== 'tailor' ? (
-              true
-            ) : (
-              false
-            )
-          }
+          showCart={ !this.props.userRoles.tailor ? ( true ) : ( false ) }
           link={'/orders/new'}
           rotate={''}
         />
@@ -188,7 +182,8 @@ class Home extends Component {
 const mapStateToProps = store => {
   return {
     currentUser: store.currentUser,
-    currentStore: store.currentStore,
+    userRoles: store.userRoles,
+    currentStore: store.currentStore
   };
 };
 

@@ -18,7 +18,7 @@ import searchResultsReducer from './searchResultsReducer';
 import growlerReducer from './growlerReducer';
 import archivedOrdersReducer from './archivedOrdersReducer';
 import loaderReducer from './loaderReducer';
-import shipmentReducer from './shipmentReducer';
+import userRoleReducer from './userRoleReducer';
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
@@ -40,7 +40,7 @@ const rootReducer = combineReducers({
   growl: growlerReducer,
   archivedOrders: archivedOrdersReducer,
   loader: loaderReducer,
-  shipments: shipmentReducer
+  userRoles: userRoleReducer
 });
 
 export default rootReducer;

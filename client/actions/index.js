@@ -33,6 +33,13 @@ import {
   SET_ARCHIVED_ORDERS,
   SET_LOADER,
   REMOVE_LOADER,
+  SHIP_RETAILER_TO_TAILOR,
+  SHIP_TAILOR_TO_RETAILER,
+  SHIP_CUSTOMER_TO_TAILOR,
+  SHIP_TAILOR_TO_CUSTOMER,
+  SHIP_RETAILER_TO_CUSTOMER,
+  SET_USER_ROLE,
+  RESET_USER_ROLE,
 } from '../utils/constants';
 
 import {removeFalseyValuesFromObject} from '../utils/format';
@@ -71,6 +78,7 @@ export const userSignIn = (email, password) => {
           setTokens(res);
           setLocalStorageUser(res.data.body.data);
           const {id, email, store_id, roles, uid} = res.data.body.data;
+          dispatch(setUserRole(roles[0].name));
           dispatch(setCurrentUser({id, email, store_id, roles}));
           return {success: true};
         }
@@ -93,7 +101,7 @@ export function signOutCurrentUser() {
     delete localStorage.CurrentUser;
     delete localStorage.CurrentStore;
     setAuthToken({});
-    dispatch(setCurrentUser({}), setCurrentStore({}));
+    dispatch(setCurrentUser({}), setCurrentStore({}), setUserRole({}));
     window.location = '/';
 
     return Axios.post(url)
@@ -318,9 +326,17 @@ export function createShipment(data) {
   return validateToken()
     .then(setTokens)
     .then(() => {
+      const type = setShipmentType(data.typeString)
       const url = `${expressApi}/shipments`;
       return Axios.post(url, data);
     });
+}
+
+export function setShipmentType(typeString) {
+  return {
+    type: typeString,
+    notes,
+  };
 }
 
 export function getCustomerMeasurements(data) {
@@ -627,7 +643,23 @@ export function getArchivedOrders() {
       .catch(err => console.log('err index.js line 488', err));
   };
 }
+
 // actions
+
+
+export function resetUserRole() {
+  return {
+    type: RESET_USER_ROLE
+  };
+}
+
+
+export function setUserRole(role) {
+  return {
+    type: SET_USER_ROLE,
+    role
+  };
+}
 
 export function removeLoader() {
   return {

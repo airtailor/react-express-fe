@@ -36,9 +36,9 @@ class Messages extends Component {
     this.props
       .getConversations(store_id)
       .then(res => {
-        if (this.props.store.name === 'Air Tailor') {
+        if (this.props.currentStore.name === 'Air Tailor') {
           this.props.getMessages(
-            this.props.store.id,
+            this.props.currentStore.id,
             this.props.match.params.id
           );
         } else {
@@ -91,13 +91,11 @@ class Messages extends Component {
     e.preventDefault();
     const {newMessage} = this.state;
 
-    const role = this.props.currentUser.user.roles[0].name;
+    const roles = this.props.userRoles;
     const conversation_id =
-      role === 'admin'
-        ? this.props.match.params.id
-        : this.props.conversations[0].id;
+      roles.admin ? this.props.match.params.id : this.props.conversations[0].id;
 
-    const store_id = this.props.store.id;
+    const store_id = this.props.currentStore.id;
     const message = {body: newMessage, conversation_id, store_id};
 
     this.props
@@ -134,8 +132,8 @@ class Messages extends Component {
 
   markMessagesRead(props) {
     if (props.messages.length > 0) {
-      const role = props.currentUser.user.roles[0].name;
-      const messageCheck = role === 'admin' ? 'sender_read' : 'recipient_read';
+      const roles = props.userRoles;
+      const messageCheck = roles.admin ? 'sender_read' : 'recipient_read';
 
       // find # of unread messages in conversation
       const unreads = props.messages.filter(mess => {
@@ -153,7 +151,7 @@ class Messages extends Component {
   }
 
   render() {
-    const headerText = `Messages / ${this.props.store.name}`;
+    const headerText = `Messages / ${this.props.currentStore.name}`;
     this.markMessagesRead(this.props);
     return (
       <div>
@@ -175,8 +173,9 @@ const mapStateToProps = store => {
   return {
     conversations: store.conversations,
     currentUser: store.currentUser,
+    userRoles: store.userRoles,
     messages: store.messages,
-    store: store.currentStore,
+    currentstore: store.currentStore,
   };
 };
 

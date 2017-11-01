@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 
-const setNotesType = (role, order) => {
-  if (role === 'tailor') {
+const setNotesType = (roles, order) => {
+  if (role.tailor) {
     return order.provider_notes;
-  } else if (role === 'admin' || role === 'retailer') {
+  } else if (role.admin || role.retailer) {
     return order.requester_notes || '';
   }
 };

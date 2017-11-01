@@ -335,6 +335,7 @@ class OrdersShow extends Component {
   makeShippingLabel(type) {
     const data = {shipment: {type, order_id: this.props.currentOrder.id}};
     this.props.setLoader();
+    // here we set our shipment data
     createShipment(data)
       .then(res => {
         this.setState({loadingLabel: false});
