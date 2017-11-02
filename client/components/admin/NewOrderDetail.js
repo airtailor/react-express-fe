@@ -4,13 +4,11 @@ import {bindActionCreators} from 'redux';
 import moment from 'moment';
 import {updateOrder, createShipment} from '../../actions';
 import {renderAlterationList} from '../../utils/alterationsLists';
-import shipmentActions from '../../utils/shipmentActions';
 
 import {
-  getShippingType,
-  getPrintButtonPrompt,
-  lowerCaseFirstLetter,
-  toSnakeCaseFromCamelCase,
+  shipmentType,
+  shipmentActions,
+  getLabelState,
   makeShippingLabel,
 } from '../shipping/shippingFunctions';
 
@@ -80,7 +78,7 @@ class NewOrderDetail extends Component {
 
   renderPrintLabels(order) {
     const roles = this.props.userRoles
-    const shippingType = getShippingType(roles, order.type);
+    const shippingType = shipmentType(roles, order.type);
     const printPrompt = getPrintButtonPrompt(shippingType, order);
 
     if (printPrompt.split(' ')[0] === 'Print') {

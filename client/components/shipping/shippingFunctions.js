@@ -6,38 +6,61 @@ import {
   SHIP_RETAILER_TO_CUSTOMER
 } from '../../utils/constants';
 
+import createShipment from '../../../actions';
 
-export const getPrintButtonPrompt = (roles, order, loadingLabel) => {
+export const fireShipmentCreate = (order, action, type)  => {
+  data = { shipment: { action, shipment_type: type, order_id: order.id} }
+  debugger
+  return createShipment(data)
+}
+
+export const getMailingLabelState = (roles, order, loadingLabel) => {
   // shipment exists -> the correct shipment we are looking for
   const shipmentExists = correctShipmentExists(roles, order);
-
-  const verb = (shipmentExists ? 'Print' : (loadingLabel ? 'Creating' : 'Create'))
-  return `${verb} Shipping Label`;
+  if (shipmentExists) {
+    return 'needs_label'
+  } else {
+    if (loadingLabel) {
+      return 'in_progress'
+    } else {
+      return 'label_created'
+    }
+  }
 };
 
+export const shipmentType = (roles) => {
+  const {retailer, tailor, admin, customer} = roles
+  const allShipmentTypes = new Set(['mail', 'messenger'])
+
+  if (admin || retailer) {
+    return allShipmentTypes
+  } else if (tailor) {
+    allShipmentTypes.delete('messenger')
+  } else if (customer) {
+    allShipmentTypes.clear()
+  }
+
+  return allShipmentTypes
+}
 
 export const shipmentActions = (order, roles) => {
-  const {ship_to_store} = order;
+  const {ship_to_store, type} = order;
+  const {retailer, tailor, admin, customer} = roles
 
-  if (ship_to_store && roles.tailor){
+  if (ship_to_store && tailor){
     return SHIP_TAILOR_TO_RETAILER;
-  } else if (!ship_to_store && roles.tailor){
+  } else if (!ship_to_store && tailor){
     return SHIP_TAILOR_TO_CUSTOMER;
-  } else if (roles.retailer && order.type == "TailorOrder"){
+  } else if (retailer && type == "TailorOrder"){
     return SHIP_RETAILER_TO_TAILOR;
-  } else if (roles.admin ){
-    if (order.type == "WelcomeKit") {
+  } else if (admin ){
+    if (type == "WelcomeKit") {
       return SHIP_RETAILER_TO_CUSTOMER;
-    } else if (order.type == "TailorOrder") {
+    } else if (type == "TailorOrder") {
       return SHIP_RETAILER_TO_TAILOR;
     };
   };
 };
-
-const makeShippingLabel = (shipmentAction) => {
-  console.log(shipmentAction)
-  debugger
-}
 
 const correctShipmentExists = (roles, order) => {
   const {shipments} = order;
@@ -53,8 +76,8 @@ const correctShipmentExists = (roles, order) => {
   } else if (destination_type === "tailor" && role.retailer) {
     return true;
   }
-  return false
-}
+  return false;
+};
 
 
 // export const getShippingType = (roles, orderType) => {

@@ -5,17 +5,17 @@ import {Link} from 'react-router-dom';
 import {
   getCurrentOrder,
   updateOrder,
-  createShipment,
   setLoader,
   removeLoader,
 } from '../../../actions';
 
+
 import {
-  getPrintButtonPrompt,
-  lowerCaseFirstLetter,
-  toSnakeCaseFromCamelCase,
-  makeShippingLabel,
-  shipmentActions
+  shipmentType,
+  shipmentActions,
+  getMailingLabelState,
+  correctShipmentExists,
+  fireShipmentCreate,
 } from '../../shipping/shippingFunctions';
 
 import isEmpty from 'lodash/isEmpty';
@@ -211,8 +211,8 @@ class OrdersShow extends Component {
 
   submitNotes(event) {
     event.preventDefault();
-    const key =
-      this.props.userRoles.tailor ? 'provider_notes' : 'requester_notes';
+    const roles =  this.props.userRoles
+    const key = roles.tailor ? 'provider_notes' : 'requester_notes';
     const data = {
       order: {
         [key]: this.state.notes,
@@ -225,14 +225,14 @@ class OrdersShow extends Component {
 
   notesForm() {
     if (this.state.displayNotesForm) {
-      const role = this.props.userRoles;
+      const roles = this.props.userRoles;
       let prompt;
       let party;
 
-      if (role.tailor) {
+      if (roles.tailor) {
         prompt = 'Add Tailor Notes?';
         party = 'provider_notes';
-      } else if (role.admin) {
+      } else if (roles.admin) {
         prompt = 'Add Admin Notes?';
         party = 'requester_notes';
       }
@@ -283,57 +283,67 @@ class OrdersShow extends Component {
   }
 
   fulfillOrder() {
-    this.props.setLoader();
-    const data = {
-      order: {
-        id: this.props.currentOrder.id,
-        store_id: this.props.currentOrder.store_id,
-        fulfilled: true,
-      },
-    };
-    this.setState({loadingLabel: true});
-    this.props
+    const roles = this.props.userRoles;
+    if (roles.tailor || roles.admin) {
+      this.props.setLoader();
+      const data = {
+        order: {
+          id: this.props.currentOrder.id,
+          store_id: this.props.currentOrder.store_id,
+          fulfilled: true,
+        },
+      };
+      this.setState({loadingLabel: true});
+      this.props
       .updateOrder(data)
       .then(res => {
-        const roles = this.props.userRoles;
-        const type = this.props.currentOrder.type;
-        const shippingType = getShippingType(roles, type);
-        this.makeShippingLabel(shippingType);
+        const order = this.props.currentOrder;
+        const {type} = order;
+        const action = this.shipmentAction(order, roles);
+
+        this.makeShippingLabel(action);
       })
       .catch(err => console.log(err));
+    } else {
+      return
+    }
   }
 
   renderFulfillButton() {
+    const roles = this.props.userRoles
     const {arrived, fulfilled} = this.props.currentOrder;
-    if (arrived && !fulfilled) {
-      return (
-        <div>
+
+    if (roles.tailor || roles.admin) {
+      if (arrived && !fulfilled) {
+        return (
+          <div>
           <button onClick={() => this.fulfillOrder()} className="pink-button">
-            Fulfill This Order
+          Fulfill This Order
           </button>
-        </div>
-      );
-    } else if (arrived && fulfilled) {
-      return (
-        <div>
+          </div>
+        );
+      } else if (arrived && fulfilled) {
+        return (
+          <div>
           <button className="pink-button" disabled={true}>
-            Order Completed ✔️
+          Order Completed ✔️
           </button>
-        </div>
-      );
+          </div>
+        );
+      }
     }
   }
 
   showHideNotesForm() {
-    const value = !this.state.displayNotesForm;
-    this.setState({displayNotesForm: value});
+    this.setState({displayNotesForm: !this.state.displayNotesForm});
   }
 
-  makeShippingLabel(type) {
-    const data = {shipment: {type, order_id: this.props.currentOrder.id}};
+  makeShippingLabel(action) {
+    const order = this.props.currentOrder
+    const type = 'mail' || shipmentTyp
+
     this.props.setLoader();
-    // here we set our shipment data
-    createShipment(data)
+    fireShipmentCreate(order, action, type)
       .then(res => {
         this.setState({loadingLabel: false});
         this.refreshCurrentOrder();
@@ -348,26 +358,26 @@ class OrdersShow extends Component {
 
     const {currentUser, currentOrder, userRoles} = this.props;
     const roles = userRoles;
-    //const shippingType = getShippingType(role, currentOrder.type);
+    // const shipmentType = shipmentType(role);
+    const shipmentType = 'mail';
+
     const shipmentAction = shipmentActions(currentOrder, roles)
-    const printPrompt = getPrintButtonPrompt(
-      roles,
-      currentOrder,
-      this.state.loadingLabel
-    );
-
-    const printKeyword = printPrompt.split(' ')[0];
+    const labelState = getLabelState(roles, currentOrder, this.state.loadingLabel);
     const disabled = this.state.loadingLabel;
-    let onClick = null;
-    let orderComplete = null;
 
-    switch(printKeyword) {
-      case 'Create':
-        onClick = this.makeShippingLabel(shipmentAction);
+    let onClick, orderComplete, printPrompt = null;
+
+    switch(labelState) {
+      case 'needs_label':
+        printPrompt = 'Create Label'
+        onClick = this.makeShippingLabel(shipmentAction, shipmentType);
         break;
+      case 'in_progress': 
+        printPrompt = 'Creating Label'
       case 'Print':
-        onClick = () => window.print();
-        orderComplete = (<OrderComplete shippingType={shippingType} />);
+        printPrompt = 'Print Label'
+        onClick = this.printShippingLabel();
+        orderComplete = (<OrderComplete shipmentType={shippingType} />);
         break;
       default:
         break;
@@ -383,6 +393,10 @@ class OrdersShow extends Component {
     );
   }
 
+  printShippingLabel() {
+    return window.print()
+  }
+
   renderEditOrder(roles, orderEditPath) {
     if (roles.admin) {
       return (
@@ -396,7 +410,9 @@ class OrdersShow extends Component {
   }
 
   editComponents() {
-    if (!this.props.userRoles.retailer) {
+    const {retailer} = this.props.userRoles
+
+    if (!retailer) {
       return (
         <div>
           <button
@@ -428,6 +444,17 @@ class OrdersShow extends Component {
       </div>
     );
   }
+
+  // renderControlsForRole() {
+  //   const roles = this.props.userRoles
+  //   const {admin, tailor, retailer, customer} = roles
+  //
+  //   // renderArrivedButton(), calling checkOrderIn()
+  //   // renderFulfillButton(), calling fulfillOrder()
+  //   // renderPrintINstructions(), does a bunch of stuff
+  //   // renderPrintLabels(), calling a bunch of stuff
+  //   // renderEditOrder(), only allowed for admin
+  // }
 
   renderPrintInstructions() {
     if (!this.props.currentOrder.fulfilled && this.props.currentOrder.arrived) {

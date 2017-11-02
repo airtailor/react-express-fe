@@ -329,10 +329,7 @@ export function getCompanies() {
 export function createShipment(data) {
   return validateToken()
     .then(setTokens)
-    .then(() => {
-      console.log(data)
-      debugger
-      
+    .then(() => {      
       const url = `${expressApi}/shipments`;
       return Axios.post(url, data);
     });
