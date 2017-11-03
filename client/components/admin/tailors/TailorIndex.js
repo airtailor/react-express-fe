@@ -20,9 +20,15 @@ class TailorsIndex extends Component {
 
   renderTailorRows() {
     const {tailorList} = this.props;
-    console.log('tailors', tailorList);
     return tailorList.map(tailor => {
-      const {id, name, assigned, arrived, late} = tailor;
+      const {
+        id,
+        name,
+        active_orders_count: assigned,
+        arrived_orders_count: arrived,
+        late_orders_count: late,
+      } = tailor;
+
       const truncatedTailorName = this.truncatedTailorName(name);
       const route = `/stores/${id}/orders`;
 
@@ -31,11 +37,11 @@ class TailorsIndex extends Component {
           <div className="order-row">
             <Link to={route} className="flex-container">
               <div className="order-data">{truncatedTailorName}</div>
-              {/*<div className="order-data">{assigned}</div>
+              <div className="order-data">{assigned}</div>
               <div className="order-data">{arrived}</div>
-              <div className="order-data" style={{color: red}}>
+              <div className="order-data" style={{color: 'red'}}>
                 {late}
-              </div>*/}
+              </div>
             </Link>
           </div>
           <hr className="order-row-hr" />
