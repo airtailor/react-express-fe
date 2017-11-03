@@ -11,6 +11,7 @@ import {
   homeImage,
   ordersImage,
   archivedImage,
+  tailorsImage,
 } from '../images';
 
 class NavigationLinks extends Component {
@@ -71,6 +72,13 @@ class NavigationLinks extends Component {
             route="/orders/new"
             text="New Order"
             image={homeImage}
+          />
+
+          <NavigationLink
+            cssClass="new-order-link"
+            route="/admin/tailors"
+            text="Tailors"
+            image={tailorsImage}
           />
 
           <li>

@@ -18,6 +18,7 @@ import OrdersNew from './orders/new/OrdersNew';
 import OrderConfirmation from './orders/new/OrderConfirmation';
 import SearchResults from './search/searchResults';
 import SelectAlterations from './orders/new/SelectAlterations';
+import TailorIndex from './admin/tailors/TailorIndex';
 
 const AvailableRoutes = props => {
   const {loggedIn, admin, retailer, tailor} = props;
@@ -129,6 +130,13 @@ const AvailableRoutes = props => {
             admin ? <ArchivedOrders {...props} /> : <Redirect to="/sign_in" />}
         />
       </Switch>
+
+      <Route
+        exact
+        path="/admin/tailors"
+        render={props =>
+          admin ? <TailorIndex {...props} /> : <Redirect to="/" />}
+      />
 
       <Route
         exact
