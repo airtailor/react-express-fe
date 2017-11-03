@@ -83,6 +83,13 @@ const AvailableRoutes = props => {
 
         <Route
           exact
+          path="/stores/:store_id/orders"
+          render={props =>
+            loggedIn ? <StoreOrders {...props} /> : <Redirect to="/sign_in" />}
+        />
+
+        <Route
+          exact
           path="/stores/:store_id/orders/archived"
           render={props =>
             loggedIn ? (
