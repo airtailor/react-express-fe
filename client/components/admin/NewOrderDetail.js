@@ -275,8 +275,6 @@ class NewOrderDetail extends Component {
       const tailorId = provider_id ? provider_id : '';
       const orderDate = moment(created_at).format('MM-DD-YYYY');
 
-      console.log(order.items);
-
       const selectTailor = (
         <div>
           <p>Alterations:</p>

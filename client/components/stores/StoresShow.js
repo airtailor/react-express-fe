@@ -3,14 +3,20 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import moment from 'moment';
 import {Redirect, Link} from 'react-router-dom';
-import {getStoreOrders} from '../../actions';
+import {getStoreOrders, setLoader, removeLoader} from '../../actions';
 import SectionHeader from '../SectionHeader';
 
 class StoresShow extends Component {
   componentDidMount() {
-    this.props
-      .getStoreOrders(this.props.currentUser.user.store_id)
-      .catch(err => console.log(err));
+    const {
+      setLoader,
+      removeLoader,
+      currentUser: {user: store_id},
+      getStoreOrders,
+    } = this.props;
+
+    setLoader();
+    getStoreOrders(store_id).then(() => removeLoader());
   }
 
   formatDueDate(dueDate, late) {
@@ -98,7 +104,10 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({getStoreOrders}, dispatch);
+  return bindActionCreators(
+    {getStoreOrders, setLoader, removeLoader},
+    dispatch
+  );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoresShow);

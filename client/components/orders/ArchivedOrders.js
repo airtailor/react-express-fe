@@ -4,11 +4,14 @@ import {bindActionCreators} from 'redux';
 import moment from 'moment';
 import {Redirect, Link} from 'react-router-dom';
 import SectionHeader from '../SectionHeader';
-import {getArchivedOrders} from '../../actions';
+import {getArchivedOrders, setLoader, removeLoader} from '../../actions';
 
 class ArchivedOrders extends Component {
   componentDidMount() {
-    this.props.getArchivedOrders();
+    const {setLoader, removeLoader, getArchivedOrders} = this.props;
+
+    setLoader();
+    getArchivedOrders().then(() => removeLoader());
   }
 
   renderOrderRows() {
@@ -92,7 +95,10 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({getArchivedOrders}, dispatch);
+  return bindActionCreators(
+    {getArchivedOrders, setLoader, removeLoader},
+    dispatch
+  );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArchivedOrders);
