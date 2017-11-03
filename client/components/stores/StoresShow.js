@@ -11,18 +11,21 @@ class StoresShow extends Component {
     const {
       setLoader,
       removeLoader,
-      currentUser: {user: store_id},
+      currentUser: {user: {store_id: userStoreId, roles: [{name: roleName}]}},
+      match: {params: {store_id: paramsStoreId}},
       getStoreOrders,
     } = this.props;
 
+    const storeId = roleName === 'admin' ? paramsStoreId : userStoreId;
+
     setLoader();
-    getStoreOrders(store_id).then(() => removeLoader());
+    getStoreOrders(storeId).then(() => removeLoader());
   }
 
   formatDueDate(dueDate, late) {
     const todaysDate = moment(new Date());
     const momentDueDate = moment(dueDate);
-    const diff = momentDueDate.diff(todaysDate, 'days');
+    const diff = Math.abs(momentDueDate.diff(todaysDate, 'days'));
     const additionalString = late ? ' days late' : ' days to go';
     const status = (diff + additionalString).toUpperCase();
     return status;
@@ -76,6 +79,7 @@ class StoresShow extends Component {
     if (!this.props.currentStore) {
       return <Redirect to="/" />;
     }
+
     const headerText = `Orders / ${this.props.currentStore.name}`;
     return (
       <div>

@@ -97,9 +97,7 @@ export function signOutCurrentUser() {
     window.location = '/';
 
     return Axios.post(url)
-      .then(res => {
-        //console.log('signed out');
-      })
+      .then(res => {})
       .catch(err => {
         console.log('error from signOutCurrentUser linke 75', err);
       });
@@ -115,12 +113,6 @@ export function getStoreOrders(store_id) {
       .then(() => {
         return Axios.get(url)
           .then(res => {
-            // if (res.data.headers.client && res.data.headers.uid){
-            //   setTokens(res);
-            //   setLocalStorageUser(res.data.body);
-            // } else {
-            //   // console.log('getStoreOrders - no new auth headers');
-            // }
             dispatch(setStoreOrders(res.data.body));
           })
           .catch(err => {
