@@ -136,6 +136,8 @@ class OrdersShow extends Component {
         return dressImage;
       case 'Suit Jacket':
         return suitImage;
+      case 'SuitJacket':
+        return suitImage;
       case 'Necktie':
         return tieImage;
       case 'Tie':
