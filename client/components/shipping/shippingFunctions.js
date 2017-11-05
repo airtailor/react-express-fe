@@ -6,12 +6,17 @@ import {
   SHIP_RETAILER_TO_CUSTOMER
 } from '../../utils/constants';
 
-import createShipment from '../../../actions';
+import {createShipment} from '../../actions';
 
 export const fireShipmentCreate = (order, action, type)  => {
-  data = { shipment: { action, shipment_type: type, order_id: order.id} }
-  debugger
-  return createShipment(data)
+  return createShipment({
+              shipment: {
+                shipment_action: action,
+                delivery_type: type,
+                order_id: order.id
+              }
+            }
+          )
 }
 
 export const getMailingLabelState = (roles, order, loadingLabel) => {
@@ -30,12 +35,12 @@ export const getMailingLabelState = (roles, order, loadingLabel) => {
 
 export const shipmentType = (roles) => {
   const {retailer, tailor, admin, customer} = roles
-  const allShipmentTypes = new Set(['mail', 'messenger'])
+  const allShipmentTypes = new Set(['mail_shipment', 'messenger_shipment'])
 
   if (admin || retailer) {
     return allShipmentTypes
   } else if (tailor) {
-    allShipmentTypes.delete('messenger')
+    allShipmentTypes.delete('messenger_shipment')
   } else if (customer) {
     allShipmentTypes.clear()
   }
@@ -64,7 +69,7 @@ export const shipmentActions = (order, roles) => {
 
 const correctShipmentExists = (roles, order) => {
   const {shipments} = order;
-  if (shipments.length === 0) return false;
+  if (!shipments) return false;
 
   const shipment = shipments[shipments.length -1];
 //   // make sure it's the right shipment first
