@@ -19,7 +19,16 @@ export const fireShipmentCreate = (order, action, type)  => {
           )
 }
 
-export const getMailingLabelState = (roles, order, loadingLabel) => {
+export const messengerAllowed = (action) => {
+  switch(action) {
+    case SHIP_TAILOR_TO_RETAILER:
+      return true
+    default:
+      return false
+  }
+}
+
+export const labelState = (roles, order, loadingLabel) => {
   // shipment exists -> the correct shipment we are looking for
   const shipmentExists = correctShipmentExists(roles, order);
   if (shipmentExists) {
@@ -29,6 +38,20 @@ export const getMailingLabelState = (roles, order, loadingLabel) => {
       return 'in_progress'
     } else {
       return 'label_created'
+    }
+  }
+};
+
+export const messengerState = (roles, order, sendingMessenger) => {
+  // shipment exists -> the correct shipment we are looking for
+  const shipmentExists = correctShipmentExists(roles, order);
+  if (shipmentExists) {
+    return 'needs_delivery'
+  } else {
+    if (sendingMessenger) {
+      return 'in_progress'
+    } else {
+      return 'package_delivered'
     }
   }
 };
