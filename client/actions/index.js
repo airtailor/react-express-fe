@@ -465,11 +465,7 @@ function createOrder(order) {
   return validateToken()
     .then(setTokens)
     .then(res => {
-      console.log('res', res);
       return Axios.post(url, {order});
-    })
-    .catch(err => {
-      console.log('errr', err);
     });
 }
 
