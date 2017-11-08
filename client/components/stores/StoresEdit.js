@@ -11,6 +11,7 @@ import {
 import FormField from './../FormField';
 import SectionHeader from './../SectionHeader';
 import UsersEdit from '../users/UsersEdit';
+import StripePaymentForm from './StripePaymentForm';
 
 class StoresEdit extends Component {
   constructor(props) {
@@ -132,6 +133,10 @@ class StoresEdit extends Component {
             <hr />
             <br />
             <UsersEdit />
+            <br />
+            <hr />
+            <br />
+            <StripePaymentForm />
           </div>
         </div>
       );

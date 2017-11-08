@@ -7,7 +7,8 @@ import Router from './Router';
 import MainPrint from './components/prints/MainPrint';
 import rootReducer from './reducers';
 import setAuthToken from './utils/setAuthToken';
-import {setCurrentUser, setCurrentStore} from './actions/';
+import {setCurrentUser, setCurrentStore} from './actions';
+import {StripeProvider} from 'react-stripe-elements';
 
 // uncomment below to toggle on/off redux logger
 // import logger from 'redux-logger';
@@ -30,9 +31,11 @@ if (AirTailorTokens && CurrentUser && CurrentStore) {
 }
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router />
-  </Provider>,
+  <StripeProvider apiKey="pk_test_esYxpGD8Z1xZ2xdw4aqQGupJ">
+    <Provider store={store}>
+      <Router />
+    </Provider>
+  </StripeProvider>,
   document.querySelector('#root')
 );
 
