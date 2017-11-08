@@ -464,8 +464,12 @@ function createOrder(order) {
   const url = `${expressApi}/orders`;
   return validateToken()
     .then(setTokens)
-    .then(() => {
+    .then(res => {
+      console.log('res', res);
       return Axios.post(url, {order});
+    })
+    .catch(err => {
+      console.log('errr', err);
     });
 }
 
