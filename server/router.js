@@ -133,7 +133,10 @@ router.post('/api/orders', (req, res) => {
 
   Axios.post(`${apiUrl}/api/orders`, {headers, order})
     .then(response => {
-      console.log('api/orders', response);
+      console.log(
+        '\n\n\n\n\n\n\n\n\n\n\n\n\n\n !!!!!!!!!!!!!\n api/orders',
+        response
+      );
       res.json({headers: response.headers, body: response.data});
     })
     .catch(err => {
