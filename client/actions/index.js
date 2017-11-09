@@ -244,6 +244,7 @@ export function updateOrder(data) {
         return Axios.post(url, data)
           .then(res => {
             dispatch(setCurrentOrder(res.data.body));
+            // return res.data.body;
           })
           .catch(err => {
             debugger;
@@ -329,7 +330,7 @@ export function getCompanies() {
 export function createShipment(data) {
   return validateToken()
     .then(setTokens)
-    .then(() => {      
+    .then(() => {
       const url = `${expressApi}/shipments`;
       return Axios.post(url, data);
     });

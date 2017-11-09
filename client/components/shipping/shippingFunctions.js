@@ -8,30 +8,50 @@ import {
 
 import {createShipment} from '../../actions';
 
-export const fireShipmentCreate = (order, action, type)  => {
+export const fireShipmentCreate = (orders, action, type)  => {
+  const orderIds = orders.map((o) => o.id)
   return createShipment({
-              shipment: {
-                shipment_action: action,
-                delivery_type: type,
-                order_id: order.id
-              }
-            }
-          )
-}
+    shipment: {
+      delivery_type: type, order_ids: orderIds, shipment_action: action
+    }
+  })
+};
 
 export const messengerAllowed = (action) => {
   switch(action) {
-    case SHIP_TAILOR_TO_RETAILER:
+    case SHIP_RETAILER_TO_TAILOR:
       return true
     default:
       return false
   }
-}
+};
+
+const correctShipmentExists = (roles, order) => {
+  if (order.shipments && order.shipments.length > 0){
+    console.log(" B ^ )", order, roles)
+  }
+
+  const {shipments} = order;
+
+  if (!shipments || shipments.length == 0) return false;
+
+  const {destination_type, source_type} = shipments[shipments.length - 1];;
+
+  if (roles.admin && order.type === "WelcomeKit") {
+    return true;
+  } else if (destination_address_class === "retailer" && role.tailor) {
+    return true;
+  } else if (destination_address_class === "tailor" && role.retailer) {
+    return true;
+  }
+  return false;
+};
+
 
 export const labelState = (roles, order, loadingLabel) => {
-  // shipment exists -> the correct shipment we are looking for
   const shipmentExists = correctShipmentExists(roles, order);
-  if (shipmentExists) {
+  // console.log("in labelState", roles, order, `loadingLabel: ${loadingLabel}`, shipmentExists)
+  if (!shipmentExists) {
     return 'needs_label'
   } else {
     if (loadingLabel) {
@@ -56,7 +76,7 @@ export const messengerState = (roles, order, sendingMessenger) => {
   }
 };
 
-export const shipmentType = (roles) => {
+export const shipmentTypes = (roles) => {
   const {retailer, tailor, admin, customer} = roles
   const allShipmentTypes = new Set(['mail_shipment', 'messenger_shipment'])
 
@@ -81,7 +101,7 @@ export const shipmentActions = (order, roles) => {
     return SHIP_TAILOR_TO_CUSTOMER;
   } else if (retailer && type == "TailorOrder"){
     return SHIP_RETAILER_TO_TAILOR;
-  } else if (admin ){
+  } else if (admin){
     if (type == "WelcomeKit") {
       return SHIP_RETAILER_TO_CUSTOMER;
     } else if (type == "TailorOrder") {
@@ -89,24 +109,6 @@ export const shipmentActions = (order, roles) => {
     };
   };
 };
-
-const correctShipmentExists = (roles, order) => {
-  const {shipments} = order;
-  if (!shipments) return false;
-
-  const shipment = shipments[shipments.length -1];
-//   // make sure it's the right shipment first
-  const {destination_type, source_type} = shipment;
-  if (roles.admin && order.type === "WelcomeKit") {
-    return true;
-  } else if (destination_type === "retailer" && role.tailor) {
-    return true;
-  } else if (destination_type === "tailor" && role.retailer) {
-    return true;
-  }
-  return false;
-};
-
 
 // export const getShippingType = (roles, orderType) => {
 //   // Tailors should only make outgoing shipments

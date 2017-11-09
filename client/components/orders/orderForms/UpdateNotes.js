@@ -28,7 +28,7 @@ class UpdateNotesForm extends Component {
   }
 
   render() {
-    const {order, submitNotes, role} = this.props;
+    const {order, submitNotes, roles} = this.props;
     const {displayNotes} = this.state;
 
     if (displayNotes) {
@@ -39,7 +39,7 @@ class UpdateNotesForm extends Component {
         >
           <textarea
             name="notes"
-            value={setNotesType(role, order)}
+            value={setNotesType(roles, order)}
             onChange={e => this.handleChange(e.target.value)}
             cols={43}
             rows={10}
