@@ -5,6 +5,15 @@ import moment from 'moment';
 import {Redirect, Link} from 'react-router-dom';
 import {getStoreOrders} from '../../actions';
 import SectionHeader from '../SectionHeader';
+import isEmpty from 'lodash/isEmpty';
+
+import {
+  shipmentTypes,
+  shipmentActions,
+  labelState,
+  messengerAllowed,
+  fireShipmentCreate,
+} from '../shipping/shippingFunctions';
 
 class StoresShow extends Component {
   componentDidMount() {
@@ -33,10 +42,24 @@ class StoresShow extends Component {
       return {status: dueTime, color: 'orange'};
     }
   }
+  //
+  // sendMessenger(order) {
+  //   const {userRoles: roles} = this.props
+  //
+  //   return this.
+  //
+  //   debugger
+  //
+  // }
+  //
+  // renderMessengerButton(order) {
+  //   debugger
+  //   // const {}
+  // }
 
   renderOrderRows() {
     const {openOrders} = this.props;
-    if (openOrders) {
+    if (!isEmpty(openOrders)) {
       return openOrders.map((order, i) => {
         const orderStatus = this.getOrderStatus(order);
         const {id, customer, alterations_count} = order;
@@ -94,6 +117,7 @@ const mapStateToProps = store => {
     currentUser: store.currentUser,
     currentStore: store.currentStore,
     openOrders: store.storeOrders,
+    userRoles:  store.userRoles
   };
 };
 

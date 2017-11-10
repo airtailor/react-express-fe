@@ -17,10 +17,16 @@ export const fireShipmentCreate = (orders, action, type)  => {
   })
 };
 
-export const messengerAllowed = (action) => {
+export const messengerAllowed = (action, roles) => {
+  const {admin, retailer} = roles;
+
   switch(action) {
     case SHIP_RETAILER_TO_TAILOR:
-      return true
+      if (admin || retailer) {
+        return true
+      } else {
+        return false
+      }
     default:
       return false
   }
@@ -45,7 +51,8 @@ const correctShipmentExists = (roles, order) => {
 
 export const labelState = (roles, order, loadingLabel) => {
   const shipmentExists = correctShipmentExists(roles, order);
-  // console.log("in labelState", roles, order, `loadingLabel: ${loadingLabel}`, shipmentExists)
+
+  console.log("in labelState", roles, order, `loadingLabel: ${loadingLabel}`, shipmentExists)
   if (!shipmentExists) {
     return 'needs_label'
   } else {
@@ -82,6 +89,8 @@ export const shipmentTypes = (roles) => {
   } else if (customer) {
     allShipmentTypes.clear()
   }
+
+  //console.log("SHIPMENT TYPES", allShipmentTypes)
 
   return allShipmentTypes
 }

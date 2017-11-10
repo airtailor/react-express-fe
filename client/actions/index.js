@@ -328,6 +328,9 @@ export function getCompanies() {
 }
 
 export function createShipment(data) {
+  if (Array.isArray(data.shipment.shipment_action)){
+    debugger;
+  }
   return validateToken()
     .then(setTokens)
     .then(() => {
