@@ -27,21 +27,16 @@ export const messengerAllowed = (action) => {
 };
 
 const correctShipmentExists = (roles, order) => {
-  if (order.shipments && order.shipments.length > 0){
-    console.log(" B ^ )", order, roles)
-  }
-
   const {shipments} = order;
-
   if (!shipments || shipments.length == 0) return false;
 
-  const {destination_type, source_type} = shipments[shipments.length - 1];;
+  const {source, destination} = shipments[shipments.length - 1];;
 
   if (roles.admin && order.type === "WelcomeKit") {
     return true;
-  } else if (destination_address_class === "retailer" && role.tailor) {
+  } else if (destination.address_type === "retailer" && roles.tailor) {
     return true;
-  } else if (destination_address_class === "tailor" && role.retailer) {
+  } else if (destination.address_type === "tailor" && roles.retailer) {
     return true;
   }
   return false;
