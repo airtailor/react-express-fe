@@ -88,13 +88,16 @@ class StoresShow extends Component {
     // fire the messenger func from shippingFunctions
   }
 
-  toggleOrderSelect(event, id) {
-    console.log(this.state.selectedOrders, id)
-    if (this.state.selectedOrders.has(id)) {
+  toggleOrderSelect(id) {
+    if (!this.checkOrderSelectState(id)) {
       return this.state.selectedOrders.add(id)
     } else {
       return this.state.selectedOrders.delete(id)
     }
+  }
+
+  checkOrderSelectState(id) {
+    this.state.selectedOrders.has(id)
   }
 
   setOrderState(state) {
@@ -121,18 +124,19 @@ class StoresShow extends Component {
     const {first_name, last_name} = customer;
     const {color, status} = this.getOrderStatus(order);
     const route = `/orders/${id}`;
-    const checked = this.state.selectedOrders.has(order.id)
     const orderSelect = this.toggleOrderSelect
 
     return (
       <div key={id}>
         <div className="order-row">
-          < input
-            type="checkbox"
-            checked={checked}
-            onChange={() => this.toggleOrderSelect(id)} >
-          </input>
           <Link to={route} className="flex-container">
+            <div>
+              < input
+                type="checkbox"
+                checked={this.checkOrderSelectState(id)}
+                onChange={() => this.toggleOrderSelect(id)} >
+              </input>
+            </div>
             <div className="order-data">#{id}</div>
             <div className="order-data" style={{color}}>
               {status}
