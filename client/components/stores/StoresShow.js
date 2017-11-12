@@ -109,19 +109,18 @@ class StoresShow extends Component {
     if (!isEmpty(openOrders)) {
       const status = this.state.showOrderState
       const sortedOrders = this.sortOrdersByStatus(openOrders, status)
-      return openOrders.map( order => this.renderOrderRow(order) )
+      return sortedOrders.map( order => this.renderOrderRow(order) )
     } else {
       return <div>Loading...</div>;
     }
   }
 
   setOrderState(state) {
-    console.log(state)
     this.setState({showOrderState: state})
   }
 
   renderOrderStateTabs() {
-      const setOrderState = this.setOrderState
+    const setOrderState = this.setOrderState
     return (
       <div className="order-state-row">
         <div onClick={() => setOrderState('new_orders')} className="order-state-button" >
@@ -152,8 +151,8 @@ class StoresShow extends Component {
   }
 
   render() {
-    debugger
     if (!this.props.currentStore) { return <Redirect to="/" />; }
+
     const headerText = `Orders / ${this.props.currentStore.name}`;
     const orderHeaders = this.renderOrderHeaders
     const orderRows = this.renderOrderRowsByStatus
