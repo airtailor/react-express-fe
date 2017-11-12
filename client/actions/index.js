@@ -127,12 +127,6 @@ export function getStoreOrders(store_id) {
       .then(() => {
         return Axios.get(url)
           .then(res => {
-            // if (res.data.headers.client && res.data.headers.uid){
-            //   setTokens(res);
-            //   setLocalStorageUser(res.data.body);
-            // } else {
-            //   // console.log('getStoreOrders - no new auth headers');
-            // }
             dispatch(setStoreOrders(res.data.body));
           })
           .catch(err => {
