@@ -8,7 +8,8 @@
       "rimraf public/bundle.*.js && rimraf public/manifest.*.js && rimraf public/vendor.*.js",
     "build": "NODE_ENV=production npm run clean && webpack",
     "serve": "webpack-dev-server",
-    "start": "node server/index.js"
+    "start": "node server/index.js",
+    "reset": "npm run build && node server/index.js"
   },
   "author": "",
   "license": "ISC",

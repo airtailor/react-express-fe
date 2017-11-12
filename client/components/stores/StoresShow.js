@@ -18,9 +18,14 @@ import {
 class StoresShow extends Component {
   constructor(props) {
     super();
-    this.state = { showOrderState: 'new_orders'}
+    // NOTE: this wipes on page reload currently.
+    this.state = {
+      showOrderState: 'new_orders',
+      selectedOrders: new Set
+    }
 
     this.setOrderState = this.setOrderState.bind(this)
+    this.renderShippingControls = this.renderShippingControls.bind(this)
     this.renderOrderStateTabs = this.renderOrderStateTabs.bind(this)
     this.renderOrderRowsByStatus = this.renderOrderRowsByStatus.bind(this)
   }
@@ -69,25 +74,64 @@ class StoresShow extends Component {
       return {status: dueTime, color: 'orange'};
     }
   }
-  //
-  sendMessenger(order) {
+
+  // NOTE: these should go in shippingFunctions.js
+  makeLabels(orderIds) {
+    // This should print once with X separate labels (x == number of orders)
+    console.log(orderIds)
+    // return fireShipmentCreate()
+  }
+
+  sendMessenger(orderIds) {
+    console.log(orderIds)
+    // return fireShipmentCreate()
     // fire the messenger func from shippingFunctions
   }
 
-  renderMessengerButton(order) {
-    // render the right button
+  toggleOrderSelect(event, id) {
+    console.log(this.state.selectedOrders, id)
+    if (this.state.selectedOrders.has(id)) {
+      return this.state.selectedOrders.add(id)
+    } else {
+      return this.state.selectedOrders.delete(id)
+    }
+  }
+
+  setOrderState(state) {
+    this.setState({showOrderState: state})
+  }
+
+  renderShippingControls() {
+    // pass in ids
+    const orders = this.state.selectedOrders
+    return(
+      <div>
+        <div onClick={() => this.makeLabels(orders)}>
+          Print Labels
+        </div>
+        <div onClick={() => this.sendMessenger(orders)}>
+          Send Messenger
+        </div>
+      </div>
+    )
   }
 
   renderOrderRow(order) {
-    const orderStatus = this.getOrderStatus(order);
     const {id, customer, alterations_count} = order;
     const {first_name, last_name} = customer;
-    const {color, status} = orderStatus;
+    const {color, status} = this.getOrderStatus(order);
     const route = `/orders/${id}`;
+    const checked = this.state.selectedOrders.has(order.id)
+    const orderSelect = this.toggleOrderSelect
 
     return (
       <div key={id}>
         <div className="order-row">
+          < input
+            type="checkbox"
+            checked={checked}
+            onChange={() => this.toggleOrderSelect(id)} >
+          </input>
           <Link to={route} className="flex-container">
             <div className="order-data">#{id}</div>
             <div className="order-data" style={{color}}>
@@ -113,10 +157,6 @@ class StoresShow extends Component {
     } else {
       return <div>Loading...</div>;
     }
-  }
-
-  setOrderState(state) {
-    this.setState({showOrderState: state})
   }
 
   renderOrderStateTabs() {
@@ -157,6 +197,7 @@ class StoresShow extends Component {
     const orderHeaders = this.renderOrderHeaders
     const orderRows = this.renderOrderRowsByStatus
     const orderStateTabs = this.renderOrderStateTabs
+    const shippingControls = this.renderShippingControls
 
     return (
       <div>
@@ -171,6 +212,9 @@ class StoresShow extends Component {
           <hr className="order-header-hr" />
           <div className="order-rows">
             { orderRows() }
+          </div>
+          <div>
+            { shippingControls() }
           </div>
         </div>
       </div>
