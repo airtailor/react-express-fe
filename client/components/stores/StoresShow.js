@@ -6,6 +6,7 @@ import {Redirect, Link} from 'react-router-dom';
 import {getStoreOrders} from '../../actions';
 import SectionHeader from '../SectionHeader';
 import isEmpty from 'lodash/isEmpty';
+import Checkbox from '../Checkbox';
 
 import {
   shipmentTypes,
@@ -18,13 +19,14 @@ import {
 class StoresShow extends Component {
   constructor(props) {
     super();
-    // NOTE: this wipes on page reload currently.
     this.state = {
       showOrderState: 'new_orders',
       selectedOrders: new Set
     }
 
+    this.toggleOrderState = this.toggleOrderSelect.bind(this)
     this.setOrderState = this.setOrderState.bind(this)
+
     this.renderShippingControls = this.renderShippingControls.bind(this)
     this.renderOrderStateTabs = this.renderOrderStateTabs.bind(this)
     this.renderOrderRowsByStatus = this.renderOrderRowsByStatus.bind(this)
@@ -60,7 +62,6 @@ class StoresShow extends Component {
       default:
         return orders
     }
-
   }
 
   getOrderStatus(order) {
@@ -89,19 +90,16 @@ class StoresShow extends Component {
   }
 
   toggleOrderSelect(id) {
-    if (!this.checkOrderSelectState(id)) {
+    debugger
+    if (!this.state.selectedOrders.has(id)(id)) {
       return this.state.selectedOrders.add(id)
     } else {
       return this.state.selectedOrders.delete(id)
     }
   }
 
-  checkOrderSelectState(id) {
-    this.state.selectedOrders.has(id)
-  }
-
   setOrderState(state) {
-    this.setState({showOrderState: state})
+    return this.setState({showOrderState: state})
   }
 
   renderShippingControls() {
@@ -124,27 +122,29 @@ class StoresShow extends Component {
     const {first_name, last_name} = customer;
     const {color, status} = this.getOrderStatus(order);
     const route = `/orders/${id}`;
+
+    const orderIsSelected = this.state.selectedOrders.has(id)
     const orderSelect = this.toggleOrderSelect
 
     return (
       <div key={id}>
-        <div className="order-row">
-          <Link to={route} className="flex-container">
-            <div>
-              < input
-                type="checkbox"
-                checked={this.checkOrderSelectState(id)}
-                onChange={() => this.toggleOrderSelect(id)} >
-              </input>
-            </div>
-            <div className="order-data">#{id}</div>
-            <div className="order-data" style={{color}}>
+        <div className="order-row flex-container">
+          <div className="order-select">
+            <Checkbox
+              checked={orderIsSelected}
+              type="checkbox"
+              onChange={() => orderSelect(id)}
+            />
+          </div>
+          <Link to={route} className="order-data flex-container">
+            <div>#{id}</div>
+            <div style={{color}}>
               {status}
             </div>
-            <div className="order-data">
+            <div>
               {first_name} {last_name}
             </div>
-            <div className="order-data">{alterations_count}</div>
+            <div>{alterations_count}</div>
           </Link>
         </div>
         <hr className="order-row-hr" />
@@ -186,6 +186,7 @@ class StoresShow extends Component {
   renderOrderHeaders() {
     return (
       <div className="order-row-header">
+        <h3 className="order-column">Select:</h3>
         <h3 className="order-column">Order</h3>
         <h3 className="order-column">Status</h3>
         <h3 className="order-column">Customer</h3>

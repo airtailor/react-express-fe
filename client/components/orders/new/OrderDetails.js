@@ -22,7 +22,6 @@ class OrderDetails extends Component {
 
   renderCustomerInfo(cart) {
     const {first_name, last_name, phone, email} = cart.customerInfo;
-
     return (
       <div>
         <div>

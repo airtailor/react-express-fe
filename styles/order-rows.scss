@@ -15,7 +15,7 @@
 }
 
 .order-row-header > h3 {
-  flex: 1 0 25%;
+  flex: 1 0 20%;
   text-transform: uppercase;
 }
 
@@ -42,11 +42,18 @@
   padding-left: 50px;
 }
 
-.order-row:hover {
+.order-data:hover {
   @extend .hoverable;
 }
 
+.order-select {
+  flex: 1 0 20%;
+}
+
 .order-data {
-  flex: 1 0 25%;
-  color: $primary-blue;
+  flex: 1 0 80%;
+  div {
+    flex: 1 0 25%;
+    color: $primary-blue;
+  }
 }
