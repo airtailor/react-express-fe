@@ -29,7 +29,7 @@ class CustomerInfo extends Component {
       <FormField
         value={last_name}
         fieldName={'last_name'}
-        title={'last Name'}
+        title={'Last Name'}
         className="order-details-input"
         onChange={this.props.updateCustomerInfo}
       />
@@ -41,7 +41,7 @@ class CustomerInfo extends Component {
       <FormField
         value={phone}
         fieldName={'phone'}
-        title={'Phone'}
+        title={'Mobile Phone'}
         className="order-details-input"
         onChange={this.props.updateCustomerInfo}
       />
@@ -82,14 +82,15 @@ class CustomerInfo extends Component {
     } else {
       return (
         <div>
-          <div>
-            {this.firstName(first_name)}
-            {this.lastName(last_name)}
-          </div>
-
+          {customerExists ? '' : <h4>Create Customer:</h4>}
           <div>
             {this.phone(phone)}
             {this.email(email)}
+          </div>
+
+          <div>
+            {this.firstName(first_name)}
+            {this.lastName(last_name)}
           </div>
         </div>
       );

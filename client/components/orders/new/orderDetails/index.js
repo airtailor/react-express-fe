@@ -21,50 +21,6 @@ class OrderDetails extends Component {
     this.props.updateCartCustomerInfo(custInfo);
   }
 
-  // renderCustomerInfo(cart) {
-  //   const {first_name, last_name, phone, email} = cart.customerInfo;
-  //
-  //   return (
-  //     <div>
-  //       <div>
-  //         <FormField
-  //           value={first_name}
-  //           fieldName={'first_name'}
-  //           title={'First Name'}
-  //           className="order-details-input"
-  //           onChange={this.updateCustomerInfo}
-  //         />
-  //
-  //         <FormField
-  //           value={last_name}
-  //           fieldName={'last_name'}
-  //           title={'Last Name'}
-  //           className="order-details-input"
-  //           onChange={this.updateCustomerInfo}
-  //         />
-  //       </div>
-  //
-  //       <div>
-  //         <FormField
-  //           value={phone}
-  //           fieldName={'phone'}
-  //           title={'Phone'}
-  //           className="order-details-input"
-  //           onChange={this.updateCustomerInfo}
-  //         />
-  //
-  //         <FormField
-  //           value={email}
-  //           fieldName={'email'}
-  //           title={'Email'}
-  //           className="order-details-input"
-  //           onChange={this.updateCustomerInfo}
-  //         />
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   renderCustomerAddress(shipToStore, customerInfo) {
     if (shipToStore) {
       // do nothing

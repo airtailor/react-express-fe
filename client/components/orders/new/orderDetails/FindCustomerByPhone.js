@@ -59,9 +59,9 @@ class FindCustomerByPhone extends Component {
       const {body: {status, id}, body: customer} = res.data;
 
       if (status === 404) {
-        const kind = 'notice';
-        const message = "That Customer Doesn't Exist Yet";
-        setGrowler({kind, message});
+        // const kind = 'notice';
+        // const message = 'Create New Customer';
+        // setGrowler({kind, message});
         updateCustomerInfo('phone', phone);
         updateCustomerExists(false);
       } else if (id) {
@@ -78,11 +78,10 @@ class FindCustomerByPhone extends Component {
     const {phone, customer} = this.state;
     return (
       <div>
-        <p>Search for a Customer by Phone</p>
         <FormField
           value={phone}
           fieldName={'phone'}
-          title={'Phone'}
+          title={'Search for Customer by Mobile Phone'}
           className="order-details-input"
           onChange={this.updatePhone}
         />
