@@ -37,14 +37,19 @@ const correctShipmentExists = (roles, order) => {
   if (!shipments || shipments.length == 0) return false;
 
   const {source, destination} = shipments[shipments.length - 1];;
+  console.log("PARSING SRC + DEST")
 
   if (roles.admin && order.type === "WelcomeKit") {
     return true;
   } else if (destination.address_type === "retailer" && roles.tailor) {
     return true;
+  } else if (destination.address_type === "customer" &&
+            !order.ship_to_store && (roles.tailor || roles.admin)) {
+    return true;
   } else if (destination.address_type === "tailor" && roles.retailer) {
     return true;
   }
+  console.log("NO CORRECT SHIPMENT")
   return false;
 };
 
@@ -52,13 +57,18 @@ const correctShipmentExists = (roles, order) => {
 export const labelState = (roles, order, loadingLabel) => {
   const shipmentExists = correctShipmentExists(roles, order);
 
-  console.log("in labelState", roles, order, `loadingLabel: ${loadingLabel}`, shipmentExists)
+  //console.log("in labelState", roles, order, `loadingLabel: ${loadingLabel}`, shipmentExists)
   if (!shipmentExists) {
+    console.log("NO SHIPMENT FOUND")
+    console.log(shipmentExists, roles, order)
     return 'needs_label'
   } else {
+    console.log("SHIPMENT EXISTS")
     if (loadingLabel) {
+      console.log("LOADING LABEL")
       return 'in_progress'
     } else {
+      console.log("DONE LOADING LABEL")
       return 'label_created'
     }
   }

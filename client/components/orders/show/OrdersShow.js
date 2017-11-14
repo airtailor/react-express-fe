@@ -185,7 +185,6 @@ class OrdersShow extends Component {
     this.props.setLoader();
     fireShipmentCreate(orders, action, type)
       .then(res => {
-        console.log('post shipment succes', res)
         this.props.removeLoader();
         this.setState({loadingLabel: false});
         this.refreshCurrentOrder();
@@ -194,7 +193,6 @@ class OrdersShow extends Component {
   }
 
   makeShippingLabel(action) {
-    console.log("makeShippingLabel", action)
     return this.postShipment([this.props.currentOrder], action, 'mail_shipment')
   }
 
@@ -302,6 +300,12 @@ class OrdersShow extends Component {
     const disabled = this.state.loadingLabel;
     const shipmentAction = shipmentActions(order, roles)
 
+    // console.log("current order shipments - renderPrintLabel()", order.shipments);
+    // if ((order.shipments.length > 0) && this.props.currentOrder === order){
+    //   console.log('ORDER HAS SHIPMENTS')
+    //   debugger;
+    // }
+
     let onClick, printPrompt, clickArgs;
     switch(labelState(roles, order, disabled)) {
       case 'needs_label':
@@ -318,8 +322,6 @@ class OrdersShow extends Component {
       default:
         break;
     }
-
-    // console.log("pooper", this.renderButton( printPrompt, {disabled: disabled, clickArgs: clickArgs}, onClick ))
 
     return this.renderButton(
       printPrompt, {disabled: disabled, clickArgs: clickArgs}, onClick
@@ -603,10 +605,6 @@ class OrdersShow extends Component {
 
   render() {
     const { currentStore: store, currentOrder: order } = this.props;
-    if (order.shipments && order.shipments.length > 0){
-      console.log(" B ^ )", order)
-    }
-
     let mainContent = (<div />)
     let headerText = '';
 
