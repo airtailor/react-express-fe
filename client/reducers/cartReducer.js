@@ -22,6 +22,7 @@ const initialState = {
     city: '',
     state: '',
     zip: '',
+    id: '',
     agrees_to_terms: true,
   },
   storeInfo: {},

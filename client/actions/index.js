@@ -451,7 +451,7 @@ export function updateMessage(message) {
   };
 }
 
-function findOrCreateCustomer(customerInfo) {
+export function findOrCreateCustomer(customerInfo) {
   const url = `${expressApi}/customers/find_or_create`;
   return validateToken()
     .then(setTokens)
