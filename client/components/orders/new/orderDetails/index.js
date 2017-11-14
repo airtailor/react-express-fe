@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {updateCartCustomerInfo, updateCartShipTo} from '../../../actions';
-import FormField from '../../FormField';
-import Checkbox from '../../Checkbox';
-import Zippopotam from '../../../lib/zippopotam';
-import {ValidateZip} from '../../../utils/validations';
-import {redirectToStageOneIfNoAlterations} from '../ordersHelper';
+import {updateCartCustomerInfo, updateCartShipTo} from '../../../../actions';
+import FormField from '../../../FormField';
+import Checkbox from '../../../Checkbox';
+import Zippopotam from '../../../../lib/zippopotam';
+import {ValidateZip} from '../../../../utils/validations';
+import {redirectToStageOneIfNoAlterations} from '../../ordersHelper';
+import CustomerInfo from './CustomerInfo';
 
 class OrderDetails extends Component {
   constructor() {
@@ -20,49 +21,49 @@ class OrderDetails extends Component {
     this.props.updateCartCustomerInfo(custInfo);
   }
 
-  renderCustomerInfo(cart) {
-    const {first_name, last_name, phone, email} = cart.customerInfo;
-
-    return (
-      <div>
-        <div>
-          <FormField
-            value={first_name}
-            fieldName={'first_name'}
-            title={'First Name'}
-            className="order-details-input"
-            onChange={this.updateCustomerInfo}
-          />
-
-          <FormField
-            value={last_name}
-            fieldName={'last_name'}
-            title={'Last Name'}
-            className="order-details-input"
-            onChange={this.updateCustomerInfo}
-          />
-        </div>
-
-        <div>
-          <FormField
-            value={phone}
-            fieldName={'phone'}
-            title={'Phone'}
-            className="order-details-input"
-            onChange={this.updateCustomerInfo}
-          />
-
-          <FormField
-            value={email}
-            fieldName={'email'}
-            title={'Email'}
-            className="order-details-input"
-            onChange={this.updateCustomerInfo}
-          />
-        </div>
-      </div>
-    );
-  }
+  // renderCustomerInfo(cart) {
+  //   const {first_name, last_name, phone, email} = cart.customerInfo;
+  //
+  //   return (
+  //     <div>
+  //       <div>
+  //         <FormField
+  //           value={first_name}
+  //           fieldName={'first_name'}
+  //           title={'First Name'}
+  //           className="order-details-input"
+  //           onChange={this.updateCustomerInfo}
+  //         />
+  //
+  //         <FormField
+  //           value={last_name}
+  //           fieldName={'last_name'}
+  //           title={'Last Name'}
+  //           className="order-details-input"
+  //           onChange={this.updateCustomerInfo}
+  //         />
+  //       </div>
+  //
+  //       <div>
+  //         <FormField
+  //           value={phone}
+  //           fieldName={'phone'}
+  //           title={'Phone'}
+  //           className="order-details-input"
+  //           onChange={this.updateCustomerInfo}
+  //         />
+  //
+  //         <FormField
+  //           value={email}
+  //           fieldName={'email'}
+  //           title={'Email'}
+  //           className="order-details-input"
+  //           onChange={this.updateCustomerInfo}
+  //         />
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   renderCustomerAddress(shipToStore, customerInfo) {
     if (shipToStore) {
@@ -159,12 +160,17 @@ class OrderDetails extends Component {
   }
 
   render() {
+    const {customerInfo} = this.props.cart;
+
     return (
       <div className="order-details">
         {redirectToStageOneIfNoAlterations(this.props)}
 
         <h2>ORDER DETAILS</h2>
-        {this.renderCustomerInfo(this.props.cart)}
+        <CustomerInfo
+          customerInfo={customerInfo}
+          updateCustomerInfo={this.updateCustomerInfo}
+        />
 
         <h3>Shipping</h3>
         {this.renderShipTo(this.props.cart)}
