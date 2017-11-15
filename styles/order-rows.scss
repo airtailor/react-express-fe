@@ -40,6 +40,11 @@
   text-transform: uppercase;
   font-weight: lighter;
 }
+
+.late-orders h3 {
+  color: $primary-red;
+}
+
 .order-row-header {
   @extend .flex-container;
   font-family: arial;

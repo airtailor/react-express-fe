@@ -51,10 +51,15 @@ class StoresShow extends Component {
   }
 
   sortOrdersByStatus(status) {
-    const {openOrders: orders} = this.props
+    const {openOrders: orders, userRoles: roles} = this.props
     switch(status) {
       case 'new_orders':
-        return orders.filter(o => !o.arrived || !o.tailor )
+        if (roles.tailor) {
+          // this is where i'd like shipped to exist.
+          return orders.filter(o => !isEmpty(o.shipments) && o.tailor )
+        } else {
+          return orders.filter(o => !o.arrived || !o.tailor )
+        }
       case 'ready_orders':
         return orders.filter(o => o.fulfilled )
       case 'in_progress_orders':
@@ -74,10 +79,11 @@ class StoresShow extends Component {
     // NOTE: this needs a few more statuses.
     // "Needs Shipping Details" - Order doesn't have shipping yet. Create Label or Send messenger.
     // "Ready for Shipping" - shipment ready to go, print it or send a messenger.
+    //
     if (isEmpty(order.shipments)) {
       return {status: 'Needs Shipping Details', color: 'gold'};
     } else if (!(isEmpty(order.shipments) && !order.arrived)) {
-      return {status: 'Ready for Shipping', color: 'green'};
+        return {status: 'In Transit', color: 'green'};
     } else if (order.late) {
       let dueTime = this.formatStatusString(order.due_date, true);
       return {status: dueTime, color: 'red'};
@@ -223,14 +229,16 @@ class StoresShow extends Component {
       {className: 'order-state-tab', status: 'late_orders', text:  'Late' }
     ]
 
-    allTabs.map((obj, i) => {
-      if (obj.status == this.state.showOrderState) {
-        obj.className = obj.className.concat(" selected");
-      }
-      return obj
-    })
-
     const tabs = allTabs.map((tab, i) => {
+      if (tab.status == this.state.showOrderState) {
+        tab.className = tab.className.concat(" selected");
+      }
+      if (tab.status == 'late_orders') {
+        if (this.countOrdersByStatus(tab.status) > 0 ) {
+          tab.className = tab.className.concat(" late-orders");
+        }
+      }
+
       return (
         <div
           key={i}
