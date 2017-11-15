@@ -54,8 +54,9 @@
   margin-left: 50px;
 }
 
-.order-row-header > h3 {
-  flex: 1 0 20%;
+.order-row-header h3 {
+  flex: 1 0 15%;
+  text-align: center;
   text-transform: uppercase;
 }
 
@@ -78,7 +79,7 @@
 .order-row {
   height: 40px;
   padding-top: 25px;
-  padding-bottom: 5px;
+  padding-bottom: 25px;
   padding-left: 50px;
 }
 
@@ -87,13 +88,15 @@
 }
 
 .order-select {
-  flex: 1 0 20%;
+  text-align: center;
+  flex: 1 0 10%;
 }
 
 .order-data {
-  flex: 1 0 80%;
+  flex: 1 0 90%;
   div {
-    flex: 1 0 25%;
+    flex: 1 0 20%;
+    text-align: center;
     color: $primary-blue;
   }
 }

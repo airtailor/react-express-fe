@@ -300,13 +300,7 @@ class OrdersShow extends Component {
     const disabled = this.state.loadingLabel;
     const shipmentAction = shipmentActions(order, roles)
 
-    // console.log("current order shipments - renderPrintLabel()", order.shipments);
-    // if ((order.shipments.length > 0) && this.props.currentOrder === order){
-    //   console.log('ORDER HAS SHIPMENTS')
-    //   debugger;
-    // }
-
-    let onClick, printPrompt, clickArgs;
+    let onClick, printPrompt, clickArgs, shipmentDiv;
     switch(labelState(roles, order, disabled)) {
       case 'needs_label':
         printPrompt = 'Create Label';
@@ -317,17 +311,23 @@ class OrdersShow extends Component {
         printPrompt = 'Creating Label';
       case 'label_created':
         printPrompt = 'Print Label';
-        onClick = this.printShippingLabel;
+        onClick =(() => window.print());
+        // NOTE: we need to make sure that orderComplete gets the correct shipment.
+        shipmentDiv = (<OrderComplete />)
         break;
       default:
         break;
     }
 
-    return this.renderButton(
-      printPrompt, {disabled: disabled, clickArgs: clickArgs}, onClick
-    );
+    return (
+      <div>
+        {this.renderButton(
+          printPrompt, {disabled: disabled, clickArgs: clickArgs}, onClick
+        )}
+        {shipmentDiv}
+      </div>
+    )
   }
-
 
   renderButton(text, params, callback = () => console.log('')) {
     const className = params.className || 'pink-button'
@@ -532,7 +532,7 @@ class OrdersShow extends Component {
     return (
       <div>
         {this.renderButton(
-          'Print Instructions', {disabled: false}, this.printShippingLabel
+          'Print Instructions', {disabled: false}, () => window.print()
         )}
         <div className="print print-instructions">
           <div>

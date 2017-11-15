@@ -1,25 +1,30 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import logo from '../../images/logo.png';
-import isEmpty from 'lodash';
+import isEmpty from 'lodash/isEmpty';
+import {getShipmentForRole} from '../shipping/shippingFunctions';
 import {renderAlterationList} from '../../utils/alterationsLists';
 
 class OrderComplete extends Component {
+  constructor(props) {
+    super();
+  }
+
   render() {
     const {
      currentOrder: order,
      currentStore: store,
-     shipmentType: type
+     userRoles: roles
     } = this.props;
+    const {shipments} = order;
 
-    if (order) {
+    if (order && !isEmpty(shipments)) {
+      const {shipping_label: shippingLabel} = getShipmentForRole(roles, order);
       const {
         id,
         items,
-        type: {shipping_label: shippingLabel},
         customer: {first_name: firstName}
       } = order;
-
       return (
         <div className="print">
           <div className="packing-slip-info">
@@ -57,7 +62,8 @@ class OrderComplete extends Component {
 const mapStateToProps = store => {
   return {
     currentStore: store.currentStore,
-    currentOrder: store.currentOrder
+    currentOrder: store.currentOrder,
+    userRoles: store.userRoles
   };
 };
 
