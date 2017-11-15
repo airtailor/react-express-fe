@@ -26,8 +26,9 @@ class StoresShow extends Component {
     }
 
     this.toggleOrderSelect = this.toggleOrderSelect.bind(this)
-    this.setOrderState = this.setOrderState.bind(this)
+    this.setOrderTabState = this.setOrderTabState.bind(this)
 
+    this.renderOrderHeaders = this.renderOrderHeaders.bind(this)
     this.renderShippingControls = this.renderShippingControls.bind(this)
     this.renderOrderStateTabs = this.renderOrderStateTabs.bind(this)
     this.renderOrderRowsByStatus = this.renderOrderRowsByStatus.bind(this)
@@ -65,9 +66,18 @@ class StoresShow extends Component {
     }
   }
 
+  countOrdersByStatus(status) {
+    return this.sortOrdersByStatus(status).length
+  }
+
   getOrderStatus(order) {
-    if (!order.arrived) {
-      return {status: 'In Transit', color: 'green'};
+    // NOTE: this needs a few more statuses.
+    // "Needs Shipping Details" - Order doesn't have shipping yet. Create Label or Send messenger.
+    // "Ready for Shipping" - shipment ready to go, print it or send a messenger.
+    if (isEmpty(order.shipments)) {
+      return {status: 'Needs Shipping Details', color: 'gold'};
+    } else if (!(isEmpty(order.shipments) && !order.arrived)) {
+      return {status: 'Ready for Shipping', color: 'green'};
     } else if (order.late) {
       let dueTime = this.formatStatusString(order.due_date, true);
       return {status: dueTime, color: 'red'};
@@ -114,44 +124,70 @@ class StoresShow extends Component {
     }
   }
 
-  setOrderState(state) {
-    return this.setState({showOrderState: state})
+  setOrderTabState(state) {
+    this.setState({showOrderState: state})
   }
 
   renderShippingControls() {
-    const orders = this.state.selectedOrders
-    return(
-      <div>
-        <div onClick={() => this.makeLabels(orders)}>
-          Print Labels
+    const {userRoles: roles} = this.props
+    if (roles.admin || roles.retailer) {
+      const orders = this.state.selectedOrders
+      const labelFunction = () => this.makeLabels(orders)
+      const messengerFunction = () => this.sendMessenger(orders)
+
+      return(
+        <div className="shipping-button-container">
+          <div>
+            <input
+              type="submit"
+              className="print-label-button"
+              onClick={labelFunction}
+              value="Print Labels"
+            />
+          </div>
+          <div>
+            <input
+              type="submit"
+              className="messenger-button"
+              onClick={messengerFunction}
+              value="Send Messenger"
+            />
+          </div>
         </div>
-        <div onClick={() => this.sendMessenger(orders)}>
-          Send Messenger
-        </div>
-      </div>
-    )
+      )
+    } else {
+      return (<div />)
+    }
   }
 
   renderOrderRow(order) {
+    const {userRoles: roles} = this.props;
     const {id, customer, alterations_count} = order;
     const {first_name, last_name} = customer;
     const {color, status} = this.getOrderStatus(order);
     const route = `/orders/${id}`;
 
-    const orderIsToggled = this.state.selectedOrders.has(id)
-    const orderToggle = () => this.toggleOrderSelect(id)
+    let orderSelect = (<div />);
+    if (roles.admin || roles.retailer) {
+      const orderIsToggled = this.state.selectedOrders.has(id)
+      const orderToggle = () => this.toggleOrderSelect(id)
+
+      orderSelect = (
+        <div className="order-select">
+          <Checkbox
+            checked={orderIsToggled}
+            type="checkbox"
+            name={id}
+            onChange={orderToggle}
+          />
+        </div>
+      )
+    }
 
     return (
       <div key={id}>
         <div className="order-row flex-container">
-          <div className="order-select">
-            <Checkbox
-              checked={orderIsToggled}
-              type="checkbox"
-              name={id}
-              onChange={orderToggle}
-            />
-          </div>
+          {orderSelect}
           <Link to={route} className="order-data flex-container">
             <div>#{id}</div>
             <div style={{color}}>
@@ -179,39 +215,52 @@ class StoresShow extends Component {
     }
   }
 
-  countOrdersByStatus(status) {
-    return this.sortOrdersByStatus(status).length
-  }
-
   renderOrderStateTabs() {
-    const setOrderState = this.setOrderState
-    const newCount = this.countOrdersByStatus('new_orders')
-    const readyCount = this.countOrdersByStatus('ready_orders')
-    const inProgressCount = this.countOrdersByStatus('in_progress_orders')
-    const lateCount = this.countOrdersByStatus('late_orders')
+    const allTabs = [
+      {className: 'order-state-tab', status: 'new_orders', text:  'New' },
+      {className: 'order-state-tab', status: 'in_progress_orders', text:  'Current' },
+      {className: 'order-state-tab', status: 'ready_orders', text:  'Finished' },
+      {className: 'order-state-tab', status: 'late_orders', text:  'Late' }
+    ]
+
+    allTabs.map((obj, i) => {
+      if (obj.status == this.state.showOrderState) {
+        obj.className = obj.className.concat(" selected");
+      }
+      return obj
+    })
+
+    const tabs = allTabs.map((tab, i) => {
+      return (
+        <div
+          key={i}
+          className={tab.className}
+          onClick={() => this.setOrderTabState(tab.status)}
+        >
+          <h3>
+            {tab.text} ({this.countOrdersByStatus(tab.status)})
+          </h3>
+        </div>
+      )
+    })
 
     return (
       <div className="order-state-row">
-        <div onClick={() => setOrderState('new_orders')} className="order-state-button" >
-          New Orders ({newCount})
-        </div>
-        <div onClick={() => setOrderState('ready_orders')} className="order-state-button" >
-          Ready for Customer ({readyCount})
-        </div>
-        < div onClick={() => setOrderState('in_progress_orders')} className="order-state-button" >
-          In Progress ({inProgressCount})
-        </div>
-        <div  onClick={() => setOrderState('late_orders')} className="order-state-button">
-          Late Orders ({lateCount})
-        </div>
+        {tabs}
       </div>
     )
   }
 
   renderOrderHeaders() {
+    const {userRoles: roles} = this.props;
+    let selectHeader = (<div />)
+    if (roles.admin || roles.retailer) {
+       selectHeader = (<h3 className="order-column">Select:</h3>)
+    }
+
     return (
       <div className="order-row-header">
-        <h3 className="order-column">Select:</h3>
+        {selectHeader}
         <h3 className="order-column">Order</h3>
         <h3 className="order-column">Status</h3>
         <h3 className="order-column">Customer</h3>

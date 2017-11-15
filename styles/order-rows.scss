@@ -2,16 +2,51 @@
 .orders {
   color: $primary-blue;
   width: 100%;
-  margin-top: 20px;
 }
 
+.order-state {
+  background: $accent-gray;
+}
+
+.order-state-row {
+  @extend .flex-container;
+}
+
+.order-state-tab {
+  flex: 1 0 20%;
+  text-align: center;
+  padding-top: 2%;
+  height: 5%;
+}
+
+.order-state-tab.selected {
+  background: white;
+  -webkit-clip-path: polygon(20% 0, 0 100%, 100% 100%, 80% 0);
+  clip-path: polygon(20% 0, 0 100%, 100% 100%, 80% 0);
+}
+
+.order-state-tab.selected:nth-child(1) {
+  -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%, 80% 0);
+  clip-path: polygon(0 0, 0 100%, 100% 100%, 80% 0);
+}
+
+.order-state-tab.selected:last-child {
+  -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%, 80% 0);
+  clip-path: polygon(20% 0, 0 100%, 100% 100%, 100% 0);
+}
+
+.order-state-tab h3 {
+  font-family: $sans-serif;
+  text-transform: uppercase;
+  font-weight: lighter;
+}
 .order-row-header {
+  @extend .flex-container;
   font-family: arial;
   font-size: 14px;
   letter-spacing: .5px;
   text-transform: uppercase;
   margin-left: 50px;
-  @extend .flex-container;
 }
 
 .order-row-header > h3 {
