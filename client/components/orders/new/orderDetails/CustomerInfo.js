@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import FormField from '../../../FormField';
+import {formatPhone} from '../../../../utils/format';
 import FindCustomerByPhone from './FindCustomerByPhone';
 
 class CustomerInfo extends Component {
@@ -37,9 +38,10 @@ class CustomerInfo extends Component {
   }
 
   phone(phone) {
+    const displayPhone = formatPhone(phone);
     return (
       <FormField
-        value={phone}
+        value={displayPhone}
         fieldName={'phone'}
         title={'Mobile Phone'}
         className="order-details-input"
