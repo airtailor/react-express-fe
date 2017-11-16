@@ -9,11 +9,6 @@ import isEmpty from 'lodash/isEmpty';
 import Checkbox from '../Checkbox';
 
 import {
-  setLoader,
-  removeLoader,
-} from '../../actions';
-
-import {
   shipmentTypes,
   shipmentActions,
   labelState,

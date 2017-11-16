@@ -236,11 +236,7 @@ export function updateOrder(data) {
         return Axios.post(url, data)
           .then(res => {
             dispatch(setCurrentOrder(res.data.body));
-<<<<<<< HEAD
-            // return res.data.body;
-=======
             return res.data;
->>>>>>> e90b562342339b9e0b658264d4e7c8a2542f6284
           })
           .catch(err => {
             debugger;

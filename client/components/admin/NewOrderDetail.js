@@ -290,17 +290,12 @@ class NewOrderDetail extends Component {
           <p>Order Date: {orderDate}</p>
           <p>Total Charges: ${total}</p>
           <p>Order Notes:</p>
-<<<<<<< HEAD
           <UpdateNotes
             notes={provider_notes}
             order={order}
             roles={this.props.userRoles}
             submitNotes={this.updateOrderNotes}
           />
-
-=======
-          {this.renderNotes()}
->>>>>>> e90b562342339b9e0b658264d4e7c8a2542f6284
           {display}
         </div>
       );
