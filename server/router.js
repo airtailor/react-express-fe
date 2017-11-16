@@ -133,7 +133,6 @@ router.post('/api/orders', (req, res) => {
 
   Axios.post(`${apiUrl}/api/orders`, {headers, order})
     .then(response => {
-      // console.log('return headers get store/id/orders', response.headers);
       res.json({headers: response.headers, body: response.data});
     })
     .catch(err => {

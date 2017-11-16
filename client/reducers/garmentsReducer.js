@@ -1,9 +1,3 @@
-// import pantsImage from '../images/pants.png';
-// import shirtImage from '../images/shirt.png';
-// import skirtImage from '../images/skirt.png';
-// import dressImage from '../images/dress.png';
-// import suitImage from '../images/jacket.png';
-// import tieImage from '../images/necktie.png';
 import {
   tieImage,
   shirtImage,

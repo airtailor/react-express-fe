@@ -22,6 +22,7 @@ export const renderAlterationListItems = (alterations, className) => {
 };
 
 export const renderAlterationList = (items, className) => {
+  console.log(items);
   const alterations = renderAlterationListItems(
     getAlterationsList(items),
     className

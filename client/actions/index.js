@@ -109,9 +109,7 @@ export function signOutCurrentUser() {
     window.location = '/';
 
     return Axios.post(url)
-      .then(res => {
-        //console.log('signed out');
-      })
+      .then(res => {})
       .catch(err => {
         console.log('error from signOutCurrentUser linke 75', err);
       });
@@ -238,7 +236,11 @@ export function updateOrder(data) {
         return Axios.post(url, data)
           .then(res => {
             dispatch(setCurrentOrder(res.data.body));
+<<<<<<< HEAD
             // return res.data.body;
+=======
+            return res.data;
+>>>>>>> e90b562342339b9e0b658264d4e7c8a2542f6284
           })
           .catch(err => {
             debugger;
@@ -488,7 +490,7 @@ function createOrder(order) {
   const url = `${expressApi}/orders`;
   return validateToken()
     .then(setTokens)
-    .then(() => {
+    .then(res => {
       return Axios.post(url, {order});
     });
 }

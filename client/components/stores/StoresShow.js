@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import moment from 'moment';
 import {Redirect, Link} from 'react-router-dom';
-import {getStoreOrders} from '../../actions';
+import {getStoreOrders, setLoader, removeLoader} from '../../actions';
 import SectionHeader from '../SectionHeader';
 import isEmpty from 'lodash/isEmpty';
 import Checkbox from '../Checkbox';
@@ -60,7 +60,7 @@ class StoresShow extends Component {
   formatStatusString(dueDate, late) {
     const todaysDate = moment(new Date());
     const momentDueDate = moment(dueDate);
-    const diff = momentDueDate.diff(todaysDate, 'days');
+    const diff = Math.abs(momentDueDate.diff(todaysDate, 'days'));
     const additionalString = late ? ' days late' : ' days to go';
     const status = (diff + additionalString).toUpperCase();
     return status;

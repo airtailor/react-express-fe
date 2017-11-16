@@ -28,6 +28,7 @@ import {
   skirtImage,
   dressImage,
   pantsImage,
+  coatImage,
 } from '../../../images/garments';
 
 import suppliesImage from '../../../images/supplies.png';
@@ -267,7 +268,7 @@ class OrdersShow extends Component {
           {text}
         </div>
       )
-    }
+}
 
     return (
       <div>

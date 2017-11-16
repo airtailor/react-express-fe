@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {getNewOrders, getCurrentOrder} from '../../actions';
+import {getNewOrders, getCurrentOrder, setCurrentOrder} from '../../actions';
 import {bindActionCreators} from 'redux';
 import {RenderNewOrderList} from '../../utils/newOrderLists';
 import NewOrderDetail from './NewOrderDetail';
@@ -16,19 +16,15 @@ class NewOrders extends Component {
   selectOrderDetail(order) {
     this.props
       .getCurrentOrder(order.provider_id, order.id)
-      //.then(res => console.log('res', res))
       .catch(err => console.log('err', err));
   }
 
   componentDidMount() {
-    this.props
-      .getNewOrders()
-      //.then(res => console.log(res))
-      .catch(err => console.log(err));
+    this.props.setCurrentOrder({});
+    this.props.getNewOrders().catch(err => console.log(err));
   }
 
   renderNewOrders(orders) {
-    //return renderAlterationList(this.props.newOrders.unassigned, 'new-orders')
     return (
       <RenderNewOrderList
         orders={orders}
@@ -75,7 +71,10 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({getNewOrders, getCurrentOrder}, dispatch);
+  return bindActionCreators(
+    {getNewOrders, getCurrentOrder, setCurrentOrder},
+    dispatch
+  );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewOrders);
