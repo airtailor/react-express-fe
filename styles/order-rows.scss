@@ -57,14 +57,6 @@
   @extend .row-hr;
 }
 
-.table-row {
-  @extend .flex-container;
-  height: 40px;
-}
-
-.table-cell {
-  flex: 1 0 15%;
-}
 
 .order-data {
   width: 100%;
@@ -72,6 +64,10 @@
 
 .order-headers {
   width: 100%;
+}
+
+.table-row {
+  @extend .flex-container;
 }
 
 .order-headers-row {
@@ -83,6 +79,19 @@
   text-transform: uppercase;
 }
 
+.order-row {
+  @extend .table-row;
+  background-color: black;
+}
+
+.order-row-link:hover {
+  @extend .hoverable;
+}
+
+.table-cell {
+  flex: 0 0 15%;
+}
+
 .order-header-cell {
   @extend .table-cell;
 
@@ -90,35 +99,29 @@
   text-transform: uppercase;
 }
 
-.order-row {
-  @extend .table-row;
-}
-
-.order-row-link:hover {
-  @extend .hoverable;
-}
-
 .order-select-cell {
   @extend .table-cell;
+  background-color: green;
 }
 
 .order-data-cell {
   @extend .table-cell;
-  color: $primary-blue;
+  background-color: yellow;
 }
 
-.full-width-text-row {
-  padding-top: 2%;
-  flex: 1 1 100%;
-  text-align: center;
-  font-family: $serif;
-}
 
-.loading-orders {
-  @extend .full-width-text-row;
-  font-style: italic;
-}
-
-.no-orders {
-  @extend .full-width-text-row;
-}
+// .full-width-text-row {
+//   padding-top: 2%;
+//   flex: 1 1 100%;
+//   text-align: center;
+//   font-family: $serif;
+// }
+//
+// .loading-orders {
+//   @extend .full-width-text-row;
+//   font-style: italic;
+// }
+//
+// .no-orders {
+//   @extend .full-width-text-row;
+// }

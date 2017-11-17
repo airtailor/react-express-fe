@@ -190,7 +190,7 @@ class StoresShow extends Component {
     let tailorDiv = <div />;
 
     if (tailor && (roles.admin || roles.retailer)) {
-      tailorDiv = <div>{tailor.name}</div>;
+      tailorDiv = <div className="order-data-cell">{tailor.name}</div>;
     }
     const { color, status } = this.getOrderStatus(order);
     const route = `/orders/${id}`;
@@ -201,29 +201,29 @@ class StoresShow extends Component {
       const orderToggle = () => this.toggleOrderSelect(order);
 
       orderSelect = (
-        <div className="order-select-cell">
-          <Checkbox
-            checked={orderIsToggled}
-            type="checkbox"
-            name={id}
-            onChange={orderToggle}
-          />
-        </div>
+        <Checkbox
+          checked={orderIsToggled}
+          type="checkbox"
+          name={id}
+          onChange={orderToggle}
+        />
       );
     }
 
     return (
       <div className="order-row" key={id}>
-        {orderSelect}
-        <Link to={route} className="order-row-link">
-          <div className="order-data-cell">#{id}</div>
-          <div style={{ color }}>{status}</div>
-          <div className="order-data-cell">
-            {first_name} {last_name}
-          </div>
-          {tailorDiv}
-          <div className="order-data-cell">{alterations_count}</div>
-        </Link>
+        <div className="order-select-cell">{orderSelect}</div>
+        // <Link to={route} className="order-row-link">
+        <div className="order-data-cell">#{id}</div>
+        <div className="order-data-cell" style={{ color }}>
+          {status}
+        </div>
+        <div className="order-data-cell">
+          {first_name} {last_name}
+        </div>
+        {tailorDiv}
+        <div className="order-data-cell">{alterations_count}</div>
+        // </Link>
         <hr className="order-row-hr" />
       </div>
     );
@@ -241,13 +241,13 @@ class StoresShow extends Component {
       );
     } else if (this.state.loadingOrders) {
       return (
-        <div className="table-row flex-container">
+        <div className="table-row">
           <div className="loading-orders">Loading Orders...</div>
         </div>
       );
     } else {
       return (
-        <div className="table-row flex-container">
+        <div className="table-row">
           <div className="no-orders">No orders found!</div>
         </div>
       );
