@@ -98,7 +98,7 @@ class NewOrderDetail extends Component {
   }
 
   renderPrintLabels(order) {
-    const roles = this.props.userRoles
+    const roles = this.props.userRoles;
     const shippingType = shipmentType(roles, order.type);
     const printPrompt = getPrintButtonPrompt(shippingType, order);
 
@@ -304,7 +304,7 @@ const mapStateToProps = store => {
   return {
     tailors: store.tailorList,
     currentUser: store.currentUser,
-    userRoles: store.userRoles
+    userRoles: store.userRoles,
   };
 };
 
