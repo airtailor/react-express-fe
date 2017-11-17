@@ -98,7 +98,7 @@ class NewOrderDetail extends Component {
   }
 
   renderPrintLabels(order) {
-    const roles = this.props.userRoles
+    const roles = this.props.userRoles;
     const shippingType = shipmentType(roles, order.type);
     const printPrompt = getPrintButtonPrompt(shippingType, order);
 
@@ -290,12 +290,7 @@ class NewOrderDetail extends Component {
           <p>Order Date: {orderDate}</p>
           <p>Total Charges: ${total}</p>
           <p>Order Notes:</p>
-          <UpdateNotes
-            notes={provider_notes}
-            order={order}
-            roles={this.props.userRoles}
-            submitNotes={this.updateOrderNotes}
-          />
+          {this.renderNotes()}
           {display}
         </div>
       );
@@ -309,7 +304,7 @@ const mapStateToProps = store => {
   return {
     tailors: store.tailorList,
     currentUser: store.currentUser,
-    userRoles: store.userRoles
+    userRoles: store.userRoles,
   };
 };
 

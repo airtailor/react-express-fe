@@ -75,7 +75,7 @@ export const userSignIn = (email, password) => {
         if (res.data.status === 401) {
           return {errors: true, status: 401};
         } else if (res.data.body) {
-          const dataRes = res.data.body.data
+          const dataRes = res.data.body.data;
           const {id, email, store_id, roles, uid} = dataRes;
           setTokens(res);
           dispatch(setUserRole(roles[0].name));
@@ -120,7 +120,6 @@ export function getStoreOrders(store_id) {
   const url = `${expressApi}/stores/${store_id}/orders`;
   return dispatch => {
     return validateToken()
-      .catch(err => console.log('line 88', err))
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
@@ -320,7 +319,7 @@ export function getCompanies() {
 }
 
 export function createShipment(data) {
-  if (Array.isArray(data.shipment.shipment_action)){
+  if (Array.isArray(data.shipment.shipment_action)) {
     debugger;
   }
   return validateToken()
@@ -645,18 +644,16 @@ export function getArchivedOrders() {
 
 // actions
 
-
 export function resetUserRole() {
   return {
-    type: RESET_USER_ROLE
+    type: RESET_USER_ROLE,
   };
 }
-
 
 export function setUserRole(role) {
   return {
     type: SET_USER_ROLE,
-    role
+    role,
   };
 }
 
