@@ -306,8 +306,10 @@ class StoresShow extends Component {
 
   renderTailorOrderRows() {
     const {openOrders} = this.props;
-    if (openOrders) {
-      return openOrders.map((order, i) => {
+    const ordersWithShipments = this.sortOrdersByStatus('new_orders');
+
+    if (!isEmpty(ordersWithShipments)) {
+      return ordersWithShipments.map((order, i) => {
         const orderStatus = this.getOrderStatus(order);
         const {id, customer, alterations_count} = order;
         const {first_name, last_name} = customer;
@@ -316,15 +318,13 @@ class StoresShow extends Component {
         return (
           <div key={id}>
             <div className="order-row flex-container">
-              <Link to={route} className="flex-container">
-                <div className="order-data">#{id}</div>
-                <div className="order-data" style={{color}}>
-                  {status}
-                </div>
-                <div className="order-data">
+              <Link to={route} className="order-data flex-container">
+                <div>#{id}</div>
+                <div style={{color}}>{status}</div>
+                <div>
                   {first_name} {last_name}
                 </div>
-                <div className="order-data">{alterations_count}</div>
+                <div>{alterations_count}</div>
               </Link>
             </div>
             <hr className="order-row-hr" />

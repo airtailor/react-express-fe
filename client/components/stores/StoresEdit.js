@@ -25,6 +25,7 @@ class StoresEdit extends Component {
     this.setState(store);
     this.props
       .getCurrentStore(this.props.match.params.store_id)
+      .then(() => this.setState({store: this.props.store}))
       .catch(err => console.log(err));
   }
 
@@ -58,7 +59,15 @@ class StoresEdit extends Component {
   }
 
   renderForm(data) {
-    const {name, phone, street, street_two, city, state_province, zip_code} = data;
+    const {
+      name,
+      phone,
+      address: {street, street_two, city, state_province, zip_code},
+    } = data;
+
+    console.log('data', data);
+    console.log('props', this.props);
+
     return (
       <div>
         <form onSubmit={e => this.handleSubmit(e)}>
@@ -117,7 +126,8 @@ class StoresEdit extends Component {
   }
 
   render() {
-    const {store} = this.props;
+    console.log('poop', this.props.store);
+    const {store} = this.state;
     if (!store) {
       return <div>Loading...</div>;
     } else {
@@ -127,7 +137,7 @@ class StoresEdit extends Component {
           <div className="form-container edit-account">
             <h3>Edit Store</h3>
 
-            {this.renderForm(this.state)}
+            {this.renderForm(store)}
             <br />
             <hr />
             <br />

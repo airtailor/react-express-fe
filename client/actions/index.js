@@ -170,52 +170,56 @@ export function getCurrentStore(store_id) {
             //} else {
             //  // console.log('getStoreOrders - no new auth headers');
             //}
-            const {
-              company_id,
-              city,
-              id,
-              name,
-              phone,
-              primary_contact_id,
-              state_province,
-              street,
-              street_two,
-              zip_code,
-              active_orders_count,
-              late_orders_count,
-            } = res.data.body;
+            // const {
+            //   company_id,
+            //   city,
+            //   id,
+            //   name,
+            //   phone,
+            //   primary_contact_id,
+            //   state_province,
+            //   street,
+            //   street_two,
+            //   zip_code,
+            //   active_orders_count,
+            //   late_orders_count,
+            // } = res.data.body;
 
-            setLocalStorageStore({
-              company_id,
-              city,
-              id,
-              name,
-              phone,
-              primary_contact_id,
-              state_province,
-              street,
-              street_two,
-              zip_code,
-              active_orders_count,
-              late_orders_count,
-            });
+            // setLocalStorageStore({
+            //   company_id,
+            //   city,
+            //   id,
+            //   name,
+            //   phone,
+            //   primary_contact_id,
+            //   state_province,
+            //   street,
+            //   street_two,
+            //   zip_code,
+            //   active_orders_count,
+            //   late_orders_count,
+            // });
 
-            dispatch(
-              setCurrentStore({
-                company_id,
-                city,
-                id,
-                name,
-                phone,
-                primary_contact_id,
-                state_province,
-                street,
-                street_two,
-                zip_code,
-                active_orders_count,
-                late_orders_count,
-              })
-            );
+            setLocalStorageStore(res.data.body);
+
+            // dispatch(
+            //   setCurrentStore({
+            //     company_id,
+            //     city,
+            //     id,
+            //     name,
+            //     phone,
+            //     primary_contact_id,
+            //     state_province,
+            //     street,
+            //     street_two,
+            //     zip_code,
+            //     active_orders_count,
+            //     late_orders_count,
+            //   })
+            // );
+
+            dispatch(setCurrentStore(res.data.body));
             return res;
           })
           .catch(err => {
