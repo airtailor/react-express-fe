@@ -315,7 +315,7 @@ class StoresShow extends Component {
         const route = `/orders/${id}`;
         return (
           <div key={id}>
-            <div className="order-row">
+            <div className="order-row flex-container">
               <Link to={route} className="flex-container">
                 <div className="order-data">#{id}</div>
                 <div className="order-data" style={{color}}>
