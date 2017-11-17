@@ -315,16 +315,16 @@ class StoresShow extends Component {
         const route = `/orders/${id}`;
         return (
           <div key={id}>
-            <div className="order-row">
-              <Link to={route} className="flex-container">
-                <div className="order-data">#{id}</div>
-                <div className="order-data" style={{color}}>
+            <div className="order-row flex-container">
+              <Link to={route} className="order-data flex-container">
+                <div>#{id}</div>
+                <div style={{color}}>
                   {status}
                 </div>
-                <div className="order-data">
+                <div>
                   {first_name} {last_name}
                 </div>
-                <div className="order-data">{alterations_count}</div>
+                <div>{alterations_count}</div>
               </Link>
             </div>
             <hr className="order-row-hr" />
