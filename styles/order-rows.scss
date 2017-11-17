@@ -1,4 +1,3 @@
-
 .orders {
   color: $primary-blue;
   width: 100%;
@@ -45,58 +44,81 @@
   color: $primary-red;
 }
 
-.order-row-header {
-  @extend .flex-container;
-  font-family: arial;
-  font-size: 14px;
-  letter-spacing: .5px;
-  text-transform: uppercase;
-  margin-left: 50px;
-}
-
-.order-row-header h3 {
-  flex: 1 0 15%;
-  text-align: center;
-  text-transform: uppercase;
-}
-
 .row-hr {
-  width: 90%;
-  margin-left: 30px;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.order-row-hr {
-  @extend .row-hr;
-  border-top: 1px solid rgba(0, 0, 51, .1);
+  width: 95%;
+  margin: 0 auto;
 }
 
 .order-header-hr {
   @extend .row-hr;
 }
 
-.order-row {
+.order-row-hr {
+  @extend .row-hr;
+}
+
+.table-row {
+  @extend .flex-container;
   height: 40px;
-  padding-top: 25px;
-  padding-bottom: 25px;
-  padding-left: 50px;
 }
 
-.order-data:hover {
-  @extend .hoverable;
-}
-
-.order-select {
-  text-align: center;
-  flex: 1 0 10%;
+.table-cell {
+  flex: 1 0 15%;
 }
 
 .order-data {
-  flex: 1 0 90%;
-  div {
-    flex: 1 0 20%;
-    text-align: center;
-    color: $primary-blue;
-  }
+  width: 100%;
+}
+
+.order-headers {
+  width: 100%;
+}
+
+.order-headers-row {
+  @extend .table-row;
+
+  font-family: arial;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.order-header-cell {
+  @extend .table-cell;
+
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.order-row {
+  @extend .table-row;
+}
+
+.order-row-link:hover {
+  @extend .hoverable;
+}
+
+.order-select-cell {
+  @extend .table-cell;
+}
+
+.order-data-cell {
+  @extend .table-cell;
+  color: $primary-blue;
+}
+
+.full-width-text-row {
+  padding-top: 2%;
+  flex: 1 1 100%;
+  text-align: center;
+  font-family: $serif;
+}
+
+.loading-orders {
+  @extend .full-width-text-row;
+  font-style: italic;
+}
+
+.no-orders {
+  @extend .full-width-text-row;
 }

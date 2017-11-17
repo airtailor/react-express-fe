@@ -44,9 +44,11 @@ class StoresShow extends Component {
     const { currentUser: { store_id: storeId } } = this.props;
     const { getStoreOrders } = this.props;
 
+    this.setState({ loadingOrders: true });
     getStoreOrders(storeId)
       .then(() => {
         this.state.selectedOrders = new Set();
+        this.setState({ loadingOrders: false });
         this.props.removeLoader();
       })
       .catch(err => console.log(err));
@@ -199,7 +201,7 @@ class StoresShow extends Component {
       const orderToggle = () => this.toggleOrderSelect(order);
 
       orderSelect = (
-        <div className="order-select">
+        <div className="order-select-cell">
           <Checkbox
             checked={orderIsToggled}
             type="checkbox"
@@ -211,19 +213,17 @@ class StoresShow extends Component {
     }
 
     return (
-      <div key={id}>
-        <div className="order-row flex-container">
-          {orderSelect}
-          <Link to={route} className="order-data flex-container">
-            <div>#{id}</div>
-            <div style={{ color }}>{status}</div>
-            <div>
-              {first_name} {last_name}
-            </div>
-            {tailorDiv}
-            <div>{alterations_count}</div>
-          </Link>
-        </div>
+      <div className="order-row" key={id}>
+        {orderSelect}
+        <Link to={route} className="order-row-link">
+          <div className="order-data-cell">#{id}</div>
+          <div style={{ color }}>{status}</div>
+          <div className="order-data-cell">
+            {first_name} {last_name}
+          </div>
+          {tailorDiv}
+          <div className="order-data-cell">{alterations_count}</div>
+        </Link>
         <hr className="order-row-hr" />
       </div>
     );
@@ -234,9 +234,23 @@ class StoresShow extends Component {
     if (!isEmpty(openOrders)) {
       const status = this.state.showOrderState;
       const sortedOrders = this.sortOrdersByStatus(status);
-      return sortedOrders.map(order => this.renderOrderRow(order));
+      return (
+        <div className="order-data">
+          {sortedOrders.map(order => this.renderOrderRow(order))}
+        </div>
+      );
+    } else if (this.state.loadingOrders) {
+      return (
+        <div className="table-row flex-container">
+          <div className="loading-orders">Loading Orders...</div>
+        </div>
+      );
     } else {
-      return <div>Loading...</div>;
+      return (
+        <div className="table-row flex-container">
+          <div className="no-orders">No orders found!</div>
+        </div>
+      );
     }
   }
 
@@ -285,53 +299,56 @@ class StoresShow extends Component {
   renderOrderHeaders() {
     const { userRoles: roles } = this.props;
     let selectHeader = <div />;
-    let orderHeader = <h3 className="order-column">Order</h3>;
-    let statusHeader = <h3 className="order-column">Status</h3>;
-    let customerHeader = <h3 className="order-column">Customer</h3>;
+    let orderHeader = <h3 className="order-header-cell">Order</h3>;
+    let statusHeader = <h3 className="order-header-cell">Status</h3>;
+    let customerHeader = <h3 className="order-header-cell">Customer</h3>;
     let tailorHeader = <div />;
-    let quantityHeader = <h3 className="order-column">Quantity</h3>;
+    let quantityHeader = <h3 className="order-header-cell">Quantity</h3>;
 
     if (roles.admin || roles.retailer) {
-      selectHeader = <h3 className="order-column">Select:</h3>;
-      tailorHeader = <h3 className="order-column">Tailor</h3>;
+      selectHeader = <h3 className="order-header-cell">Select:</h3>;
+      tailorHeader = <h3 className="order-header-cell">Tailor</h3>;
     }
 
     return (
-      <div className="order-row-header">
-        {selectHeader}
-        {orderHeader}
-        {statusHeader}
-        {customerHeader}
-        {tailorHeader}
-        {quantityHeader}
+      <div className="order-headers">
+        <div className="order-headers-row">
+          {selectHeader}
+          {orderHeader}
+          {statusHeader}
+          {customerHeader}
+          {tailorHeader}
+          {quantityHeader}
+        </div>
       </div>
     );
   }
 
   renderTailorOrderRows() {
     const { openOrders } = this.props;
-    if (openOrders) {
-      return openOrders.map((order, i) => {
+    const ordersWithShipments = this.sortOrdersByStatus("new_orders");
+
+    if (!isEmpty(ordersWithShipments)) {
+      return ordersWithShipments.map((order, i) => {
         const orderStatus = this.getOrderStatus(order);
         const { id, customer, alterations_count } = order;
         const { first_name, last_name } = customer;
         const { color, status } = orderStatus;
         const route = `/orders/${id}`;
-        return (
-          <div key={id}>
-            <div className="order-row flex-container">
-              <Link to={route} className="order-data flex-container">
-                <div>#{id}</div>
-                <div style={{ color }}>{status}</div>
-                <div>
-                  {first_name} {last_name}
-                </div>
-                <div>{alterations_count}</div>
-              </Link>
-            </div>
-            <hr className="order-row-hr" />
-          </div>
-        );
+        return <div />;
+        // <div key={id}>
+        //   <div className="order-row-link">
+        //     <Link to={route}>
+        //       <div className="order-row-cell">#{id}</div>
+        //       <div style={{ color }}>{status}</div>
+        //       <div className="order-row-cell">
+        //         {first_name} {last_name}
+        //       </div>
+        //       <div className="order-row-cell">{alterations_count}</div>
+        //     </Link>
+        //   </div>
+        //   <hr className="order-row-hr" />
+        // </div>
       });
     } else {
       return <div>Loading...</div>;
@@ -359,22 +376,21 @@ class StoresShow extends Component {
             <div className="order-state">{orderStateTabs()}</div>
             <div>{orderHeaders()}</div>
             <hr className="order-header-hr" />
-            <div className="order-rows">{orderRows()}</div>
+            <div>{orderRows()}</div>
             <div>{shippingControls()}</div>
           </div>
         </div>
       );
     } else if (tailor) {
-      return (
-        <div>
-          <SectionHeader text={headerText} />
-          <div className="orders">
-            <div>{orderHeaders()}</div>
-            <hr className="order-header-hr" />
-            <div className="order-rows">{this.renderTailorOrderRows()}</div>
-          </div>
-        </div>
-      );
+      return <div />;
+      // <div>
+      //   <SectionHeader text={headerText} />
+      //   <div className="orders">
+      //     <div>{orderHeaders()}</div>
+      //     <hr className="order-header-hr" />
+      //     <div className="order-data">{this.renderTailorOrderRows()}</div>
+      //   </div>
+      // </div>
     }
   }
 }

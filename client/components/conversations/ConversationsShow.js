@@ -92,8 +92,9 @@ class Messages extends Component {
     const {newMessage} = this.state;
 
     const roles = this.props.userRoles;
-    const conversation_id =
-      roles.admin ? this.props.match.params.id : this.props.conversations[0].id;
+    const conversation_id = roles.admin
+      ? this.props.match.params.id
+      : this.props.conversations[0].id;
 
     const store_id = this.props.currentStore.id;
     const message = {body: newMessage, conversation_id, store_id};
@@ -175,7 +176,7 @@ const mapStateToProps = store => {
     currentUser: store.currentUser,
     userRoles: store.userRoles,
     messages: store.messages,
-    currentstore: store.currentStore,
+    currentStore: store.currentStore,
   };
 };
 
