@@ -21,7 +21,7 @@ import {
 import WelcomeKitPrint from '../prints/WelcomeKitPrint.js';
 import {SetFulfilledButton} from '../orders/orderForms/SetFulfilled';
 import SelectTailor from '../orders/orderForms/SelectTailor';
-//import UpdateNotes from '../orders/orderForms/UpdateNotes';
+// import UpdateNotes from '../orders/orderForms/UpdateNotes';
 
 class NewOrderDetail extends Component {
   constructor(props) {
@@ -290,12 +290,7 @@ class NewOrderDetail extends Component {
           <p>Order Date: {orderDate}</p>
           <p>Total Charges: ${total}</p>
           <p>Order Notes:</p>
-          <UpdateNotes
-            notes={provider_notes}
-            order={order}
-            roles={this.props.userRoles}
-            submitNotes={this.updateOrderNotes}
-          />
+          {this.renderNotes()}
           {display}
         </div>
       );
