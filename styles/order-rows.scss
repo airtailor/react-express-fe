@@ -1,52 +1,159 @@
-
 .orders {
   color: $primary-blue;
   width: 100%;
-  margin-top: 20px;
 }
 
-.order-row-header {
-  font-family: arial;
-  font-size: 14px;
-  letter-spacing: .5px;
-  text-transform: uppercase;
-  margin-left: 50px;
+.order-state-container {
+  background: $accent-gray;
+}
+
+.order-state-row {
   @extend .flex-container;
 }
 
-.order-row-header > h3 {
-  flex: 1 0 25%;
+.order-state-tab {
+  flex: 1 0 20%;
+  text-align: center;
+  padding-top: 2%;
+  height: 5%;
+}
+
+.order-state-tab.selected {
+  background: white;
+  -webkit-clip-path: polygon(20% 0, 0 100%, 100% 100%, 80% 0);
+  clip-path: polygon(20% 0, 0 100%, 100% 100%, 80% 0);
+}
+
+.order-state-tab.selected:nth-child(1) {
+  -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%, 80% 0);
+  clip-path: polygon(0 0, 0 100%, 100% 100%, 80% 0);
+}
+
+.order-state-tab.selected:last-child {
+  -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%, 80% 0);
+  clip-path: polygon(20% 0, 0 100%, 100% 100%, 100% 0);
+}
+
+.order-state-tab h3 {
+  font-family: $sans-serif;
   text-transform: uppercase;
+  font-weight: lighter;
 }
 
-.row-hr {
+.late-orders h3 {
+  color: $primary-red;
+}
+
+.break-row {
+  width: 95%;
+  margin: 0 auto;
+  border-top: 1px solid gray;
+}
+
+.order-header-break-row {
+  @extend .break-row;
+}
+
+.order-data-break-row {
+  @extend .break-row;
   width: 90%;
-  margin-left: 30px;
-  margin-top: 0;
-  margin-bottom: 0;
 }
 
-.order-row-hr {
-  @extend .row-hr;
-  border-top: 1px solid rgba(0, 0, 51, .1);
+.order-data-container {
+  width: 100%;
 }
 
-.order-header-hr {
-  @extend .row-hr;
+.order-headers {
+  width: 100%;
+}
+
+.table-row {
+  @extend .flex-container;
 }
 
 .order-row {
-  height: 40px;
-  padding-top: 25px;
-  padding-bottom: 5px;
-  padding-left: 50px;
+  @extend .table-row;
 }
 
-.order-row:hover {
+.order-headers-row {
+  @extend .table-row;
+
+  font-family: arial;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.table-cell {
+  text-align: center;
+  flex: 0 0 15%;
+}
+
+.order-row-link {
+  @extend .table-cell;
+  @extend .flex-container;
+  padding-top: 10px;
+  padding-bottom  : 10px;
+  flex-basis: 85%;
+}
+
+.order-row-link:hover {
   @extend .hoverable;
 }
 
-.order-data {
-  flex: 1 0 25%;
-  color: $primary-blue;
+.table-header-cell {
+  @extend .table-cell;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.order-select-header-cell {
+  @extend .table-header-cell;
+  flex-basis: 15%;
+}
+
+.order-data-header-cell {
+  @extend .table-header-cell;
+  flex-basis: 20%;
+}
+
+.order-data-columns {
+  @extend .table-header-cell;
+  @extend .flex-container;
+  flex-basis: 85%;
+}
+
+.order-row-cell {
+  @extend .table-cell;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.order-select-cell {
+  @extend .order-row-cell;
+  text-align: center;
+  flex-basis: 15%;
+  padding-top: 15px;
+  padding-bottom: 12px;
+}
+
+.order-data-cell {
+  @extend .order-row-cell;
+  flex-basis: 20%;
+}
+
+.full-width-text-row {
+  padding-top: 2%;
+  flex: 1 1 100%;
+  text-align: center;
+  font-family: $serif;
+}
+
+.loading-orders {
+  @extend .full-width-text-row;
+  font-style: italic;
+}
+
+.no-orders {
+  @extend .full-width-text-row;
 }

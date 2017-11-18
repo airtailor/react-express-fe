@@ -22,5 +22,5 @@
 }
 
 .signin-button {
-  width: 200px;
+  @extend .standard-button;
 }

@@ -33,6 +33,13 @@ import {
   SET_ARCHIVED_ORDERS,
   SET_LOADER,
   REMOVE_LOADER,
+  SHIP_RETAILER_TO_TAILOR,
+  SHIP_TAILOR_TO_RETAILER,
+  SHIP_CUSTOMER_TO_TAILOR,
+  SHIP_TAILOR_TO_CUSTOMER,
+  SHIP_RETAILER_TO_CUSTOMER,
+  SET_USER_ROLE,
+  RESET_USER_ROLE,
 } from '../utils/constants';
 
 import {removeFalseyValuesFromObject} from '../utils/format';
@@ -68,9 +75,14 @@ export const userSignIn = (email, password) => {
         if (res.data.status === 401) {
           return {errors: true, status: 401};
         } else if (res.data.body) {
+          const dataRes = res.data.body.data;
+          const {id, email, store_id, roles, uid} = dataRes;
           setTokens(res);
-          setLocalStorageUser(res.data.body.data);
-          const {id, email, store_id, roles, uid} = res.data.body.data;
+          dispatch(setUserRole(roles[0].name));
+          setLocalStorageUser(dataRes);
+
+          // right now, the code assumes that a user has a single role, but it's
+          // written to work with multiple roles if/when that becomes necessary.
           dispatch(setCurrentUser({id, email, store_id, roles}));
           return {success: true};
         }
@@ -93,7 +105,7 @@ export function signOutCurrentUser() {
     delete localStorage.CurrentUser;
     delete localStorage.CurrentStore;
     setAuthToken({});
-    dispatch(setCurrentUser({}), setCurrentStore({}));
+    dispatch(setCurrentUser({}), setCurrentStore({}), setUserRole({}));
     window.location = '/';
 
     return Axios.post(url)
@@ -108,7 +120,6 @@ export function getStoreOrders(store_id) {
   const url = `${expressApi}/stores/${store_id}/orders`;
   return dispatch => {
     return validateToken()
-      .catch(err => console.log('line 88', err))
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
@@ -159,52 +170,56 @@ export function getCurrentStore(store_id) {
             //} else {
             //  // console.log('getStoreOrders - no new auth headers');
             //}
-            const {
-              company_id,
-              city,
-              id,
-              name,
-              phone,
-              primary_contact_id,
-              state,
-              street1,
-              street2,
-              zip,
-              active_orders_count,
-              late_orders_count,
-            } = res.data.body;
+            // const {
+            //   company_id,
+            //   city,
+            //   id,
+            //   name,
+            //   phone,
+            //   primary_contact_id,
+            //   state_province,
+            //   street,
+            //   street_two,
+            //   zip_code,
+            //   active_orders_count,
+            //   late_orders_count,
+            // } = res.data.body;
 
-            setLocalStorageStore({
-              company_id,
-              city,
-              id,
-              name,
-              phone,
-              primary_contact_id,
-              state,
-              street1,
-              street2,
-              zip,
-              active_orders_count,
-              late_orders_count,
-            });
+            // setLocalStorageStore({
+            //   company_id,
+            //   city,
+            //   id,
+            //   name,
+            //   phone,
+            //   primary_contact_id,
+            //   state_province,
+            //   street,
+            //   street_two,
+            //   zip_code,
+            //   active_orders_count,
+            //   late_orders_count,
+            // });
 
-            dispatch(
-              setCurrentStore({
-                company_id,
-                city,
-                id,
-                name,
-                phone,
-                primary_contact_id,
-                state,
-                street1,
-                street2,
-                zip,
-                active_orders_count,
-                late_orders_count,
-              })
-            );
+            setLocalStorageStore(res.data.body);
+
+            // dispatch(
+            //   setCurrentStore({
+            //     company_id,
+            //     city,
+            //     id,
+            //     name,
+            //     phone,
+            //     primary_contact_id,
+            //     state_province,
+            //     street,
+            //     street_two,
+            //     zip_code,
+            //     active_orders_count,
+            //     late_orders_count,
+            //   })
+            // );
+
+            dispatch(setCurrentStore(res.data.body));
             return res;
           })
           .catch(err => {
@@ -308,12 +323,22 @@ export function getCompanies() {
 }
 
 export function createShipment(data) {
+  if (Array.isArray(data.shipment.shipment_action)) {
+    debugger;
+  }
   return validateToken()
     .then(setTokens)
     .then(() => {
       const url = `${expressApi}/shipments`;
       return Axios.post(url, data);
     });
+}
+
+export function setShipmentType(typeString) {
+  return {
+    type: typeString,
+    notes,
+  };
 }
 
 export function getCustomerMeasurements(data) {
@@ -620,7 +645,21 @@ export function getArchivedOrders() {
       .catch(err => console.log('err index.js line 488', err));
   };
 }
+
 // actions
+
+export function resetUserRole() {
+  return {
+    type: RESET_USER_ROLE,
+  };
+}
+
+export function setUserRole(role) {
+  return {
+    type: SET_USER_ROLE,
+    role,
+  };
+}
 
 export function removeLoader() {
   return {

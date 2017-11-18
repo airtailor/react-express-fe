@@ -20,11 +20,11 @@ class CustomerEdit extends Component {
       first_name,
       last_name,
       phone,
-      street1,
-      street2,
+      street,
+      street_two,
       city,
-      state,
-      zip,
+      state_province,
+      zip_code,
     } = props.customer;
     this.state = {
       id,
@@ -32,11 +32,11 @@ class CustomerEdit extends Component {
       first_name,
       last_name,
       phone,
-      street1,
-      street2,
+      street,
+      street_two,
       city,
-      state,
-      zip,
+      state_province,
+      zip_code,
     };
     this.updateState = this.updateState.bind(this);
   }
@@ -85,11 +85,11 @@ class CustomerEdit extends Component {
       first_name,
       last_name,
       phone,
-      street1,
-      street2,
+      street,
+      street_two,
       city,
-      state,
-      zip,
+      state_province,
+      zip_code,
     } = customer;
     const backLink = `/orders/${currentOrder.id}`;
     return (
@@ -126,15 +126,15 @@ class CustomerEdit extends Component {
           />
 
           <FormField
-            value={this.state.street1}
-            fieldName={'street1'}
+            value={this.state.street}
+            fieldName={'street'}
             title={'Street'}
             onChange={this.updateState}
           />
 
           <FormField
-            value={this.state.street2}
-            fieldName={'street2'}
+            value={this.state.street_two}
+            fieldName={'street_two'}
             title={'Unit'}
             onChange={this.updateState}
           />
@@ -147,16 +147,16 @@ class CustomerEdit extends Component {
           />
 
           <FormField
-            value={this.state.state}
+            value={this.state.state_province}
             fieldName={'state'}
             title={'State'}
             onChange={this.updateState}
           />
 
           <FormField
-            value={this.state.zip}
-            fieldName={'zip'}
-            title={'Zip'}
+            value={this.state.zip_code}
+            fieldName={'zip_code'}
+            title={'Zip Code'}
             onChange={this.updateState}
           />
 

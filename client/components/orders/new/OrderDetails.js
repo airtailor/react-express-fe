@@ -22,7 +22,6 @@ class OrderDetails extends Component {
 
   renderCustomerInfo(cart) {
     const {first_name, last_name, phone, email} = cart.customerInfo;
-
     return (
       <div>
         <div>
@@ -85,16 +84,16 @@ class OrderDetails extends Component {
       return (
         <div>
           <FormField
-            value={customerInfo.street1}
-            fieldName={'street1'}
+            value={customerInfo.street}
+            fieldName={'street'}
             title={'Address 1'}
             className="order-details-input"
             onChange={this.updateCustomerInfo}
           />
 
           <FormField
-            value={customerInfo.street2}
-            fieldName={'street2'}
+            value={customerInfo.street_two}
+            fieldName={'street_two'}
             title={'Address 2'}
             className="order-details-input"
             onChange={this.updateCustomerInfo}
@@ -109,17 +108,17 @@ class OrderDetails extends Component {
           />
 
           <FormField
-            value={customerInfo.state}
-            fieldName={'state'}
+            value={customerInfo.state_province}
+            fieldName={'state_province'}
             title={'State'}
             className="order-details-input"
             onChange={this.updateCustomerInfo}
           />
 
           <FormField
-            value={customerInfo.zip}
-            fieldName={'zip'}
-            title={'Zip'}
+            value={customerInfo.zip_code}
+            fieldName={'zip_code'}
+            title={'Zip Code:'}
             className="order-details-input"
             onChange={this.updateCustomerInfo}
           />

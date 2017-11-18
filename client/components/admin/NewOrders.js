@@ -66,6 +66,7 @@ const mapStateToProps = store => {
     currentStore: store.currentStore,
     newOrders: store.newOrders,
     currentOrder: store.currentOrder,
+    userRoles: store.userRoles
   };
 };
 

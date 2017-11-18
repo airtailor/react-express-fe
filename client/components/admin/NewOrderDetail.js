@@ -12,16 +12,16 @@ import {
 //import {renderAlterationList} from '../../utils/alterationsLists';
 
 import {
-  getShippingType,
-  getPrintButtonPrompt,
-  lowerCaseFirstLetter,
-  toSnakeCaseFromCamelCase,
+  shipmentType,
+  shipmentActions,
+  getLabelState,
+  makeShippingLabel,
 } from '../shipping/shippingFunctions';
 
 import WelcomeKitPrint from '../prints/WelcomeKitPrint.js';
 import {SetFulfilledButton} from '../orders/orderForms/SetFulfilled';
 import SelectTailor from '../orders/orderForms/SelectTailor';
-//import UpdateNotes from '../orders/orderForms/UpdateNotes';
+// import UpdateNotes from '../orders/orderForms/UpdateNotes';
 
 class NewOrderDetail extends Component {
   constructor(props) {
@@ -79,8 +79,9 @@ class NewOrderDetail extends Component {
     this.props.updateOrder({order}).catch(err => console.log('err', err));
   }
 
-  makeShippingLabel(type, order_id) {
-    const data = {shipment: {type, order_id}};
+  makeShippingLabel(type, order) {
+    const data = {shipment: {type, order_id: order.id}};
+    // here, we pass in our shipment stuff
     createShipment(data)
       .then(res => {
         const order = res.data.body;
@@ -96,19 +97,10 @@ class NewOrderDetail extends Component {
       .catch(err => console.log('err', err));
   }
 
-  renderPrintLabels() {
-    if (!this.props.order.fulfilled) {
-      return;
-    }
-
-    const {currentUser, order} = this.props;
-    const role = currentUser.user.roles[0].name;
-    const shippingType = getShippingType(role, order.type);
-    const printPrompt = getPrintButtonPrompt(
-      shippingType,
-      order,
-      this.state.loadingLabel
-    );
+  renderPrintLabels(order) {
+    const roles = this.props.userRoles;
+    const shippingType = shipmentType(roles, order.type);
+    const printPrompt = getPrintButtonPrompt(shippingType, order);
 
     if (printPrompt.split(' ')[0] === 'Print') {
       const url = this.props.order[
@@ -312,6 +304,7 @@ const mapStateToProps = store => {
   return {
     tailors: store.tailorList,
     currentUser: store.currentUser,
+    userRoles: store.userRoles,
   };
 };
 

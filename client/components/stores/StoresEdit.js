@@ -17,6 +17,7 @@ class StoresEdit extends Component {
     super();
     this.state = {};
     this.updateState = this.updateState.bind(this);
+    this.updateAddressField = this.updateAddressField.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -30,6 +31,10 @@ class StoresEdit extends Component {
 
   updateState(field, value) {
     this.setState({[field]: value});
+  }
+
+  updateAddressField(field, value) {
+    this.setState({address: {[field]: value}});
   }
 
   handleSubmit(e) {
@@ -58,7 +63,16 @@ class StoresEdit extends Component {
   }
 
   renderForm(data) {
-    const {name, phone, street1, street2, city, state, zip} = data;
+    if (!data.address) {
+      return;
+    }
+
+    const {
+      name,
+      phone,
+      address: {street, street_two, city, state_province, zip_code},
+    } = data;
+
     return (
       <div>
         <form onSubmit={e => this.handleSubmit(e)}>
@@ -77,38 +91,38 @@ class StoresEdit extends Component {
           />
 
           <FormField
-            value={street1}
-            fieldName={'street1'}
+            value={street}
+            fieldName={'street'}
             title={'Street:'}
-            onChange={this.updateState}
+            onChange={this.updateAddressField}
           />
 
           <FormField
-            value={street2}
-            fieldName={'street2'}
+            value={street_two}
+            fieldName={'street_two'}
             title={'Unit:'}
-            onChange={this.updateState}
+            onChange={this.updateAddressField}
           />
 
           <FormField
             value={city}
             fieldName={'city'}
             title={'City:'}
-            onChange={this.updateState}
+            onChange={this.updateAddressField}
           />
 
           <FormField
-            value={state}
-            fieldName={'state'}
+            value={state_province}
+            fieldName={'state_province'}
             title={'State:'}
-            onChange={this.updateState}
+            onChange={this.updateAddressField}
           />
 
           <FormField
-            value={zip}
-            fieldName={'zip'}
+            value={zip_code}
+            fieldName={'zip_code'}
             title={'Zip:'}
-            onChange={this.updateState}
+            onChange={this.updateAddressField}
           />
           <input className="short-button" type="submit" value="Update Store" />
         </form>

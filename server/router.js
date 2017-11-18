@@ -479,9 +479,6 @@ router.get('/api/new_orders', (req, res) => {
   const uid = req.get('uid');
   const expiry = req.get('expiry');
   const headers = {client, ['access-token']: accessToken, uid, expiry};
-  console.log(
-    '\n\n\n\n\n\nHIiiiiiiiiiiiasdflasdfjasdofjaosfjosadifjasdoijfds\n\n\n\n\n\n'
-  );
   const url = `${apiUrl}/api/new_orders`;
 
   Axios.get(url, {

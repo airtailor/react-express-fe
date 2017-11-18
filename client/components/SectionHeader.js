@@ -3,10 +3,11 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 
 // const CustomerLink = props => {
-//   const {linkTo, linkText, role} = props;
+//   const {linkTo, linkText, userRoles} = this.props;
+//   const roles = userRoles;
 //
 //   if (linkTo && linkText) {
-//     if (role !== 'retailer') {
+//     if (roles.retailer) {
 //       return (
 //         <Link className="link" to={props.linkTo}>
 //           {props.linkText}
@@ -19,13 +20,13 @@ import {Link} from 'react-router-dom';
 // };
 
 const CartRibbon = props => {
-  const {rotate} = props;
+  const {rotate, userRoles} = props;
   let link = props.link;
   if (!link) {
     link = '/orders/new';
   }
 
-  if (props.currentUser.user.roles[0].name === 'tailor') {
+  if (props.userRoles.tailor) {
     return <div />;
   }
 
@@ -50,6 +51,7 @@ const SectionHeader = props => {
 const mapStateToProps = store => {
   return {
     currentUser: store.currentUser,
+    userRoles: store.userRoles
   };
 };
 

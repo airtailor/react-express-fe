@@ -35,14 +35,14 @@ class ArchivedOrders extends Component {
         const route = `/orders/${id}`;
         return (
           <div key={id}>
-            <div className="order-row">
-              <Link to={route} className="flex-container">
-                <div className="order-data">#{id}</div>
-                <div className="order-data" style={{color: 'green'}}>
+            <div className="order-row flex-container">
+              <Link to={route} className="order-data flex-container">
+                <div>#{id}</div>
+                <div style={{color: 'green'}}>
                   {fulfilledDate}
                 </div>
-                <div className="order-data">{customerOrTailor}</div>
-                <div className="order-data">{quantityOrRetailer}</div>
+                <div>{customerOrTailor}</div>
+                <div>{quantityOrRetailer}</div>
               </Link>
             </div>
             <hr className="order-row-hr" />
@@ -59,9 +59,10 @@ class ArchivedOrders extends Component {
       return <Redirect to="/" />;
     }
     const headerText = `Archived Orders / ${this.props.currentStore.name}`;
-    const role = this.props.currentUser.user.roles[0].name;
+    const role = this.props.userRoles;
     let customerOrTailor, quantityOrSource;
-    if (role === 'admin') {
+
+    if (role.admin) {
       customerOrTailor = 'Tailor';
       quantityOrSource = 'Source';
     } else {
@@ -91,6 +92,7 @@ const mapStateToProps = store => {
     currentUser: store.currentUser,
     currentStore: store.currentStore,
     archivedOrders: store.archivedOrders,
+    userRoles: store.userRoles,
   };
 };
 

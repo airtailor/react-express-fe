@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 class NewOrderCustomerDetail extends Component {
   render(){
     if (this.props.order.customer){
-      const {id, first_name, last_name, email, phone, street1, street2, city, state, zip} = this.props.order.customer;
+      const {id, first_name, last_name, email, phone, street, street_two, city, state_province, zip_code} = this.props.order.customer;
       const customerEditLink = `/customers/${id}/edit`;
       return(
         <div>
@@ -13,7 +13,7 @@ class NewOrderCustomerDetail extends Component {
           <p>Name: {first_name} {last_name}</p>
           <p>Email: {email}</p>
           <p>Phone: {phone}</p>
-          <p>Address: {street1} {street2} {city}, {state} {zip}</p>
+          <p>Address: {street} {street_two} {city}, {state_province} {zip_code}</p>
           <Link to={customerEditLink}><button className='button small-button'> Edit Customer</button></Link>
         </div>
       )
