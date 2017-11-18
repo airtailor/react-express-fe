@@ -7,8 +7,6 @@
 @import "tables";
 @import "sign-in";
 @import "section-header";
-@import "order-rows";
-@import "conversation-rows";
 @import "home";
 @import "order-form";
 @import "order-show";
@@ -22,4 +20,6 @@
 @import "checkbox";
 @import "growler";
 @import "edit-account";
-@import "archive.scss";
+@import "archive";
+@import "orders-show";
+@import "conversation-index";

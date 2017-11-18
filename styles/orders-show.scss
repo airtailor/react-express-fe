@@ -73,6 +73,7 @@
 
 .order-headers-row {
   @extend .table-row;
+  flex-basis: 95%;
 
   font-family: arial;
   font-size: 14px;
@@ -83,18 +84,17 @@
 .order-row-link {
   @extend .table-cell;
   @extend .flex-container;
+  @extend .table-link;
+
   padding-top: 10px;
   padding-bottom: 10px;
-  flex-basis: 85%;
-}
-
-.order-row-link:hover {
-  @extend .hoverable;
+  flex-basis: 80%;
 }
 
 .order-select-header-cell {
   @extend .table-header-cell;
   flex-basis: 15%;
+  text-align: right;
 }
 
 .order-data-header-cell {
@@ -105,7 +105,7 @@
 .order-data-headers-container {
   @extend .table-header-cell;
   @extend .flex-container;
-  flex-basis: 85%;
+  flex-basis: 80%;
 }
 
 .order-row-cell {
@@ -116,7 +116,7 @@
 
 .order-select-cell {
   @extend .order-row-cell;
-  text-align: center;
+  text-align: right;
   flex-basis: 15%;
   padding-top: 15px;
   padding-bottom: 12px;
