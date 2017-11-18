@@ -29,7 +29,7 @@ class ArchivedOrders extends Component {
 
     const fulfilledDate = moment(order.fulfilled_date).format("MM-DD-YYYY");
     let customerOrTailor, quantityOrRetailer;
-    if (roles.tailor) {
+    if (roles.admin) {
       customerOrTailor = tailor.name;
       quantityOrRetailer = retailer.name;
     } else {
@@ -41,15 +41,16 @@ class ArchivedOrders extends Component {
 
     const route = `/orders/${id}`;
     return (
-      <div className="order-row" key={id}>
-        <Link to={route} className="order-row-link row-border-bottom">
-          <div className="order-data-cell">#{id}</div>
-          <div className="order-data-cell" style={{ color: "green" }}>
+      <div className="archive-row" key={id}>
+        <Link to={route} className="archive-link">
+          <div className="archive-order-cell">#{id}</div>
+          <div className="archive-order-cell" style={{ color: "green" }}>
             {fulfilledDate}
           </div>
-          <div className="order-data-cell">{customerOrTailor}</div>
-          <div className="order-data-cell">{quantityOrRetailer}</div>
+          <div className="archive-order-cell">{customerOrTailor}</div>
+          <div className="archive-order-cell">{quantityOrRetailer}</div>
         </Link>
+        <div className="archive-break-row" />
       </div>
     );
   }
@@ -58,7 +59,7 @@ class ArchivedOrders extends Component {
     const { archivedOrders } = this.props;
     if (!isEmpty(archivedOrders)) {
       return (
-        <div className="order-data-container">
+        <div className="archive-container">
           {archivedOrders.map(order => this.renderArchivedOrderRow(order))}
         </div>
       );
@@ -90,14 +91,16 @@ class ArchivedOrders extends Component {
     }
 
     return (
-      <div className="order-headers-container">
-        <div className="order-headers-row">
-          <h3 className="order-data-header-cell">Order</h3>
-          <h3 className="order-data-header-cell">FulFilled Date</h3>
-          <h3 className="order-data-header-cell">{customerOrTailor}</h3>
-          <h3 className="order-data-header-cell">{quantityOrSource}</h3>
+      <div>
+        <div className="archive-headers-container">
+          <div className="archive-headers-row">
+            <h3 className="archive-header-cell">Order</h3>
+            <h3 className="archive-header-cell">FulFilled Date</h3>
+            <h3 className="archive-header-cell">{customerOrTailor}</h3>
+            <h3 className="archive-header-cell">{quantityOrSource}</h3>
+          </div>
         </div>
-        <div className="order-header-break-row" />
+        <div className="archive-header-break-row" />
       </div>
     );
   }
@@ -112,7 +115,7 @@ class ArchivedOrders extends Component {
     return (
       <div>
         <SectionHeader text={headerText} />
-        <div className="orders">
+        <div className="archive">
           {archivedOrderHeaders()}
           {archivedOrderRows()}
         </div>

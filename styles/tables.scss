@@ -3,19 +3,22 @@
 }
 
 .table-row-container {
-  width: 100%;
   padding-left: 5%;
   padding-right: 5%;
 }
 
 .table-cell {
   text-align: center;
-  flex: 0 0 15%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 15%;
 }
 
 .full-width-text-row {
   padding-top: 2%;
-  flex: 1 1 100%;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 100%;
   text-align: center;
   font-family: $serif;
 }
@@ -32,7 +35,6 @@
 
 .table-header-cell {
   @extend .table-cell;
-  text-align: center;
   text-transform: uppercase;
 }
 
