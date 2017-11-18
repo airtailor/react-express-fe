@@ -4,15 +4,16 @@
   "engines": {
     "node": "7.0.0"
   },
-  "description": "The front-end React portal for AirTailor!",
+  "description": "The front-end React portal for AirTailor! IT'S A SECRET.",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/airtailor/react-express-fe.git"
   },
-  "private": true,
   "main": "index.js",
   "scripts": {
-    "clean": "rimraf public/bundle.*.js && rimraf public/manifest.*.js && rimraf public/vendor.*.js",
+    "clean":
+      "cd public && rimraf index.html bundle.* manifest.* vendor.*",
     "build": "NODE_ENV=production npm run clean && webpack",
     "serve": "webpack-dev-server",
     "start": "node server/index.js",
