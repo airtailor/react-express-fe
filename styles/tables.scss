@@ -4,8 +4,8 @@
 
 .table-row-container {
   width: 100%;
-  padding-left: 2%;
-  padding-right: 2%;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .table-cell {
@@ -24,12 +24,27 @@
   @extend .hoverable;
 }
 
+.table-headers-container {
+  @extend .table-row-container;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
 .table-header-cell {
   @extend .table-cell;
   text-align: center;
   text-transform: uppercase;
 }
 
-.conversation-break-row {
-  @extend .break-row;
+.row-border-bottom {
+  border-bottom: 1px solid $border-gray;
+}
+
+.row-border-top {
+  border-top: 1px solid $border-gray;
+}
+
+.break-row {
+  @extend .row-border-top;
+  flex-basis: 1 1 100%;
 }

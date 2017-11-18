@@ -3,6 +3,20 @@
   width: 100%;
 }
 
+.archived-orders {
+  @extend .orders;
+
+  .order-data-cell,
+  .order-data-header-cell {
+    flex-basis: 25%;
+  }
+
+  .order-headers-break-row {
+    @extend .row-border-bottom;
+    width: 95%;
+  }
+}
+
 .order-state-container {
   background: $accent-gray;
 }
@@ -44,11 +58,6 @@
   color: $primary-red;
 }
 
-.break-row {
-  flex-basis: 1 1 100%;
-  border-top: 1px solid gray;
-}
-
 .order-header-break-row {
   @extend .break-row;
 }
@@ -59,19 +68,10 @@
 }
 
 .order-data-container {
-  width: 100%;
+  @extend .table-row-container;
 }
 
-.order-headers {
-  width: 100%;
-}
-
-
-.order-row {
-  @extend .table-row;
-}
-
-.order-row-container {
+.order-headers-container {
   @extend .table-row-container;
 }
 
@@ -87,19 +87,11 @@
 .order-row-link {
   @extend .table-cell;
   @extend .flex-container;
+  @extend .table-link;
+
   padding-top: 10px;
   padding-bottom: 10px;
   flex-basis: 85%;
-}
-
-.order-row-link:hover {
-  @extend .hoverable;
-}
-
-.table-header-cell {
-  @extend .table-cell;
-  text-align: center;
-  text-transform: uppercase;
 }
 
 .order-select-header-cell {

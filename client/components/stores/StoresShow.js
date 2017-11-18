@@ -455,7 +455,7 @@ class StoresShow extends Component {
           <SectionHeader text={headerText} />
           <div className="orders">
             <div className="order-state-container">{orderStateTabs()}</div>
-            <div className>{orderHeaders()}</div>
+            <div>{orderHeaders()}</div>
             <div className="order-header-break-row" />
             <div>{orderRows()}</div>
             <div>{shippingControls()}</div>
@@ -465,15 +465,15 @@ class StoresShow extends Component {
       );
     } else if (tailor) {
       const orderRows = this.renderTailorOrderRows;
-      return <div />;
-      <div>
-        <SectionHeader text={headerText} />
-        <div className="orders">
-          <div>{orderHeaders()}</div>
-          <hr className="order-header-break-row" />
-          <div className="order-data">{orderRows()}</div>
+      return (
+        <div>
+          <SectionHeader text={headerText} />
+          <div className="orders">
+            <div className="order-headers">{orderHeaders()}</div>
+            <div className="order-data">{orderRows()}</div>
+          </div>
         </div>
-      </div>;
+      );
     }
   }
 }
