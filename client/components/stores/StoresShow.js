@@ -69,18 +69,23 @@ class StoresShow extends Component {
       case 'new_orders':
         if (roles.tailor) {
           // this is where i'd like shipped to exist.
-          return orders.filter(o => !isEmpty(o.shipments) && o.tailor);
+          return orders.filter(
+            order => !isEmpty(order.shipments) && order.tailor
+          );
         } else {
-          return orders.filter(o => isEmpty(o.shipments));
+          return orders.filter(order => isEmpty(order.shipments));
         }
       case 'in_progress_orders':
         if (roles.tailor) {
           return orders.filter(order => order.arrived && !order.fulfilled);
         } else {
-          return orders.filter(o => !isEmpty(o.shipments) && o.tailor);
+          return orders.filter(
+            order =>
+              !isEmpty(order.shipments) && order.tailor && !order.fulfilled
+          );
         }
       case 'ready_orders':
-        return orders.filter(o => o.fulfilled);
+        return orders.filter(order => order.fulfilled);
       case 'late_orders':
         return orders.filter(order => order.late);
       default:
@@ -93,17 +98,40 @@ class StoresShow extends Component {
   }
 
   getOrderStatus(order) {
+    const {
+      shipments,
+      arrived,
+      late,
+      due_date,
+      fulfilled,
+      customer_alerted,
+      ship_to_store,
+    } = order;
+
+    let status, color;
+
     if (isEmpty(order.shipments)) {
-      return {status: 'Needs Shipping Details', color: 'gold'};
+      status = 'Needs Shipping Details';
+      color = 'gold';
     } else if (!isEmpty(order.shipments) && !order.arrived) {
-      return {status: 'In Transit', color: 'green'};
+      status = 'In Transit';
+      color = 'green';
     } else if (order.late) {
       let dueTime = this.formatStatusString(order.due_date, true);
-      return {status: dueTime, color: 'red'};
+      status = dueTime;
+      color = 'red';
+    } else if (
+      order.fulfilled &&
+      !order.customer_alerted &&
+      order.ship_to_store
+    ) {
+      status = 'Ready for Customer';
+      color: 'green';
     } else {
-      let dueTime = this.formatStatusString(order.due_date, false);
-      return {status: dueTime, color: 'orange'};
+      status = this.formatStatusString(order.due_date, false);
+      color = 'orange';
     }
+    return {status, color};
   }
 
   postShipment(orders, action, type) {
