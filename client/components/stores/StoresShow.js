@@ -213,18 +213,18 @@ class StoresShow extends Component {
     return (
       <div className="order-row" key={id}>
         <div className="order-select-cell">{orderSelect}</div>
-        // <Link to={route} className="order-row-link">
-        <div className="order-data-cell">#{id}</div>
-        <div className="order-data-cell" style={{ color }}>
-          {status}
-        </div>
-        <div className="order-data-cell">
-          {first_name} {last_name}
-        </div>
-        {tailorDiv}
-        <div className="order-data-cell">{alterations_count}</div>
-        // </Link>
-        <hr className="order-row-hr" />
+        <Link to={route} className="order-row-link">
+          <div className="order-data-cell">#{id}</div>
+          <div className="order-data-cell" style={{ color }}>
+            {status}
+          </div>
+          <div className="order-data-cell">
+            {first_name} {last_name}
+          </div>
+          {tailorDiv}
+          <div className="order-data-cell">{alterations_count}</div>
+        </Link>
+        <div className="order-data-break-row" />
       </div>
     );
   }
@@ -235,7 +235,7 @@ class StoresShow extends Component {
       const status = this.state.showOrderState;
       const sortedOrders = this.sortOrdersByStatus(status);
       return (
-        <div className="order-data">
+        <div className="order-data-container">
           {sortedOrders.map(order => this.renderOrderRow(order))}
         </div>
       );
@@ -298,27 +298,29 @@ class StoresShow extends Component {
 
   renderOrderHeaders() {
     const { userRoles: roles } = this.props;
-    let selectHeader = <div />;
-    let orderHeader = <h3 className="order-header-cell">Order</h3>;
-    let statusHeader = <h3 className="order-header-cell">Status</h3>;
-    let customerHeader = <h3 className="order-header-cell">Customer</h3>;
-    let tailorHeader = <div />;
-    let quantityHeader = <h3 className="order-header-cell">Quantity</h3>;
+    let selectHeader = <h3 className="order-select-header-cell"></h3>;
+    let orderHeader = <h3 className="order-data-header-cell">Order</h3>;
+    let statusHeader = <h3 className="order-data-header-cell">Status</h3>;
+    let customerHeader = <h3 className="order-data-header-cell">Customer</h3>;
+    let tailorHeader = <h3 className="order-data-header-cell"></h3>;
+    let quantityHeader = <h3 className="order-data-header-cell">Quantity</h3>;
 
     if (roles.admin || roles.retailer) {
-      selectHeader = <h3 className="order-header-cell">Select:</h3>;
-      tailorHeader = <h3 className="order-header-cell">Tailor</h3>;
+      selectHeader = <h3 className="order-select-header-cell">Select:</h3>;
+      tailorHeader = <h3 className="order-data-header-cell">Tailor</h3>;
     }
 
     return (
-      <div className="order-headers">
+      <div className="order-headers-container">
         <div className="order-headers-row">
           {selectHeader}
-          {orderHeader}
-          {statusHeader}
-          {customerHeader}
-          {tailorHeader}
-          {quantityHeader}
+          <div className="order-data-columns">
+            {orderHeader}
+            {statusHeader}
+            {customerHeader}
+            {tailorHeader}
+            {quantityHeader}
+          </div>
         </div>
       </div>
     );
@@ -347,7 +349,7 @@ class StoresShow extends Component {
         //       <div className="order-row-cell">{alterations_count}</div>
         //     </Link>
         //   </div>
-        //   <hr className="order-row-hr" />
+        //   <hr className="order-data-break-row" />
         // </div>
       });
     } else {
@@ -373,9 +375,9 @@ class StoresShow extends Component {
         <div>
           <SectionHeader text={headerText} />
           <div className="orders">
-            <div className="order-state">{orderStateTabs()}</div>
-            <div>{orderHeaders()}</div>
-            <hr className="order-header-hr" />
+            <div className="order-state-container">{orderStateTabs()}</div>
+            <div className>{orderHeaders()}</div>
+            <div className="order-header-break-row" />
             <div>{orderRows()}</div>
             <div>{shippingControls()}</div>
           </div>

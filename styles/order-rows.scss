@@ -3,7 +3,7 @@
   width: 100%;
 }
 
-.order-state {
+.order-state-container {
   background: $accent-gray;
 }
 
@@ -44,21 +44,21 @@
   color: $primary-red;
 }
 
-.row-hr {
+.break-row {
   width: 95%;
   margin: 0 auto;
+  border-top: 1px solid gray;
 }
 
-.order-header-hr {
-  @extend .row-hr;
+.order-header-break-row {
+  @extend .break-row;
 }
 
-.order-row-hr {
-  @extend .row-hr;
+.order-data-break-row {
+  @extend .break-row;
 }
 
-
-.order-data {
+.order-data-container {
   width: 100%;
 }
 
@@ -70,6 +70,10 @@
   @extend .flex-container;
 }
 
+.order-row {
+  @extend .table-row;
+}
+
 .order-headers-row {
   @extend .table-row;
 
@@ -79,49 +83,76 @@
   text-transform: uppercase;
 }
 
-.order-row {
-  @extend .table-row;
-  background-color: black;
+.table-cell {
+  text-align: center;
+  flex: 0 0 15%;
+}
+
+.order-row-link {
+  @extend .table-cell;
+  @extend .flex-container;
+  padding-top: 10px;
+  flex-basis: 85%;
 }
 
 .order-row-link:hover {
   @extend .hoverable;
 }
 
-.table-cell {
-  flex: 0 0 15%;
-}
-
-.order-header-cell {
+.table-header-cell {
   @extend .table-cell;
-
   text-align: center;
   text-transform: uppercase;
 }
 
-.order-select-cell {
+.order-select-header-cell {
+  @extend .table-header-cell;
+  flex-basis: 15%;
+  padding-top: 8px;
+  padding-bottom: 12px;
+}
+
+.order-data-header-cell {
+  @extend .table-header-cell;
+  flex-basis: 20%;
+}
+
+.order-data-columns {
+  @extend .table-header-cell;
+  @extend .flex-container;
+  flex-basis: 85%;
+}
+
+.order-row-cell {
   @extend .table-cell;
-  background-color: green;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.order-select-cell {
+  @extend .order-row-cell;
+  text-align: center;
+  flex-basis: 15%;
 }
 
 .order-data-cell {
-  @extend .table-cell;
-  background-color: yellow;
+  @extend .order-row-cell;
+  flex-basis: 20%;
 }
 
 
-// .full-width-text-row {
-//   padding-top: 2%;
-//   flex: 1 1 100%;
-//   text-align: center;
-//   font-family: $serif;
-// }
-//
-// .loading-orders {
-//   @extend .full-width-text-row;
-//   font-style: italic;
-// }
-//
-// .no-orders {
-//   @extend .full-width-text-row;
-// }
+.full-width-text-row {
+  padding-top: 2%;
+  flex: 1 1 100%;
+  text-align: center;
+  font-family: $serif;
+}
+
+.loading-orders {
+  @extend .full-width-text-row;
+  font-style: italic;
+}
+
+.no-orders {
+  @extend .full-width-text-row;
+}
