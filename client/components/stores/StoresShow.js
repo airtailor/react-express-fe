@@ -3,7 +3,13 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import moment from 'moment';
 import {Redirect, Link} from 'react-router-dom';
-import {getStoreOrders, setLoader, removeLoader} from '../../actions';
+import {
+  getStoreOrders,
+  setLoader,
+  removeLoader,
+  alertCustomersPickup,
+  setGrowler,
+} from '../../actions';
 import SectionHeader from '../SectionHeader';
 import isEmpty from 'lodash/isEmpty';
 import Checkbox from '../Checkbox';
@@ -32,6 +38,7 @@ class StoresShow extends Component {
     this.renderShippingControls = this.renderShippingControls.bind(this);
     this.renderOrderStateTabs = this.renderOrderStateTabs.bind(this);
     this.renderOrderRowsByStatus = this.renderOrderRowsByStatus.bind(this);
+    this.renderAlertCustomers = this.renderAlertCustomers.bind(this);
   }
 
   componentDidMount() {
@@ -127,7 +134,7 @@ class StoresShow extends Component {
     ) {
       status = 'Ready for Customer';
       color: 'green';
-    } else {
+    } else if (order.arrived && !order.fulfilled) {
       status = this.formatStatusString(order.due_date, false);
       color = 'orange';
     }
@@ -202,6 +209,45 @@ class StoresShow extends Component {
               className="messenger-button"
               onClick={messengerFunction}
               value="Send Messenger"
+            />
+          </div>
+        </div>
+      );
+    } else {
+      return <div />;
+    }
+  }
+
+  renderAlertCustomers() {
+    const {userRoles: roles, currentStore: {id: store_id}} = this.props;
+    if (roles.admin || roles.retailer) {
+      const orders = this.state.selectedOrders;
+
+      const labelFunction = () => this.makeLabels([...orders]);
+      const messengerFunction = () => this.sendMessenger([...orders]);
+      const alertCustomers = () => {
+        this.props.setLoader();
+        alertCustomersPickup(orders, store_id).then(res => {
+          this.props.removeLoader();
+          if (res.body.status === 200) {
+            const kind = 'success';
+            const message =
+              'Your customers have been notified to pick up their orders';
+            this.props.setGrowler({kind, message});
+            this.refreshStoreOrders();
+          }
+        });
+        this.props.removeLo;
+      };
+
+      return (
+        <div className="shipping-button-container">
+          <div>
+            <input
+              type="submit"
+              className="print-label-button"
+              onClick={() => alertCustomers(orders, store_id)}
+              value="Alert Customers"
             />
           </div>
         </div>
@@ -397,6 +443,7 @@ class StoresShow extends Component {
     const orderRows = this.renderOrderRowsByStatus;
     const orderStateTabs = this.renderOrderStateTabs;
     const shippingControls = this.renderShippingControls;
+    const alertCustomers = this.renderAlertCustomers;
 
     if (retailer || admin) {
       return (
@@ -408,6 +455,7 @@ class StoresShow extends Component {
             <div className="order-header-break-row" />
             <div>{orderRows()}</div>
             <div>{shippingControls()}</div>
+            <div>{alertCustomers()}</div>
           </div>
         </div>
       );
@@ -440,6 +488,7 @@ const mapDispatchToProps = dispatch => {
       getStoreOrders,
       setLoader,
       removeLoader,
+      setGrowler,
     },
     dispatch
   );

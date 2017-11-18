@@ -120,7 +120,6 @@ class OrdersShow extends Component {
   }
 
   getImageForItemType(name) {
-    console.log('name', name);
     switch (name) {
       case 'Pants':
         return pantsImage;
