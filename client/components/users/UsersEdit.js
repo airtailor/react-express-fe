@@ -89,7 +89,7 @@ class UsersEdit extends Component {
             disabled={submitDisabled}
             type="submit"
             value="Update Password"
-            className="small-button"
+            className="short-button"
           />
         </form>
       </div>
