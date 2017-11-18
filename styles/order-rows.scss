@@ -56,6 +56,7 @@
 
 .order-data-break-row {
   @extend .break-row;
+  width: 90%;
 }
 
 .order-data-container {
@@ -92,6 +93,7 @@
   @extend .table-cell;
   @extend .flex-container;
   padding-top: 10px;
+  padding-bottom  : 10px;
   flex-basis: 85%;
 }
 
@@ -108,8 +110,6 @@
 .order-select-header-cell {
   @extend .table-header-cell;
   flex-basis: 15%;
-  padding-top: 8px;
-  padding-bottom: 12px;
 }
 
 .order-data-header-cell {
@@ -133,13 +133,14 @@
   @extend .order-row-cell;
   text-align: center;
   flex-basis: 15%;
+  padding-top: 15px;
+  padding-bottom: 12px;
 }
 
 .order-data-cell {
   @extend .order-row-cell;
   flex-basis: 20%;
 }
-
 
 .full-width-text-row {
   padding-top: 2%;
