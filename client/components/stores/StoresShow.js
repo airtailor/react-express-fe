@@ -34,11 +34,14 @@ class StoresShow extends Component {
     this.toggleOrderSelect = this.toggleOrderSelect.bind(this);
     this.setOrderTabState = this.setOrderTabState.bind(this);
 
-    this.renderOrderHeaders = this.renderOrderHeaders.bind(this);
+    this.renderTailorHeaders = this.renderTailorHeaders.bind(this);
+    this.renderRetailerHeaders = this.renderRetailerHeaders.bind(this);
+    this.renderHeaderCell = this.renderHeaderCell.bind(this);
+
     this.renderShippingControls = this.renderShippingControls.bind(this);
-    this.renderOrderStateTabs = this.renderOrderStateTabs.bind(this);
-    this.renderOrderRowsByStatus = this.renderOrderRowsByStatus.bind(this);
-    this.renderTailorOrderRows = this.renderTailorOrderRows.bind(this);
+    this.renderStateTabs = this.renderStateTabs.bind(this);
+    this.renderRetailerRows = this.renderRetailerRows.bind(this);
+    this.renderTailorRows = this.renderTailorRows.bind(this);
     this.renderAlertCustomers = this.renderAlertCustomers.bind(this);
   }
 
@@ -259,6 +262,29 @@ class StoresShow extends Component {
   }
 
   renderOrderRow(order) {
+    const orderStatus = this.getOrderStatus(order);
+    const { id, customer, alterations_count } = order;
+    const { first_name, last_name } = customer;
+    const { color, status } = orderStatus;
+    const route = `/orders/${id}`;
+    return (
+      <div className="order-row" key={id}>
+        <Link to={route} className="order-row-link-no-select">
+          <div className="order-cell-no-select">#{id}</div>
+          <div style={{ color }} className="order-cell-no-select">
+            {status}
+          </div>
+          <div className="order-cell-no-select">
+            {first_name} {last_name}
+          </div>
+          <div className="order-cell-no-select">{alterations_count}</div>
+        </Link>
+        <div className="order-data-break-row" />
+      </div>
+    );
+  }
+
+  renderOrderRowWithSelect(order) {
     const { userRoles: roles } = this.props;
     const { id, customer, tailor, alterations_count } = order;
     const { first_name, last_name } = customer;
@@ -271,26 +297,23 @@ class StoresShow extends Component {
     const route = `/orders/${id}`;
 
     let orderSelect = <div />;
-    if (roles.admin || roles.retailer) {
-      const orderIsToggled = this.state.selectedOrders.has(order);
-      const orderToggle = () => this.toggleOrderSelect(order);
-
-      orderSelect = (
-        <Checkbox
-          checked={orderIsToggled}
-          type="checkbox"
-          name={id}
-          onChange={orderToggle}
-        />
-      );
-    }
+    const orderIsToggled = this.state.selectedOrders.has(order);
+    const orderToggle = () => this.toggleOrderSelect(order);
+    orderSelect = (
+      <Checkbox
+        checked={orderIsToggled}
+        type="checkbox"
+        name={id}
+        onChange={orderToggle}
+      />
+    );
 
     return (
       <div className="order-row" key={id}>
         <div className="order-select-cell">{orderSelect}</div>
         <Link to={route} className="order-row-link">
           <div className="order-data-cell">#{id}</div>
-          <div className="order-data-cell" style={{ color }}>
+          <div style={{ color }} className="order-data-cell">
             {status}
           </div>
           <div className="order-data-cell">
@@ -304,32 +327,7 @@ class StoresShow extends Component {
     );
   }
 
-  renderOrderRowsByStatus() {
-    const { openOrders } = this.props;
-    if (!isEmpty(openOrders)) {
-      const status = this.state.showOrderState;
-      const sortedOrders = this.sortOrdersByStatus(status);
-      return (
-        <div className="order-data-container">
-          {sortedOrders.map(order => this.renderOrderRow(order))}
-        </div>
-      );
-    } else if (this.state.loadingOrders) {
-      return (
-        <div className="table-row">
-          <div className="loading-orders">Loading Orders...</div>
-        </div>
-      );
-    } else {
-      return (
-        <div className="table-row">
-          <div className="no-orders">No orders found!</div>
-        </div>
-      );
-    }
-  }
-
-  renderOrderStateTabs() {
+  renderStateTabs() {
     const allTabs = [
       { className: "order-state-tab", status: "new_orders", text: "New" },
       {
@@ -371,67 +369,99 @@ class StoresShow extends Component {
     return <div className="order-state-row">{tabs}</div>;
   }
 
-  renderOrderHeaders() {
-    const { userRoles: roles } = this.props;
-    let selectHeader = <h3 className="order-select-header-cell" />;
-    let orderHeader = <h3 className="order-data-header-cell">Order</h3>;
-    let statusHeader = <h3 className="order-data-header-cell">Status</h3>;
-    let customerHeader = <h3 className="order-data-header-cell">Customer</h3>;
-    let tailorHeader = <h3 className="order-data-header-cell" />;
-    let quantityHeader = <h3 className="order-data-header-cell">Quantity</h3>;
-
-    if (roles.admin || roles.retailer) {
-      selectHeader = <h3 className="order-select-header-cell">Select:</h3>;
-      tailorHeader = <h3 className="order-data-header-cell">Tailor</h3>;
+  renderHeaderCell(text, withSelect, isSelect) {
+    if (isSelect) {
+      return <h3 className="order-select-header-cell">{text}</h3>;
+    } else if (withSelect) {
+      return <h3 className="order-data-header-cell">{text}</h3>;
+    } else {
+      return <h3 className="order-header-cell-no-select">{text}</h3>;
     }
+  }
+
+  renderTailorHeaders() {
+    const orderHeader = this.renderHeaderCell;
 
     return (
       <div className="order-headers-container">
-        <div className="order-headers-row">
-          {selectHeader}
-          <div className="order-data-headers-container">
-            {orderHeader}
-            {statusHeader}
-            {customerHeader}
-            {tailorHeader}
-            {quantityHeader}
+        <div className="order-headers-row-no-select">
+          <div className="order-headers-container-no-select">
+            {orderHeader("Id", false)}
+            {orderHeader("Status", false)}
+            {orderHeader("Customer", false)}
+            {orderHeader("Quantity", false)}
           </div>
         </div>
       </div>
     );
   }
 
-  renderTailorOrderRows() {
+  renderRetailerHeaders() {
+    const orderHeader = this.renderOrderHeader;
+    return (
+      <div className="order-headers-container">
+        <div className="order-headers-row">
+          {orderHeader("Select:", false, true)}
+          <div className="order-data-headers-container">
+            {orderHeader("Order", true, false)}
+            {orderHeader("Status", true, false)}
+            {orderHeader("Customer", true, false)}
+            {orderHeader("Tailor", true, false)}
+            {orderHeader("Quantity", true, false)}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderRetailerRows() {
+    const { openOrders } = this.props;
+    if (!isEmpty(openOrders)) {
+      const status = this.state.showOrderState;
+      const sortedOrders = this.sortOrdersByStatus(status);
+      return (
+        <div className="order-data-container">
+          {sortedOrders.map(order => this.renderOrderRowWithSelect(order))}
+        </div>
+      );
+    } else if (this.state.loadingOrders) {
+      return (
+        <div className="table-row">
+          <div className="loading-orders">Loading Orders...</div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="table-row">
+          <div className="no-orders">No orders found!</div>
+        </div>
+      );
+    }
+  }
+
+  renderTailorRows() {
     const { openOrders } = this.props;
     const ordersWithShipments = this.sortOrdersByStatus("new_orders");
 
     if (!isEmpty(ordersWithShipments)) {
-      return ordersWithShipments.map((order, i) => {
-        const orderStatus = this.getOrderStatus(order);
-        const { id, customer, alterations_count } = order;
-        const { first_name, last_name } = customer;
-        const { color, status } = orderStatus;
-        const route = `/orders/${id}`;
-        return (
-          <div key={id}>
-            <div className="order-row">
-              <div className="order-row-link">
-                <Link to={route}>
-                  <div className="order-data-cell">#{id}</div>
-                  <div style={{ color }}>{status}</div>
-                  <div className="order-data-cell">
-                    {first_name} {last_name}
-                  </div>
-                  <div className="order-data-cell">{alterations_count}</div>
-                </Link>
-              </div>
-              <div className="order-data-break-row" />
-            </div>
-          </div>
-        );
-      });
+      const status = this.state.showOrderState;
+      return (
+        <div className="order-data-container">
+          {ordersWithShipments.map(order => this.renderOrderRow(order))}
+        </div>
+      );
+    } else if (this.state.loadingOrders) {
+      return (
+        <div className="table-row">
+          <div className="loading-orders">Loading Orders...</div>
+        </div>
+      );
     } else {
-      return <div>Loading...</div>;
+      return (
+        <div className="table-row">
+          <div className="no-orders">No orders found!</div>
+        </div>
+      );
     }
   }
 
@@ -441,13 +471,12 @@ class StoresShow extends Component {
     }
 
     const { userRoles: { tailor, retailer, admin } } = this.props;
-
     const headerText = `Orders / ${this.props.currentStore.name}`;
-    const orderHeaders = this.renderOrderHeaders;
 
     if (retailer || admin) {
-      const orderStateTabs = this.renderOrderStateTabs;
-      const orderRows = this.renderOrderRowsByStatus;
+      const orderStateTabs = this.renderStateTabs;
+      const orderRows = this.renderRetailerRows;
+      const orderHeaders = this.renderRetailerHeaders;
       const shippingControls = this.renderShippingControls;
       const alertCustomers = this.renderAlertCustomers;
       return (
@@ -464,13 +493,15 @@ class StoresShow extends Component {
         </div>
       );
     } else if (tailor) {
-      const orderRows = this.renderTailorOrderRows;
+      const orderRows = this.renderTailorRows;
+      const orderHeaders = this.renderTailorHeaders;
       return (
         <div>
           <SectionHeader text={headerText} />
           <div className="orders">
-            <div className="order-headers">{orderHeaders()}</div>
-            <div className="order-data">{orderRows()}</div>
+            <div>{orderHeaders()}</div>
+            <div className="order-header-break-row" />
+            <div>{orderRows()}</div>
           </div>
         </div>
       );

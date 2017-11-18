@@ -60,3 +60,7 @@
   @extend .flex-container;
   justify-content: center;
 }
+
+.shipping-button-container:first-child {
+  margin-top: 10px;
+}
