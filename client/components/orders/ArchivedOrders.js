@@ -1,32 +1,32 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import moment from 'moment';
-import {Redirect, Link} from 'react-router-dom';
-import SectionHeader from '../SectionHeader';
-import {getArchivedOrders, setLoader, removeLoader} from '../../actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import moment from "moment";
+import { Redirect, Link } from "react-router-dom";
+import SectionHeader from "../SectionHeader";
+import { getArchivedOrders, setLoader, removeLoader } from "../../actions";
 
 class ArchivedOrders extends Component {
   componentDidMount() {
-    const {setLoader, removeLoader, getArchivedOrders} = this.props;
+    const { setLoader, removeLoader, getArchivedOrders } = this.props;
 
     setLoader();
     getArchivedOrders().then(() => removeLoader());
   }
 
   renderOrderRows() {
-    const {archivedOrders} = this.props;
+    const { archivedOrders } = this.props;
     if (archivedOrders.length > 0) {
       return archivedOrders.map((order, i) => {
-        const fulfilledDate = moment(order.fulfilled_date).format('MM-DD-YYYY');
+        const fulfilledDate = moment(order.fulfilled_date).format("MM-DD-YYYY");
         let customerOrTailor, quantityOrRetailer;
-        const {id, tailor, retailer, customer, alterations_count} = order;
+        const { id, tailor, retailer, customer, alterations_count } = order;
 
         if (tailor) {
           customerOrTailor = tailor.name;
           quantityOrRetailer = retailer.name;
         } else {
-          const {first_name, last_name} = customer;
+          const { first_name, last_name } = customer;
           const name = `${first_name} ${last_name}`;
           customerOrTailor = name;
           quantityOrRetailer = alterations_count;
@@ -35,17 +35,17 @@ class ArchivedOrders extends Component {
         const route = `/orders/${id}`;
         return (
           <div key={id}>
-            <div className="order-row flex-container">
-              <Link to={route} className="order-data flex-container">
-                <div>#{id}</div>
-                <div style={{color: 'green'}}>
+            <div className="order-row">
+              <Link to={route} className="order-row-link">
+                <div className="order-data-cell">#{id}</div>
+                <div className="order-data-cell" style={{ color: "green" }}>
                   {fulfilledDate}
                 </div>
-                <div>{customerOrTailor}</div>
-                <div>{quantityOrRetailer}</div>
+                <div className="order-data-cell">{customerOrTailor}</div>
+                <div className="order-data-cell">{quantityOrRetailer}</div>
               </Link>
             </div>
-            <hr className="order-row-hr" />
+            <div className="order-data-break-row" />
           </div>
         );
       });
@@ -63,23 +63,23 @@ class ArchivedOrders extends Component {
     let customerOrTailor, quantityOrSource;
 
     if (role.admin) {
-      customerOrTailor = 'Tailor';
-      quantityOrSource = 'Source';
+      customerOrTailor = "Tailor";
+      quantityOrSource = "Source";
     } else {
-      customerOrTailor = 'Customer';
-      quantityOrSource = 'Quantity';
+      customerOrTailor = "Customer";
+      quantityOrSource = "Quantity";
     }
     return (
       <div>
         <SectionHeader text={headerText} />
         <div className="orders">
-          <div className="order-row-header">
-            <h3 className="order-column">Order</h3>
-            <h3 className="order-column">FulFilled Date</h3>
-            <h3 className="order-column">{customerOrTailor}</h3>
-            <h3 className="order-column">{quantityOrSource}</h3>
+          <div className="order-headers-row">
+            <h3 className="order-select-header-cell">Order</h3>
+            <h3 className="order-select-header-cell">FulFilled Date</h3>
+            <h3 className="order-select-header-cell">{customerOrTailor}</h3>
+            <h3 className="order-select-header-cell">{quantityOrSource}</h3>
           </div>
-          <hr className="order-header-break-row" />
+          <div className="order-header-break-row" />
           <div className="order-rows">{this.renderOrderRows()}</div>
         </div>
       </div>
@@ -92,13 +92,13 @@ const mapStateToProps = store => {
     currentUser: store.currentUser,
     currentStore: store.currentStore,
     archivedOrders: store.archivedOrders,
-    userRoles: store.userRoles,
+    userRoles: store.userRoles
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    {getArchivedOrders, setLoader, removeLoader},
+    { getArchivedOrders, setLoader, removeLoader },
     dispatch
   );
 };

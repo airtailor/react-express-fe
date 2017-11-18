@@ -412,20 +412,23 @@ class StoresShow extends Component {
         const { first_name, last_name } = customer;
         const { color, status } = orderStatus;
         const route = `/orders/${id}`;
-        return <div />;
-        <div key={id}>
-          <div className="order-row-link">
-            <Link to={route}>
-              <div className="order-row-cell">#{id}</div>
-              <div style={{ color }}>{status}</div>
-              <div className="order-row-cell">
-                {first_name} {last_name}
+        return (
+          <div key={id}>
+            <div className="order-row">
+              <div className="order-row-link">
+                <Link to={route}>
+                  <div className="order-data-cell">#{id}</div>
+                  <div style={{ color }}>{status}</div>
+                  <div className="order-data-cell">
+                    {first_name} {last_name}
+                  </div>
+                  <div className="order-data-cell">{alterations_count}</div>
+                </Link>
               </div>
-              <div className="order-row-cell">{alterations_count}</div>
-            </Link>
+              <div className="order-data-break-row" />
+            </div>
           </div>
-          <hr className="order-data-break-row" />
-        </div>;
+        );
       });
     } else {
       return <div>Loading...</div>;
