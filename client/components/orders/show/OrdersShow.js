@@ -120,6 +120,7 @@ class OrdersShow extends Component {
   }
 
   getImageForItemType(name) {
+    console.log('name', name);
     switch (name) {
       case 'Pants':
         return pantsImage;
@@ -364,7 +365,7 @@ class OrdersShow extends Component {
   renderItemCaption(item, itemType, index) {
     const alterations = item.alterations.map(this.renderAlteration);
     const itemCaption = `${itemType.type} #${index + 1}`;
-    const image = this.getImageForItemType(itemType.name);
+    const image = this.getImageForItemType(itemType.type);
 
     return (
       <div className="card" key={index}>
