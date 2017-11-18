@@ -249,6 +249,24 @@ export function updateOrder(data) {
   };
 }
 
+export function alertCustomersPickup(orders, store_id) {
+  const url = `${expressApi}/stores/${store_id}/orders/alert_customers`;
+  const data = [...orders].map(order => order.id);
+
+  return validateToken()
+    .then(setTokens)
+    .then(() => {
+      return Axios.put(url, data)
+        .then(res => {
+          return res.data;
+        })
+        .catch(err => {
+          debugger;
+        });
+    })
+    .catch(err => console.log('err index.js line 155', err));
+}
+
 export function updateCustomer(data) {
   const url = `${expressApi}/customers/${data.customer.id}`;
   return validateToken()

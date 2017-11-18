@@ -717,6 +717,38 @@ router.get('/api/orders/archived', (req, res) => {
       }
     });
 });
+
+router.put(`/api/stores/:store_id/orders/alert_customers`, (req, res) => {
+  const client = req.get('client');
+  const accessToken = req.get('access-token');
+  const uid = req.get('uid');
+  const expiry = req.get('expiry');
+  const headers = {client, ['access-token']: accessToken, uid};
+  const {store_id} = req.params;
+
+  console.log(
+    '\n\n\n\n\n\n\n\n !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n',
+    req.body
+  );
+  console.log(`${apiUrl}/stores/${store_id}/orders/alert_customers`);
+  Axios.put(`${apiUrl}/api/stores/${store_id}/orders/alert_customers`, {
+    orders: req.body,
+    headers,
+  })
+    .then(response => {
+      res.json({headers: response.headers, body: response.data});
+    })
+    .catch(err => {
+      if (err instanceof Error) {
+        console.log('@@@@@@@@@@@@@', err.response.status);
+        res.json(err.response.status);
+      } else {
+        console.log('error: ', err);
+        res.json(err);
+      }
+    });
+});
+
 router.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/../public/index.html'));
 });
