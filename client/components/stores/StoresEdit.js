@@ -17,6 +17,7 @@ class StoresEdit extends Component {
     super();
     this.state = {};
     this.updateState = this.updateState.bind(this);
+    this.updateAddressField = this.updateAddressField.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -25,12 +26,15 @@ class StoresEdit extends Component {
     this.setState(store);
     this.props
       .getCurrentStore(this.props.match.params.store_id)
-      .then(() => this.setState({store: this.props.store}))
       .catch(err => console.log(err));
   }
 
   updateState(field, value) {
     this.setState({[field]: value});
+  }
+
+  updateAddressField(field, value) {
+    this.setState({address: {[field]: value}});
   }
 
   handleSubmit(e) {
@@ -59,14 +63,15 @@ class StoresEdit extends Component {
   }
 
   renderForm(data) {
+    if (!data.address) {
+      return;
+    }
+
     const {
       name,
       phone,
       address: {street, street_two, city, state_province, zip_code},
     } = data;
-
-    console.log('data', data);
-    console.log('props', this.props);
 
     return (
       <div>
@@ -89,35 +94,35 @@ class StoresEdit extends Component {
             value={street}
             fieldName={'street'}
             title={'Street:'}
-            onChange={this.updateState}
+            onChange={this.updateAddressField}
           />
 
           <FormField
             value={street_two}
             fieldName={'street_two'}
             title={'Unit:'}
-            onChange={this.updateState}
+            onChange={this.updateAddressField}
           />
 
           <FormField
             value={city}
             fieldName={'city'}
             title={'City:'}
-            onChange={this.updateState}
+            onChange={this.updateAddressField}
           />
 
           <FormField
             value={state_province}
             fieldName={'state_province'}
             title={'State:'}
-            onChange={this.updateState}
+            onChange={this.updateAddressField}
           />
 
           <FormField
             value={zip_code}
             fieldName={'zip_code'}
-            title={'Zip Code:'}
-            onChange={this.updateState}
+            title={'Zip:'}
+            onChange={this.updateAddressField}
           />
           <input className="short-button" type="submit" value="Update Store" />
         </form>
@@ -126,8 +131,7 @@ class StoresEdit extends Component {
   }
 
   render() {
-    console.log('poop', this.props.store);
-    const {store} = this.state;
+    const {store} = this.props;
     if (!store) {
       return <div>Loading...</div>;
     } else {
@@ -137,7 +141,7 @@ class StoresEdit extends Component {
           <div className="form-container edit-account">
             <h3>Edit Store</h3>
 
-            {this.renderForm(store)}
+            {this.renderForm(this.state)}
             <br />
             <hr />
             <br />
