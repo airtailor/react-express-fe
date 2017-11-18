@@ -71,6 +71,31 @@
   @extend .table-row;
 }
 
+.order-headers-row-no-select {
+  @extend .order-headers-row;
+  flex-basis: 100%;
+}
+
+.order-row-link-no-select {
+  @extend .table-cell;
+  @extend .flex-container;
+  @extend .table-link;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+  flex-basis: 100%;
+}
+
+.order-cell-no-select {
+  @extend .order-row-cell;
+  flex-basis: 25%;
+}
+
+.order-header-cell-no-select {
+  @extend .table-header-cell;
+  flex-basis: 25%;
+}
+
 .order-headers-row {
   @extend .table-row;
   flex-basis: 95%;
@@ -106,6 +131,12 @@
   @extend .table-header-cell;
   @extend .flex-container;
   flex-basis: 80%;
+}
+
+.order-headers-container-no-select {
+  @extend .table-header-cell;
+  @extend .flex-container;
+  flex-basis: 100%;
 }
 
 .order-row-cell {
