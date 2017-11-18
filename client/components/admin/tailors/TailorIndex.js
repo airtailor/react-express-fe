@@ -61,7 +61,7 @@ class TailorsIndex extends Component {
             <h3 className="order-column">In Stock</h3>
             <h3 className="order-column">Late</h3>
           </div>
-          <hr className="order-header-hr" />
+          <hr className="order-header-break-row" />
           <div className="order-rows">{this.renderTailorRows()}</div>
         </div>
       </div>

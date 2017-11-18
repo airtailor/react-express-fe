@@ -79,7 +79,7 @@ class ArchivedOrders extends Component {
             <h3 className="order-column">{customerOrTailor}</h3>
             <h3 className="order-column">{quantityOrSource}</h3>
           </div>
-          <hr className="order-header-hr" />
+          <hr className="order-header-break-row" />
           <div className="order-rows">{this.renderOrderRows()}</div>
         </div>
       </div>

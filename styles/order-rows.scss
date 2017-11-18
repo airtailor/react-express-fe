@@ -63,7 +63,7 @@
   width: 100%;
 }
 
-.order-headers {
+.order-headers-container {
   width: 100%;
 }
 
@@ -93,7 +93,7 @@
   @extend .table-cell;
   @extend .flex-container;
   padding-top: 10px;
-  padding-bottom  : 10px;
+  padding-bottom: 10px;
   flex-basis: 85%;
 }
 
@@ -117,7 +117,7 @@
   flex-basis: 20%;
 }
 
-.order-data-columns {
+.order-data-headers-container {
   @extend .table-header-cell;
   @extend .flex-container;
   flex-basis: 85%;

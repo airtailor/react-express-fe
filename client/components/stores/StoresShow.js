@@ -32,6 +32,7 @@ class StoresShow extends Component {
     this.renderShippingControls = this.renderShippingControls.bind(this);
     this.renderOrderStateTabs = this.renderOrderStateTabs.bind(this);
     this.renderOrderRowsByStatus = this.renderOrderRowsByStatus.bind(this);
+    this.renderTailorOrderRows = this.renderTailorOrderRows.bind(this);
   }
 
   componentDidMount() {
@@ -314,7 +315,7 @@ class StoresShow extends Component {
       <div className="order-headers-container">
         <div className="order-headers-row">
           {selectHeader}
-          <div className="order-data-columns">
+          <div className="order-data-headers-container">
             {orderHeader}
             {statusHeader}
             {customerHeader}
@@ -338,19 +339,19 @@ class StoresShow extends Component {
         const { color, status } = orderStatus;
         const route = `/orders/${id}`;
         return <div />;
-        // <div key={id}>
-        //   <div className="order-row-link">
-        //     <Link to={route}>
-        //       <div className="order-row-cell">#{id}</div>
-        //       <div style={{ color }}>{status}</div>
-        //       <div className="order-row-cell">
-        //         {first_name} {last_name}
-        //       </div>
-        //       <div className="order-row-cell">{alterations_count}</div>
-        //     </Link>
-        //   </div>
-        //   <hr className="order-data-break-row" />
-        // </div>
+        <div key={id}>
+          <div className="order-row-link">
+            <Link to={route}>
+              <div className="order-row-cell">#{id}</div>
+              <div style={{ color }}>{status}</div>
+              <div className="order-row-cell">
+                {first_name} {last_name}
+              </div>
+              <div className="order-row-cell">{alterations_count}</div>
+            </Link>
+          </div>
+          <hr className="order-data-break-row" />
+        </div>
       });
     } else {
       return <div>Loading...</div>;
@@ -366,11 +367,11 @@ class StoresShow extends Component {
 
     const headerText = `Orders / ${this.props.currentStore.name}`;
     const orderHeaders = this.renderOrderHeaders;
-    const orderRows = this.renderOrderRowsByStatus;
-    const orderStateTabs = this.renderOrderStateTabs;
-    const shippingControls = this.renderShippingControls;
 
     if (retailer || admin) {
+      const orderStateTabs = this.renderOrderStateTabs;
+      const orderRows = this.renderOrderRowsByStatus;
+      const shippingControls = this.renderShippingControls;
       return (
         <div>
           <SectionHeader text={headerText} />
@@ -384,15 +385,16 @@ class StoresShow extends Component {
         </div>
       );
     } else if (tailor) {
+      const orderRows = this.renderTailorOrderRows
       return <div />;
-      // <div>
-      //   <SectionHeader text={headerText} />
-      //   <div className="orders">
-      //     <div>{orderHeaders()}</div>
-      //     <hr className="order-header-hr" />
-      //     <div className="order-data">{this.renderTailorOrderRows()}</div>
-      //   </div>
-      // </div>
+      <div>
+        <SectionHeader text={headerText} />
+        <div className="orders">
+          <div>{orderHeaders()}</div>
+          <hr className="order-header-break-row" />
+          <div className="order-data">{orderRows()}</div>
+        </div>
+      </div>
     }
   }
 }
