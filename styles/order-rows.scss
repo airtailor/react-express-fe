@@ -45,8 +45,7 @@
 }
 
 .break-row {
-  width: 95%;
-  margin: 0 auto;
+  flex-basis: 1 1 100%;
   border-top: 1px solid gray;
 }
 
@@ -56,7 +55,7 @@
 
 .order-data-break-row {
   @extend .break-row;
-  width: 90%;
+  width: 100%;
 }
 
 .order-data-container {
@@ -67,12 +66,13 @@
   width: 100%;
 }
 
-.table-row {
-  @extend .flex-container;
-}
 
 .order-row {
   @extend .table-row;
+}
+
+.order-row-container {
+  @extend .table-row-container;
 }
 
 .order-headers-row {
@@ -82,11 +82,6 @@
   font-size: 14px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-}
-
-.table-cell {
-  text-align: center;
-  flex: 0 0 15%;
 }
 
 .order-row-link {

@@ -26,18 +26,17 @@ class ConversationsIndex extends Component {
       const route = `/conversations/${id}`;
       return (
         <div key={index}>
-          <div className="order-row">
-            <div className="order-row-link">
-              <Link to={route}>
-                <div className="order-data-cell">#{id}</div>
-                <div className="order-data-cell">{name}</div>
-                <div className="order-data-cell" style={{ color }}>
+          <div className="conversation-row-container">
+            <div className="conversation-row">
+              <Link to={route} className="conversation-row-link">
+                <div className="conversation-cell">#{id}</div>
+                <div className="conversation-cell">{name}</div>
+                <div className="conversation-cell" style={{ color }}>
                   {status}
                 </div>
               </Link>
             </div>
           </div>
-          <hr className="order-data-break-row" />
         </div>
       );
     });
@@ -46,12 +45,12 @@ class ConversationsIndex extends Component {
   render() {
     const headerText = "Conversations";
     return (
-      <div className="orders">
-        <div className="order-headers-container">
-          <SectionHeader text={headerText} />
-        </div>
-        <div className="order-data-container">
-          {this.renderConversations(this.props)}
+      <div>
+        <SectionHeader text={headerText} />
+        <div className="orders">
+          <div className="conversations-container">
+            {this.renderConversations(this.props)}
+          </div>
         </div>
       </div>
     );
