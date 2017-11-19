@@ -65,7 +65,6 @@ class OrdersShow extends Component {
 
     this.postShipment = this.postShipment.bind(this);
     this.makeShippingLabel = this.makeShippingLabel.bind(this);
-    // this.renderSendMessenger = this.renderSendMessenger.bind(this);
   }
 
   refreshCurrentOrder() {
@@ -202,12 +201,8 @@ class OrdersShow extends Component {
       .catch(err => console.log("err", err));
   }
 
-  makeShippingLabel(action) {
-    return this.postShipment(
-      [this.props.currentOrder],
-      action,
-      "mail_shipment"
-    );
+  makeShippingLabel(orders, action) {
+    return this.postShipment(orders, action, "mail_shipment");
   }
 
   printShippingLabel() {
@@ -325,7 +320,6 @@ class OrdersShow extends Component {
       case "label_created":
         printPrompt = "Print Label";
         onClick = () => window.print();
-        // NOTE: we need to make sure that orderComplete gets the correct shipment.
         shipmentDiv = <OrderComplete />;
         break;
       default:
@@ -420,18 +414,6 @@ class OrdersShow extends Component {
     } else {
       return <div />;
     }
-  }
-
-  renderSendMessenger() {
-    // const printPrompt = "Send a Messenger"
-    // const disabled = this.state.sendingMessenger;
-    // const shipmentAction = shipmentActions(currentOrder, roles)
-    //
-    // return this.renderButton(
-    //   printPrompt,
-    //   {disabled: disabled, clickArgs: shipmentAction},
-    //   sendMessenger
-    // )
   }
 
   renderToggleNotesFormButton() {
