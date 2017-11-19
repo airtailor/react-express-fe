@@ -1,34 +1,34 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import moment from "moment";
-import { Redirect, Link } from "react-router-dom";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import moment from 'moment';
+import {Redirect, Link} from 'react-router-dom';
 import {
   getStoreOrders,
   setLoader,
   removeLoader,
   alertCustomersPickup,
-  setGrowler
-} from "../../actions";
-import SectionHeader from "../SectionHeader";
-import isEmpty from "lodash/isEmpty";
-import Checkbox from "../Checkbox";
-import OrderComplete from "../prints/OrderComplete.js";
+  setGrowler,
+} from '../../actions';
+import SectionHeader from '../SectionHeader';
+import isEmpty from 'lodash/isEmpty';
+import Checkbox from '../Checkbox';
+import OrderComplete from '../prints/OrderComplete.js';
 
 import {
   fireShipmentCreate,
   shipmentTypes,
   shipmentActions,
   labelState,
-  messengerAllowed
-} from "../shipping/shippingFunctions";
+  messengerAllowed,
+} from '../shipping/shippingFunctions';
 
 class StoresShow extends Component {
   constructor(props) {
     super();
     this.state = {
-      showOrderState: "new_orders",
-      selectedOrders: new Set()
+      showOrderState: 'new_orders',
+      selectedOrders: new Set(),
     };
 
     this.toggleOrderSelect = this.toggleOrderSelect.bind(this);
@@ -52,25 +52,26 @@ class StoresShow extends Component {
   }
 
   componentDidMount() {
-    const { currentUser: { store_id: storeId } } = this.props;
+    const {currentUser: {store_id: storeId}} = this.props;
     this.refreshStoreOrders();
   }
 
   refreshStoreOrders() {
     this.props.setLoader();
-    const { user: { store_id: storeId } } = this.props.currentUser;
+    const {user: {store_id: storeId}} = this.props.currentUser;
     const {
       getStoreOrders,
-      userRoles: { admin },
-      match: { params: { store_id } }
+      userRoles: {admin},
+      match: {params: {store_id: adminStoreId}},
     } = this.props;
-    const id = admin && store_id ? store_id : storeId;
+    const id = admin && adminStoreId ? adminStoreId : storeId;
 
-    this.setState({ loadingOrders: true });
+    console.log('refreshStoreOrders going out');
+    this.setState({loadingOrders: true});
     getStoreOrders(storeId)
       .then(res => {
-        this.this.setState({ selectedOrders: new Set() });
-        this.setState({ loadingOrders: false });
+        console.log('refreshStoreOrders returned');
+        this.setState({loadingOrders: false});
         this.props.removeLoader();
       })
       .catch(err => console.log(err));
@@ -78,37 +79,44 @@ class StoresShow extends Component {
 
   postShipment(orders, action, type) {
     this.props.setLoader();
+    console.log('postShipment going out');
+    // NOTE: we'll need to update this once we're returning >1 shipment per post.
+    // OrderComplete is set up for arrays, but the API is returning objects right now.
     return fireShipmentCreate(orders, action, type)
       .then(res => {
         this.props.removeLoader();
-        this.setState({ loadingLabel: false });
-        this.refreshStoreOrders();
+        this.setState({
+          loadingLabel: false,
+          selectedOrderShipments: res.data.body,
+        });
       })
-      .catch(err => console.log("err", err));
+      .then(() => {
+        return this.refreshStoreOrders();
+      })
+      .catch(err => console.log('err', err));
   }
 
   formatStatusString(dueDate, late) {
     const todaysDate = moment(new Date());
     const momentDueDate = moment(dueDate);
-    const diff = Math.abs(momentDueDate.diff(todaysDate, "days"));
-    const additionalString = late ? " days late" : " days to go";
+    const diff = Math.abs(momentDueDate.diff(todaysDate, 'days'));
+    const additionalString = late ? ' days late' : ' days to go';
     const status = (diff + additionalString).toUpperCase();
     return status;
   }
 
   sortOrdersByStatus(status) {
-    const { openOrders: orders, userRoles: roles } = this.props;
+    const {openOrders: orders, userRoles: roles} = this.props;
     switch (status) {
-      case "new_orders":
+      case 'new_orders':
         if (roles.tailor) {
-          // this is where i'd like shipped to exist.
           return orders.filter(
             order => !isEmpty(order.shipments) && order.tailor
           );
         } else {
           return orders.filter(order => isEmpty(order.shipments));
         }
-      case "in_progress_orders":
+      case 'in_progress_orders':
         if (roles.tailor) {
           return orders.filter(order => order.arrived && !order.fulfilled);
         } else {
@@ -117,9 +125,9 @@ class StoresShow extends Component {
               !isEmpty(order.shipments) && order.tailor && !order.fulfilled
           );
         }
-      case "ready_orders":
+      case 'ready_orders':
         return orders.filter(order => order.fulfilled);
-      case "late_orders":
+      case 'late_orders':
         return orders.filter(order => order.late);
       default:
         return orders;
@@ -138,79 +146,82 @@ class StoresShow extends Component {
       due_date,
       fulfilled,
       customer_alerted,
-      ship_to_store
+      ship_to_store,
     } = order;
 
     let status, color;
 
     if (isEmpty(order.shipments)) {
-      status = "Needs Shipping Details";
-      color = "gold";
+      status = 'Needs Shipping Details';
+      color = 'gold';
     } else if (!isEmpty(order.shipments) && !order.arrived) {
-      status = "In Transit";
-      color = "green";
+      status = 'In Transit';
+      color = 'green';
     } else if (order.late) {
       let dueTime = this.formatStatusString(order.due_date, true);
       status = dueTime;
-      color = "red";
+      color = 'red';
     } else if (
       order.fulfilled &&
       !order.customer_alerted &&
       order.ship_to_store
     ) {
-      status = "Ready for Customer";
-      color: "green";
+      status = 'Ready for Customer';
+      color: 'green';
     } else if (order.arrived && !order.fulfilled) {
       status = this.formatStatusString(order.due_date, false);
-      color = "orange";
+      color = 'orange';
     }
-    return { status, color };
+    return {status, color};
   }
 
   printBulkShippingLabel() {
-    debugger;
-    console.log("current orders", currentOrders);
-    console.log("state, before setting printSet", this.state);
-    const currentOrders = [...this.state.selectedOrders];
-    this.setState({
-      printSet: currentOrders.map(order => {
-        return this.props.openOrders.find(o => o.id == order.id);
-      })
-    });
-    return window.print();
+    // return window.print();
   }
 
   makeLabels([...orders]) {
-    const { userRoles: roles } = this.props;
+    const {userRoles: roles} = this.props;
     if (!isEmpty(orders)) {
       const order = [...orders][0];
       const action = shipmentActions(order, roles);
-      return this.postShipment(orders, action, "mail_shipment").then(() => {
-        console.log("openOrders", this.props.openOrders);
+      return Promise.all([
+        this.postShipment(orders, action, 'mail_shipment'),
+      ]).then(() => {
+        console.log('Promise.all resolved! in makeLabels');
+        // console.log("this.props.openOrders", this.props.openOrders);
+        // console.log("this.state.selectedOrder", this.state.selectedOrders);
+        const printSet = this.props.openOrders.filter(o => {
+          return [...this.state.selectedOrders].find(so => so.id == o.id);
+        });
+
+        this.setState({selectedOrders: new Set(), printSet: printSet});
+        // console.log("printSet", this.state.printSet);
         this.printBulkShippingLabel();
       });
     }
   }
 
   sendMessenger([...orders]) {
-    const { userRoles: roles } = this.props;
+    const {userRoles: roles} = this.props;
     if (!isEmpty(orders)) {
       const order = orders[0];
       const action = shipmentActions(order, roles);
-      return this.postShipment(orders, action, "messenger_shipment");
+      return this.postShipment(orders, action, 'messenger_shipment').then(() =>
+        this.setState({selectedOrders: new Set()})
+      );
     }
   }
 
   alertCustomers(orders) {
-    const { userRoles: roles, currentStore: { id: store_id } } = this.props;
+    const {userRoles: roles, currentStore: {id: store_id}} = this.props;
     this.props.setLoader();
     alertCustomersPickup(orders, store_id).then(res => {
       this.props.removeLoader();
       if (res.body.status === 200) {
-        const kind = "success";
+        const kind = 'success';
         const message =
-          "Your customers have been notified to pick up their orders.";
-        this.props.setGrowler({ kind, message });
+          'Your customers have been notified to pick up their orders.';
+        this.props.setGrowler({kind, message});
         this.refreshStoreOrders();
       }
     });
@@ -220,19 +231,19 @@ class StoresShow extends Component {
     if (!this.state.selectedOrders.has(order)) {
       const newSelectedOrders = this.state.selectedOrders;
       newSelectedOrders.add(order);
-      this.setState({ selectedOrders: newSelectedOrders });
+      this.setState({selectedOrders: newSelectedOrders});
     } else {
       const newSelectedOrders = this.state.selectedOrders;
       newSelectedOrders.delete(order);
-      this.setState({ selectedOrders: newSelectedOrders });
+      this.setState({selectedOrders: newSelectedOrders});
     }
   }
 
   setOrderTabState(state) {
-    this.setState({ showOrderState: state });
+    this.setState({showOrderState: state});
   }
 
-  renderButton(text, params, callback = () => console.log("")) {
+  renderButton(text, params, callback = () => console.log('')) {
     const className = params.className;
     const clickArgs = params.clickArgs || undefined;
     const disabled = params.disabled;
@@ -250,18 +261,18 @@ class StoresShow extends Component {
   }
 
   renderMessengerButton() {
-    const { userRoles: roles } = this.props;
+    const {userRoles: roles} = this.props;
     const orders = this.state.selectedOrders;
     const disabled = this.state.sendingMessenger;
     const onClick = this.sendMessenger;
     return (
       <div>
         {this.renderButton(
-          "Send Messenger",
+          'Send Messenger',
           {
             disabled: disabled,
-            className: "messenger-button",
-            clickArgs: orders
+            className: 'messenger-button',
+            clickArgs: orders,
           },
           onClick
         )}
@@ -270,7 +281,7 @@ class StoresShow extends Component {
   }
 
   renderLabelsButton() {
-    const { userRoles: roles } = this.props;
+    const {userRoles: roles} = this.props;
     const orders = [...this.state.selectedOrders];
     const disabled = this.state.loadingLabel;
     const onClick = this.makeLabels;
@@ -278,15 +289,15 @@ class StoresShow extends Component {
     return (
       <div>
         {this.renderButton(
-          "Create Labels",
+          'Create Labels',
           {
             disabled: disabled,
-            className: "print-label-button",
-            clickArgs: orders
+            className: 'print-label-button',
+            clickArgs: orders,
           },
           onClick
         )}
-        <OrderComplete />
+        <OrderComplete shipmentSet={this.state.selectedOrderShipments} />
       </div>
     );
   }
@@ -297,11 +308,11 @@ class StoresShow extends Component {
     return (
       <div>
         {this.renderButton(
-          "Alert Customers",
+          'Alert Customers',
           {
             disabled: false,
-            className: "print-label-button",
-            clickArgs: orders
+            className: 'print-label-button',
+            clickArgs: orders,
           },
           onClick
         )}
@@ -310,7 +321,7 @@ class StoresShow extends Component {
   }
 
   renderShippingControls() {
-    const { userRoles: roles } = this.props;
+    const {userRoles: roles} = this.props;
     if (roles.admin || roles.retailer) {
       const labelFunction = this.renderLabelsButton;
       const messengerFunction = this.renderMessengerButton;
@@ -332,15 +343,15 @@ class StoresShow extends Component {
 
   renderOrderRow(order) {
     const orderStatus = this.getOrderStatus(order);
-    const { id, customer, alterations_count } = order;
-    const { first_name, last_name } = customer;
-    const { color, status } = orderStatus;
+    const {id, customer, alterations_count} = order;
+    const {first_name, last_name} = customer;
+    const {color, status} = orderStatus;
     const route = `/orders/${id}`;
     return (
       <div className="order-row" key={id}>
         <Link to={route} className="order-row-link-no-select">
           <div className="order-cell-no-select">#{id}</div>
-          <div style={{ color }} className="order-cell-no-select">
+          <div style={{color}} className="order-cell-no-select">
             {status}
           </div>
           <div className="order-cell-no-select">
@@ -354,10 +365,10 @@ class StoresShow extends Component {
   }
 
   renderOrderRowWithSelect(order) {
-    const { userRoles: roles } = this.props;
-    const { id, customer, tailor, alterations_count } = order;
-    const { first_name, last_name } = customer;
-    const { color, status } = this.getOrderStatus(order);
+    const {userRoles: roles} = this.props;
+    const {id, customer, tailor, alterations_count} = order;
+    const {first_name, last_name} = customer;
+    const {color, status} = this.getOrderStatus(order);
     const route = `/orders/${id}`;
     const orderIsToggled = this.state.selectedOrders.has(order);
     const orderToggle = () => this.toggleOrderSelect(order);
@@ -382,7 +393,7 @@ class StoresShow extends Component {
         <div className="order-select-cell">{orderSelect}</div>
         <Link to={route} className="order-row-link">
           <div className="order-data-cell">#{id}</div>
-          <div style={{ color }} className="order-data-cell">
+          <div style={{color}} className="order-data-cell">
             {status}
           </div>
           <div className="order-data-cell">
@@ -398,27 +409,27 @@ class StoresShow extends Component {
 
   renderStateTabs() {
     const allTabs = [
-      { className: "order-state-tab", status: "new_orders", text: "New" },
+      {className: 'order-state-tab', status: 'new_orders', text: 'New'},
       {
-        className: "order-state-tab",
-        status: "in_progress_orders",
-        text: "Current"
+        className: 'order-state-tab',
+        status: 'in_progress_orders',
+        text: 'Current',
       },
       {
-        className: "order-state-tab",
-        status: "ready_orders",
-        text: "Finished"
+        className: 'order-state-tab',
+        status: 'ready_orders',
+        text: 'Finished',
       },
-      { className: "order-state-tab", status: "late_orders", text: "Late" }
+      {className: 'order-state-tab', status: 'late_orders', text: 'Late'},
     ];
 
     const tabs = allTabs.map((tab, i) => {
       if (tab.status == this.state.showOrderState) {
-        tab.className = tab.className.concat(" selected");
+        tab.className = tab.className.concat(' selected');
       }
-      if (tab.status == "late_orders") {
+      if (tab.status == 'late_orders') {
         if (this.countOrdersByStatus(tab.status) > 0) {
-          tab.className = tab.className.concat(" late-orders");
+          tab.className = tab.className.concat(' late-orders');
         }
       }
 
@@ -454,10 +465,10 @@ class StoresShow extends Component {
       <div className="order-headers-container">
         <div className="order-headers-row-no-select">
           <div className="order-headers-container-no-select">
-            {orderHeader("Id", false)}
-            {orderHeader("Status", false)}
-            {orderHeader("Customer", false)}
-            {orderHeader("Quantity", false)}
+            {orderHeader('Id', false)}
+            {orderHeader('Status', false)}
+            {orderHeader('Customer', false)}
+            {orderHeader('Quantity', false)}
           </div>
         </div>
       </div>
@@ -469,13 +480,13 @@ class StoresShow extends Component {
     return (
       <div className="order-headers-container">
         <div className="order-headers-row">
-          {orderHeader("Select:", false, true)}
+          {orderHeader('Select:', false, true)}
           <div className="order-data-headers-container">
-            {orderHeader("Order", true, false)}
-            {orderHeader("Status", true, false)}
-            {orderHeader("Customer", true, false)}
-            {orderHeader("Tailor", true, false)}
-            {orderHeader("Quantity", true, false)}
+            {orderHeader('Order', true, false)}
+            {orderHeader('Status', true, false)}
+            {orderHeader('Customer', true, false)}
+            {orderHeader('Tailor', true, false)}
+            {orderHeader('Quantity', true, false)}
           </div>
         </div>
       </div>
@@ -483,7 +494,7 @@ class StoresShow extends Component {
   }
 
   renderRetailerRows() {
-    const { openOrders } = this.props;
+    const {openOrders} = this.props;
     if (!isEmpty(openOrders)) {
       const status = this.state.showOrderState;
       const sortedOrders = this.sortOrdersByStatus(status);
@@ -510,9 +521,9 @@ class StoresShow extends Component {
   }
 
   renderTailorRows() {
-    const { openOrders } = this.props;
+    const {openOrders} = this.props;
     if (!isEmpty(openOrders)) {
-      const ordersWithShipments = this.sortOrdersByStatus("new_orders");
+      const ordersWithShipments = this.sortOrdersByStatus('new_orders');
       if (!isEmpty(ordersWithShipments)) {
         return (
           <div className="order-data-container">
@@ -540,7 +551,7 @@ class StoresShow extends Component {
       return <Redirect to="/" />;
     }
 
-    const { userRoles: { tailor, retailer, admin } } = this.props;
+    const {userRoles: {tailor, retailer, admin}} = this.props;
     const headerText = `Orders / ${this.props.currentStore.name}`;
 
     if (retailer || admin) {
@@ -583,7 +594,7 @@ const mapStateToProps = store => {
     currentUser: store.currentUser,
     currentStore: store.currentStore,
     openOrders: store.storeOrders,
-    userRoles: store.userRoles
+    userRoles: store.userRoles,
   };
 };
 
@@ -593,7 +604,7 @@ const mapDispatchToProps = dispatch => {
       getStoreOrders,
       setLoader,
       removeLoader,
-      setGrowler
+      setGrowler,
     },
     dispatch
   );

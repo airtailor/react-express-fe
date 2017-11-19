@@ -10,6 +10,7 @@ import {createShipment} from '../../actions';
 
 export const fireShipmentCreate = (orders, action, type) => {
   const orderIds = orders.map(o => o.id);
+  console.log("fireShipmentCreate going out")
   return createShipment({
     shipment: {
       delivery_type: type,

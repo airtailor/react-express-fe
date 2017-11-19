@@ -1,28 +1,28 @@
 .print {
-  visibility: hidden;
-  display: none;
+  // visibility: hidden;
+  // display: none;
   margin-top: 20px;
   margin-left: 20px;
 }
 
-@media print {
-  body * {
-    visibility: hidden;
-  }
+// @media print {
+//   body * {
+//     // visibility: hidden;
+//   }
 
-  .print,
-  .print * {
-    visibility: visible;
-    display: block;
-  }
-
-  .print {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: block;
-  }
+.print,
+.print * {
+  visibility: visible;
+  display: block;
 }
+
+.print {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+}
+// }
 
 .packing-slip-info {
   font-family: arial;
