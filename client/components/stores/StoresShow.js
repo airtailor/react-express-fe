@@ -52,19 +52,25 @@ class StoresShow extends Component {
   }
 
   componentDidMount() {
-    const { currentUser: { store_id: storeId } } = this.props;
     this.refreshStoreOrders();
+  }
+
+  chooseId() {
+    let storeId;
+    const {
+      match: { params: { store_id: paramsId } },
+      currentUser: { store_id: currentUserId },
+      userRoles: { admin }
+    } = this.props;
+
+    storeId = paramsId && admin ? paramsId : currentUserId;
+
+    return storeId;
   }
 
   refreshStoreOrders() {
     this.props.setLoader();
-    const { user: { store_id: storeId } } = this.props.currentUser;
-    const {
-      getStoreOrders,
-      userRoles: { admin },
-      match: { params: { store_id: adminStoreId } }
-    } = this.props;
-    const id = admin && adminStoreId ? adminStoreId : storeId;
+    const storeId = this.chooseId();
 
     this.setState({ loadingOrders: true });
     getStoreOrders(storeId)
