@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import logo from "../../images/logo.png";
-import isEmpty from "lodash/isEmpty";
-import { getShipmentForRole } from "../shipping/shippingFunctions";
-import { renderAlterationList } from "../../utils/alterationsLists";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import logo from '../../images/logo.png';
+import isEmpty from 'lodash/isEmpty';
+import {getShipmentForRole} from '../shipping/shippingFunctions';
+import {renderAlterationList} from '../../utils/alterationsLists';
 
 class OrderComplete extends Component {
   constructor(props) {
@@ -14,16 +14,13 @@ class OrderComplete extends Component {
     const {
       currentOrder: order,
       currentStore: store,
-      userRoles: roles
+      userRoles: roles,
     } = this.props;
-    const { shipments } = order;
+    const {shipments} = order;
 
     if (order && !isEmpty(shipments)) {
-      const { shipping_label: shippingLabel } = getShipmentForRole(
-        roles,
-        order
-      );
-      const { id, items, customer: { first_name: firstName } } = order;
+      const {shipping_label: shippingLabel} = getShipmentForRole(roles, order);
+      const {id, items, customer: {first_name: firstName}} = order;
       return (
         <div className="print">
           <div className="packing-slip-info">
@@ -42,7 +39,7 @@ class OrderComplete extends Component {
             <p className="packing-slip-info-orderid">
               <b>Order: #{id}</b>
             </p>
-            {renderAlterationList(items, "print-alteration")}
+            {renderAlterationList(items, 'print-alteration')}
             <img
               className="packing-slip-info-img"
               src={logo}
@@ -62,7 +59,7 @@ const mapStateToProps = store => {
   return {
     currentStore: store.currentStore,
     currentOrder: store.currentOrder,
-    userRoles: store.userRoles
+    userRoles: store.userRoles,
   };
 };
 
