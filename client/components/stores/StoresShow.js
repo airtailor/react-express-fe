@@ -34,13 +34,13 @@ class StoresShow extends Component {
     this.toggleOrderSelect = this.toggleOrderSelect.bind(this);
     this.setOrderTabState = this.setOrderTabState.bind(this);
 
-    this.renderTailorHeaders = this.renderTailorHeaders.bind(this);
-    this.renderRetailerHeaders = this.renderRetailerHeaders.bind(this);
-    this.renderHeaderCell = this.renderHeaderCell.bind(this);
-
     this.renderShippingControls = this.renderShippingControls.bind(this);
     this.renderStateTabs = this.renderStateTabs.bind(this);
+
+    this.renderRetailerHeaders = this.renderRetailerHeaders.bind(this);
     this.renderRetailerRows = this.renderRetailerRows.bind(this);
+
+    this.renderTailorHeaders = this.renderTailorHeaders.bind(this);
     this.renderTailorRows = this.renderTailorRows.bind(this);
     this.renderAlertButton = this.renderAlertButton.bind(this);
 
@@ -55,22 +55,14 @@ class StoresShow extends Component {
     this.refreshStoreOrders();
   }
 
-  chooseId() {
-    let storeId;
+  refreshStoreOrders() {
+    this.props.setLoader();
     const {
       match: { params: { store_id: paramsId } },
       currentUser: { store_id: currentUserId },
       userRoles: { admin }
     } = this.props;
-
-    storeId = paramsId && admin ? paramsId : currentUserId;
-
-    return storeId;
-  }
-
-  refreshStoreOrders() {
-    this.props.setLoader();
-    const storeId = this.chooseId();
+    const storeId = paramsId && admin ? paramsId : currentUserId;
 
     this.setState({ loadingOrders: true });
     getStoreOrders(storeId)
