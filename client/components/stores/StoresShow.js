@@ -58,13 +58,18 @@ class StoresShow extends Component {
 
   refreshStoreOrders() {
     this.props.setLoader();
-    const { currentUser: { store_id: storeId } } = this.props;
-    const { getStoreOrders } = this.props;
+    const { user: { store_id: storeId } } = this.props.currentUser;
+    const {
+      getStoreOrders,
+      userRoles: { admin },
+      match: { params: { store_id } }
+    } = this.props;
+    const id = admin && store_id ? store_id : storeId;
 
     this.setState({ loadingOrders: true });
     getStoreOrders(storeId)
       .then(res => {
-        this.setState({ selectedOrders: new Set() });
+        this.this.setState({ selectedOrders: new Set() });
         this.setState({ loadingOrders: false });
         this.props.removeLoader();
       })
@@ -176,7 +181,6 @@ class StoresShow extends Component {
   }
 
   makeLabels([...orders]) {
-    // This should [...print once with X separate labels (x == number of orders])
     const { userRoles: roles } = this.props;
     if (!isEmpty(orders)) {
       const order = [...orders][0];

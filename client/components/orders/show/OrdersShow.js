@@ -201,8 +201,12 @@ class OrdersShow extends Component {
       .catch(err => console.log("err", err));
   }
 
-  makeShippingLabel(orders, action) {
-    return this.postShipment(orders, action, "mail_shipment");
+  makeShippingLabel(action) {
+    return this.postShipment(
+      [this.props.currentOrder],
+      action,
+      "mail_shipment"
+    );
   }
 
   printShippingLabel() {
@@ -584,7 +588,6 @@ class OrdersShow extends Component {
     } else {
       const details = this.renderOrderDetails();
       const controls = this.renderOrderControls();
-      // const orderComplete = (<OrderComplete shipmentType={shipmentType} />)
       mainContent = (
         <div>
           {details}
