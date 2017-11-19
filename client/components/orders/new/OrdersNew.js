@@ -7,7 +7,7 @@ import SectionHeader from '../../SectionHeader';
 import SelectAlterations from './SelectAlterations';
 import Cart from './Cart';
 import Checkout from './Checkout';
-import OrderDetails from './OrderDetails';
+import OrderDetails from './orderDetails';
 import Intercom from 'react-intercom';
 
 class OrdersNew extends Component {
