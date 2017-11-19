@@ -53,10 +53,15 @@ class StoresShow extends Component {
   refreshStoreOrders() {
     this.props.setLoader();
     const {user: {store_id: storeId}} = this.props.currentUser;
-    const {getStoreOrders} = this.props;
+    const {
+      getStoreOrders,
+      userRoles: {admin},
+      match: {params: {store_id}},
+    } = this.props;
+    const id = admin && store_id ? store_id : storeId;
 
     this.setState({loadingOrders: true});
-    getStoreOrders(storeId)
+    getStoreOrders(id)
       .then(() => {
         this.state.selectedOrders = new Set();
         this.setState({loadingOrders: false});
