@@ -1,0 +1,55 @@
+.tailors {
+  color: $primary-blue;
+  width: 100%;
+}
+
+.tailor-headers-row {
+  @extend .table-row;
+  padding-top: 10px;
+}
+
+.tailor-header-cell {
+  @extend .table-header-cell;
+  flex-basis: 25%;
+}
+
+.tailor-header-break-row {
+  @extend .break-row;
+  width: 95%;
+}
+
+.tailor-link {
+  @extend .table-cell;
+  @extend .flex-container;
+  @extend .table-link;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+  flex-basis: 100%;
+}
+
+.tailor-break-row {
+  @extend .break-row;
+  width: 100%;
+}
+
+.tailor-headers-container {
+  @extend .table-headers-container;
+  padding-left: 6%;
+  padding-right: 8%;
+}
+
+.tailor-container {
+  @extend .table-row-container;
+  padding-left: 6%;
+  padding-right: 8%;
+}
+
+.tailor-data-row {
+  @extend .table-row;
+}
+
+.tailor-data-cell {
+  @extend .table-cell;
+  flex-basis: 25%;
+}
