@@ -62,14 +62,15 @@ class StoresShow extends Component {
     const {
       getStoreOrders,
       userRoles: { admin },
-      match: { params: { store_id } }
+      match: { params: { store_id: adminStoreId } }
     } = this.props;
-    const id = admin && store_id ? store_id : storeId;
+    const id = admin && adminStoreId ? adminStoreId : storeId;
 
+    console.log("refreshStoreOrders going out");
     this.setState({ loadingOrders: true });
     getStoreOrders(storeId)
       .then(res => {
-        this.this.setState({ selectedOrders: new Set() });
+        console.log("refreshStoreOrders returned");
         this.setState({ loadingOrders: false });
         this.props.removeLoader();
       })
@@ -78,11 +79,19 @@ class StoresShow extends Component {
 
   postShipment(orders, action, type) {
     this.props.setLoader();
+    console.log("postShipment going out");
+    // NOTE: we'll need to update this once we're returning >1 shipment per post.
+    // OrderComplete is set up for arrays, but the API is returning objects right now.
     return fireShipmentCreate(orders, action, type)
       .then(res => {
         this.props.removeLoader();
-        this.setState({ loadingLabel: false });
-        this.refreshStoreOrders();
+        this.setState({
+          loadingLabel: false,
+          selectedOrderShipments: res.data.body
+        });
+      })
+      .then(() => {
+        return this.refreshStoreOrders();
       })
       .catch(err => console.log("err", err));
   }
@@ -101,7 +110,6 @@ class StoresShow extends Component {
     switch (status) {
       case "new_orders":
         if (roles.tailor) {
-          // this is where i'd like shipped to exist.
           return orders.filter(
             order => !isEmpty(order.shipments) && order.tailor
           );
@@ -168,16 +176,7 @@ class StoresShow extends Component {
   }
 
   printBulkShippingLabel() {
-    debugger;
-    console.log("current orders", currentOrders);
-    console.log("state, before setting printSet", this.state);
-    const currentOrders = [...this.state.selectedOrders];
-    this.setState({
-      printSet: currentOrders.map(order => {
-        return this.props.openOrders.find(o => o.id == order.id);
-      })
-    });
-    return window.print();
+    // return window.print();
   }
 
   makeLabels([...orders]) {
@@ -185,8 +184,18 @@ class StoresShow extends Component {
     if (!isEmpty(orders)) {
       const order = [...orders][0];
       const action = shipmentActions(order, roles);
-      return this.postShipment(orders, action, "mail_shipment").then(() => {
-        console.log("openOrders", this.props.openOrders);
+      return Promise.all([
+        this.postShipment(orders, action, "mail_shipment")
+      ]).then(() => {
+        console.log("Promise.all resolved! in makeLabels");
+        // console.log("this.props.openOrders", this.props.openOrders);
+        // console.log("this.state.selectedOrder", this.state.selectedOrders);
+        const printSet = this.props.openOrders.filter(o => {
+          return [...this.state.selectedOrders].find(so => so.id == o.id);
+        });
+
+        this.setState({ selectedOrders: new Set(), printSet: printSet });
+        // console.log("printSet", this.state.printSet);
         this.printBulkShippingLabel();
       });
     }
@@ -197,7 +206,9 @@ class StoresShow extends Component {
     if (!isEmpty(orders)) {
       const order = orders[0];
       const action = shipmentActions(order, roles);
-      return this.postShipment(orders, action, "messenger_shipment");
+      return this.postShipment(orders, action, "messenger_shipment").then(() =>
+        this.setState({ selectedOrders: new Set() })
+      );
     }
   }
 
@@ -286,7 +297,7 @@ class StoresShow extends Component {
           },
           onClick
         )}
-        <OrderComplete />
+        <OrderComplete shipmentSet={this.state.selectedOrderShipments} />
       </div>
     );
   }
