@@ -66,11 +66,9 @@ class StoresShow extends Component {
     } = this.props;
     const id = admin && adminStoreId ? adminStoreId : storeId;
 
-    console.log("refreshStoreOrders going out");
     this.setState({ loadingOrders: true });
     getStoreOrders(storeId)
       .then(res => {
-        console.log("refreshStoreOrders returned");
         this.setState({ loadingOrders: false });
         this.props.removeLoader();
       })
@@ -79,7 +77,6 @@ class StoresShow extends Component {
 
   postShipment(orders, action, type) {
     this.props.setLoader();
-    console.log("postShipment going out");
     // NOTE: we'll need to update this once we're returning >1 shipment per post.
     // OrderComplete is set up for arrays, but the API is returning objects right now.
     return fireShipmentCreate(orders, action, type)
@@ -176,7 +173,8 @@ class StoresShow extends Component {
   }
 
   printBulkShippingLabel() {
-    // return window.print();
+    return window.print();
+    this.setState({ printSet: [] });
   }
 
   makeLabels([...orders]) {
@@ -187,15 +185,11 @@ class StoresShow extends Component {
       return Promise.all([
         this.postShipment(orders, action, "mail_shipment")
       ]).then(() => {
-        console.log("Promise.all resolved! in makeLabels");
-        // console.log("this.props.openOrders", this.props.openOrders);
-        // console.log("this.state.selectedOrder", this.state.selectedOrders);
         const printSet = this.props.openOrders.filter(o => {
           return [...this.state.selectedOrders].find(so => so.id == o.id);
         });
 
         this.setState({ selectedOrders: new Set(), printSet: printSet });
-        // console.log("printSet", this.state.printSet);
         this.printBulkShippingLabel();
       });
     }

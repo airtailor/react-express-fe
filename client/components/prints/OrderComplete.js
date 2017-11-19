@@ -18,7 +18,6 @@ class OrderComplete extends Component {
   }
 
   renderOrderText(order) {
-    console.log(order);
     const { id, items, customer: { first_name: firstName } } = order;
     return (
       <div>
@@ -53,12 +52,11 @@ class OrderComplete extends Component {
   }
 
   renderBulkShippingLabels(shipmentSet) {
-    console.log(shipmentSet);
     if (!isEmpty(shipmentSet)) {
       return shipmentSet.map(shipment => {
-        shipment.orders.map(o => {
-          console.log(o);
-          return this.renderShippingLabel(o, shipment);
+        return shipment.orders.map(o => {
+          const render = this.renderShippingLabel;
+          return render(o, shipment);
         });
       });
     }
@@ -97,7 +95,6 @@ class OrderComplete extends Component {
       } else {
         return <div className="print">Oops something went wrong</div>;
       }
-      debugger;
       return <div className="print">{labelFunction(labelObj)}</div>;
     } else {
       return <div className="print">Oops something went wrong</div>;
