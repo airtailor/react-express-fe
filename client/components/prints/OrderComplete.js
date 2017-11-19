@@ -59,6 +59,8 @@ class OrderComplete extends Component {
           return render(o, shipment);
         });
       });
+    } else {
+      return "hm renderBulkShippingLabels is not returning the right thing";
     }
   }
 
