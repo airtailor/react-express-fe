@@ -52,7 +52,7 @@ class StoresShow extends Component {
 
   refreshStoreOrders() {
     this.props.setLoader();
-    const {currentUser: {store_id: storeId}} = this.props;
+    const {user: {store_id: storeId}} = this.props.currentUser;
     const {getStoreOrders} = this.props;
 
     this.setState({loadingOrders: true});
@@ -227,8 +227,6 @@ class StoresShow extends Component {
     if (roles.admin || roles.retailer) {
       const orders = this.state.selectedOrders;
 
-      const labelFunction = () => this.makeLabels([...orders]);
-      const messengerFunction = () => this.sendMessenger([...orders]);
       const alertCustomers = () => {
         this.props.setLoader();
         alertCustomersPickup(orders, store_id).then(res => {

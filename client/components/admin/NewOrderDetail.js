@@ -12,7 +12,7 @@ import {
 //import {renderAlterationList} from '../../utils/alterationsLists';
 
 import {
-  shipmentType,
+  shipmentTypes,
   shipmentActions,
   getLabelState,
   makeShippingLabel,
@@ -99,7 +99,7 @@ class NewOrderDetail extends Component {
 
   renderPrintLabels(order) {
     const roles = this.props.userRoles;
-    const shippingType = shipmentType(roles, order.type);
+    const shippingType = shipmentTypes(roles, order.type);
     const printPrompt = getPrintButtonPrompt(shippingType, order);
 
     if (printPrompt.split(' ')[0] === 'Print') {
@@ -134,6 +134,71 @@ class NewOrderDetail extends Component {
     }
   }
 
+  // from orders show
+
+  // renderFulfillButton() {
+  //   return this.renderButton(
+  //     "Fulfill This Order",
+  //     { disabled: false },
+  //     this.fulfillOrder
+  //   );
+  // }
+  //
+  // renderButton(text, params, callback = () => console.log("")) {
+  //   const className = params.className || "pink-button";
+  //   const clickArgs = params.clickArgs || undefined;
+  //   const disabled = params.disabled;
+  //   return (
+  //     <div>
+  //       <button
+  //         onClick={() => callback(clickArgs)}
+  //         disabled={disabled}
+  //         className={className}
+  //       >
+  //         {text}
+  //       </button>
+  //     </div>
+  //   );
+  // }
+  //
+  // renderPrintLabel() {
+  //   const { currentOrder: order, userRoles: roles } = this.props;
+  //   const disabled = this.state.loadingLabel;
+  //   const shipmentAction = shipmentActions(order, roles);
+  //
+  //   let onClick, printPrompt, clickArgs, shipmentDiv;
+  //   switch (labelState(roles, order, disabled)) {
+  //     case "needs_label":
+  //       printPrompt = "Create Label";
+  //       onClick = this.makeShippingLabel;
+  //       clickArgs = shipmentAction;
+  //       break;
+  //     case "in_progress":
+  //       printPrompt = "Creating Label";
+  //     case "label_created":
+  //       printPrompt = "Print Label";
+  //       onClick = () => window.print();
+  //       // NOTE: we need to make sure that orderComplete gets the correct shipment.
+  //       shipmentDiv = <OrderComplete />;
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //
+  //   return (
+  //     <div>
+  //       {this.renderButton(
+  //         printPrompt,
+  //         { disabled: disabled, clickArgs: clickArgs },
+  //         onClick
+  //       )}
+  //       {shipmentDiv}
+  //     </div>
+  //   );
+  // }
+
+  // from orders show
+
   fulfillOrder(order) {
     const {id, store_id, type} = order;
     this.props.setLoader();
@@ -149,7 +214,7 @@ class NewOrderDetail extends Component {
       .updateOrder(data)
       .then(res => {
         const role = this.props.currentUser.user.roles[0].name;
-        const shippingType = getShippingType(role, type);
+        const shippingType = getShippingTypes(role, type);
         this.makeShippingLabel(shippingType, order.id);
       })
       .catch(err => console.log(err));
