@@ -14,7 +14,13 @@ class OrderComplete extends Component {
   }
 
   renderShippingLabelImage(shippingLabel) {
-    return <img className="packing-slip-label" src={shippingLabel} />;
+    return (
+      <img
+        className="packing-slip-label"
+        alt="Shipping Label"
+        src={shippingLabel}
+      />
+    );
   }
 
   renderOrderText(order) {
@@ -51,14 +57,69 @@ class OrderComplete extends Component {
     );
   }
 
+  renderBulkShippingOrderItems(order) {
+    const {id, items} = order;
+    return (
+      <div>
+        <p className="packing-slip-info-orderid">
+          <b>Order: #{id}</b>
+        </p>
+        {renderAlterationList(items, 'print-alteration')}
+      </div>
+    );
+  }
+
+  // renderBulkShippingLabels(shipmentSet) {
+  //   if (!isEmpty(shipmentSet)) {
+  //     return shipmentSet.map(shipment => {
+  //       return shipment.orders.map(o => {
+  //         const render = this.renderShippingLabel;
+  //         return render(o, shipment);
+  //       });
+  //     });
+  //   }
+  // }
+
+  renderBulkShippingOrderContent(orders) {
+    const label = this.renderShippingLabelImage;
+    const text = this.renderOrderText;
+    const items = this.renderBulkShippingOrderItems;
+
+    return orders.map((order, i) => {
+      return (
+        <div key={i} className="packing-slip-info">
+          {items(order)}
+        </div>
+      );
+    });
+  }
+
   renderBulkShippingLabels(shipmentSet) {
+    const shipment = shipmentSet[0];
+    const {orders} = shipment;
+    const {userRoles: roles} = this.props;
+    const labelShipment = shipment || getShipmentForRole(roles, order);
+    const {shipping_label: shippingLabel} = labelShipment;
+
+    const ordersContent = this.renderBulkShippingOrderContent(orders);
+    const label = this.renderShippingLabelImage(shippingLabel);
     if (!isEmpty(shipmentSet)) {
-      return shipmentSet.map(shipment => {
-        return shipment.orders.map(o => {
-          const render = this.renderShippingLabel;
-          return render(o, shipment);
-        });
-      });
+      return (
+        <div>
+          <div className="packing-slip-info">{label}</div>
+          <br />
+          <br />
+          <br />
+          {ordersContent}
+          <hr />
+          <img
+            className="packing-slip-info-img"
+            src={logo}
+            alt="air tailor logo"
+            id="logo"
+          />
+        </div>
+      );
     }
   }
 

@@ -173,8 +173,10 @@ class StoresShow extends Component {
   }
 
   printBulkShippingLabel() {
-    return window.print();
-    this.setState({printSet: []});
+    setTimeout(() => {
+      return window.print();
+      this.setState({printSet: []});
+    }, 500);
   }
 
   makeLabels([...orders]) {
