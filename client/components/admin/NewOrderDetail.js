@@ -82,63 +82,6 @@ class NewOrderDetail extends Component {
     this.props.updateOrder({order}).catch(err => console.log('err', err));
   }
 
-  // makeShippingLabel(type, order) {
-  //   const data = {shipment: {type, order_id: order.id}};
-  //   // here, we pass in our shipment stuff
-  //   createShipment(data)
-  //     .then(res => {
-  //       const order = res.data.body;
-  //       this.props
-  //         .updateOrder({order})
-  //         .then(res => {
-  //           this.props.selectOrder(order);
-  //           this.setState({loadingLabel: false});
-  //           this.props.removeLoader();
-  //         })
-  //         .catch(err => console.log('err', err));
-  //     })
-  //     .catch(err => console.log('err', err));
-  // }
-
-  // renderPrintLabels(order) {
-  //   const roles = this.props.userRoles;
-  //   const shippingType = shipmentTypes(roles, order.type);
-  //   const printPrompt = getPrintButtonPrompt(shippingType, order);
-  //
-  //   if (printPrompt.split(' ')[0] === 'Print') {
-  //     const url = this.props.order[
-  //       toSnakeCaseFromCamelCase(lowerCaseFirstLetter(shippingType))
-  //     ].shipping_label;
-  //     return (
-  //       <div>
-  //         <button className="pink-button" onClick={() => window.print()}>
-  //           {printPrompt}
-  //         </button>
-  //
-  //         <WelcomeKitPrint />
-  //       </div>
-  //     );
-  //   } else if (printPrompt.split(' ')[0] === 'Creating') {
-  //     return (
-  //       <button className="pink-button" disabled={this.state.loadingLabel}>
-  //         {printPrompt}
-  //       </button>
-  //     );
-  //   } else if (printPrompt.split(' ')[0] === 'Create') {
-  //     return (
-  //       <button
-  //         className="pink-button"
-  //         disabled={this.state.loadingLabel}
-  //         onClick={() => this.makeShippingLabel(shippingType, order.id)}
-  //       >
-  //         {printPrompt}
-  //       </button>
-  //     );
-  //   }
-  // }
-
-  // from orders show
-
   postShipment(orders, action, type) {
     this.props.setLoader();
     fireShipmentCreate(orders, action, type)
@@ -237,48 +180,6 @@ class NewOrderDetail extends Component {
       })
       .catch(err => console.log(err));
   }
-
-  // from orders show
-
-  // fulfillOrder(order) {
-  //   const {id, store_id, type} = order;
-  //   this.props.setLoader();
-  //   const data = {
-  //     order: {
-  //       id,
-  //       store_id,
-  //       fulfilled: true,
-  //     },
-  //   };
-  //   this.setState({loadingLabel: true});
-  //   this.props
-  //     .updateOrder(data)
-  //     .then(res => {
-  //       const role = this.props.currentUser.user.roles[0].name;
-  //       const shippingType = getShippingTypes(role, type);
-  //       this.makeShippingLabel(shippingType, order.id);
-  //     })
-  //     .catch(err => console.log(err));
-  // }
-  //
-  // renderFulfillButton() {
-  //   if (this.props.order.outgoingShipment) {
-  //     return this.renderPrintLabels(this.props.order);
-  //   } else {
-  //     return (
-  //       <div>
-  //         <button onClick={() => this.fulfillOrder()} className="pink-button">
-  //           Fulfill This Order!
-  //         </button>
-  //       </div>
-  //     );
-  //   }
-  // }
-  //
-  // setFulfilled(order) {
-  //   order.fulfilled = true;
-  //   this.props.updateOrder({order}).catch(err => console.log('errr', err));
-  // }
 
   welcomeKit(order) {
     if (!order.fulfilled) {
