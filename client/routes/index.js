@@ -1,24 +1,26 @@
 import React from 'react';
 import {Route, Redirect, Switch} from 'react-router-dom';
-import '../styles/main.scss';
-import Home from './components/Home';
-import SignIn from './components/Signin';
-import SignUp from './components/SignUp';
-import StoreOrders from './components/stores/StoresShow';
-import OrdersShow from './components/orders/show/OrdersShow';
-import OrdersEdit from './components/orders/OrdersEdit';
-import ArchivedOrders from './components/orders/ArchivedOrders';
-import StoresEdit from './components/stores/StoresEdit';
-import StoresNew from './components/stores/StoresNew';
-import CustomerEdit from './components/CustomerEdit';
-import NewOrders from './components/admin/NewOrders';
-import ConversationsIndex from './components/conversations/ConversationsIndex';
-import ConversationShow from './components/conversations/ConversationsShow';
-import OrdersNew from './components/orders/new/OrdersNew';
-import OrderConfirmation from './components/orders/new/OrderConfirmation';
-import SearchResults from './components/search/searchResults';
-import SelectAlterations from './components/orders/new/SelectAlterations';
-import TailorIndex from './components/admin/tailors/TailorIndex';
+import '../../styles/main.scss';
+import Home from '../components/Home';
+import SignIn from '../components/Signin';
+import SignUp from '../components/SignUp';
+import StoreOrders from '../components/stores/StoresShow';
+import OrdersShow from '../components/orders/show/OrdersShow';
+import OrdersEdit from '../components/orders/OrdersEdit';
+import ArchivedOrders from '../components/orders/ArchivedOrders';
+import StoresEdit from '../components/stores/StoresEdit';
+import StoresNew from '../components/stores/StoresNew';
+import CustomerEdit from '../components/CustomerEdit';
+import NewOrders from '../components/admin/NewOrders';
+import ConversationsIndex from '../components/conversations/ConversationsIndex';
+import ConversationShow from '../components/conversations/ConversationsShow';
+import OrdersNew from '../components/orders/new/OrdersNew';
+import OrderConfirmation from '../components/orders/new/OrderConfirmation';
+import SearchResults from '../components/search/searchResults';
+import SelectAlterations from '../components/orders/new/SelectAlterations';
+import TailorIndex from '../components/admin/tailors/TailorIndex';
+
+import AuthRoutes from './AuthRoutes';
 
 const AvailableRoutes = props => {
   const {loggedIn, admin, retailer, tailor} = props;
@@ -30,15 +32,7 @@ const AvailableRoutes = props => {
         render={props => (loggedIn ? <Home /> : <Redirect to="/sign_in" />)}
       />
 
-      <Route
-        path="/sign_in"
-        render={props => (loggedIn ? <Redirect to="/" /> : <SignIn />)}
-      />
-
-      <Route
-        path="/sign_up"
-        render={props => (loggedIn ? <Redirect to="/" /> : <SignUp />)}
-      />
+      <AuthRoutes loggedIn={loggedIn} />
 
       <Route
         exact
