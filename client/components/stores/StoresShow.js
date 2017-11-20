@@ -207,8 +207,9 @@ class StoresShow extends Component {
     }
   }
 
-  alertCustomers(orders) {
+  alertCustomers() {
     const {userRoles: roles, currentStore: {id: store_id}} = this.props;
+    const orders = this.state.selectedOrders;
     this.props.setLoader();
     alertCustomersPickup(orders, store_id).then(res => {
       this.props.removeLoader();
@@ -299,7 +300,7 @@ class StoresShow extends Component {
 
   renderAlertButton() {
     const orders = this.state.selectedOrders;
-    const onClick = () => alertCustomers();
+    const onClick = () => this.alertCustomers();
     return (
       <div>
         {this.renderButton(

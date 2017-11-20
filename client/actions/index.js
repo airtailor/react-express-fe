@@ -1,10 +1,10 @@
-import Axios from "axios";
-import setAuthToken from "../utils/setAuthToken";
+import Axios from 'axios';
+import setAuthToken from '../utils/setAuthToken';
 import {
   setLocalStorageAuth,
   setLocalStorageUser,
-  setLocalStorageStore
-} from "../utils/setLocalStorage";
+  setLocalStorageStore,
+} from '../utils/setLocalStorage';
 import {
   expressApi,
   SET_CURRENT_USER,
@@ -39,22 +39,22 @@ import {
   SHIP_TAILOR_TO_CUSTOMER,
   SHIP_RETAILER_TO_CUSTOMER,
   SET_USER_ROLE,
-  RESET_USER_ROLE
-} from "../utils/constants";
+  RESET_USER_ROLE,
+} from '../utils/constants';
 
-import { removeFalseyValuesFromObject } from "../utils/format";
+import {removeFalseyValuesFromObject} from '../utils/format';
 
 const setTokens = res => {
   // if we get a 401 from the server, then log out the current user
-  if (!res.data.headers || !res.data.headers["access-token"]) {
+  if (!res.data.headers || !res.data.headers['access-token']) {
     if (!res.data.body || res.data.body.status === 401) {
       resetTokens();
     }
     return;
   }
-  const { client, uid, expiry } = res.data.headers;
-  const accessToken = res.data.headers["access-token"];
-  const AirTailorTokens = { accessToken, client, uid, expiry };
+  const {client, uid, expiry} = res.data.headers;
+  const accessToken = res.data.headers['access-token'];
+  const AirTailorTokens = {accessToken, client, uid, expiry};
   setAuthToken(AirTailorTokens);
   setLocalStorageAuth(AirTailorTokens);
   //console.log('new token', AirTailorTokens.accessToken)
@@ -68,23 +68,23 @@ const resetTokens = () => {
 
 export const userSignIn = (email, password) => {
   const url = `${expressApi}/sign_in`;
-  const data = { email, password };
+  const data = {email, password};
   return dispatch => {
     return Axios.post(url, data)
       .then(res => {
         if (res.data.status === 401) {
-          return { errors: true, status: 401 };
+          return {errors: true, status: 401};
         } else if (res.data.body) {
           const dataRes = res.data.body.data;
-          const { id, email, store_id, roles, uid } = dataRes;
+          const {id, email, store_id, roles, uid} = dataRes;
           setTokens(res);
           dispatch(setUserRole(roles[0].name));
           setLocalStorageUser(dataRes);
 
           // right now, the code assumes that a user has a single role, but it's
           // written to work with multiple roles if/when that becomes necessary.
-          dispatch(setCurrentUser({ id, email, store_id, roles }));
-          return { success: true };
+          dispatch(setCurrentUser({id, email, store_id, roles}));
+          return {success: true};
         }
       })
       .catch(err => {
@@ -106,12 +106,12 @@ export function signOutCurrentUser() {
     delete localStorage.CurrentStore;
     setAuthToken({});
     dispatch(setCurrentUser({}), setCurrentStore({}), setUserRole({}));
-    window.location = "/";
+    window.location = '/';
 
     return Axios.post(url)
       .then(res => {})
       .catch(err => {
-        console.log("error from signOutCurrentUser linke 75", err);
+        console.log('error from signOutCurrentUser linke 75', err);
       });
   };
 }
@@ -127,7 +127,7 @@ export function getStoreOrders(store_id) {
             dispatch(setStoreOrders(res.data.body));
           })
           .catch(err => {
-            console.log("error", err);
+            console.log('error', err);
           });
       });
   };
@@ -150,7 +150,7 @@ export function getCurrentOrder(store_id, order_id) {
             dispatch(setCurrentOrder(res.data.body));
           })
           .catch(err => {
-            console.log("error", err);
+            console.log('error', err);
           });
       });
   };
@@ -245,7 +245,7 @@ export function updateOrder(data) {
             debugger;
           });
       })
-      .catch(err => console.log("err index.js line 155", err));
+      .catch(err => console.log('err index.js line 155', err));
   };
 }
 
@@ -264,7 +264,7 @@ export function alertCustomersPickup(orders, store_id) {
           debugger;
         });
     })
-    .catch(err => console.log("err index.js line 155", err));
+    .catch(err => console.log('err index.js line 155', err));
 }
 
 export function updateCustomer(data) {
@@ -355,7 +355,7 @@ export function createShipment(data) {
 export function setShipmentType(typeString) {
   return {
     type: typeString,
-    notes
+    notes,
   };
 }
 
@@ -378,7 +378,7 @@ export function getCustomerMeasurements(data) {
 
 export function createCustomerMeasurements(measurement) {
   const url = `${expressApi}/customers/${measurement.customer_id}/measurements`;
-  const data = { measurement };
+  const data = {measurement};
   return dispatch => {
     return validateToken()
       .then(setTokens)
@@ -457,13 +457,13 @@ export function getMessages(store_id, conversation_id) {
 }
 
 export function createMessage(message) {
-  const { store_id, conversation_id } = message;
+  const {store_id, conversation_id} = message;
   const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}/messages`;
   return dispatch => {
     return validateToken()
       .then(setTokens)
       .then(() => {
-        return Axios.post(url, { message })
+        return Axios.post(url, {message})
           .then(res => {
             dispatch(setMessages(res.data.body.messages));
             return res;
@@ -476,13 +476,13 @@ export function createMessage(message) {
 }
 
 export function updateMessage(message) {
-  const { store_id, conversation_id, id } = message;
+  const {store_id, conversation_id, id} = message;
   const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}/messages/${id}`;
   return dispatch => {
     return validateToken()
       .then(setTokens)
       .then(() => {
-        return Axios.put(url, { message })
+        return Axios.put(url, {message})
           .then(res => {
             dispatch(setMessages(res.data.body.messages));
             return res;
@@ -499,7 +499,7 @@ export function findOrCreateCustomer(customerInfo) {
   return validateToken()
     .then(setTokens)
     .then(() => {
-      return Axios.post(url, { customer: customerInfo });
+      return Axios.post(url, {customer: customerInfo});
     });
 }
 
@@ -508,7 +508,7 @@ function createOrder(order) {
   return validateToken()
     .then(setTokens)
     .then(res => {
-      return Axios.post(url, { order });
+      return Axios.post(url, {order});
     });
 }
 
@@ -527,22 +527,22 @@ function getOrderTotal(cart) {
 }
 
 export function submitOrder(props) {
-  const { cart, currentStore } = props;
-  const { customerInfo } = props.cart;
+  const {cart, currentStore} = props;
+  const {customerInfo} = props.cart;
   return dispatch => {
     return findOrCreateCustomer(removeFalseyValuesFromObject(customerInfo))
       .then(res => {
         if (res.data.body.errors) {
           return {
             errors: true,
-            message: res.data.body.errors.customer[0]
+            message: res.data.body.errors.customer[0],
           };
         } else {
           const customer_id = res.data.body.id;
           const requester_id = currentStore.id;
           const weight = getOrderWeight(cart);
           const total = getOrderTotal(cart);
-          const source = "React-Portal";
+          const source = 'React-Portal';
 
           const garments = cart.garments.map(garment => {
             delete garment.image;
@@ -555,7 +555,7 @@ export function submitOrder(props) {
 
           const ship_to_store = cart.shipToStore;
           const requester_notes = cart.notes;
-          const type = "TailorOrder";
+          const type = 'TailorOrder';
 
           const order = {
             customer_id,
@@ -566,7 +566,7 @@ export function submitOrder(props) {
             source,
             requester_notes,
             type,
-            ship_to_store
+            ship_to_store,
           };
 
           return createOrder(order)
@@ -574,7 +574,7 @@ export function submitOrder(props) {
               if (res.data.body.errors) {
                 return {
                   errors: true,
-                  message: res.data.body.errors
+                  message: res.data.body.errors,
                 };
               }
               return dispatch(setConfirmedNewOrder(res.data.body));
@@ -585,7 +585,7 @@ export function submitOrder(props) {
         }
       })
       .catch(err => {
-        console.log("create order error", err);
+        console.log('create order error', err);
       });
   };
 }
@@ -602,14 +602,14 @@ export function updatePassword(data) {
               dispatch(setCurrentUser(res.data.body));
               return res;
             } else {
-              console.log("hmmm something went wrong", res);
+              console.log('hmmm something went wrong', res);
             }
           })
           .catch(err => {
             debugger;
           });
       })
-      .catch(err => console.log("err index.js line 488", err));
+      .catch(err => console.log('err index.js line 488', err));
   };
 }
 
@@ -625,19 +625,19 @@ export function searchOrders(query) {
               dispatch(setSearchResults(res.data.body));
               return res.data.body;
             } else {
-              console.log("hmmm something went wrong", res);
-              const message = "Hmm something went wrong with your search.";
-              const kind = "warning";
-              dispatch(setGrowler({ kind, message }));
+              console.log('hmmm something went wrong', res);
+              const message = 'Hmm something went wrong with your search.';
+              const kind = 'warning';
+              dispatch(setGrowler({kind, message}));
             }
           })
           .catch(err => {
-            const message = "Hmm something went wrong with your search.";
-            const kind = "warning";
-            dispatch(setGrowler({ kind, message }));
+            const message = 'Hmm something went wrong with your search.';
+            const kind = 'warning';
+            dispatch(setGrowler({kind, message}));
           });
       })
-      .catch(err => console.log("err index.js line 488", err));
+      .catch(err => console.log('err index.js line 488', err));
   };
 }
 
@@ -653,14 +653,14 @@ export function getArchivedOrders() {
               dispatch(setArchivedOrders(res.data.body));
               return res.data.body;
             } else {
-              console.log("hmmm something went wrong", res);
+              console.log('hmmm something went wrong', res);
             }
           })
           .catch(err => {
             debugger;
           });
       })
-      .catch(err => console.log("err index.js line 488", err));
+      .catch(err => console.log('err index.js line 488', err));
   };
 }
 
@@ -668,46 +668,46 @@ export function getArchivedOrders() {
 
 export function resetUserRole() {
   return {
-    type: RESET_USER_ROLE
+    type: RESET_USER_ROLE,
   };
 }
 
 export function setUserRole(role) {
   return {
     type: SET_USER_ROLE,
-    role
+    role,
   };
 }
 
 export function removeLoader() {
   return {
-    type: REMOVE_LOADER
+    type: REMOVE_LOADER,
   };
 }
 
 export function setLoader() {
   return {
-    type: SET_LOADER
+    type: SET_LOADER,
   };
 }
 
 export function setArchivedOrders(orders) {
   return {
     type: SET_ARCHIVED_ORDERS,
-    orders
+    orders,
   };
 }
 
 export function removeGrowler() {
   return {
-    type: REMOVE_GROWLER
+    type: REMOVE_GROWLER,
   };
 }
 
 export function setGrowler(growl) {
   return {
     type: SET_GROWLER,
-    growl
+    growl,
   };
 }
 
@@ -715,138 +715,138 @@ export function setGarment(garment, index) {
   return {
     type: UPDATE_GARMENT_IN_CART,
     garment,
-    index
+    index,
   };
 }
 
 export function setSearchResults(orders) {
   return {
     type: SET_SEARCH_RESULTS,
-    orders
+    orders,
   };
 }
 
 export function setConfirmedNewOrder(order) {
   return {
     type: SET_CONFIRMED_NEW_ORDER,
-    order
+    order,
   };
 }
 
 export function resetCart() {
   return {
     type: RESET_CART,
-    cart: {}
+    cart: {},
   };
 }
 
 export function updateCartShipTo(boolean) {
   return {
     type: UPDATE_CART_SHIP_TO,
-    boolean
+    boolean,
   };
 }
 
 export function updateCartNotes(notes) {
   return {
     type: UPDATE_CART_NOTES,
-    notes
+    notes,
   };
 }
 
 export function updateCartCustomerInfo(customerInfo) {
   return {
     type: UPDATE_CART_CUSTOMER_INFO,
-    customerInfo
+    customerInfo,
   };
 }
 
 export function removeGarmentFromCart(index) {
   return {
     type: REMOVE_GARMENT_FROM_CART,
-    index
+    index,
   };
 }
 
 export function addGarmentToCart(garment) {
   return {
     type: ADD_GARMENT_TO_CART,
-    garment
+    garment,
   };
 }
 
 export function setMessages(messages) {
   return {
     type: SET_MESSAGES,
-    messages
+    messages,
   };
 }
 
 export function setConversations(conversations) {
   return {
     type: SET_CONVERSATIONS,
-    conversations
+    conversations,
   };
 }
 
 export function setNewOrders(newOrders) {
   return {
     type: SET_NEW_ORDERS,
-    newOrders
+    newOrders,
   };
 }
 
 export function setCustomerMeasurements(measurements) {
   return {
-    type: "SET_CUSTOMER_MEASUREMENTS",
-    measurements
+    type: 'SET_CUSTOMER_MEASUREMENTS',
+    measurements,
   };
 }
 export function setCompanyList(companies) {
   return {
     type: SET_COMPANY_LIST,
-    companies
+    companies,
   };
 }
 
 export function setTailorList(tailors) {
   return {
     type: SET_TAILOR_LIST,
-    tailors
+    tailors,
   };
 }
 
 export function setCurrentUser(user) {
   return {
     type: SET_CURRENT_USER,
-    user: user
+    user: user,
   };
 }
 
 export function setCurrentStore(store) {
   return {
     type: SET_CURRENT_STORE,
-    store: store
+    store: store,
   };
 }
 
 export function setStoreOrders(orders) {
   return {
     type: SET_STORE_ORDERS,
-    orders
+    orders,
   };
 }
 
 export function setCurrentOrder(order) {
   return {
     type: SET_CURRENT_ORDER,
-    order
+    order,
   };
 }
 
 export function setItemTypes(itemTypes) {
   return {
     type: SET_ITEM_TYPES,
-    itemTypes
+    itemTypes,
   };
 }
