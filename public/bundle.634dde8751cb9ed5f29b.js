@@ -1690,12 +1690,8 @@ var correctShipmentExists = exports.correctShipmentExists = function correctShip
   var shipments = order.shipments;
 
   if (!shipments || shipments.length == 0) return false;
-
-  var _getShipmentForRole = getShipmentForRole(roles, order),
-      source = _getShipmentForRole.source,
-      destination = _getShipmentForRole.destination;
-
-  return source && destination;
+  var correctShipment = getShipmentForRole(roles, order);
+  return correctShipment; // either an object, or undefined
 };
 
 var labelState = exports.labelState = function labelState(roles, order, loadingLabel) {
@@ -2108,82 +2104,155 @@ var OrderComplete = function (_Component) {
   }
 
   _createClass(OrderComplete, [{
-    key: "renderShippingLabelImage",
+    key: 'renderShippingLabelImage',
     value: function renderShippingLabelImage(shippingLabel) {
-      return _react2.default.createElement("img", { className: "packing-slip-label", src: shippingLabel });
+      return _react2.default.createElement('img', {
+        className: 'packing-slip-label',
+        alt: 'Shipping Label',
+        src: shippingLabel
+      });
     }
   }, {
-    key: "renderOrderText",
+    key: 'renderOrderText',
     value: function renderOrderText(order) {
       var id = order.id,
           items = order.items,
           firstName = order.customer.first_name;
 
       return _react2.default.createElement(
-        "div",
+        'div',
         null,
         _react2.default.createElement(
-          "h3",
+          'h3',
           null,
-          "Thank you for your Air Tailor order, ",
+          'Thank you for your Air Tailor order, ',
           firstName
         ),
         _react2.default.createElement(
-          "p",
+          'p',
           null,
-          "We hope everything arrived exactly as you expected and that you are pleased with our work. If you have any questions or would like to alter/repair more clothes using Air Tailor, please text us or email hello@airtailor.com. We look forward to serving you again soon,",
-          " ",
+          'We hope everything arrived exactly as you expected and that you are pleased with our work. If you have any questions or would like to alter/repair more clothes using Air Tailor, please text us or email hello@airtailor.com. We look forward to serving you again soon,',
+          ' ',
           firstName,
-          "!"
+          '!'
         )
       );
     }
   }, {
-    key: "renderOrderItems",
+    key: 'renderOrderItems',
     value: function renderOrderItems(order) {
       var id = order.id,
           items = order.items;
 
       return _react2.default.createElement(
-        "div",
+        'div',
         null,
         _react2.default.createElement(
-          "p",
-          { className: "packing-slip-info-orderid" },
+          'p',
+          { className: 'packing-slip-info-orderid' },
           _react2.default.createElement(
-            "b",
+            'b',
             null,
-            "Order: #",
+            'Order: #',
             id
           )
         ),
-        (0, _alterationsLists.renderAlterationList)(items, "print-alteration"),
-        _react2.default.createElement("img", {
-          className: "packing-slip-info-img",
+        (0, _alterationsLists.renderAlterationList)(items, 'print-alteration'),
+        _react2.default.createElement('img', {
+          className: 'packing-slip-info-img',
           src: _logo2.default,
-          alt: "air tailor logo",
-          id: "logo"
+          alt: 'air tailor logo',
+          id: 'logo'
         })
       );
     }
   }, {
-    key: "renderBulkShippingLabels",
-    value: function renderBulkShippingLabels(shipmentSet) {
-      var _this2 = this;
+    key: 'renderBulkShippingOrderItems',
+    value: function renderBulkShippingOrderItems(order) {
+      var id = order.id,
+          items = order.items;
 
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'p',
+          { className: 'packing-slip-info-orderid' },
+          _react2.default.createElement(
+            'b',
+            null,
+            'Order: #',
+            id
+          )
+        ),
+        (0, _alterationsLists.renderAlterationList)(items, 'print-alteration')
+      );
+    }
+
+    // renderBulkShippingLabels(shipmentSet) {
+    //   if (!isEmpty(shipmentSet)) {
+    //     return shipmentSet.map(shipment => {
+    //       return shipment.orders.map(o => {
+    //         const render = this.renderShippingLabel;
+    //         return render(o, shipment);
+    //       });
+    //     });
+    //   }
+    // }
+
+  }, {
+    key: 'renderBulkShippingOrderContent',
+    value: function renderBulkShippingOrderContent(orders) {
+      var label = this.renderShippingLabelImage;
+      var text = this.renderOrderText;
+      var items = this.renderBulkShippingOrderItems;
+
+      return orders.map(function (order, i) {
+        return _react2.default.createElement(
+          'div',
+          { key: i, className: 'packing-slip-info' },
+          items(order)
+        );
+      });
+    }
+  }, {
+    key: 'renderBulkShippingLabels',
+    value: function renderBulkShippingLabels(shipmentSet) {
+      var shipment = shipmentSet[0];
+      var orders = shipment.orders;
+      var roles = this.props.userRoles;
+
+      var labelShipment = shipment || (0, _shippingFunctions.getShipmentForRole)(roles, order);
+      var shippingLabel = labelShipment.shipping_label;
+
+
+      var ordersContent = this.renderBulkShippingOrderContent(orders);
+      var label = this.renderShippingLabelImage(shippingLabel);
       if (!(0, _isEmpty2.default)(shipmentSet)) {
-        return shipmentSet.map(function (shipment) {
-          return shipment.orders.map(function (o) {
-            var render = _this2.renderShippingLabel;
-            return render(o, shipment);
-          });
-        });
-      } else {
-        return "hm renderBulkShippingLabels is not returning the right thing";
+        return _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'div',
+            { className: 'packing-slip-info' },
+            label
+          ),
+          _react2.default.createElement('br', null),
+          _react2.default.createElement('br', null),
+          _react2.default.createElement('br', null),
+          ordersContent,
+          _react2.default.createElement('hr', null),
+          _react2.default.createElement('img', {
+            className: 'packing-slip-info-img',
+            src: _logo2.default,
+            alt: 'air tailor logo',
+            id: 'logo'
+          })
+        );
       }
     }
   }, {
-    key: "renderShippingLabel",
+    key: 'renderShippingLabel',
     value: function renderShippingLabel(order, shipment) {
       var roles = this.props.userRoles;
 
@@ -2196,17 +2265,17 @@ var OrderComplete = function (_Component) {
       var items = this.renderOrderItems;
 
       return _react2.default.createElement(
-        "div",
-        { className: "packing-slip-info" },
+        'div',
+        { className: 'packing-slip-info' },
         label(shippingLabel),
-        _react2.default.createElement("br", null),
-        _react2.default.createElement("br", null),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('br', null),
         text(order),
         items(order)
       );
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var _props = this.props,
           order = _props.currentOrder,
@@ -2223,21 +2292,21 @@ var OrderComplete = function (_Component) {
           labelObj = order;
         } else {
           return _react2.default.createElement(
-            "div",
-            { className: "print" },
-            "Oops something went wrong"
+            'div',
+            { className: 'print' },
+            'Oops something went wrong'
           );
         }
         return _react2.default.createElement(
-          "div",
-          { className: "print" },
+          'div',
+          { className: 'print' },
           labelFunction(labelObj)
         );
       } else {
         return _react2.default.createElement(
-          "div",
-          { className: "print" },
-          "Oops something went wrong"
+          'div',
+          { className: 'print' },
+          'Oops something went wrong'
         );
       }
     }
@@ -13990,13 +14059,17 @@ var StoresShow = function (_Component) {
   }, {
     key: 'printBulkShippingLabel',
     value: function printBulkShippingLabel() {
-      return window.print();
-      this.setState({ printSet: [] });
+      var _this4 = this;
+
+      setTimeout(function () {
+        return window.print();
+        _this4.setState({ printSet: [] });
+      }, 500);
     }
   }, {
     key: 'makeLabels',
     value: function makeLabels(_ref) {
-      var _this4 = this;
+      var _this5 = this;
 
       var _ref2 = _toArray(_ref),
           orders = _ref2.slice(0);
@@ -14007,21 +14080,21 @@ var StoresShow = function (_Component) {
         var order = [].concat(_toConsumableArray(orders))[0];
         var action = (0, _shippingFunctions.shipmentActions)(order, roles);
         return Promise.all([this.postShipment(orders, action, 'mail_shipment')]).then(function () {
-          var printSet = _this4.props.openOrders.filter(function (o) {
-            return [].concat(_toConsumableArray(_this4.state.selectedOrders)).find(function (so) {
+          var printSet = _this5.props.openOrders.filter(function (o) {
+            return [].concat(_toConsumableArray(_this5.state.selectedOrders)).find(function (so) {
               return so.id == o.id;
             });
           });
 
-          _this4.setState({ selectedOrders: new Set(), printSet: printSet });
-          _this4.printBulkShippingLabel();
+          _this5.setState({ selectedOrders: new Set(), printSet: printSet });
+          _this5.printBulkShippingLabel();
         });
       }
     }
   }, {
     key: 'sendMessenger',
     value: function sendMessenger(_ref3) {
-      var _this5 = this;
+      var _this6 = this;
 
       var _ref4 = _toArray(_ref3),
           orders = _ref4.slice(0);
@@ -14032,14 +14105,14 @@ var StoresShow = function (_Component) {
         var order = orders[0];
         var action = (0, _shippingFunctions.shipmentActions)(order, roles);
         return this.postShipment(orders, action, 'messenger_shipment').then(function () {
-          return _this5.setState({ selectedOrders: new Set() });
+          return _this6.setState({ selectedOrders: new Set() });
         });
       }
     }
   }, {
     key: 'alertCustomers',
     value: function alertCustomers(orders) {
-      var _this6 = this;
+      var _this7 = this;
 
       var _props3 = this.props,
           roles = _props3.userRoles,
@@ -14047,12 +14120,12 @@ var StoresShow = function (_Component) {
 
       this.props.setLoader();
       (0, _actions.alertCustomersPickup)(orders, store_id).then(function (res) {
-        _this6.props.removeLoader();
+        _this7.props.removeLoader();
         if (res.body.status === 200) {
           var kind = 'success';
           var message = 'Your customers have been notified to pick up their orders.';
-          _this6.props.setGrowler({ kind: kind, message: message });
-          _this6.refreshStoreOrders();
+          _this7.props.setGrowler({ kind: kind, message: message });
+          _this7.refreshStoreOrders();
         }
       });
     }
@@ -14231,7 +14304,7 @@ var StoresShow = function (_Component) {
   }, {
     key: 'renderOrderRowWithSelect',
     value: function renderOrderRowWithSelect(order) {
-      var _this7 = this;
+      var _this8 = this;
 
       var roles = this.props.userRoles;
       var id = order.id,
@@ -14248,7 +14321,7 @@ var StoresShow = function (_Component) {
       var route = '/orders/' + id;
       var orderIsToggled = this.state.selectedOrders.has(order);
       var orderToggle = function orderToggle() {
-        return _this7.toggleOrderSelect(order);
+        return _this8.toggleOrderSelect(order);
       };
 
       var tailorDiv = void 0;
@@ -14314,7 +14387,7 @@ var StoresShow = function (_Component) {
   }, {
     key: 'renderStateTabs',
     value: function renderStateTabs() {
-      var _this8 = this;
+      var _this9 = this;
 
       var allTabs = [{ className: 'order-state-tab', status: 'new_orders', text: 'New' }, {
         className: 'order-state-tab',
@@ -14327,11 +14400,11 @@ var StoresShow = function (_Component) {
       }, { className: 'order-state-tab', status: 'late_orders', text: 'Late' }];
 
       var tabs = allTabs.map(function (tab, i) {
-        if (tab.status == _this8.state.showOrderState) {
+        if (tab.status == _this9.state.showOrderState) {
           tab.className = tab.className.concat(' selected');
         }
         if (tab.status == 'late_orders') {
-          if (_this8.countOrdersByStatus(tab.status) > 0) {
+          if (_this9.countOrdersByStatus(tab.status) > 0) {
             tab.className = tab.className.concat(' late-orders');
           }
         }
@@ -14342,7 +14415,7 @@ var StoresShow = function (_Component) {
             key: i,
             className: tab.className,
             onClick: function onClick() {
-              return _this8.setOrderTabState(tab.status);
+              return _this9.setOrderTabState(tab.status);
             }
           },
           _react2.default.createElement(
@@ -14350,7 +14423,7 @@ var StoresShow = function (_Component) {
             null,
             tab.text,
             ' (',
-            _this8.countOrdersByStatus(tab.status),
+            _this9.countOrdersByStatus(tab.status),
             ')'
           )
         );
@@ -14432,7 +14505,7 @@ var StoresShow = function (_Component) {
   }, {
     key: 'renderRetailerRows',
     value: function renderRetailerRows() {
-      var _this9 = this;
+      var _this10 = this;
 
       var openOrders = this.props.openOrders;
 
@@ -14444,7 +14517,7 @@ var StoresShow = function (_Component) {
             'div',
             { className: 'order-data-container' },
             sortedOrders.map(function (order) {
-              return _this9.renderOrderRowWithSelect(order);
+              return _this10.renderOrderRowWithSelect(order);
             })
           );
         } else {
@@ -14473,7 +14546,7 @@ var StoresShow = function (_Component) {
   }, {
     key: 'renderTailorRows',
     value: function renderTailorRows() {
-      var _this10 = this;
+      var _this11 = this;
 
       var openOrders = this.props.openOrders;
 
@@ -14484,7 +14557,7 @@ var StoresShow = function (_Component) {
             'div',
             { className: 'order-data-container' },
             ordersWithShipments.map(function (order) {
-              return _this10.renderOrderRow(order);
+              return _this11.renderOrderRow(order);
             })
           );
         } else {
@@ -22118,4 +22191,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAi8AAAJmCAYAAAHj
 
 /***/ })
 ],[424]);
-//# sourceMappingURL=bundle.b78ada095f89e47e72f7.js.map
+//# sourceMappingURL=bundle.634dde8751cb9ed5f29b.js.map
