@@ -145,7 +145,8 @@ class NewOrderDetail extends Component {
       .then(res => {
         this.props.removeLoader();
         this.setState({loadingLabel: false});
-        this.refreshCurrentOrder();
+        this.props.removeLoader();
+        this.props.selectOrder(orders[0]);
       })
       .catch(err => console.log('err', err));
   }
@@ -194,10 +195,11 @@ class NewOrderDetail extends Component {
       case 'in_progress':
         printPrompt = 'Creating Label';
       case 'label_created':
+        this.refreshNewOrdersList();
         printPrompt = 'Print Label';
         onClick = () => window.print();
         // NOTE: we need to make sure that orderComplete gets the correct shipment.
-        shipmentDiv = <OrderComplete />;
+        shipmentDiv = <WelcomeKitPrint />;
         break;
       default:
         break;
