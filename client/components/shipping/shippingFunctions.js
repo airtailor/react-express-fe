@@ -10,10 +10,6 @@ import {createShipment} from '../../actions';
 
 export const fireShipmentCreate = (orders, action, type) => {
   const orderIds = orders.map(o => o.id);
-<<<<<<< HEAD
-=======
-  console.log('fireShipmentCreate going out');
->>>>>>> a7d443757435db23ba99c768167dfcb0439aa583
   return createShipment({
     shipment: {
       delivery_type: type,
@@ -76,8 +72,8 @@ export const getShipmentForRole = (roles, order) => {
 export const correctShipmentExists = (roles, order) => {
   const {shipments} = order;
   if (!shipments || shipments.length == 0) return false;
-  const {source, destination} = getShipmentForRole(roles, order);
-  return source && destination;
+  const correctShipment = getShipmentForRole(roles, order);
+  return correctShipment; // either an object, or undefined
 };
 
 export const labelState = (roles, order, loadingLabel) => {

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import logo from "../../images/logo.png";
-import isEmpty from "lodash/isEmpty";
-import { getShipmentForRole } from "../shipping/shippingFunctions";
-import { renderAlterationList } from "../../utils/alterationsLists";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import logo from '../../images/logo.png';
+import isEmpty from 'lodash/isEmpty';
+import {getShipmentForRole} from '../shipping/shippingFunctions';
+import {renderAlterationList} from '../../utils/alterationsLists';
 
 class OrderComplete extends Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class OrderComplete extends Component {
   }
 
   renderOrderText(order) {
-    const { id, items, customer: { first_name: firstName } } = order;
+    const {id, items, customer: {first_name: firstName}} = order;
     return (
       <div>
         <h3>Thank you for your Air Tailor order, {firstName}</h3>
@@ -26,7 +26,7 @@ class OrderComplete extends Component {
           We hope everything arrived exactly as you expected and that you are
           pleased with our work. If you have any questions or would like to
           alter/repair more clothes using Air Tailor, please text us or email
-          hello@airtailor.com. We look forward to serving you again soon,{" "}
+          hello@airtailor.com. We look forward to serving you again soon,{' '}
           {firstName}!
         </p>
       </div>
@@ -34,13 +34,13 @@ class OrderComplete extends Component {
   }
 
   renderOrderItems(order) {
-    const { id, items } = order;
+    const {id, items} = order;
     return (
       <div>
         <p className="packing-slip-info-orderid">
           <b>Order: #{id}</b>
         </p>
-        {renderAlterationList(items, "print-alteration")}
+        {renderAlterationList(items, 'print-alteration')}
         <img
           className="packing-slip-info-img"
           src={logo}
@@ -59,15 +59,13 @@ class OrderComplete extends Component {
           return render(o, shipment);
         });
       });
-    } else {
-      return "hm renderBulkShippingLabels is not returning the right thing";
     }
   }
 
   renderShippingLabel(order, shipment) {
-    const { userRoles: roles } = this.props;
+    const {userRoles: roles} = this.props;
     const labelShipment = shipment || getShipmentForRole(roles, order);
-    const { shipping_label: shippingLabel } = labelShipment;
+    const {shipping_label: shippingLabel} = labelShipment;
 
     const label = this.renderShippingLabelImage;
     const text = this.renderOrderText;
@@ -85,7 +83,7 @@ class OrderComplete extends Component {
   }
 
   render() {
-    const { currentOrder: order, shipmentSet } = this.props;
+    const {currentOrder: order, shipmentSet} = this.props;
     if (shipmentSet || order) {
       let labelFunction, labelObj;
       if (shipmentSet) {
@@ -107,7 +105,7 @@ class OrderComplete extends Component {
 const mapStateToProps = store => {
   return {
     currentOrder: store.currentOrder,
-    userRoles: store.userRoles
+    userRoles: store.userRoles,
   };
 };
 
