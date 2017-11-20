@@ -36,6 +36,7 @@ class NewOrderDetail extends Component {
     //this.setFulfilled = this.setFulfilled.bind(this);
     this.updateOrderNotes = this.updateOrderNotes.bind(this);
     this.fulfillOrder = this.fulfillOrder.bind(this);
+    this.postShipment = this.postShipment.bind(this);
   }
 
   refreshNewOrdersList(props) {
