@@ -10,3 +10,6 @@ node_modules/*
 *.jpg
 *.hot-update.*
 public/vendor.js
+public/vendor.*.js.map
+public/bundle.*.js.map
+public/manifest.*.js.map
