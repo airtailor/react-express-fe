@@ -16,7 +16,8 @@ class StoresShow extends Component {
       getStoreOrders,
     } = this.props;
 
-    const storeId = roleName === 'admin' ? paramsStoreId : userStoreId;
+    const storeId =
+      roleName === 'admin' && paramsStoreId ? paramsStoreId : userStoreId;
 
     setLoader();
     getStoreOrders(storeId).then(() => removeLoader());
