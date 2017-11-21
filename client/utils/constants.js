@@ -37,6 +37,8 @@ export const SHIP_RETAILER_TO_CUSTOMER  = 'SHIP_RETAILER_TO_CUSTOMER';
 export const SET_USER_ROLE              = 'SET_USER_ROLE';
 export const RESET_USER_ROLE            = 'RESET_USER_ROLE';
 
+export const SET_CURRENT_CUSTOMER       = 'SET_CURRENT_CUSTOMER';
+
 export const storeTypes = [
   {name: 'Tailor', id: 'tailor'},
   {name: 'Retailer', id: 'retailer'},

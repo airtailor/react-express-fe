@@ -1,49 +1,62 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import FormField from './FormField.js';
+import isEmpty from 'lodash/isEmpty';
 import {
   updateCustomer,
-  getCustomer,
+  getCurrentCustomer,
   setGrowler,
-  getCurrentOrder,
+  getCurrentOrder
 } from '../actions';
-import {ValidateEmail} from '../utils/validations';
+import { ValidateEmail } from '../utils/validations';
 
 class CustomerEdit extends Component {
-  constructor(props) {
+  constructor() {
     super();
-    const {
-      id,
-      email,
-      first_name,
-      last_name,
-      phone,
-      street,
-      street_two,
-      city,
-      state_province,
-      zip_code,
-    } = props.customer;
     this.state = {
-      id,
-      email,
-      first_name,
-      last_name,
-      phone,
-      street,
-      street_two,
-      city,
-      state_province,
-      zip_code,
+      id: '',
+      email: '',
+      first_name: '',
+      last_name: '',
+      phone: '',
+      addresses: [
+        {
+          unit: '',
+          street: '',
+          city: '',
+          zip_code: '',
+          state_province: ''
+        }
+      ]
     };
+
     this.updateState = this.updateState.bind(this);
+    this.refreshCurrentCustomer = this.refreshCurrentCustomer.bind(this);
+    this.updateAddress = this.updateAddress.bind(this);
+  }
+
+  componentDidMount() {
+    debugger;
+    const customerId = this.props.match.params.customer_id;
+    this.props.getCurrentCustomer(customerId).then(res => {
+      this.refreshCurrentCustomer(res);
+    });
+  }
+
+  refreshCurrentCustomer(customer) {
+    this.setState(customer);
   }
 
   updateState(field, value) {
-    //console.log('field', field, 'value', value);
-    this.setState({[field]: value});
+    this.setState({ [field]: value });
+  }
+
+  updateAddress(field, value) {
+    let address = this.state.addresses[0];
+    address[field] = value;
+    this.setState({ addresses: [address] });
   }
 
   handleSubmit(e) {
@@ -52,12 +65,31 @@ class CustomerEdit extends Component {
       currentStore,
       currentOrder,
       getCurrentOrder,
-      setGrowler,
+      setGrowler
     } = this.props;
-    const {email} = this.state;
+    const { email } = this.state;
 
+    // const address = {
+    //   street: this.state.street,
+    //   city: this.state.city,
+    //   unit: this.stat.unit,
+    //   state_province: this.state.state_province,
+    //   zip_code: this.state.zip_code
+    // };
+    const { addresses } = this.state;
+
+    const customer = {
+      id: this.state.id,
+      address: addresses[0],
+      first_name: this.state.first_name,
+      last_name: this.state.last_name,
+      phone: this.state.phone,
+      email: this.state.email
+    };
+
+    debugger;
     if (ValidateEmail(email)) {
-      updateCustomer({customer: this.state})
+      updateCustomer({ customer })
         .then(res => {
           let kind, message;
           if (res.data.body.errors) {
@@ -68,99 +100,97 @@ class CustomerEdit extends Component {
             message = 'Customer Updated';
             getCurrentOrder(currentStore.id, currentOrder.id);
           }
-          setGrowler({kind, message});
+          setGrowler({ kind, message });
         })
         .catch(err => {});
     } else {
       const kind = 'warning';
       const message = 'Email must be valid';
-      this.props.setGrowler({kind, message});
+      this.props.setGrowler({ kind, message });
     }
   }
 
   render() {
-    const {currentOrder, customer} = this.props;
+    const { currentOrder: { id: currentOrderId } } = this.props;
+    const backLink = `/orders/${currentOrderId}`;
+    const { email, first_name, last_name, phone } = this.state;
+
     const {
-      email,
-      first_name,
-      last_name,
-      phone,
       street,
-      street_two,
+      unit,
       city,
       state_province,
-      zip_code,
-    } = customer;
-    const backLink = `/orders/${currentOrder.id}`;
+      zip_code
+    } = this.state.addresses[0];
+
     return (
       <div>
         <Link to={backLink}>Back</Link>
-
         <form onSubmit={e => this.handleSubmit(e)}>
           <FormField
-            value={this.state.email}
+            value={email}
             fieldName={'email'}
             title={'Email'}
             onChange={this.updateState}
           />
 
           <FormField
-            value={this.state.first_name}
+            value={first_name}
             fieldName={'first_name'}
             title={'First Name'}
             onChange={this.updateState}
           />
 
           <FormField
-            value={this.state.last_name}
+            value={last_name}
             fieldName={'last_name'}
             title={'Last Name'}
             onChange={this.updateState}
           />
 
           <FormField
-            value={this.state.phone}
+            value={phone}
             fieldName={'phone'}
             title={'Phone'}
             onChange={this.updateState}
           />
 
           <FormField
-            value={this.state.street}
+            value={street}
             fieldName={'street'}
             title={'Street'}
-            onChange={this.updateState}
+            onChange={this.updateAddress}
           />
 
           <FormField
-            value={this.state.street_two}
-            fieldName={'street_two'}
+            value={unit}
+            fieldName={'unit'}
             title={'Unit'}
-            onChange={this.updateState}
+            onChange={this.updateAddress}
           />
 
           <FormField
-            value={this.state.city}
+            value={city}
             fieldName={'city'}
             title={'City'}
-            onChange={this.updateState}
+            onChange={this.updateAddress}
           />
 
           <FormField
-            value={this.state.state_province}
-            fieldName={'state'}
-            title={'State'}
-            onChange={this.updateState}
+            value={state_province}
+            fieldName={'state_province'}
+            title={'State/Province'}
+            onChange={this.updateAddress}
           />
 
           <FormField
-            value={this.state.zip_code}
+            value={zip_code}
             fieldName={'zip_code'}
             title={'Zip Code'}
-            onChange={this.updateState}
+            onChange={this.updateAddress}
           />
 
-          <input type="submit" value="Update" />
+          <input className="short-button " type="submit" value="Update" />
         </form>
       </div>
     );
@@ -170,13 +200,16 @@ class CustomerEdit extends Component {
 const mapStateToProps = store => {
   return {
     currentOrder: store.currentOrder,
-    customer: store.currentOrder.customer,
-    currentStore: store.currentStore,
+    currentCustomer: store.currentCustomer,
+    currentStore: store.currentStore
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({setGrowler, getCurrentOrder}, dispatch);
+  return bindActionCreators(
+    { setGrowler, getCurrentOrder, getCurrentCustomer },
+    dispatch
+  );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerEdit);

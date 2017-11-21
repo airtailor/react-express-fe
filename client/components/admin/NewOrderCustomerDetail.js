@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 class NewOrderCustomerDetail extends Component {
   render() {
@@ -15,7 +15,7 @@ class NewOrderCustomerDetail extends Component {
         street_two,
         city,
         state_province,
-        zip_code,
+        zip_code
       } = this.props.order.customer;
       const customerEditLink = `/customers/${id}/edit`;
       return (
@@ -26,9 +26,9 @@ class NewOrderCustomerDetail extends Component {
           </p>
           <p>Email: {email}</p>
           <p>Phone: {phone}</p>
-          <p>
+          {/*<p>
             Address: {street} {street_two} {city}, {state_province} {zip_code}
-          </p>
+          </p>*/}
           <Link to={customerEditLink}>
             <button className="button short-button"> Edit Customer</button>
           </Link>

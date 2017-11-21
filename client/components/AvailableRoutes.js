@@ -1,27 +1,27 @@
-import React from 'react';
-import {Route, Redirect, Switch} from 'react-router-dom';
-import '../../styles/main.scss';
-import Home from './Home';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
-import StoreOrders from './stores/StoresShow';
-import OrdersShow from './orders/show/OrdersShow';
-import OrdersEdit from './orders/OrdersEdit';
-import ArchivedOrders from './orders/ArchivedOrders';
-import StoresEdit from './stores/StoresEdit';
-import StoresNew from './stores/StoresNew';
-import CustomerEdit from './CustomerEdit';
-import NewOrders from './admin/NewOrders';
-import ConversationsIndex from './conversations/ConversationsIndex';
-import ConversationShow from './conversations/ConversationsShow';
-import OrdersNew from './orders/new/OrdersNew';
-import OrderConfirmation from './orders/new/OrderConfirmation';
-import SearchResults from './search/searchResults';
-import SelectAlterations from './orders/new/SelectAlterations';
-import TailorIndex from './admin/tailors/TailorIndex';
+import React from "react";
+import { Route, Redirect, Switch } from "react-router-dom";
+import "../../styles/main.scss";
+import Home from "./Home";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
+import StoreOrders from "./stores/StoresShow";
+import OrdersShow from "./orders/show/OrdersShow";
+import OrdersEdit from "./orders/OrdersEdit";
+import ArchivedOrders from "./orders/ArchivedOrders";
+import StoresEdit from "./stores/StoresEdit";
+import StoresNew from "./stores/StoresNew";
+import CustomerEdit from "./CustomerEdit";
+import NewOrders from "./admin/NewOrders";
+import ConversationsIndex from "./conversations/ConversationsIndex";
+import ConversationShow from "./conversations/ConversationsShow";
+import OrdersNew from "./orders/new/OrdersNew";
+import OrderConfirmation from "./orders/new/OrderConfirmation";
+import SearchResults from "./search/searchResults";
+import SelectAlterations from "./orders/new/SelectAlterations";
+import TailorIndex from "./admin/tailors/TailorIndex";
 
 const AvailableRoutes = props => {
-  const {loggedIn, admin, retailer, tailor} = props;
+  const { loggedIn, admin, retailer, tailor } = props;
   return (
     <div className="content">
       <Route

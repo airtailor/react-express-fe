@@ -26,15 +26,18 @@
 }
 
 .long-button {
+  @extend .button;
   width: 365px;
 }
 
 .short-button {
+  @extend .button;
   background-color: $primary-blue;
   width: 150px;
 }
 
 .tiny-button {
+  @extend .button;
   background-color: $primary-blue;
   text-align: center;
   width: 80px;

@@ -1,24 +1,25 @@
-import {combineReducers} from 'redux';
-import currentUserReducer from './currentUserReducer';
-import currentStoreReducer from './currentStoreReducer';
-import storeOrdersReducer from './storeOrdersReducer';
-import currentOrderReducer from './currentOrderReducer';
-import itemTypesReducer from './itemTypesReducer';
-import tailorListReducer from './tailorListReducer';
-import companyListReducer from './companyListReducer';
-import measurementsReducer from './measurementsReducer';
-import newOrdersReducer from './newOrdersReducer';
-import conversationsReducer from './conversationsReducer';
-import messagesReducer from './messagesReducer';
-import garmentsReducer from './garmentsReducer';
-import alterationsReducer from './alterationsReducer';
-import cartReducer from './cartReducer';
-import confirmedNewOrderReducer from './confirmedNewOrderReducer';
-import searchResultsReducer from './searchResultsReducer';
-import growlerReducer from './growlerReducer';
-import archivedOrdersReducer from './archivedOrdersReducer';
-import loaderReducer from './loaderReducer';
-import userRoleReducer from './userRoleReducer';
+import { combineReducers } from "redux";
+import currentUserReducer from "./currentUserReducer";
+import currentStoreReducer from "./currentStoreReducer";
+import storeOrdersReducer from "./storeOrdersReducer";
+import currentOrderReducer from "./currentOrderReducer";
+import itemTypesReducer from "./itemTypesReducer";
+import tailorListReducer from "./tailorListReducer";
+import companyListReducer from "./companyListReducer";
+import measurementsReducer from "./measurementsReducer";
+import newOrdersReducer from "./newOrdersReducer";
+import conversationsReducer from "./conversationsReducer";
+import messagesReducer from "./messagesReducer";
+import garmentsReducer from "./garmentsReducer";
+import alterationsReducer from "./alterationsReducer";
+import cartReducer from "./cartReducer";
+import confirmedNewOrderReducer from "./confirmedNewOrderReducer";
+import searchResultsReducer from "./searchResultsReducer";
+import growlerReducer from "./growlerReducer";
+import archivedOrdersReducer from "./archivedOrdersReducer";
+import loaderReducer from "./loaderReducer";
+import userRoleReducer from "./userRoleReducer";
+import currentCustomerReducer from "./currentCustomerReducer";
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
@@ -40,7 +41,8 @@ const rootReducer = combineReducers({
   growl: growlerReducer,
   archivedOrders: archivedOrdersReducer,
   loader: loaderReducer,
-  userRoles: userRoleReducer
+  userRoles: userRoleReducer,
+  currentCustomer: currentCustomerReducer
 });
 
 export default rootReducer;
