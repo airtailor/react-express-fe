@@ -27,6 +27,7 @@ class FindCustomerByPhone extends Component {
     super();
     this.state = {
       phone: '',
+
       customer: null,
     };
   }
