@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {updateCartCustomerInfo, updateCartShipTo} from '../../../../actions';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { updateCartCustomerInfo, updateCartShipTo } from '../../../../actions';
 import FormField from '../../../FormField';
 import Checkbox from '../../../Checkbox';
 import Zippopotam from '../../../../lib/zippopotam';
-import {ValidateZip} from '../../../../utils/validations';
-import {redirectToStageOneIfNoAlterations} from '../../ordersHelper';
+import { ValidateZip } from '../../../../utils/validations';
+import { redirectToStageOneIfNoAlterations } from '../../ordersHelper';
 import CustomerInfo from './CustomerInfo';
 
 class OrderDetails extends Component {
@@ -38,6 +38,8 @@ class OrderDetails extends Component {
           this.updateCustomerInfo('state', state);
         });
       }
+
+      debugger;
 
       return (
         <div>
@@ -86,7 +88,7 @@ class OrderDetails extends Component {
   }
 
   renderShipTo(cart) {
-    const {shipToStore, customerInfo} = cart;
+    const { shipToStore, customerInfo } = cart;
     return (
       <div>
         <br />
@@ -116,7 +118,7 @@ class OrderDetails extends Component {
   }
 
   render() {
-    const {customerInfo} = this.props.cart;
+    const { customerInfo } = this.props.cart;
 
     return (
       <div className="order-details">
@@ -137,7 +139,7 @@ class OrderDetails extends Component {
 
 const mapStateToProps = store => {
   return {
-    cart: store.cart,
+    cart: store.cart
   };
 };
 
@@ -145,7 +147,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       updateCartCustomerInfo,
-      updateCartShipTo,
+      updateCartShipTo
     },
     dispatch
   );
