@@ -468,68 +468,70 @@ function getOrderTotal(cart) {
 }
 
 export function submitOrder(props) {
-  const {cart, currentStore} = props;
-  const {customerInfo} = props.cart;
+  const {cart, currentStore, cartCustomer: {id: customer_id}} = props;
+
   return dispatch => {
-    return findOrCreateCustomer(removeFalseyValuesFromObject(customerInfo))
+    // find or create new customer flow
+    // return findOrCreateCustomer(removeFalseyValuesFromObject(cartCustomer))
+    // .then(res => {
+    //   if (res.data.body.errors) {
+    //     return {
+    //       errors: true,
+    //       message: res.data.body.errors.customer[0],
+    //     };
+    //   } else {
+    //     const customer_id = res.data.body.id;
+
+    const requester_id = currentStore.id;
+    const weight = getOrderWeight(cart);
+    const total = getOrderTotal(cart);
+    const source = 'React-Portal';
+
+    const garments = cart.garments.map(garment => {
+      delete garment.image;
+      garment.alterations.map(alt => {
+        delete alt.howToPin;
+        return alt;
+      });
+      return garment;
+    });
+
+    const ship_to_store = cart.shipToStore;
+    const requester_notes = cart.notes;
+    const type = 'TailorOrder';
+
+    const order = {
+      customer_id,
+      requester_id,
+      weight,
+      total,
+      garments,
+      source,
+      requester_notes,
+      type,
+      ship_to_store,
+    };
+
+    return createOrder(order)
       .then(res => {
         if (res.data.body.errors) {
           return {
             errors: true,
-            message: res.data.body.errors.customer[0],
+            message: res.data.body.errors,
           };
-        } else {
-          const customer_id = res.data.body.id;
-          const requester_id = currentStore.id;
-          const weight = getOrderWeight(cart);
-          const total = getOrderTotal(cart);
-          const source = 'React-Portal';
-
-          const garments = cart.garments.map(garment => {
-            delete garment.image;
-            garment.alterations.map(alt => {
-              delete alt.howToPin;
-              return alt;
-            });
-            return garment;
-          });
-
-          const ship_to_store = cart.shipToStore;
-          const requester_notes = cart.notes;
-          const type = 'TailorOrder';
-
-          const order = {
-            customer_id,
-            requester_id,
-            weight,
-            total,
-            garments,
-            source,
-            requester_notes,
-            type,
-            ship_to_store,
-          };
-
-          return createOrder(order)
-            .then(res => {
-              if (res.data.body.errors) {
-                return {
-                  errors: true,
-                  message: res.data.body.errors,
-                };
-              }
-              return dispatch(setConfirmedNewOrder(res.data.body));
-            })
-            .catch(err => {
-              debugger;
-            });
         }
+        return dispatch(setConfirmedNewOrder(res.data.body));
       })
       .catch(err => {
-        console.log('create order error', err);
+        debugger;
       });
   };
+  //  })
+  // .catch(err => {
+  //   console.log('create order error', err);
+  // });
 }
+//}
 
 export function updatePassword(data) {
   const url = `${expressApi}/users/update_password`;

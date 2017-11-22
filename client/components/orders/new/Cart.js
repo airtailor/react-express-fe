@@ -32,6 +32,7 @@ class Cart extends Component {
     removeGarmentFromCart: PropTypes.func.isRequired, // mapDispatchToProps
     updateCartNotes: PropTypes.func.isRequired, // mapDispatchToProps
     renderStageOne: PropTypes.func.isRequired, // Parent Component
+    stage: PropTypes.number.isRequired, // Parent Component
   };
 
   renderGarmentAlterations(garment) {
@@ -95,6 +96,7 @@ class Cart extends Component {
   readyToCheckout() {
     const {cartCustomer, cart: {shipToStore}} = this.props;
     const {
+      id,
       first_name,
       last_name,
       phone,
@@ -121,74 +123,58 @@ class Cart extends Component {
     }
   }
 
+  createNextButton(onClick, text, disabled = false) {
+    return (
+      <input
+        onClick={() => onClick()}
+        disabled={disabled}
+        className="short-button"
+        type="submit"
+        value={text}
+      />
+    );
+  }
+
   renderNextButton(props) {
-    if (props.cart.garments.length > 0) {
-      if (props.stage === 4) {
+    const {
+      cart: {garments},
+      renderOrderDetails,
+      renderCheckout,
+      renderStageOne,
+      stage,
+    } = this.props;
+
+    if (garments.length > 0) {
+      if (stage === 4) {
         return <div />;
-      } else if (this.readyToCheckout() && props.stage !== 3) {
+      } else if (this.readyToCheckout() && stage !== 3) {
         return (
           <div className="cart-buttons-container">
-            <input
-              onClick={props.renderOrderDetails}
-              className="short-button"
-              type="submit"
-              value="Edit Order Details"
-            />
+            {this.createNextButton(renderOrderDetails, 'Edit Order Details')}
 
-            <input
-              onClick={() => this.props.renderCheckout()}
-              className="short-button"
-              type="submit"
-              value="Checkout"
-            />
+            {this.createNextButton(renderCheckout, 'Checkout')}
           </div>
         );
-      } else if (this.readyToCheckout(props) && props.stage === 3) {
+      } else if (this.readyToCheckout(this.props) && stage === 3) {
         return (
           <div className="cart-buttons-container">
-            <input
-              onClick={() => this.props.renderStageOne()}
-              className="short-button"
-              type="submit"
-              value="Add More Items"
-            />
+            {this.createNextButton(renderStageOne, 'Add More Items')}
 
-            <input
-              onClick={() => this.props.renderCheckout()}
-              className="short-button"
-              type="submit"
-              value="Checkout"
-            />
+            {this.createNextButton(renderCheckout, 'Checkout')}
           </div>
         );
       } else if (!this.readyToCheckout(props) && props.stage === 3) {
         return (
           <div className="cart-buttons-container">
-            <input
-              onClick={() => this.props.renderStageOne()}
-              className="short-button"
-              type="submit"
-              value="Add More Items"
-            />
+            {this.createNextButton(renderStageOne, 'Add More Items')}
 
-            <input
-              onClick={() => this.props.renderCheckout()}
-              className="short-button"
-              type="submit"
-              value="Checkout"
-              disabled={true}
-            />
+            {this.createNextButton(renderCheckout, 'Checkout', true)}
           </div>
         );
       } else if (props.stage === 2 || props.stage === 1) {
         return (
           <div className="cart-buttons-container">
-            <input
-              onClick={props.renderOrderDetails}
-              className="short-button"
-              type="submit"
-              value="Add Order Details"
-            />
+            {this.createNextButton(renderOrderDetails, 'Add Order Details')}
           </div>
         );
       }

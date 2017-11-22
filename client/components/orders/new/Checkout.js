@@ -115,11 +115,13 @@ class Checkout extends Component {
       setGrowler,
       renderOrderDetails,
       removeLoader,
+      cartCustomer: {id: customer_id},
+      cart,
     } = this.props;
 
     setLoader();
 
-    submitOrder(this.props)
+    submitOrder({...this.props})
       .then(res => {
         if (res.errors) {
           const kind = 'warning';
@@ -169,7 +171,7 @@ class Checkout extends Component {
 
     let address_two;
     if (unit) {
-      address_two = street_two.length > 0 ? <p>{unit}</p> : '';
+      address_two = unit.length > 0 ? <p>{unit}</p> : '';
     } else {
       address_two = '';
     }

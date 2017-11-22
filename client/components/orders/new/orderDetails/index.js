@@ -37,12 +37,8 @@ export class OrderDetails extends Component {
     updateCartShipTo: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
-  updateCustomerInfo = (key, value) => {
-    debugger;
-    this.props.updateCartCustomer({[custInfo[key]]: value});
-  };
-
   renderCustomerAddress(shipToStore, customer) {
+    const {updateCartCustomer} = this.props;
     if (shipToStore) {
       // do nothing
     } else {
@@ -54,9 +50,11 @@ export class OrderDetails extends Component {
         zippo.then(res => {
           const formatted_address = res.results[0].formatted_address;
           const city = formatted_address.split(', ')[0];
-          const state = formatted_address.split(', ')[1].match(/[a-zA-Z]+/g)[0];
-          this.updateCustomerInfo('city', city);
-          this.updateCustomerInfo('state', state);
+          const state_province = formatted_address
+            .split(', ')[1]
+            .match(/[a-zA-Z]+/g)[0];
+          updateCartCustomer('city', city);
+          updateCartCustomer('state_province', state_province);
         });
       }
 
@@ -67,7 +65,7 @@ export class OrderDetails extends Component {
             fieldName={'street'}
             title={'Address 1'}
             className="order-details-input"
-            onChange={this.updateCustomerInfo}
+            onChange={updateCartCustomer}
           />
 
           <FormField
@@ -75,7 +73,7 @@ export class OrderDetails extends Component {
             fieldName={'unit'}
             title={'Address 2'}
             className="order-details-input"
-            onChange={this.updateCustomerInfo}
+            onChange={updateCartCustomer}
           />
 
           <FormField
@@ -83,7 +81,7 @@ export class OrderDetails extends Component {
             fieldName={'city'}
             title={'City'}
             className="order-details-input"
-            onChange={this.updateCustomerInfo}
+            onChange={updateCartCustomer}
           />
 
           <FormField
@@ -91,7 +89,7 @@ export class OrderDetails extends Component {
             fieldName={'state_province'}
             title={'State'}
             className="order-details-input"
-            onChange={this.updateCustomerInfo}
+            onChange={updateCartCustomer}
           />
 
           <FormField
@@ -99,7 +97,7 @@ export class OrderDetails extends Component {
             fieldName={'zip_code'}
             title={'Zip Code:'}
             className="order-details-input"
-            onChange={this.updateCustomerInfo}
+            onChange={updateCartCustomer}
           />
         </div>
       );
