@@ -1,7 +1,6 @@
 import {
   ADD_GARMENT_TO_CART,
   REMOVE_GARMENT_FROM_CART,
-  UPDATE_CART_CUSTOMER_INFO,
   UPDATE_CART_SHIP_TO,
   RESET_CART,
   UPDATE_CART_NOTES,
@@ -12,18 +11,6 @@ import {updateObjectInArray, removeItem} from '../utils/reducerHelpers';
 
 const initialState = {
   garments: [],
-  customerInfo: {
-    first_name: '',
-    last_name: '',
-    phone: '',
-    email: '',
-    street: '',
-    street_two: '',
-    city: '',
-    state_province: '',
-    zip_code: '',
-    agrees_to_terms: true,
-  },
   storeInfo: {},
   shipToStore: true,
   notes: '',
@@ -43,12 +30,6 @@ const cartReducer = (state = initialState, action) => {
         garments: removeItem(state.garments, action),
       };
       break;
-    case UPDATE_CART_CUSTOMER_INFO:
-      return {
-        ...state,
-        customerInfo: action.customerInfo,
-      };
-      break;
     case UPDATE_CART_SHIP_TO:
       return {
         ...state,
@@ -64,24 +45,11 @@ const cartReducer = (state = initialState, action) => {
     case RESET_CART:
       return {
         garments: [],
-        customerInfo: {
-          first_name: '',
-          last_name: '',
-          phone: '',
-          email: '',
-          street: '',
-          street_two: '',
-          city: '',
-          state_province: '',
-          zip_code: '',
-          agrees_to_terms: true,
-        },
         storeInfo: {},
         shipToStore: true,
         notes: '',
       };
       break;
-
     case UPDATE_GARMENT_IN_CART:
       const newGarments = updateObjectInArray(
         state.garments,

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
 
-import {updateCartCustomerInfo, updateCartShipTo} from '../../../../actions';
+import {updateCartCustomer, updateCartShipTo} from '../../../../actions';
 import Zippopotam from '../../../../lib/zippopotam';
 import {ValidateZip} from '../../../../utils/validations';
 import {redirectToStageOneIfNoAlterations} from '../../ordersHelper';
@@ -15,13 +15,14 @@ import CustomerInfo from './CustomerInfo';
 const mapStateToProps = store => {
   return {
     cart: store.cart,
+    cartCustomer: store.cartCustomer,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      updateCartCustomerInfo,
+      updateCartCustomer,
       updateCartShipTo,
     },
     dispatch
@@ -30,30 +31,26 @@ const mapDispatchToProps = dispatch => {
 
 export class OrderDetails extends Component {
   static propTypes = {
-    cart: PropTypes.object.isRequired,
-    updateCartCustomerInfo: PropTypes.func.isRequired,
-    updateCartShipTo: PropTypes.func.isRequired,
-    renderStageOne: PropTypes.func.isRequired,
+    cart: PropTypes.object.isRequired, // mapStateToProps
+    cartCustomer: PropTypes.object.isRequired, // mapStateToProps
+    updateCartCustomer: PropTypes.func.isRequired, // mapDispatchToProps
+    updateCartShipTo: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   updateCustomerInfo = (key, value) => {
-    let custInfo = this.props.cart.customerInfo;
-    custInfo[key] = value;
-    this.props.updateCartCustomerInfo(custInfo);
+    debugger;
+    this.props.updateCartCustomer({[custInfo[key]]: value});
   };
 
-  renderCustomerAddress(shipToStore, customerInfo) {
+  renderCustomerAddress(shipToStore, customer) {
     if (shipToStore) {
       // do nothing
     } else {
-      if (!isEmpty(customerInfo.address)) {
-        debugger;
-      }
-      const zippo = ValidateZip(customerInfo.zip)
-        ? Zippopotam.get(customerInfo.zip)
+      const zippo = ValidateZip(customer.zip_code)
+        ? Zippopotam.get(customer.zip_code)
         : '';
 
-      if (zippo.then && (!customerInfo.city && !customerInfo.state)) {
+      if (zippo.then && (!customer.city && !customer.state_province)) {
         zippo.then(res => {
           const formatted_address = res.results[0].formatted_address;
           const city = formatted_address.split(', ')[0];
@@ -66,7 +63,7 @@ export class OrderDetails extends Component {
       return (
         <div>
           <FormField
-            value={customerInfo.street}
+            value={customer.street}
             fieldName={'street'}
             title={'Address 1'}
             className="order-details-input"
@@ -74,15 +71,15 @@ export class OrderDetails extends Component {
           />
 
           <FormField
-            value={customerInfo.street_two}
-            fieldName={'street_two'}
+            value={customer.unit}
+            fieldName={'unit'}
             title={'Address 2'}
             className="order-details-input"
             onChange={this.updateCustomerInfo}
           />
 
           <FormField
-            value={customerInfo.city}
+            value={customer.city}
             fieldName={'city'}
             title={'City'}
             className="order-details-input"
@@ -90,7 +87,7 @@ export class OrderDetails extends Component {
           />
 
           <FormField
-            value={customerInfo.state_province}
+            value={customer.state_province}
             fieldName={'state_province'}
             title={'State'}
             className="order-details-input"
@@ -98,7 +95,7 @@ export class OrderDetails extends Component {
           />
 
           <FormField
-            value={customerInfo.zip_code}
+            value={customer.zip_code}
             fieldName={'zip_code'}
             title={'Zip Code:'}
             className="order-details-input"
@@ -109,8 +106,8 @@ export class OrderDetails extends Component {
     }
   }
 
-  renderShipTo(cart) {
-    const {shipToStore, customerInfo} = cart;
+  renderShipTo(cart, customer) {
+    const {shipToStore} = cart;
     return (
       <div>
         <br />
@@ -134,13 +131,13 @@ export class OrderDetails extends Component {
           <br />
           <br />
         </div>
-        {this.renderCustomerAddress(shipToStore, customerInfo)}
+        {this.renderCustomerAddress(shipToStore, customer)}
       </div>
     );
   }
 
   render() {
-    const {customerInfo} = this.props.cart;
+    const {cart, cartCustomer} = this.props;
     console.log('props', this.props);
 
     return (
@@ -148,13 +145,10 @@ export class OrderDetails extends Component {
         {redirectToStageOneIfNoAlterations(this.props)}
 
         <h2>ORDER DETAILS</h2>
-        <CustomerInfo
-          customerInfo={customerInfo}
-          updateCustomerInfo={this.updateCustomerInfo}
-        />
+        <CustomerInfo />
 
         <h3>Shipping</h3>
-        {this.renderShipTo(this.props.cart)}
+        {this.renderShipTo(cart, cartCustomer)}
       </div>
     );
   }

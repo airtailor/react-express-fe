@@ -1,7 +1,28 @@
 import React, {Component} from 'react';
-import FormField from '../../../FormField';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import PropTypes from 'prop-types';
+
+import {updateCartCustomer} from '../../../../actions';
 import {formatPhone} from '../../../../utils/format';
 import FindCustomerByPhone from './FindCustomerByPhone';
+
+import FormField from '../../../FormField';
+
+const mapStateToProps = store => {
+  return {
+    cartCustomer: store.cartCustomer,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      updateCartCustomer,
+    },
+    dispatch
+  );
+};
 
 class CustomerInfo extends Component {
   constructor() {
@@ -9,9 +30,12 @@ class CustomerInfo extends Component {
     this.state = {
       customerExists: null,
     };
-
-    this.updateCustomerExists = this.updateCustomerExists.bind(this);
   }
+
+  static propTypes = {
+    cartCustomer: PropTypes.object.isRequired, // mapStateToProps
+    updateCartCustomer: PropTypes.func.isRequired, // mapDispatchToProps
+  };
 
   firstName(first_name) {
     return (
@@ -20,7 +44,7 @@ class CustomerInfo extends Component {
         fieldName={'first_name'}
         title={'First Name'}
         className="order-details-input"
-        onChange={this.props.updateCustomerInfo}
+        onChange={this.props.updateCartCustomer}
       />
     );
   }
@@ -32,7 +56,7 @@ class CustomerInfo extends Component {
         fieldName={'last_name'}
         title={'Last Name'}
         className="order-details-input"
-        onChange={this.props.updateCustomerInfo}
+        onChange={this.props.updateCartCustomer}
       />
     );
   }
@@ -45,7 +69,7 @@ class CustomerInfo extends Component {
         fieldName={'phone'}
         title={'Mobile Phone'}
         className="order-details-input"
-        onChange={this.props.updateCustomerInfo}
+        onChange={this.props.updateCartCustomer}
       />
     );
   }
@@ -57,29 +81,26 @@ class CustomerInfo extends Component {
         fieldName={'email'}
         title={'Email'}
         className="order-details-input"
-        onChange={this.props.updateCustomerInfo}
+        onChange={this.props.updateCartCustomer}
       />
     );
   }
 
-  updateCustomerExists(value) {
+  updateCustomerExists = value => {
     this.setState({customerExists: value});
-  }
+  };
 
   render() {
     const {
-      customerInfo: {first_name, last_name, phone, email, id},
-      updateCustomerInfo,
+      cartCustomer: {first_name, last_name, phone, email, id},
+      updateCartCustomer,
     } = this.props;
 
     const {customerExists} = this.state;
 
     if (customerExists === null) {
       return (
-        <FindCustomerByPhone
-          updateCustomerInfo={updateCustomerInfo}
-          updateCustomerExists={this.updateCustomerExists}
-        />
+        <FindCustomerByPhone updateCustomerExists={this.updateCustomerExists} />
       );
     } else {
       return (
@@ -100,4 +121,4 @@ class CustomerInfo extends Component {
   }
 }
 
-export default CustomerInfo;
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerInfo);

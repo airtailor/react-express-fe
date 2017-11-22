@@ -8,7 +8,8 @@ import {
   setLoader,
   removeLoader,
   setGrowler,
-  updateCartCustomerInfo,
+  setCartCustomer,
+  updateCartCustomer,
 } from '../../../../actions';
 import {ValidatePhone} from '../../../../utils/validations';
 import {formatPhone} from '../../../../utils/format';
@@ -17,7 +18,7 @@ import FormField from '../../../FormField';
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    {setLoader, removeLoader, setGrowler, updateCartCustomerInfo},
+    {setLoader, removeLoader, setGrowler, setCartCustomer, updateCartCustomer},
     dispatch
   );
 };
@@ -27,17 +28,16 @@ class FindCustomerByPhone extends Component {
     super();
     this.state = {
       phone: '',
-
       customer: null,
     };
   }
 
-  static PropTypes = {
-    setLoader: PropTypes.func.isRequired,
-    removeLoader: PropTypes.func.isRequired,
-    setGrowler: PropTypes.func.isRequired,
-    updateCartCustomerInfo: PropTypes.func.isRequired,
-    updateCustomerExists: PropTypes.func.isRequired,
+  static propTypes = {
+    setLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
+    setCartCustomer: PropTypes.func.isRequired, // mapDispatchToProps
+    updateCustomerExists: PropTypes.func.isRequired, // parentComponent
   };
 
   updatePhone = (field, phone) => {
@@ -67,7 +67,7 @@ class FindCustomerByPhone extends Component {
       removeLoader,
       setGrowler,
       updateCustomerExists,
-      updateCartCustomerInfo,
+      setCartCustomer,
     } = this.props;
 
     setLoader();
@@ -77,13 +77,13 @@ class FindCustomerByPhone extends Component {
       const {body: {status, id}, body: customer} = res.data;
 
       if (status === 404) {
-        updateCustomerInfo('phone', phone);
+        updateCartCustomer('phone', phone);
         updateCustomerExists(false);
       } else if (id) {
         const kind = 'success';
         const message = 'Found Customer';
         setGrowler({kind, message});
-        updateCartCustomerInfo(customer);
+        setCartCustomer(customer);
         updateCustomerExists(true);
       }
     });

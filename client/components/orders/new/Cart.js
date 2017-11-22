@@ -2,16 +2,38 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import {removeGarmentFromCart, updateCartNotes} from '../../../actions';
 import {
   ValidateEmail,
   ValidatePhone,
   ValidateZip,
 } from '../../../utils/validations';
-import {basketImage} from '../../../images';
 import {getTotal} from './utils';
 
+import {basketImage} from '../../../images';
+
+const mapStateToProps = store => {
+  return {
+    cart: store.cart,
+    cartCustomer: store.cartCustomer,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({removeGarmentFromCart, updateCartNotes}, dispatch);
+};
+
 class Cart extends Component {
+  static propTypes = {
+    cart: PropTypes.object.isRequired, // mapStateToProps
+    cartCustomer: PropTypes.object.isRequired, // mapStateToProps
+    removeGarmentFromCart: PropTypes.func.isRequired, // mapDispatchToProps
+    updateCartNotes: PropTypes.func.isRequired, // mapDispatchToProps
+    renderStageOne: PropTypes.func.isRequired, // Parent Component
+  };
+
   renderGarmentAlterations(garment) {
     // this garment is being injected from the menu, not the Cart
     //console.log('cart js 10', garment);
@@ -70,8 +92,8 @@ class Cart extends Component {
     }
   }
 
-  readyToCheckout(props) {
-    const {customerInfo, shipToStore} = props.cart;
+  readyToCheckout() {
+    const {cartCustomer, cart: {shipToStore}} = this.props;
     const {
       first_name,
       last_name,
@@ -81,7 +103,7 @@ class Cart extends Component {
       city,
       state_province,
       zip_code,
-    } = customerInfo;
+    } = cartCustomer;
 
     if (
       first_name &&
@@ -90,7 +112,8 @@ class Cart extends Component {
       ValidateEmail(email) &&
       // Condition Below:
       // Tailor will ship to store, OR customer has provided address
-      (shipToStore || (street && city && state_province && ValidateZip(zip_code)))
+      (shipToStore ||
+        (street && city && state_province && ValidateZip(zip_code)))
     ) {
       return true;
     } else {
@@ -102,7 +125,7 @@ class Cart extends Component {
     if (props.cart.garments.length > 0) {
       if (props.stage === 4) {
         return <div />;
-      } else if (this.readyToCheckout(props) && props.stage !== 3) {
+      } else if (this.readyToCheckout() && props.stage !== 3) {
         return (
           <div className="cart-buttons-container">
             <input
@@ -225,15 +248,5 @@ class Cart extends Component {
     }
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    cart: store.cart,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({removeGarmentFromCart, updateCartNotes}, dispatch);
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

@@ -21,7 +21,7 @@ import {
   SET_CONVERSATIONS,
   ADD_GARMENT_TO_CART,
   REMOVE_GARMENT_FROM_CART,
-  UPDATE_CART_CUSTOMER_INFO,
+  UPDATE_CART_CUSTOMER,
   UPDATE_CART_SHIP_TO,
   SET_CONFIRMED_NEW_ORDER,
   RESET_CART,
@@ -41,6 +41,7 @@ import {
   SET_USER_ROLE,
   RESET_USER_ROLE,
   SET_CURRENT_CUSTOMER,
+  SET_CART_CUSTOMER,
 } from '../utils/constants';
 
 import {removeFalseyValuesFromObject} from '../utils/format';
@@ -724,10 +725,17 @@ export function updateCartNotes(notes) {
   };
 }
 
-export function updateCartCustomerInfo(customerInfo) {
+export function updateCartCustomer(field, value) {
   return {
-    type: UPDATE_CART_CUSTOMER_INFO,
-    customerInfo,
+    type: UPDATE_CART_CUSTOMER,
+    customer: {field, value},
+  };
+}
+
+export function setCartCustomer(customer) {
+  return {
+    type: SET_CART_CUSTOMER,
+    customer,
   };
 }
 
