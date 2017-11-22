@@ -29,7 +29,7 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-class OrderDetails extends Component {
+export class OrderDetails extends Component {
   static propTypes = {
     cart: PropTypes.object.isRequired,
     updateCartCustomerInfo: PropTypes.func.isRequired,
