@@ -1,18 +1,46 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import FormField from './FormField.js';
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
+
 import {
   updateCustomer,
   getCurrentCustomer,
   setGrowler,
-  getCurrentOrder
-} from '../actions';
-import { ValidateEmail } from '../utils/validations';
+  getCurrentOrder,
+} from '../../actions';
+
+import {ValidateEmail} from '../../utils/validations';
+
+import FormField from '../FormField.js';
+
+const mapStateToProps = store => {
+  return {
+    currentOrder: store.currentOrder,
+    currentCustomer: store.currentCustomer,
+    currentStore: store.currentStore,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {setGrowler, getCurrentOrder, getCurrentCustomer},
+    dispatch
+  );
+};
 
 class CustomerEdit extends Component {
+  static propTypes = {
+    currentOrder: PropTypes.object.isRequired,
+    currentCustomer: PropTypes.object.isRequired,
+    currentStore: PropTypes.object.isRequired,
+    setGrowler: PropTypes.func.isRequired,
+    getCurrentOrder: PropTypes.func.isRequired,
+    getCurrentCustomer: PropTypes.func.isReuired,
+  };
+
   constructor() {
     super();
     this.state = {
@@ -27,9 +55,9 @@ class CustomerEdit extends Component {
           street: '',
           city: '',
           zip_code: '',
-          state_province: ''
-        }
-      ]
+          state_province: '',
+        },
+      ],
     };
 
     this.updateState = this.updateState.bind(this);
@@ -38,7 +66,6 @@ class CustomerEdit extends Component {
   }
 
   componentDidMount() {
-    debugger;
     const customerId = this.props.match.params.customer_id;
     this.props.getCurrentCustomer(customerId).then(res => {
       this.refreshCurrentCustomer(res);
@@ -50,13 +77,13 @@ class CustomerEdit extends Component {
   }
 
   updateState(field, value) {
-    this.setState({ [field]: value });
+    this.setState({[field]: value});
   }
 
   updateAddress(field, value) {
     let address = this.state.addresses[0];
     address[field] = value;
-    this.setState({ addresses: [address] });
+    this.setState({addresses: [address]});
   }
 
   handleSubmit(e) {
@@ -65,18 +92,11 @@ class CustomerEdit extends Component {
       currentStore,
       currentOrder,
       getCurrentOrder,
-      setGrowler
+      setGrowler,
     } = this.props;
-    const { email } = this.state;
+    const {email} = this.state;
 
-    // const address = {
-    //   street: this.state.street,
-    //   city: this.state.city,
-    //   unit: this.stat.unit,
-    //   state_province: this.state.state_province,
-    //   zip_code: this.state.zip_code
-    // };
-    const { addresses } = this.state;
+    const {addresses} = this.state;
 
     const customer = {
       id: this.state.id,
@@ -84,12 +104,11 @@ class CustomerEdit extends Component {
       first_name: this.state.first_name,
       last_name: this.state.last_name,
       phone: this.state.phone,
-      email: this.state.email
+      email: this.state.email,
     };
 
-    debugger;
     if (ValidateEmail(email)) {
-      updateCustomer({ customer })
+      updateCustomer({customer})
         .then(res => {
           let kind, message;
           if (res.data.body.errors) {
@@ -100,27 +119,27 @@ class CustomerEdit extends Component {
             message = 'Customer Updated';
             getCurrentOrder(currentStore.id, currentOrder.id);
           }
-          setGrowler({ kind, message });
+          setGrowler({kind, message});
         })
         .catch(err => {});
     } else {
       const kind = 'warning';
       const message = 'Email must be valid';
-      this.props.setGrowler({ kind, message });
+      this.props.setGrowler({kind, message});
     }
   }
 
   render() {
-    const { currentOrder: { id: currentOrderId } } = this.props;
+    const {currentOrder: {id: currentOrderId}} = this.props;
     const backLink = `/orders/${currentOrderId}`;
-    const { email, first_name, last_name, phone } = this.state;
+    const {email, first_name, last_name, phone} = this.state;
 
     const {
-      street,
-      unit,
-      city,
-      state_province,
-      zip_code
+      street = '',
+      unit = '',
+      city = '',
+      state_province = '',
+      zip_code = '',
     } = this.state.addresses[0];
 
     return (
@@ -196,20 +215,5 @@ class CustomerEdit extends Component {
     );
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    currentOrder: store.currentOrder,
-    currentCustomer: store.currentCustomer,
-    currentStore: store.currentStore
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    { setGrowler, getCurrentOrder, getCurrentCustomer },
-    dispatch
-  );
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerEdit);

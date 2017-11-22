@@ -4,14 +4,13 @@ import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
 
 import {updateCartCustomerInfo, updateCartShipTo} from '../../../../actions';
+import Zippopotam from '../../../../lib/zippopotam';
+import {ValidateZip} from '../../../../utils/validations';
+import {redirectToStageOneIfNoAlterations} from '../../ordersHelper';
 
 import FormField from '../../../FormField';
 import Checkbox from '../../../Checkbox';
 import CustomerInfo from './CustomerInfo';
-
-import Zippopotam from '../../../../lib/zippopotam';
-import {ValidateZip} from '../../../../utils/validations';
-import {redirectToStageOneIfNoAlterations} from '../../ordersHelper';
 
 const mapStateToProps = store => {
   return {
@@ -47,6 +46,9 @@ export class OrderDetails extends Component {
     if (shipToStore) {
       // do nothing
     } else {
+      if (!isEmpty(customerInfo.address)) {
+        debugger;
+      }
       const zippo = ValidateZip(customerInfo.zip)
         ? Zippopotam.get(customerInfo.zip)
         : '';

@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {ValidatePhone} from '../../../../utils/validations';
-import {formatPhone} from '../../../../utils/format';
-import FormField from '../../../FormField';
+import PropTypes from 'prop-types';
+
 import {
   findOrCreateCustomer,
   setLoader,
@@ -11,6 +10,17 @@ import {
   setGrowler,
   updateCartCustomerInfo,
 } from '../../../../actions';
+import {ValidatePhone} from '../../../../utils/validations';
+import {formatPhone} from '../../../../utils/format';
+
+import FormField from '../../../FormField';
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {setLoader, removeLoader, setGrowler, updateCartCustomerInfo},
+    dispatch
+  );
+};
 
 class FindCustomerByPhone extends Component {
   constructor() {
@@ -19,14 +29,21 @@ class FindCustomerByPhone extends Component {
       phone: '',
       customer: null,
     };
-    this.updatePhone = this.updatePhone.bind(this);
   }
 
-  updatePhone(field, phone) {
+  static PropTypes = {
+    setLoader: PropTypes.func.isRequired,
+    removeLoader: PropTypes.func.isRequired,
+    setGrowler: PropTypes.func.isRequired,
+    updateCartCustomerInfo: PropTypes.func.isRequired,
+    updateCustomerExists: PropTypes.func.isRequired,
+  };
+
+  updatePhone = (field, phone) => {
     this.setState({
       [field]: phone,
     });
-  }
+  };
 
   renderSubmitButton(phone) {
     if (ValidatePhone(phone)) {
@@ -48,7 +65,6 @@ class FindCustomerByPhone extends Component {
       setLoader,
       removeLoader,
       setGrowler,
-      updateCustomerInfo,
       updateCustomerExists,
       updateCartCustomerInfo,
     } = this.props;
@@ -91,12 +107,5 @@ class FindCustomerByPhone extends Component {
     );
   }
 }
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {setLoader, removeLoader, setGrowler, updateCartCustomerInfo},
-    dispatch
-  );
-};
 
 export default connect(null, mapDispatchToProps)(FindCustomerByPhone);
