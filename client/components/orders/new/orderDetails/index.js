@@ -1,25 +1,47 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { updateCartCustomerInfo, updateCartShipTo } from '../../../../actions';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import PropTypes from 'prop-types';
+
+import {updateCartCustomerInfo, updateCartShipTo} from '../../../../actions';
+
 import FormField from '../../../FormField';
 import Checkbox from '../../../Checkbox';
-import Zippopotam from '../../../../lib/zippopotam';
-import { ValidateZip } from '../../../../utils/validations';
-import { redirectToStageOneIfNoAlterations } from '../../ordersHelper';
 import CustomerInfo from './CustomerInfo';
 
-class OrderDetails extends Component {
-  constructor() {
-    super();
-    this.updateCustomerInfo = this.updateCustomerInfo.bind(this);
-  }
+import Zippopotam from '../../../../lib/zippopotam';
+import {ValidateZip} from '../../../../utils/validations';
+import {redirectToStageOneIfNoAlterations} from '../../ordersHelper';
 
-  updateCustomerInfo(key, value) {
+const mapStateToProps = store => {
+  return {
+    cart: store.cart,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      updateCartCustomerInfo,
+      updateCartShipTo,
+    },
+    dispatch
+  );
+};
+
+class OrderDetails extends Component {
+  static propTypes = {
+    cart: PropTypes.object.isRequired,
+    updateCartCustomerInfo: PropTypes.func.isRequired,
+    updateCartShipTo: PropTypes.func.isRequired,
+    renderStageOne: PropTypes.func.isRequired,
+  };
+
+  updateCustomerInfo = (key, value) => {
     let custInfo = this.props.cart.customerInfo;
     custInfo[key] = value;
     this.props.updateCartCustomerInfo(custInfo);
-  }
+  };
 
   renderCustomerAddress(shipToStore, customerInfo) {
     if (shipToStore) {
@@ -38,8 +60,6 @@ class OrderDetails extends Component {
           this.updateCustomerInfo('state', state);
         });
       }
-
-      debugger;
 
       return (
         <div>
@@ -88,7 +108,7 @@ class OrderDetails extends Component {
   }
 
   renderShipTo(cart) {
-    const { shipToStore, customerInfo } = cart;
+    const {shipToStore, customerInfo} = cart;
     return (
       <div>
         <br />
@@ -118,7 +138,8 @@ class OrderDetails extends Component {
   }
 
   render() {
-    const { customerInfo } = this.props.cart;
+    const {customerInfo} = this.props.cart;
+    console.log('props', this.props);
 
     return (
       <div className="order-details">
@@ -136,21 +157,5 @@ class OrderDetails extends Component {
     );
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    cart: store.cart
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      updateCartCustomerInfo,
-      updateCartShipTo
-    },
-    dispatch
-  );
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderDetails);
