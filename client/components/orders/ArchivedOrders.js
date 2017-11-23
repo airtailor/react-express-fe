@@ -1,39 +1,42 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import moment from "moment";
-import { Redirect, Link } from "react-router-dom";
-import SectionHeader from "../SectionHeader";
-import isEmpty from "lodash/isEmpty";
-import { getArchivedOrders, setLoader, removeLoader } from "../../actions";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import moment from 'moment';
+import {Redirect, Link} from 'react-router-dom';
+import SectionHeader from '../SectionHeader';
+import isEmpty from 'lodash/isEmpty';
+import {getArchivedOrders, setLoader, removeLoader} from '../../actions';
 
 class ArchivedOrders extends Component {
   constructor(props) {
     super();
-    this.state = { loadingOrders: true };
+    this.state = {loadingOrders: true};
     this.renderArchivedOrderHeaders = this.renderArchivedOrderHeaders.bind(
       this
     );
     this.renderArchivedOrderRows = this.renderArchivedOrderRows.bind(this);
   }
   componentDidMount() {
-    const { setLoader, removeLoader, getArchivedOrders } = this.props;
+    const {setLoader, removeLoader, getArchivedOrders} = this.props;
 
     setLoader();
     getArchivedOrders().then(() => removeLoader());
   }
 
   renderArchivedOrderRow(order) {
-    const { userRoles: roles } = this.props;
-    const { id, tailor, retailer, customer, alterations_count } = order;
+    const {userRoles: roles} = this.props;
+    const {id, tailor, retailer, customer, alterations_count} = order;
 
-    const fulfilledDate = moment(order.fulfilled_date).format("MM-DD-YYYY");
+    const fulfilledDate = moment(order.fulfilled_date).format('MM-DD-YYYY');
     let customerOrTailor, quantityOrRetailer;
     if (roles.admin) {
+      if (!tailor || !retailer) {
+        return '';
+      }
       customerOrTailor = tailor.name;
       quantityOrRetailer = retailer.name;
     } else {
-      const { first_name, last_name } = customer;
+      const {first_name, last_name} = customer;
       const name = `${first_name} ${last_name}`;
       customerOrTailor = name;
       quantityOrRetailer = alterations_count;
@@ -44,7 +47,7 @@ class ArchivedOrders extends Component {
       <div className="archive-row" key={id}>
         <Link to={route} className="archive-link">
           <div className="archive-order-cell">#{id}</div>
-          <div className="archive-order-cell" style={{ color: "green" }}>
+          <div className="archive-order-cell" style={{color: 'green'}}>
             {fulfilledDate}
           </div>
           <div className="archive-order-cell">{customerOrTailor}</div>
@@ -56,7 +59,8 @@ class ArchivedOrders extends Component {
   }
 
   renderArchivedOrderRows() {
-    const { archivedOrders } = this.props;
+    const {archivedOrders} = this.props;
+
     if (!isEmpty(archivedOrders)) {
       return (
         <div className="archive-container">
@@ -79,15 +83,15 @@ class ArchivedOrders extends Component {
   }
 
   renderArchivedOrderHeaders() {
-    const { userRoles: role } = this.props;
+    const {userRoles: role} = this.props;
     let customerOrTailor, quantityOrSource;
 
     if (role.admin) {
-      customerOrTailor = "Tailor";
-      quantityOrSource = "Source";
+      customerOrTailor = 'Tailor';
+      quantityOrSource = 'Source';
     } else {
-      customerOrTailor = "Customer";
-      quantityOrSource = "Quantity";
+      customerOrTailor = 'Customer';
+      quantityOrSource = 'Quantity';
     }
 
     return (
@@ -129,13 +133,13 @@ const mapStateToProps = store => {
     currentUser: store.currentUser,
     currentStore: store.currentStore,
     archivedOrders: store.archivedOrders,
-    userRoles: store.userRoles
+    userRoles: store.userRoles,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { getArchivedOrders, setLoader, removeLoader },
+    {getArchivedOrders, setLoader, removeLoader},
     dispatch
   );
 };
