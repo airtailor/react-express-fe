@@ -8,6 +8,7 @@ import {
   removeGarmentFromCart,
   updateCartNotes,
   createOrValidateCustomer,
+  setCartCustomer,
 } from '../../../actions';
 import {
   ValidateEmail,
@@ -26,7 +27,10 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({removeGarmentFromCart, updateCartNotes}, dispatch);
+  return bindActionCreators(
+    {removeGarmentFromCart, updateCartNotes, setCartCustomer},
+    dispatch
+  );
 };
 
 class Cart extends Component {
@@ -35,6 +39,7 @@ class Cart extends Component {
     cartCustomer: PropTypes.object.isRequired, // mapStateToProps
     removeGarmentFromCart: PropTypes.func.isRequired, // mapDispatchToProps
     updateCartNotes: PropTypes.func.isRequired, // mapDispatchToProps
+    setCartCustomer: PropTypes.func.isRequired, // mapDispatchToProps
     renderStageOne: PropTypes.func.isRequired, // Parent Component
     stage: PropTypes.number.isRequired, // Parent Component
   };
@@ -106,6 +111,7 @@ class Cart extends Component {
       phone,
       email,
       street,
+      unit,
       city,
       state_province,
       zip_code,
@@ -128,10 +134,11 @@ class Cart extends Component {
   }
 
   checkForValidCustomer = () => {
-    const {cartCustomer, renderCheckout} = this.props;
+    const {cartCustomer, renderCheckout, setCartCustomer} = this.props;
     createOrValidateCustomer(cartCustomer)
       .then(res => {
         console.log('res', res);
+        setCartCustomer(res.data.body);
         renderCheckout();
       })
       .catch(res => {
@@ -169,11 +176,7 @@ class Cart extends Component {
           <div className="cart-buttons-container">
             {this.createNextButton(renderOrderDetails, 'Edit Order Details')}
 
-            {this.createNextButton(
-              this.checkForValidCustomer,
-              'Checkout',
-              false
-            )}
+            {this.createNextButton(this.checkForValidCustomer, 'Checkout')}
           </div>
         );
       } else if (this.readyToCheckout(this.props) && stage === 3) {
@@ -181,11 +184,7 @@ class Cart extends Component {
           <div className="cart-buttons-container">
             {this.createNextButton(renderStageOne, 'Add More Items')}
 
-            {this.createNextButton(
-              this.checkForValidCustomer,
-              'Checkout',
-              false
-            )}
+            {this.createNextButton(this.checkForValidCustomer, 'Checkout')}
           </div>
         );
       } else if (!this.readyToCheckout(props) && props.stage === 3) {

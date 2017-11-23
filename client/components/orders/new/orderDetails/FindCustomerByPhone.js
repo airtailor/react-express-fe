@@ -68,6 +68,7 @@ class FindCustomerByPhone extends Component {
       setGrowler,
       updateCustomerExists,
       setCartCustomer,
+      updateCartCustomer,
     } = this.props;
 
     setLoader();

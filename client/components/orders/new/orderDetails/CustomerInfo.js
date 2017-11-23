@@ -98,14 +98,14 @@ class CustomerInfo extends Component {
 
     const {customerExists} = this.state;
 
-    if (customerExists === null) {
+    if (customerExists === null && !id) {
       return (
         <FindCustomerByPhone updateCustomerExists={this.updateCustomerExists} />
       );
     } else {
       return (
         <div>
-          {customerExists ? '' : <h4>Create Customer:</h4>}
+          {customerExists || id ? '' : <h4>Create Customer:</h4>}
           <div>
             {this.phone(phone)}
             {this.email(email)}
