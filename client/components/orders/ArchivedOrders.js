@@ -3,19 +3,45 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import moment from 'moment';
 import {Redirect, Link} from 'react-router-dom';
-import SectionHeader from '../SectionHeader';
 import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
+
 import {getArchivedOrders, setLoader, removeLoader} from '../../actions';
+
+import SectionHeader from '../SectionHeader';
+
+const mapStateToProps = store => {
+  return {
+    currentUser: store.currentUser,
+    currentStore: store.currentStore,
+    archivedOrders: store.archivedOrders,
+    userRoles: store.userRoles,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {getArchivedOrders, setLoader, removeLoader},
+    dispatch
+  );
+};
 
 class ArchivedOrders extends Component {
   constructor(props) {
     super();
     this.state = {loadingOrders: true};
-    this.renderArchivedOrderHeaders = this.renderArchivedOrderHeaders.bind(
-      this
-    );
-    this.renderArchivedOrderRows = this.renderArchivedOrderRows.bind(this);
   }
+
+  static propTypes = {
+    currentUser: PropTypes.object.isRequired, // mapStateToProps
+    currentStore: PropTypes.object.isRequired, // mapStateToProps
+    archivedOrders: PropTypes.array.isRequired, // mapStateToProps
+    userRoles: PropTypes.object.isRequired, // mapStateToProps
+    getArchivedOrders: PropTypes.func.isRequired, // mapDispatchToProps
+    setLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
+  };
+
   componentDidMount() {
     const {setLoader, removeLoader, getArchivedOrders} = this.props;
 
@@ -58,7 +84,7 @@ class ArchivedOrders extends Component {
     );
   }
 
-  renderArchivedOrderRows() {
+  renderArchivedOrderRows = () => {
     const {archivedOrders} = this.props;
 
     if (!isEmpty(archivedOrders)) {
@@ -80,9 +106,9 @@ class ArchivedOrders extends Component {
         </div>
       );
     }
-  }
+  };
 
-  renderArchivedOrderHeaders() {
+  renderArchivedOrderHeaders = () => {
     const {userRoles: role} = this.props;
     let customerOrTailor, quantityOrSource;
 
@@ -107,7 +133,7 @@ class ArchivedOrders extends Component {
         <div className="archive-header-break-row" />
       </div>
     );
-  }
+  };
   render() {
     if (!this.props.currentStore) {
       return <Redirect to="/" />;
@@ -127,21 +153,5 @@ class ArchivedOrders extends Component {
     );
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    currentUser: store.currentUser,
-    currentStore: store.currentStore,
-    archivedOrders: store.archivedOrders,
-    userRoles: store.userRoles,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {getArchivedOrders, setLoader, removeLoader},
-    dispatch
-  );
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArchivedOrders);
