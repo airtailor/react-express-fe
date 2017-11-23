@@ -43,6 +43,7 @@ const formatValidAddressIntoStore = store => {
     id,
     name,
     phone,
+    number: '',
     street: newStreet,
     unit: newUnit,
     city,

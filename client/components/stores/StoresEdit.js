@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import PropTypes from 'prop-types';
+
 import {
   getCurrentStore,
   updateStore,
@@ -8,9 +10,23 @@ import {
   setLoader,
   removeLoader,
 } from '../../actions';
+
 import FormField from './../FormField';
 import SectionHeader from './../SectionHeader';
 import UsersEdit from '../users/UsersEdit';
+
+const mapStateToProps = store => {
+  return {
+    store: store.currentStore,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {getCurrentStore, updateStore, setGrowler, setLoader, removeLoader},
+    dispatch
+  );
+};
 
 class StoresEdit extends Component {
   constructor(props) {
@@ -19,6 +35,15 @@ class StoresEdit extends Component {
     this.updateState = this.updateState.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  static propTypes = {
+    store: PropTypes.object.isRequired, // mapStateToProps
+    getCurrentStore: PropTypes.func.isRequired, // mapDispatchToProps
+    updateStore: PropTypes.func.isRequired, // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
+    setLoader: PropTypes.func.isRequired, // mapDispatchToProps,
+    removeLoader: PropTypes.func.isRequired, // mapDispatchToProps,
+  };
 
   componentDidMount() {
     const store = {...this.props.store};
@@ -49,16 +74,30 @@ class StoresEdit extends Component {
         } else if (res.data.body) {
           const kind = 'success';
           const message = 'Store Updated Successfully!';
+          this.props.getCurrentStore(store.id);
 
           this.props.setGrowler({kind, message});
         }
       })
-      .then(() => this.props.removeLoader())
-      .catch(err => console.log(err));
+      .then(res => {
+        const kind = 'success';
+        const message = 'Store Updated Successfully!';
+        this.props.getCurrentStore(store.id).then(() => {
+          this.setState(this.props.store);
+        });
+
+        this.props.setGrowler({kind, message});
+        this.props.removeLoader();
+      })
+      .catch(err => {
+        debugger;
+        console.log(err);
+      });
   }
 
   renderForm(data) {
-    const {name, phone, street1, street2, city, state, zip} = data;
+    const {name, phone, street, unit, city, state_province, zip_code} = data;
+
     return (
       <div>
         <form onSubmit={e => this.handleSubmit(e)}>
@@ -77,15 +116,15 @@ class StoresEdit extends Component {
           />
 
           <FormField
-            value={street1}
-            fieldName={'street1'}
+            value={street}
+            fieldName={'street'}
             title={'Street:'}
             onChange={this.updateState}
           />
 
           <FormField
-            value={street2}
-            fieldName={'street2'}
+            value={unit}
+            fieldName={'unit'}
             title={'Unit:'}
             onChange={this.updateState}
           />
@@ -98,15 +137,15 @@ class StoresEdit extends Component {
           />
 
           <FormField
-            value={state}
-            fieldName={'state'}
+            value={state_province}
+            fieldName={'state_province'}
             title={'State:'}
             onChange={this.updateState}
           />
 
           <FormField
-            value={zip}
-            fieldName={'zip'}
+            value={zip_code}
+            fieldName={'zip_code'}
             title={'Zip:'}
             onChange={this.updateState}
           />
@@ -138,19 +177,6 @@ class StoresEdit extends Component {
     }
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    store: store.currentStore,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {getCurrentStore, updateStore, setGrowler, setLoader, removeLoader},
-    dispatch
-  );
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoresEdit);
 

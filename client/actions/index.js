@@ -256,20 +256,29 @@ export function getTailorList() {
 }
 
 export function updateStore(data) {
-  const url = `${expressApi}/stores/${data.store.id}`;
+  const {
+    store,
+    store: {id, street, unit: street_two, city, state_province, zip_code},
+  } = data;
+
+  const url = `${expressApi}/stores/${id}`;
+  const storeObj = {...data.store};
+  storeObj.address = {street, street_two, city, state_province, zip_code};
+
   return dispatch => {
     return validateToken()
       .then(setTokens)
       .then(() => {
-        return Axios.put(url, data)
+        return Axios.put(url, {store: storeObj})
           .then(res => {
             if (!res.data.body.errors) {
-              dispatch(setCurrentStore(res.data.body));
+              dispatch(setCurrentStore(storeObj));
             }
             return res;
           })
           .catch(err => {
-            return res;
+            debugger;
+            return err;
           });
       });
   };
