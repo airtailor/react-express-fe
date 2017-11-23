@@ -12,6 +12,8 @@ import SectionHeader from '../../SectionHeader';
 const mapStateToProps = store => {
   return {
     confirmedNewOrder: store.confirmedNewOrder,
+    cartCustomer: store.cartCustomer,
+    currentStore: store.currentStore,
   };
 };
 
@@ -28,6 +30,8 @@ const mapDispatchToProps = dispatch => {
 
 class OrderConfirmation extends Component {
   static propTypes = {
+    cartCustomer: PropTypes.object.isRequired, // mapStateToProps
+    currentStore: PropTypes.func.isRequired, // mapStateToProps
     confirmedNewOrder: PropTypes.object.isRequired, // mapStateToProps
     resetCart: PropTypes.func.isRequired, // mapDispatchToProps
     setConfirmedNewOrder: PropTypes.func.isRequired, // mapDispatchToProps
@@ -93,22 +97,6 @@ class OrderConfirmation extends Component {
     );
   }
 
-  // submitOrder(props) {
-  //   this.props
-  //     .submitOrder(props)
-  //     .then(res => {
-  //       if (res.errors) {
-  //         console.log('errors', res);
-  //       } else if (res.data.body) {
-  //         this.setState({orderCompeted: true});
-  //         console.log('success', res);
-  //       }
-  //     })
-  //     .catch(err => {
-  //       debugger;
-  //     });
-  // }
-
   renderButtons(confirmedNewOrder) {
     const newOrderLink = `/orders/${confirmedNewOrder.id}`;
 
@@ -166,23 +154,26 @@ class OrderConfirmation extends Component {
 
   renderShippingInfo() {
     const {
-      confirmedNewOrder: {ship_to_store, retailer},
+      currentStore,
+      confirmedNewOrder: {ship_to_store},
       cartCustomer: customer,
     } = this.props;
+
     if (ship_to_store) {
-      return this.renderShipToStore(retailer);
+      return this.renderShipToStore(currentStore);
     } else if (!ship_to_store) {
       return this.renderShipToCustomer(customer);
     }
   }
 
   render() {
-    const {confirmedNewOrder} = this.props;
+    const {confirmedNewOrder, cartCustomer} = this.props;
+
     return (
       <div>
         <SectionHeader text="Order Completed" />
         <div className="checkout-container">
-          {this.renderCustomerInfo(confirmedNewOrder.customer)}
+          {this.renderCustomerInfo(cartCustomer)}
           <br />
           {this.renderOrderInfo(confirmedNewOrder)}
           <br />
