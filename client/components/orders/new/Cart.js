@@ -4,7 +4,11 @@ import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import {removeGarmentFromCart, updateCartNotes} from '../../../actions';
+import {
+  removeGarmentFromCart,
+  updateCartNotes,
+  createOrValidateCustomer,
+} from '../../../actions';
 import {
   ValidateEmail,
   ValidatePhone,
@@ -123,6 +127,20 @@ class Cart extends Component {
     }
   }
 
+  checkForValidCustomer = () => {
+    const {cartCustomer, renderCheckout} = this.props;
+    createOrValidateCustomer(cartCustomer)
+      .then(res => {
+        console.log('res', res);
+        renderCheckout();
+      })
+      .catch(res => {
+        debugger;
+        console.log('err', res);
+        debugger;
+      });
+  };
+
   createNextButton(onClick, text, disabled = false) {
     return (
       <input
@@ -139,7 +157,6 @@ class Cart extends Component {
     const {
       cart: {garments},
       renderOrderDetails,
-      renderCheckout,
       renderStageOne,
       stage,
     } = this.props;
@@ -152,7 +169,11 @@ class Cart extends Component {
           <div className="cart-buttons-container">
             {this.createNextButton(renderOrderDetails, 'Edit Order Details')}
 
-            {this.createNextButton(renderCheckout, 'Checkout')}
+            {this.createNextButton(
+              this.checkForValidCustomer,
+              'Checkout',
+              false
+            )}
           </div>
         );
       } else if (this.readyToCheckout(this.props) && stage === 3) {
@@ -160,7 +181,11 @@ class Cart extends Component {
           <div className="cart-buttons-container">
             {this.createNextButton(renderStageOne, 'Add More Items')}
 
-            {this.createNextButton(renderCheckout, 'Checkout')}
+            {this.createNextButton(
+              this.checkForValidCustomer,
+              'Checkout',
+              false
+            )}
           </div>
         );
       } else if (!this.readyToCheckout(props) && props.stage === 3) {
@@ -168,7 +193,11 @@ class Cart extends Component {
           <div className="cart-buttons-container">
             {this.createNextButton(renderStageOne, 'Add More Items')}
 
-            {this.createNextButton(renderCheckout, 'Checkout', true)}
+            {this.createNextButton(
+              this.checkForValidCustomer,
+              'Checkout',
+              true
+            )}
           </div>
         );
       } else if (props.stage === 2 || props.stage === 1) {

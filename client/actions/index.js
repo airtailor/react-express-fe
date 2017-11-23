@@ -41,6 +41,7 @@ import {
   SET_USER_ROLE,
   RESET_USER_ROLE,
   SET_CURRENT_CUSTOMER,
+  UPDATE_CURRENT_CUSTOMER,
   SET_CART_CUSTOMER,
 } from '../utils/constants';
 
@@ -208,12 +209,22 @@ export function alertCustomersPickup(orders, store_id) {
     .catch(err => console.log('err index.js line 155', err));
 }
 
-export function updateCustomer(data) {
-  const url = `${expressApi}/customers/${data.customer.id}`;
+export function updateCustomer(customer) {
+  const {
+    id,
+    street,
+    unit: street_two,
+    city,
+    state_province,
+    zip_code,
+  } = customer;
+  customer.address = {street, street_two, city, state_province, zip_code};
+
+  const url = `${expressApi}/customers/${id}`;
   return validateToken()
     .then(setTokens)
     .then(res => {
-      return Axios.put(url, data);
+      return Axios.put(url, {customer});
     })
     .catch(err => console.log(err));
 }
@@ -453,6 +464,17 @@ function createOrder(order) {
     });
 }
 
+export function createOrValidateCustomer(customer) {
+  const {street, unit: street_two, city, state_province, zip_code} = customer;
+  customer.address = {street, street_two, city, state_province, zip_code};
+  const url = `${expressApi}/create_or_validate_customer`;
+  return validateToken()
+    .then(setTokens)
+    .then(res => {
+      return Axios.post(url, {...customer});
+    });
+}
+
 function getOrderWeight(cart) {
   return cart.garments.reduce((prev, curr) => {
     return (prev += curr.weight);
@@ -636,6 +658,13 @@ function setCurrentCustomer(customer) {
   return {
     type: SET_CURRENT_CUSTOMER,
     customer,
+  };
+}
+
+export function updateCurrentCustomer(field, value) {
+  return {
+    type: UPDATE_CURRENT_CUSTOMER,
+    customer: {field, value},
   };
 }
 
