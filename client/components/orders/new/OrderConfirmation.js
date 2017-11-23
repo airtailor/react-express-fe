@@ -2,11 +2,38 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
-import SectionHeader from '../../SectionHeader';
-import {formatPhone} from '../../../utils/format';
+import PropTypes from 'prop-types';
+
 import {setConfirmedNewOrder, resetCart, setGrowler} from '../../../actions';
+import {formatPhone} from '../../../utils/format';
+
+import SectionHeader from '../../SectionHeader';
+
+const mapStateToProps = store => {
+  return {
+    confirmedNewOrder: store.confirmedNewOrder,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      resetCart,
+      setConfirmedNewOrder,
+      setGrowler,
+    },
+    dispatch
+  );
+};
 
 class OrderConfirmation extends Component {
+  static propTypes = {
+    confirmedNewOrder: PropTypes.object.isRequired, // mapStateToProps
+    resetCart: PropTypes.func.isRequired, // mapDispatchToProps
+    setConfirmedNewOrder: PropTypes.func.isRequired, // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
+  };
+
   componentDidMount() {
     const kind = 'success';
     const message = 'Order completed!';
@@ -102,7 +129,7 @@ class OrderConfirmation extends Component {
       first_name,
       last_name,
       street,
-      street_two,
+      unit,
       city,
       state_province,
       zip_code,
@@ -114,7 +141,7 @@ class OrderConfirmation extends Component {
           {first_name} {last_name}
         </p>
         <p>{street}</p>
-        {street_two ? <p>{street_two}</p> : ''}
+        {unit ? <p>{unit}</p> : ''}
         <p>
           {city}, {state_province} {zip_code}
         </p>
@@ -123,13 +150,13 @@ class OrderConfirmation extends Component {
   }
 
   renderShipToStore(store) {
-    const {name, street, street_two, city, state_province, zip_code} = store;
+    const {name, street, unit, city, state_province, zip_code} = store;
     return (
       <div>
         <h2>Ship To Store:</h2>
         <p>{name}</p>
         <p>{street}</p>
-        {street_two ? <p>{street_two}</p> : ''}
+        {unit ? <p>{unit}</p> : ''}
         <p>
           {city}, {state_province} {zip_code}
         </p>
@@ -137,8 +164,11 @@ class OrderConfirmation extends Component {
     );
   }
 
-  renderShippingInfo(confirmedNewOrder) {
-    const {ship_to_store, retailer, customer} = confirmedNewOrder;
+  renderShippingInfo() {
+    const {
+      confirmedNewOrder: {ship_to_store, retailer},
+      cartCustomer: customer,
+    } = this.props;
     if (ship_to_store) {
       return this.renderShipToStore(retailer);
     } else if (!ship_to_store) {
@@ -156,7 +186,7 @@ class OrderConfirmation extends Component {
           <br />
           {this.renderOrderInfo(confirmedNewOrder)}
           <br />
-          {this.renderShippingInfo(confirmedNewOrder)}
+          {this.renderShippingInfo()}
           <br />
           <h2>Total: ${confirmedNewOrder.total.toFixed(2)}</h2>
           <br />
@@ -166,22 +196,5 @@ class OrderConfirmation extends Component {
     );
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    confirmedNewOrder: store.confirmedNewOrder,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      resetCart,
-      setConfirmedNewOrder,
-      setGrowler,
-    },
-    dispatch
-  );
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderConfirmation);

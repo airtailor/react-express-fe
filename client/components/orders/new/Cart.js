@@ -144,23 +144,17 @@ class Cart extends Component {
       setGrowler,
     } = this.props;
 
-    createOrValidateCustomer(cartCustomer)
-      .then(res => {
-        if (res.data.body.errors) {
-          const kind = 'warning';
-          const message = res.data.body.errors[0];
-          setGrowler({kind, message});
-          renderOrderDetails();
-        } else {
-          setCartCustomer(res.data.body);
-          renderCheckout();
-        }
-        console.log('res', res);
-      })
-      .catch(err => {
-        console.log('err', err);
-        debugger;
-      });
+    createOrValidateCustomer(cartCustomer).then(res => {
+      if (res.data.body.errors) {
+        const kind = 'warning';
+        const message = res.data.body.errors[0];
+        setGrowler({kind, message});
+        renderOrderDetails();
+      } else {
+        setCartCustomer(res.data.body);
+        renderCheckout();
+      }
+    });
   };
 
   createNextButton(onClick, text, disabled = false) {
