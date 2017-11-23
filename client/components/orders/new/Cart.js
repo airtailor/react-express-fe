@@ -9,6 +9,7 @@ import {
   updateCartNotes,
   createOrValidateCustomer,
   setCartCustomer,
+  setGrowler,
 } from '../../../actions';
 import {
   ValidateEmail,
@@ -28,7 +29,7 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    {removeGarmentFromCart, updateCartNotes, setCartCustomer},
+    {removeGarmentFromCart, updateCartNotes, setCartCustomer, setGrowler},
     dispatch
   );
 };
@@ -39,6 +40,7 @@ class Cart extends Component {
     cartCustomer: PropTypes.object.isRequired, // mapStateToProps
     removeGarmentFromCart: PropTypes.func.isRequired, // mapDispatchToProps
     updateCartNotes: PropTypes.func.isRequired, // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequires, // mapDispatchToProps
     setCartCustomer: PropTypes.func.isRequired, // mapDispatchToProps
     renderStageOne: PropTypes.func.isRequired, // Parent Component
     stage: PropTypes.number.isRequired, // Parent Component
@@ -134,16 +136,29 @@ class Cart extends Component {
   }
 
   checkForValidCustomer = () => {
-    const {cartCustomer, renderCheckout, setCartCustomer} = this.props;
+    const {
+      cartCustomer,
+      renderCheckout,
+      setCartCustomer,
+      renderOrderDetails,
+      setGrowler,
+    } = this.props;
+
     createOrValidateCustomer(cartCustomer)
       .then(res => {
+        if (res.data.body.errors) {
+          const kind = 'warning';
+          const message = res.data.body.errors[0];
+          setGrowler({kind, message});
+          renderOrderDetails();
+        } else {
+          setCartCustomer(res.data.body);
+          renderCheckout();
+        }
         console.log('res', res);
-        setCartCustomer(res.data.body);
-        renderCheckout();
       })
-      .catch(res => {
-        debugger;
-        console.log('err', res);
+      .catch(err => {
+        console.log('err', err);
         debugger;
       });
   };
