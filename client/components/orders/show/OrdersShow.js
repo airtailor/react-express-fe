@@ -237,9 +237,9 @@ class OrdersShow extends Component {
     return window.print();
   }
 
-  toggleMeasurementDetailButton(boolean) {
+  toggleMeasurementDetailButton = boolean => {
     this.setState({showMeasurements: !boolean});
-  }
+  };
 
   renderDisabledCustLink() {
     const {first_name, last_name} = this.props.currentOrder.customer;
@@ -583,23 +583,26 @@ class OrdersShow extends Component {
     );
   };
 
-  renderDetailsOrMeasurementsButton(roles, state) {
+  renderDetailsOrMeasurementsButton() {
     const {showMeasurements} = this.state;
+    const {userRoles: {tailor, admin}} = this.props;
     const value = showMeasurements ? 'See Order Details' : 'See Measurements';
     const toggleFunction = this.toggleMeasurementDetailButton;
 
-    return (
-      <input
-        type="submit"
-        value={value}
-        className="short-button"
-        onClick={() => toggleFunction(showMeasurements)}
-      />
-    );
+    if (tailor || admin) {
+      return (
+        <input
+          type="submit"
+          value={value}
+          className="short-button"
+          onClick={() => toggleFunction(showMeasurements)}
+        />
+      );
+    }
   }
 
   renderMeasurements() {
-    const {currentOrder: {order: {customer}}} = this.props;
+    const {currentOrder: {customer}} = this.props;
     return <Measurements customer={customer} />;
   }
 
@@ -612,8 +615,10 @@ class OrdersShow extends Component {
     } else {
       const details = this.renderOrderDetails();
       const controls = this.renderOrderControls();
+      // NOTE: here we should be rendering 1 of 2 main components
       mainContent = (
         <div>
+          {this.renderDetailsOrMeasurementsButton()}
           {details}
           {controls}
         </div>

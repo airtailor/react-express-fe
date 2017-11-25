@@ -2,12 +2,28 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
+
 import {
   getCustomerMeasurements,
   createCustomerMeasurements,
 } from '../../../../actions';
+
 import InputMeasurement from './InputMeasurement';
 import {FrontImage, BackImage} from '../../../../images/measurements';
+
+const mapStateToProps = store => {
+  return {
+    measurements: store.measurements,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {getCustomerMeasurements, createCustomerMeasurements},
+    dispatch
+  );
+};
 
 class Measurements extends Component {
   constructor(props) {
@@ -20,18 +36,22 @@ class Measurements extends Component {
     this.updateMeasurement = this.updateMeasurement.bind(this);
   }
 
+  static propTypes = {
+    measurements: PropTypes.object.isRequired, // mapStateToProps
+    getCustomerMeasurements: PropTypes.func.isRequired, // mapDispatchToProps
+    createCustomerMeasurements: PropTypes.func.isRequired, // mapDispatchToProps
+  };
+
   componentDidMount() {
     this.resetCustomerMeasurements();
   }
 
   resetCustomerMeasurements() {
-    console.log('reset customer measuremnts');
     const {getCustomerMeasurements, customer} = this.props;
 
     const customer_id = customer.id;
     getCustomerMeasurements({customer_id})
       .then(res => {
-        console.log('res');
         this.setState({measurements: this.props.measurements});
       })
       .catch(err => console.log('err', err));
@@ -110,11 +130,11 @@ class Measurements extends Component {
     this.setState({editEnabled: !editEnabled});
   }
 
-  updateMeasurement(kind, value) {
+  updateMeasurement = (kind, value) => {
     let newState = this.state;
     newState.measurements[kind] = value;
     this.setState(newState);
-  }
+  };
 
   validateMeasurement(value) {
     const last = value[0];
@@ -262,18 +282,5 @@ class Measurements extends Component {
     );
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    measurements: store.measurements,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {getCustomerMeasurements, createCustomerMeasurements},
-    dispatch
-  );
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Measurements);
