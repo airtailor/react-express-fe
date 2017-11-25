@@ -95,10 +95,21 @@ class StoresShow extends Component {
     return fireShipmentCreate(orders, action, type)
       .then(res => {
         this.props.removeLoader();
-        this.setState({
-          loadingLabel: false,
-          selectedOrderShipments: res.data.body
-        });
+        this.setState({ loadingLabel: false });
+
+        const errors = res.data.body.errors;
+        if (isEmpty(errors)) {
+          debugger;
+          this.setState({ selectedOrderShipments: res.data.body });
+        } else {
+          debugger;
+          Object.keys(errors).map(key => {
+            this.props.setGrowler({
+              kind: 'warning',
+              message: errors[key][0].message
+            });
+          });
+        }
       })
       .then(() => {
         return this.refreshStoreOrders();

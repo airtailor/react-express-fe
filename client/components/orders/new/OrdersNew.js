@@ -114,7 +114,7 @@ class OrdersNew extends Component {
     this.renderStageOne();
   };
 
-  updateGarment() {
+  updateGarment = () => {
     const {
       selectedGarment,
       selectedGarmentIndex,
@@ -129,7 +129,7 @@ class OrdersNew extends Component {
       selectedGarment: null,
       selectedAlterations: []
     });
-  }
+  };
 
   renderStage(stage) {
     switch (this.state.stage) {
@@ -152,7 +152,7 @@ class OrdersNew extends Component {
             )}
             renderStageOne={this.renderStageOne}
             garmentIndex={this.state.selectedGarmentIndex}
-            updateGarment={this.updateGarment.bind(this)}
+            updateGarment={this.updateGarment}
             garment={this.state.selectedGarment}
           />
         );
@@ -203,7 +203,7 @@ class OrdersNew extends Component {
           <Cart
             renderCheckout={this.renderCheckout}
             renderStageOne={this.renderStageOne}
-            renderSelectAlterations={this.renderSelectAlterations.bind(this)}
+            renderSelectAlterations={this.renderSelectAlterations}
             stage={this.state.stage}
             renderOrderDetails={this.renderOrderDetails}
           />
