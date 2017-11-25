@@ -1,22 +1,51 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import {
   getConversations,
   getMessages,
   createMessage,
-  updateMessage,
+  updateMessage
 } from '../../actions';
 import SectionHeader from '../SectionHeader';
+import PropTypes from 'prop-types';
+
+const mapStateToProps = store => {
+  return {
+    conversations: store.conversations,
+    currentUser: store.currentUser,
+    userRoles: store.userRoles,
+    messages: store.messages,
+    currentStore: store.currentStore
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    { getConversations, getMessages, createMessage, updateMessage },
+    dispatch
+  );
+};
 
 class Messages extends Component {
+  static propTypes = {
+    conversations: PropTypes.array.isRequired, // mapStateToProps
+    currentUser: PropTypes.object.isRequired, // mapStateToProps
+    userRoles: PropTypes.object.isRequired, // mapStateToProps
+    messages: PropTypes.array.isRequired, // mapDispatchToProps
+    currentStore: PropTypes.object.isRequired, // mapDispatchToProps
+    getConversations: PropTypes.func.isRequired, // mapDispatchToProps
+    getMessages: PropTypes.func.isRequired, // mapDispatchToProps
+    createMessage: PropTypes.func.isRequired, // mapDispatchToProps
+    updateMessage: PropTypes.func.isRequired // mapDispatchToProps
+  };
+
   constructor() {
     super();
     this.state = {
-      newMessage: '',
+      newMessage: ''
     };
-    this.submitMessage = this.submitMessage.bind(this);
   }
 
   scrollToBottom(element) {
@@ -32,7 +61,7 @@ class Messages extends Component {
   componentDidMount() {
     this.scrollToBottom(document.getElementById('message-list'));
     const self = this;
-    const {store_id} = this.props.currentUser.user;
+    const { store_id } = this.props.currentUser.user;
     this.props
       .getConversations(store_id)
       .then(res => {
@@ -58,11 +87,11 @@ class Messages extends Component {
   }
 
   renderMessages(messages) {
-    const {user} = this.props.currentUser;
+    const { user } = this.props.currentUser;
     let messageDate, showDate;
     return messages.map((message, index) => {
       showDate = false;
-      const {body, store_id, store, created_at} = message;
+      const { body, store_id, store, created_at } = message;
       const className = store_id === user.store_id ? 'sender' : 'receiver';
 
       const messageTime = moment(created_at).format('hh:mm a');
@@ -87,9 +116,9 @@ class Messages extends Component {
     });
   }
 
-  submitMessage(e) {
+  submitMessage = e => {
     e.preventDefault();
-    const {newMessage} = this.state;
+    const { newMessage } = this.state;
 
     const roles = this.props.userRoles;
     const conversation_id = roles.admin
@@ -97,16 +126,16 @@ class Messages extends Component {
       : this.props.conversations[0].id;
 
     const store_id = this.props.currentStore.id;
-    const message = {body: newMessage, conversation_id, store_id};
+    const message = { body: newMessage, conversation_id, store_id };
 
     this.props
       .createMessage(message)
-      .then(res => this.setState({newMessage: ''}))
+      .then(res => this.setState({ newMessage: '' }))
       .catch(err => console.log(err));
-  }
+  };
 
   updateNewMessage(text) {
-    this.setState({newMessage: text});
+    this.setState({ newMessage: text });
   }
 
   renderMessageForm() {
@@ -169,22 +198,5 @@ class Messages extends Component {
     );
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    conversations: store.conversations,
-    currentUser: store.currentUser,
-    userRoles: store.userRoles,
-    messages: store.messages,
-    currentStore: store.currentStore,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {getConversations, getMessages, createMessage, updateMessage},
-    dispatch
-  );
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {getNewOrders, getCurrentOrder, setCurrentOrder} from '../../actions';
-import {bindActionCreators} from 'redux';
-import {RenderNewOrderList} from '../../utils/newOrderLists';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getNewOrders, getCurrentOrder, setCurrentOrder } from '../../actions';
+import { bindActionCreators } from 'redux';
+import { RenderNewOrderList } from '../../utils/newOrderLists';
 import NewOrderDetail from './NewOrderDetail';
 import NewOrderCustomerDetail from './NewOrderCustomerDetail';
 import SectionHeader from '../SectionHeader';
@@ -72,7 +72,7 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    {getNewOrders, getCurrentOrder, setCurrentOrder},
+    { getNewOrders, getCurrentOrder, setCurrentOrder },
     dispatch
   );
 };
