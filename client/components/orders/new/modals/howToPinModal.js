@@ -1,24 +1,24 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Modal from 'react-modal';
-import {infoImage} from '../../../../images';
+import { infoImage } from '../../../../images';
 
 class HowToPinModal extends Component {
+  static propTypes = {};
+
   constructor() {
     super();
     this.state = {
-      modalIsOpen: false,
+      modalIsOpen: false
     };
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
+  openModal = () => {
+    this.setState({ modalIsOpen: true });
+  };
 
-  closeModal() {
-    this.setState({modalIsOpen: false});
-  }
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  };
 
   render() {
     return (
@@ -32,7 +32,7 @@ class HowToPinModal extends Component {
 
         <Modal
           isOpen={this.state.modalIsOpen}
-          style={{backgroundColor: 'blue'}}
+          style={{ backgroundColor: 'blue' }}
           onRequestClose={this.closeModal}
           contentLabel="Example Modal"
         >
