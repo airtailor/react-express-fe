@@ -18,7 +18,8 @@ class ReportRoutes extends Component {
           path="/admin/reports"
           render={props =>
             admin ? <ReportsIndex {...props} /> : <Redirect to="/sign_in" />}
-        />;
+        />
+
         <Route
           exact
           path="/admin/reports/orders"

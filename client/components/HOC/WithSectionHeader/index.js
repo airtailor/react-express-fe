@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
 import SectionHeader from '../../SectionHeader';
+import {getSectionHeaderText} from './helper';
 
 function WithSectionHeader(WrappedComponent) {
   return class WithSectionHeader extends Component {
     constructor() {
       super();
       this.state = {
-        text: 'Heading here!!!',
+        text: '',
       };
     }
 
     componentDidMount() {
-      //const text = getSectionHeaderText(this.props);
-      //this.setState({text});
+      const text = getSectionHeaderText(this.props);
+      this.setState({text});
     }
 
     render() {
