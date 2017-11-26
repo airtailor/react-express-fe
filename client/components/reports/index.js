@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import WithSectionHeader from '../HOC/WithSectionHeader';
 
 class ReportsIndex extends Component {
   render() {
@@ -12,4 +13,4 @@ class ReportsIndex extends Component {
   }
 }
 
-export default ReportsIndex;
+export default WithSectionHeader(ReportsIndex);
