@@ -227,13 +227,14 @@ class StoresShow extends Component {
     const orders = this.state.selectedOrders;
     this.props.setLoader();
     alertCustomersPickup(orders, store_id).then(res => {
-      this.props.removeLoader();
       if (res.body.status === 200) {
         const kind = 'success';
         const message =
           'Your customers have been notified to pick up their orders.';
         this.props.setGrowler({kind, message});
+        this.props.removeLoader();
         this.refreshStoreOrders();
+        this.setState({selectedOrders: new Set()});
       }
     });
   }
@@ -271,17 +272,17 @@ class StoresShow extends Component {
     );
   }
 
-  renderMessengerButton = () => {
+  renderMessengerButton = disabled => {
     const {userRoles: roles} = this.props;
     const orders = this.state.selectedOrders;
-    const disabled = this.state.sendingMessenger;
+    let bool = disabled || this.state.sendingMessenger;
     const onClick = this.sendMessenger;
     return (
       <div>
         {this.renderButton(
           'Send Messenger',
           {
-            disabled: disabled,
+            disabled: bool,
             className: 'messenger-button',
             clickArgs: orders,
           },
@@ -291,10 +292,10 @@ class StoresShow extends Component {
     );
   };
 
-  renderLabelsButton = () => {
+  renderLabelsButton = disabled => {
     const {userRoles: roles} = this.props;
     const orders = [...this.state.selectedOrders];
-    const disabled = this.state.loadingLabel;
+    let bool = disabled || this.state.loadingLabel;
     const onClick = this.makeLabels;
 
     return (
@@ -302,7 +303,7 @@ class StoresShow extends Component {
         {this.renderButton(
           'Create Labels',
           {
-            disabled: disabled,
+            disabled: bool,
             className: 'print-label-button',
             clickArgs: orders,
           },
@@ -313,38 +314,47 @@ class StoresShow extends Component {
     );
   };
 
-  renderAlertButton = () => {
+  renderAlertButton = disabled => {
     const orders = this.state.selectedOrders;
     const onClick = () => this.alertCustomers();
-    return (
-      <div>
-        {this.renderButton(
-          'Alert Customers',
-          {
-            disabled: false,
-            className: 'print-label-button',
-            clickArgs: orders,
-          },
-          onClick
-        )}
-      </div>
+    return this.renderButton(
+      'Alert Customers',
+      {
+        disabled: disabled,
+        className: 'print-label-button',
+        clickArgs: orders,
+      },
+      onClick
     );
   };
 
   renderShippingControls = () => {
+    const {showOrderState, selectedOrders} = this.state;
     const {userRoles: roles} = this.props;
+
     if (roles.admin || roles.retailer) {
       const labelFunction = this.renderLabelsButton;
+      const labelBool = !(
+        showOrderState === 'new_orders' && selectedOrders.size > 0
+      );
+
       const messengerFunction = this.renderMessengerButton;
+      const messengerBool = !(
+        showOrderState === 'new_orders' && selectedOrders.size > 0
+      );
+
       const alertFunction = this.renderAlertButton;
+      const alertBool = !(
+        showOrderState === 'ready_orders' && selectedOrders.size > 0
+      );
 
       return (
         <div>
           <div className="shipping-button-container">
-            {labelFunction()}
-            {messengerFunction()}
+            {labelFunction(labelBool)}
+            {messengerFunction(messengerBool)}
+            {alertFunction(alertBool)}
           </div>
-          <div className="shipping-button-container">{alertFunction()}</div>
         </div>
       );
     } else {
