@@ -68,11 +68,11 @@ class OrdersShow extends Component {
     openOrders: PropTypes.array.isRequired, // mapStateToProps
     currentOrder: PropTypes.object.isRequired, // mapStateToProps
     userRoles: PropTypes.object.isRequired, // mapStateToProps
-    getCurrentOrder: PropTypes.func.isRequired, // mapStateToProps,
-    updateOrder: PropTypes.func.isRequired, // mapStateToProps,
-    setLoader: PropTypes.func.isRequired, // mapStateToProps,
-    removeLoader: PropTypes.func.isRequired, // mapStateToProps,
-    setGrowler: PropTypes.func.isRequired // mapStateToProps,
+    getCurrentOrder: PropTypes.func.isRequired, // mapDispatchToProps
+    updateOrder: PropTypes.func.isRequired, // mapDispatchToProps
+    setLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired // mapDispatchToProps
   };
 
   constructor(props) {

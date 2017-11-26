@@ -99,10 +99,8 @@ class StoresShow extends Component {
 
         const errors = res.data.body.errors;
         if (isEmpty(errors)) {
-          debugger;
           this.setState({ selectedOrderShipments: res.data.body });
         } else {
-          debugger;
           Object.keys(errors).map(key => {
             this.props.setGrowler({
               kind: 'warning',
