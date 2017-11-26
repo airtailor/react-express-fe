@@ -28,19 +28,16 @@ class OrderRoutes extends Component {
           exact
           path="/orders"
           render={props =>
-            loggedIn ? (
-              <StoresShow {...this.props} />
-            ) : (
-              <Redirect to="/sign_in" />
-            )}
+            loggedIn ? <StoresShow {...props} /> : <Redirect to="/sign_in" />}
         />
+
         <Switch>
           <Route
             exact
             path="/orders/new"
             render={props =>
               admin || retailer ? (
-                <OrdersNew {...this.props} />
+                <OrdersNew {...props} />
               ) : (
                 <Redirect to="/sign_in" />
               )}
@@ -50,22 +47,14 @@ class OrderRoutes extends Component {
             exact
             path="/orders/:order_id"
             render={props =>
-              loggedIn ? (
-                <OrdersShow {...this.props} />
-              ) : (
-                <Redirect to="/sign_in" />
-              )}
+              loggedIn ? <OrdersShow {...props} /> : <Redirect to="/sign_in" />}
           />
         </Switch>
         <Route
           exact
           path="/orders/:order_id/edit"
           render={props =>
-            loggedIn ? (
-              <OrdersEdit {...this.props} />
-            ) : (
-              <Redirect to="/sign_in" />
-            )}
+            loggedIn ? <OrdersEdit {...props} /> : <Redirect to="/sign_in" />}
         />
 
         <Route
@@ -73,7 +62,7 @@ class OrderRoutes extends Component {
           path="/orders/new/order-confirmation"
           render={props =>
             admin || retailer ? (
-              <OrderConfirmation {...this.props} />
+              <OrderConfirmation {...props} />
             ) : (
               <Redirect to="/" />
             )}
@@ -83,7 +72,7 @@ class OrderRoutes extends Component {
           exact
           path="/search-results"
           render={props =>
-            loggedIn ? <SearchResults {...this.props} /> : <Redirect to="/" />}
+            loggedIn ? <SearchResults {...props} /> : <Redirect to="/" />}
         />
         <StoreOrdersRoutes {...this.props} />
         <AdminOrderRoutes {...this.props} />

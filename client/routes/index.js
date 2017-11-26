@@ -18,6 +18,7 @@ class AvailableRoutes extends Component {
   };
   render() {
     const {loggedIn, admin, retailer, tailor} = this.props;
+
     return (
       <div className="content">
         <SiteRoutes {...this.props} />

@@ -15,7 +15,8 @@ class SiteRoutes extends Component {
         <Route
           exact
           path="/"
-          render={props => (loggedIn ? <Home /> : <Redirect to="/sign_in" />)}
+          render={props =>
+            loggedIn ? <Home {...props} /> : <Redirect to="/sign_in" />}
         />
       </div>
     );
