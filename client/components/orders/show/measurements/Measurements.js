@@ -47,16 +47,17 @@ class Measurements extends Component {
     this.resetCustomerMeasurements();
   }
 
-  resetCustomerMeasurements() {
+  resetCustomerMeasurements = () => {
     const {getCustomerMeasurements, customer} = this.props;
 
     const customer_id = customer.id;
+    const self = this;
     getCustomerMeasurements({customer_id})
       .then(res => {
-        this.setState({measurements: this.props.measurements});
+        self.setState({measurements: res});
       })
       .catch(err => console.log('err', err));
-  }
+  };
 
   getImage(state) {
     const {showFront} = this.state;
