@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import {Route, Redirect} from 'react-router-dom';
+import PropTypes from 'prop-types';
+import StoresShow from '../../components/stores/StoresShow';
+import ArchivedOrders from '../../components/orders/ArchivedOrders';
 
 class StoreOrder extends Component {
   static propTypes = {
@@ -16,7 +19,7 @@ class StoreOrder extends Component {
           exact
           path="/stores/:store_id/orders"
           render={props =>
-            loggedIn ? <StoreOrders {...props} /> : <Redirect to="/sign_in" />}
+            loggedIn ? <StoresShow {...props} /> : <Redirect to="/sign_in" />}
         />
 
         <Route

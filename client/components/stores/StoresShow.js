@@ -57,6 +57,7 @@ class StoresShow extends Component {
 
   refreshStoreOrders() {
     this.props.setLoader();
+
     const {
       getStoreOrders,
       match: {params: {store_id: paramsId}},

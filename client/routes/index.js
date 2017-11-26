@@ -20,12 +20,12 @@ class AvailableRoutes extends Component {
     const {loggedIn, admin, retailer, tailor} = this.props;
     return (
       <div className="content">
-        <SiteRoutes {...props} />
-        <AuthRoutes {...props} />
-        <OrderRoutes {...props} />
-        <MessageRoutes {...props} />
-        <ConversationRoutes {...props} />
-        <AdminRoutes {...props} />
+        <SiteRoutes {...this.props} />
+        <AuthRoutes {...this.props} />
+        <OrderRoutes {...this.props} />
+        <MessageRoutes {...this.props} />
+        <ConversationRoutes {...this.props} />
+        <AdminRoutes {...this.props} />
       </div>
     );
   }

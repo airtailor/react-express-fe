@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Redirect} from 'react-router-dom';
+import {Route, Redirect, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import StoresShow from '../../components/stores/StoresShow';
@@ -28,7 +28,11 @@ class OrderRoutes extends Component {
           exact
           path="/orders"
           render={props =>
-            loggedIn ? <StoresShow {...props} /> : <Redirect to="/sign_in" />}
+            loggedIn ? (
+              <StoresShow {...this.props} />
+            ) : (
+              <Redirect to="/sign_in" />
+            )}
         />
         <Switch>
           <Route
@@ -36,7 +40,7 @@ class OrderRoutes extends Component {
             path="/orders/new"
             render={props =>
               admin || retailer ? (
-                <OrdersNew {...props} />
+                <OrdersNew {...this.props} />
               ) : (
                 <Redirect to="/sign_in" />
               )}
@@ -46,14 +50,22 @@ class OrderRoutes extends Component {
             exact
             path="/orders/:order_id"
             render={props =>
-              loggedIn ? <OrdersShow {...props} /> : <Redirect to="/sign_in" />}
+              loggedIn ? (
+                <OrdersShow {...this.props} />
+              ) : (
+                <Redirect to="/sign_in" />
+              )}
           />
         </Switch>
         <Route
           exact
           path="/orders/:order_id/edit"
           render={props =>
-            loggedIn ? <OrdersEdit {...props} /> : <Redirect to="/sign_in" />}
+            loggedIn ? (
+              <OrdersEdit {...this.props} />
+            ) : (
+              <Redirect to="/sign_in" />
+            )}
         />
 
         <Route
@@ -61,7 +73,7 @@ class OrderRoutes extends Component {
           path="/orders/new/order-confirmation"
           render={props =>
             admin || retailer ? (
-              <OrderConfirmation {...props} />
+              <OrderConfirmation {...this.props} />
             ) : (
               <Redirect to="/" />
             )}
@@ -71,10 +83,10 @@ class OrderRoutes extends Component {
           exact
           path="/search-results"
           render={props =>
-            loggedIn ? <SearchResults {...props} /> : <Redirect to="/" />}
+            loggedIn ? <SearchResults {...this.props} /> : <Redirect to="/" />}
         />
-        <StoreOrdersRoutes {...props} />
-        <AdminOrderRoutes {...props} />
+        <StoreOrdersRoutes {...this.props} />
+        <AdminOrderRoutes {...this.props} />
       </div>
     );
   }
