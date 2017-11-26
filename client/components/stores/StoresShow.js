@@ -249,7 +249,6 @@ class StoresShow extends Component {
       newSelectedOrders.delete(order);
       this.setState({selectedOrders: newSelectedOrders});
     }
-    ``;
   };
 
   setOrderTabState = state => {
