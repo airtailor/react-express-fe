@@ -40,6 +40,7 @@ class Measurements extends Component {
     measurements: PropTypes.object.isRequired, // mapStateToProps
     getCustomerMeasurements: PropTypes.func.isRequired, // mapDispatchToProps
     createCustomerMeasurements: PropTypes.func.isRequired, // mapDispatchToProps
+    customer: PropTypes.object.isRequired, // parentComponent
   };
 
   componentDidMount() {
@@ -80,7 +81,7 @@ class Measurements extends Component {
     if (!editEnabled) {
       return (
         <input
-          className="pink-button tiny-button"
+          className="tiny-button"
           readOnly={true}
           value="Edit"
           onClick={() => this.toggleEditEnabled(editEnabled)}
@@ -89,7 +90,7 @@ class Measurements extends Component {
     } else {
       return (
         <input
-          className="pink-button tiny-button"
+          className="tiny-button"
           readOnly={true}
           value="Submit"
           onClick={() => this.submitNewMeasurements(this.state.measurements)}
@@ -110,13 +111,13 @@ class Measurements extends Component {
     return (
       <div className="measurement-buttons-container">
         <input
-          className="pink-button tiny-button"
+          className="tiny-button"
           readOnly={true}
           value="Front"
           onClick={() => this.showFrontOrBack(true)}
         />
         <input
-          className="pink-button tiny-button"
+          className="tiny-button"
           readOnly={true}
           value="Back"
           onClick={() => this.showFrontOrBack(false)}
