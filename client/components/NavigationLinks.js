@@ -81,6 +81,13 @@ class NavigationLinks extends Component {
             image={tailorsImage}
           />
 
+          <NavigationLink
+            cssClass="new-order-link"
+            route="/admin/reports"
+            text="Reports"
+            image={tailorsImage}
+          />
+
           <li>
             <a
               className="navbar-links-li close-menu-link"

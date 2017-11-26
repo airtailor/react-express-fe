@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Route, Redirect} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TailorIndex from '../../components/admin/tailors/TailorIndex';
+import ReportRoutes from './ReportRoutes';
 
 class AdminRoutes extends Component {
   static propTypes = {
@@ -17,6 +18,8 @@ class AdminRoutes extends Component {
           render={props =>
             admin ? <TailorIndex {...props} /> : <Redirect to="/" />}
         />
+
+        <ReportRoutes {...this.props} />
       </div>
     );
   }
