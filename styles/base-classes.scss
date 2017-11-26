@@ -3,6 +3,7 @@ body,
 #root {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 a {
@@ -116,7 +117,7 @@ h1 {
   display: inline;
 }
 
-input[type='submit']:disabled {
+input[type="submit"]:disabled {
   cursor: not-allowed;
 }
 

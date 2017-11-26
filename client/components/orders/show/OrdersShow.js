@@ -5,21 +5,21 @@ import {Link} from 'react-router-dom';
 import {
   getCurrentOrder,
   updateOrder,
-  createShipment,
   setLoader,
   removeLoader,
+  setGrowler,
 } from '../../../actions';
 
 import {
-  getShippingType,
-  getPrintButtonPrompt,
-  lowerCaseFirstLetter,
-  toSnakeCaseFromCamelCase,
-  makeShippingLabel,
-  renderPrintLabels,
+  shipmentTypes,
+  shipmentActions,
+  labelState,
+  messengerAllowed,
+  fireShipmentCreate,
 } from '../../shipping/shippingFunctions';
 
 import isEmpty from 'lodash/isEmpty';
+import uniqBy from 'lodash/uniqBy';
 import SectionHeader from '../../SectionHeader';
 
 import {
@@ -45,7 +45,27 @@ class OrdersShow extends Component {
       displayNotesForm: false,
       showMeasurements: false,
       loadingLabel: false,
+      sendingMessenger: false,
     };
+
+    this.renderToggleNotesFormButton = this.renderToggleNotesFormButton.bind(
+      this
+    );
+
+    this.renderNotesForm = this.renderNotesForm.bind(this);
+    this.renderPrintInstructions = this.renderPrintInstructions.bind(this);
+    this.renderPrintLabel = this.renderPrintLabel.bind(this);
+
+    this.renderArrivedButton = this.renderArrivedButton.bind(this);
+    this.checkOrderIn = this.checkOrderIn.bind(this);
+
+    this.renderCompletedButton = this.renderCompletedButton.bind(this);
+
+    this.renderFulfillButton = this.renderFulfillButton.bind(this);
+    this.fulfillOrder = this.fulfillOrder.bind(this);
+
+    this.postShipment = this.postShipment.bind(this);
+    this.makeShippingLabel = this.makeShippingLabel.bind(this);
   }
 
   refreshCurrentOrder() {
@@ -53,6 +73,7 @@ class OrdersShow extends Component {
     const {order_id} = this.props.match.params;
     const store_id = this.props.currentStore.id;
     const {getCurrentOrder} = this.props;
+
     getCurrentOrder(store_id, order_id)
       .then(() => this.props.removeLoader())
       .catch(err => console.log(err));
@@ -62,44 +83,173 @@ class OrdersShow extends Component {
     this.refreshCurrentOrder();
   }
 
-  setNotes(props) {
-    if (props.currentUser.user.roles[0].name === 'tailor') {
-      return props.currentOrder.provider_notes;
-    } else if (props.currentUser.user.roles[0].name === 'admin') {
-      return props.currentOrder.requester_notes;
-    }
-  }
-
-  filterByItemType(item, type) {
-    return item.item_type.name == type.name;
-  }
-
-  itemTypesList() {
-    return this.props.currentOrder.items.map(item => {
-      return item.item_type.name;
-    });
-  }
-
-  removeDuplicates(arr) {
-    return arr.filter(function(elem, index, self) {
-      return index == self.indexOf(elem);
-    });
+  getUniqueItemTypes(items) {
+    return uniqBy(
+      items.map(i => {
+        return {type: i.item_type.name, items: []};
+      }),
+      'type'
+    );
   }
 
   sortItemsByType() {
     const {items} = this.props.currentOrder;
-    const itemTypes = this.removeDuplicates(this.itemTypesList());
-    return itemTypes.reduce((newList, type) => {
-      const filteredItems = items.filter(item => {
-        return item.item_type.name == type;
-      });
 
-      if (filteredItems.length > 0) {
-        const newValue = {name: type, filteredItems};
-        newList.push(newValue);
+    if (isEmpty(items)) return [];
+
+    const sortedItems = new Set(this.getUniqueItemTypes(items));
+
+    for (var item of items) {
+      const itemType = item.item_type.name;
+      const sortedItemsIterator = sortedItems.values();
+      let sortingItem = true;
+
+      while (sortingItem) {
+        let currentIter = sortedItemsIterator.next();
+        let currentValue = currentIter.value;
+
+        if (currentIter.done) {
+          sortingItem = false;
+        } else if (currentValue.type === itemType) {
+          currentValue.items.push(item);
+        }
       }
-      return newList;
-    }, []);
+    }
+
+    return [...sortedItems];
+  }
+
+  getImageForItemType(name) {
+    switch (name) {
+      case 'Pants':
+        return pantsImage;
+      case 'Shirt':
+        return shirtImage;
+      case 'Dress':
+        return dressImage;
+      case 'Suit Jacket':
+        return suitImage;
+      case 'Necktie':
+        return tieImage;
+      case 'Skirt':
+        return skirtImage;
+      default:
+        return suppliesImage;
+    }
+  }
+
+  updateNotes(notes) {
+    this.setState({notes});
+  }
+
+  submitNotes(event) {
+    event.preventDefault();
+    const {
+      currentOrder: {id: orderId, store_id: storeId},
+      userRoles: {tailor},
+    } = this.props;
+    const key = tailor ? 'provider_notes' : 'requester_notes';
+    const data = {
+      order: {[key]: this.state.notes, id: orderId, store_id: storeId},
+    };
+
+    this.props.updateOrder(data).catch(err => console.log(err));
+  }
+
+  checkOrderIn() {
+    const {
+      currentOrder: {id: orderId, store_id: storeId},
+      userRoles: {tailor},
+    } = this.props;
+    const data = {order: {id: orderId, store_id: storeId, arrived: true}};
+
+    this.props.updateOrder(data).catch(err => console.log(err));
+  }
+
+  showHideNotesForm() {
+    this.setState({displayNotesForm: !this.state.displayNotesForm});
+  }
+
+  fulfillOrder() {
+    const {currentOrder: {id: orderId, store_id: storeId}} = this.props;
+    const data = {order: {id: orderId, store_id: storeId, fulfilled: true}};
+
+    this.props.setLoader();
+    this.setState({loadingLabel: true});
+
+    this.props
+      .updateOrder(data)
+      .then(res => {
+        const {currentOrder: order, userRoles: roles} = this.props;
+        const shipmentAction = shipmentActions(order, roles);
+        const shipmentType = shipmentTypes(roles);
+
+        if (shipmentType.has('mail_shipment')) {
+          this.makeShippingLabel(shipmentAction);
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  postShipment(orders, action, type) {
+    this.props.setLoader();
+    fireShipmentCreate(orders, action, type)
+      .then(res => {
+        if (res.data.body.errors) {
+          const message = res.data.body.errors[0];
+          const kind = 'warning';
+          this.props.setGrowler({kind, message});
+        } else {
+          this.refreshCurrentOrder();
+        }
+        this.setState({loadingLabel: false});
+        this.props.removeLoader();
+      })
+      .catch(err => console.log('err', err));
+  }
+
+  makeShippingLabel(action) {
+    return this.postShipment(
+      [this.props.currentOrder],
+      action,
+      'mail_shipment'
+    );
+  }
+
+  printShippingLabel() {
+    return window.print();
+  }
+
+  toggleMeasurementDetailButton(boolean) {
+    this.setState({showMeasurements: !boolean});
+  }
+
+  renderDisabledCustLink() {
+    const {first_name, last_name} = this.props.currentOrder.customer;
+    return this.renderLink({
+      text: `${first_name} ${last_name}`,
+      enabled: false,
+    });
+  }
+
+  renderEnabledCustLink() {
+    const {first_name, last_name, id} = this.props.currentOrder.customer;
+    return this.renderLink({
+      text: `${first_name} ${last_name}`,
+      path: `/customers/${id}/edit`,
+      enabled: true,
+    });
+  }
+
+  renderOrderNotes(field) {
+    const notes = this.props.currentOrder[field] || 'Not Provided';
+    const title = field === 'provider_notes' ? 'Tailor Notes:' : 'Order Notes:';
+    return (
+      <div>
+        <h3>{title}</h3>
+        <p className="notes">{notes}</p>
+      </div>
+    );
   }
 
   renderAlteration(alteration, index) {
@@ -126,127 +276,134 @@ class OrdersShow extends Component {
     }
   }
 
-  getImageForItemType(name) {
-    switch (name) {
-      case 'Pants':
-        return pantsImage;
-      case 'Shirt':
-        return shirtImage;
-      case 'Dress':
-        return dressImage;
-      case 'Suit Jacket':
-        return suitImage;
-      case 'SuitJacket':
-        return suitImage;
-      case 'Necktie':
-        return tieImage;
-      case 'Tie':
-        return tieImage;
-      case 'Skirt':
-        return skirtImage;
-      case 'Coat / Jacket':
-        return coatImage;
-      default:
-        console.log('!!!!!!!!', name);
-        return suppliesImage;
-    }
-  }
+  renderLink(args) {
+    const {text, path, enabled} = args;
+    let linkDiv;
 
-  renderList() {
-    const renderAlt = this.renderAlteration;
-    return this.sortItemsByType().map((itemType, index) => {
-      const image = this.getImageForItemType(itemType.name);
-      return itemType.filteredItems.map((item, index) => {
-        return (
-          <div className="card" key={index}>
-            <div className="type-heading">
-              <img
-                className="item-type-image"
-                src={image}
-                alt={itemType.name}
-              />
-              <h3>
-                {item.item_type.name} #{index + 1}
-              </h3>
-              <ul>{item.alterations.map(renderAlt)}</ul>
-            </div>
-          </div>
-        );
-      });
-    });
-  }
-
-  customerLink() {
-    const {first_name, last_name, id} = this.props.currentOrder.customer;
-    const linkToCustomer = `/customers/${id}/edit`;
-    const name = `${first_name} ${last_name}`;
-
-    const role = this.props.currentUser.user.roles[0].name;
-
-    if (role === 'retailer') {
-      return (
-        <div>
-          <h3>Customer:</h3>
-          <h3 className="blue-link">{name}</h3>
-        </div>
-      );
+    if (enabled == true) {
+      linkDiv = <Link to={path}> {text} </Link>;
     } else {
-      return (
-        <div>
-          <h3>Customer:</h3>
-          <h3 className="blue-link">
-            <Link to={linkToCustomer}>{name}</Link>
-          </h3>
-        </div>
-      );
+      linkDiv = <div>{text}</div>;
     }
-  }
 
-  orderNotes(party_notes) {
-    const notes = this.props.currentOrder[party_notes] || 'Not Provided';
-    const title =
-      party_notes === 'provider_notes' ? 'Tailor Notes:' : 'Order Notes:';
     return (
       <div>
-        <h3>{title}</h3>
-        <p className="notes">{notes}</p>
+        <h3>Customer:</h3>
+        <h3 className="blue-link">{linkDiv}</h3>
       </div>
     );
   }
 
-  updateNotes(notes) {
-    this.setState({notes});
+  renderArrivedButton() {
+    return this.renderButton(
+      'Check Order In',
+      {disabled: false},
+      this.checkOrderIn
+    );
   }
 
-  submitNotes(event) {
-    event.preventDefault();
-    const key =
-      this.props.currentUser.user.roles[0].name === 'tailor'
-        ? 'provider_notes'
-        : 'requester_notes';
-    const data = {
-      order: {
-        [key]: this.state.notes,
-        id: this.props.currentOrder.id,
-        store_id: this.props.currentOrder.store_id,
-      },
-    };
-    this.props.updateOrder(data).catch(err => console.log(err));
+  renderFulfillButton() {
+    return this.renderButton(
+      'Fulfill This Order',
+      {disabled: false},
+      this.fulfillOrder
+    );
   }
 
-  notesForm() {
+  renderCompletedButton() {
+    return this.renderButton('Order Completed ✔️', {disabled: true});
+  }
+
+  renderPrintLabel() {
+    const {currentOrder: order, userRoles: roles} = this.props;
+    const disabled = this.state.loadingLabel;
+    const shipmentAction = shipmentActions(order, roles);
+
+    let onClick, printPrompt, clickArgs, shipmentDiv;
+    switch (labelState(roles, order, disabled)) {
+      case 'needs_label':
+        printPrompt = 'Create Label';
+        onClick = this.makeShippingLabel;
+        clickArgs = shipmentAction;
+        break;
+      case 'in_progress':
+        printPrompt = 'Creating Label';
+      case 'label_created':
+        printPrompt = 'Print Label';
+        onClick = () => window.print();
+        shipmentDiv = <OrderComplete />;
+        break;
+      default:
+        break;
+    }
+
+    return (
+      <div>
+        {this.renderButton(
+          printPrompt,
+          {disabled: disabled, clickArgs: clickArgs},
+          onClick
+        )}
+        {shipmentDiv}
+      </div>
+    );
+  }
+
+  renderButton(text, params, callback = () => console.log('')) {
+    const className = params.className || 'pink-button';
+    const clickArgs = params.clickArgs || undefined;
+    const disabled = params.disabled;
+    return (
+      <div>
+        <button
+          onClick={() => callback(clickArgs)}
+          disabled={disabled}
+          className={className}
+        >
+          {text}
+        </button>
+      </div>
+    );
+  }
+
+  renderItemCaption(item, itemType, index) {
+    const alterations = item.alterations.map(this.renderAlteration);
+    const itemCaption = `${itemType.type} #${index + 1}`;
+    const image = this.getImageForItemType(itemType.type);
+
+    return (
+      <div className="card" key={index}>
+        <div className="type-heading">
+          <img className="item-type-image" src={image} alt={itemType.name} />
+          <h3>{itemCaption}</h3>
+          <ul>{alterations}</ul>
+        </div>
+      </div>
+    );
+  }
+
+  renderList() {
+    return this.sortItemsByType().map((itemType, index) => {
+      return itemType.items.map((item, index) => {
+        return this.renderItemCaption(item, itemType, index);
+      });
+    });
+  }
+
+  renderNotesForm() {
     if (this.state.displayNotesForm) {
-      const role = this.props.currentUser.user.roles[0].name;
-      let prompt;
-      let party;
+      const {tailor: isTailor, admin: isAdmin} = this.props.userRoles;
+      let prompt, party;
 
-      if (role === 'tailor') {
+      if (isTailor) {
         prompt = 'Add Tailor Notes?';
         party = 'provider_notes';
-      } else if (role === 'admin') {
+      } else if (isAdmin) {
         prompt = 'Add Admin Notes?';
         party = 'requester_notes';
       }
+
+      const notesField = this.props.currentOrder[party];
 
       return (
         <form className="notes-form" onSubmit={e => this.submitNotes(e)}>
@@ -256,7 +413,7 @@ class OrdersShow extends Component {
             <textarea
               cols={43}
               rows={10}
-              defaultValue={this.props.currentOrder[party]}
+              defaultValue={notesField}
               onChange={e => this.updateNotes(e.target.value)}
             />
           </label>
@@ -270,268 +427,201 @@ class OrdersShow extends Component {
     }
   }
 
-  checkOrderIn() {
-    const data = {
-      order: {
-        id: this.props.currentOrder.id,
-        store_id: this.props.currentOrder.store_id,
-        arrived: true,
-      },
-    };
-    this.props.updateOrder(data).catch(err => console.log(err));
-  }
-
-  renderArrivedButton() {
-    if (!this.props.currentOrder.arrived) {
-      return (
-        <div>
-          <button onClick={() => this.checkOrderIn()} className="pink-button">
-            Check Order In
-          </button>
-        </div>
-      );
-    }
-  }
-
-  fulfillOrder() {
-    this.props.setLoader();
-    const data = {
-      order: {
-        id: this.props.currentOrder.id,
-        store_id: this.props.currentOrder.store_id,
-        fulfilled: true,
-      },
-    };
-    this.setState({loadingLabel: true});
-    this.props
-      .updateOrder(data)
-      .then(res => {
-        const role = this.props.currentUser.user.roles[0].name;
-        const type = this.props.currentOrder.type;
-        const shippingType = getShippingType(role, type);
-        this.makeShippingLabel(shippingType);
-      })
-      .catch(err => console.log(err));
-  }
-
-  renderFulfillButton() {
-    const {arrived, fulfilled} = this.props.currentOrder;
-    if (arrived && !fulfilled) {
-      return (
-        <div>
-          <button onClick={() => this.fulfillOrder()} className="pink-button">
-            Fulfill This Order
-          </button>
-        </div>
-      );
-    } else if (arrived && fulfilled) {
-      return (
-        <div>
-          <button className="pink-button" disabled={true}>
-            Order Completed ✔️
-          </button>
-        </div>
-      );
-    }
-  }
-
-  showHideNotesForm() {
-    const value = !this.state.displayNotesForm;
-    this.setState({displayNotesForm: value});
-  }
-
-  makeShippingLabel(type) {
-    const data = {shipment: {type, order_id: this.props.currentOrder.id}};
-    this.props.setLoader();
-    createShipment(data)
-      .then(res => {
-        this.setState({loadingLabel: false});
-        this.refreshCurrentOrder();
-      })
-      .catch(err => console.log('err', err));
-  }
-
-  renderPrintLabels() {
-    if (!this.props.currentOrder.fulfilled) {
-      return;
-    }
-
-    const {currentUser, currentOrder} = this.props;
-    const role = currentUser.user.roles[0].name;
-    const shippingType = getShippingType(role, currentOrder.type);
-    const printPrompt = getPrintButtonPrompt(
-      shippingType,
-      currentOrder,
-      this.state.loadingLabel
-    );
-
-    if (printPrompt.split(' ')[0] === 'Print') {
-      const url = this.props.currentOrder[
-        toSnakeCaseFromCamelCase(lowerCaseFirstLetter(shippingType))
-      ].shipping_label;
-      return (
-        <div>
-          <button className="pink-button" onClick={() => window.print()}>
-            {printPrompt}
-          </button>
-
-          <OrderComplete shippingType={shippingType} />
-        </div>
-      );
-    } else if (printPrompt.split(' ')[0] === 'Creating') {
-      return (
-        <button className="pink-button" disabled={this.state.loadingLabel}>
-          {printPrompt}
-        </button>
-      );
-    } else if (printPrompt.split(' ')[0] === 'Create') {
-      return (
+  renderToggleNotesFormButton() {
+    return (
+      <div>
         <button
           className="pink-button"
-          disabled={this.state.loadingLabel}
-          onClick={() => this.makeShippingLabel(shippingType)}
+          onClick={() => this.showHideNotesForm()}
         >
-          {printPrompt}
+          {this.state.displayNotesForm ? 'Hide' : 'Add Notes'}
         </button>
-      );
-    }
+      </div>
+    );
   }
 
-  renderEditOrder(role, orderEditPath) {
-    if (role === 'admin') {
-      return (
-        <div>
-          <Link to={orderEditPath}>
-            <input className="short-button" type="submit" value="Edit Order" />
-          </Link>
-        </div>
-      );
-    }
+  renderEmptyDiv() {
+    return <div />;
   }
 
-  editComponents() {
-    if (this.props.currentUser.user.roles[0].name != 'retailer') {
-      return (
-        <div>
-          <button
-            className="pink-button"
-            onClick={() => this.showHideNotesForm()}
-          >
-            {this.state.displayNotesForm ? 'Hide' : 'Add Notes'}
-          </button>
-          {this.notesForm()}
-          {this.renderArrivedButton()}
-          {this.renderPrintInstructions()}
-          {this.renderFulfillButton()}
-          {this.renderPrintLabels()}
-        </div>
-      );
-    } else {
-      return <div />;
+  renderEmptyButtonDivs(count) {
+    const output = [];
+    while (count > 0) {
+      output.push(this.renderEmptyDiv);
+      count--;
     }
+    return output;
+  }
+
+  renderOrderControls() {
+    const {currentOrder: order, userRoles: roles} = this.props;
+    const {admin, tailor, retailer, customer} = roles;
+    const {arrived, fulfilled} = order;
+    const action = shipmentActions(order, roles);
+
+    // NOTE: This all needs to go into a higher-order interface component.
+    // If a new button, is assigned, this will error out and help you realize it.
+    let [
+      notesForm,
+      arrivedButton,
+      instructionButton,
+      fulfillButton,
+      labelButton,
+      messengerButton,
+      notesButton,
+      completedButton,
+    ] = this.renderEmptyButtonDivs(8);
+
+    if (tailor || admin) {
+      notesForm = this.renderNotesForm;
+      notesButton = this.renderToggleNotesFormButton;
+
+      if (!arrived && !fulfilled) {
+        arrivedButton = this.renderArrivedButton;
+      }
+
+      if (arrived && !fulfilled) {
+        instructionButton = this.renderPrintInstructions;
+        fulfillButton = this.renderFulfillButton;
+      }
+
+      if (arrived && fulfilled) {
+        labelButton = this.renderPrintLabel;
+        completedButton = this.renderCompletedButton;
+
+        if (messengerAllowed(action, roles)) {
+          messengerButton = this.renderSendMessenger;
+        }
+      }
+    }
+
+    return (
+      <div>
+        {notesButton()}
+        {notesForm()}
+        {arrivedButton()}
+        {instructionButton()}
+        {fulfillButton()}
+        {completedButton()}
+        {labelButton()}
+        {/*messengerButton()*/}
+      </div>
+    );
   }
 
   renderOrderDetails() {
+    const {userRoles: {admin, retailer, tailor, customer}} = this.props;
+
+    const renderList = this.renderList();
+    const requesterNotes = this.renderOrderNotes('requester_notes');
+    const providerNotes = this.renderOrderNotes('provider_notes');
+    const customerLink =
+      tailor || admin
+        ? this.renderEnabledCustLink()
+        : this.renderDisabledCustLink();
+
     return (
       <div>
-        {this.renderList()}
-        {this.customerLink()}
-        {this.orderNotes('requester_notes')}
-        {this.orderNotes('provider_notes')}
-        {this.editComponents()}
+        {renderList}
+        {customerLink}
+        {requesterNotes}
+        {providerNotes}
       </div>
     );
   }
 
   renderPrintInstructions() {
-    if (!this.props.currentOrder.fulfilled && this.props.currentOrder.arrived) {
-      const {requester_notes, provider_notes} = this.props.currentOrder;
-      const orderNotes = requester_notes ? requester_notes : 'Not Provided';
-      const tailorNotes = provider_notes ? provider_notes : 'Not Provided';
+    const {
+      currentOrder: {
+        id: orderId,
+        requester_notes: requesterNotes,
+        provider_notes: providerNotes,
+        customer: {first_name: firstName, last_name: lastName},
+      },
+    } = this.props;
+    const orderNotes = requesterNotes || 'Not Provided';
+    const tailorNotes = providerNotes || 'Not Provided';
+    const printableContent = this.renderList();
 
-      return (
-        <div>
-          <button className="pink-button" onClick={() => window.print()}>
-            Print Instructions
-          </button>
-
-          <div className="print print-instructions">
-            <div>
-              <img src={logoImage} style={{maxWidth: '100px'}} />
-            </div>
-            <h2>Alterations for Order #{this.props.currentOrder.id}</h2>
-            <h4>
-              Customer Name: {this.props.currentOrder.customer.first_name}{' '}
-              {this.props.currentOrder.customer.last_name}
-            </h4>
-            {this.renderList()}
-            <h3>
-              Order Notes: <p style={{display: 'inline'}}>{orderNotes}</p>
-            </h3>
-            <h3>
-              Taior Notes: <p style={{display: 'inline'}}>{tailorNotes}</p>
-            </h3>
+    return (
+      <div>
+        {this.renderButton('Print Instructions', {disabled: false}, () =>
+          window.print()
+        )}
+        <div className="print print-instructions">
+          <div>
+            <img src={logoImage} style={{maxWidth: '100px'}} />
           </div>
+          <h2>Alterations for Order #{orderId}</h2>
+          <h4>Customer Name: {`${firstName} ${lastName}`}</h4>
+          {printableContent}
+          <h3>
+            Order Notes: <p style={{display: 'inline'}}>{orderNotes}</p>
+          </h3>
+          <h3>
+            Taior Notes: <p style={{display: 'inline'}}>{tailorNotes}</p>
+          </h3>
+        </div>
+      </div>
+    );
+  }
+
+  renderDetailsOrMeasurementsButton(roles, state) {
+    const {showMeasurements} = this.state;
+    const value = showMeasurements ? 'See Order Details' : 'See Measurements';
+    const toggleFunction = this.toggleMeasurementDetailButton;
+
+    return (
+      <input
+        type="submit"
+        value={value}
+        className="short-button"
+        onClick={() => toggleFunction(showMeasurements)}
+      />
+    );
+  }
+
+  renderMeasurements() {
+    const {currentOrder: {order: {customer}}} = this.props;
+    return <Measurements customer={customer} />;
+  }
+
+  setMainContent() {
+    let mainContent;
+
+    if (this.state.showMeasurements) {
+      const measurements = this.renderMeasurements();
+      mainContent = <div>{measurements}</div>;
+    } else {
+      const details = this.renderOrderDetails();
+      const controls = this.renderOrderControls();
+      mainContent = (
+        <div>
+          {details}
+          {controls}
         </div>
       );
     }
-  }
 
-  showHideDeatilsOrCustomerMeasurementsButton(boolean) {
-    const value = !boolean;
-    this.setState({showMeasurements: value});
-  }
-
-  renderDetailsOrMeasurementsbutton(role, state) {
-    if (role != 'retailer') {
-      const {showMeasurements} = this.state;
-      const value = showMeasurements ? 'See Order Details' : 'See Measurements';
-      return (
-        <input
-          type="submit"
-          value={value}
-          className="short-button"
-          onClick={() =>
-            this.showHideDeatilsOrCustomerMeasurementsButton(showMeasurements)}
-        />
-      );
-    } else {
-      return <div />;
-    }
+    return mainContent;
   }
 
   render() {
-    const {currentStore, currentOrder, currentUser} = this.props;
-    const {customer} = currentOrder;
-    const orderEditPath = `/orders/${currentOrder.id}/edit`;
-    const headerText = `Orders / ${currentStore.name} / #${currentOrder.id}`;
-    const role = currentUser.user.roles[0].name;
+    const {currentStore: store, currentOrder: order} = this.props;
+    let mainContent = <div />;
+    let headerText = '';
 
-    if (!isEmpty(currentOrder)) {
-      const customerRoute = `/customers/${customer.id}/edit`;
-      const mainContent = !this.state.showMeasurements ? (
-        this.renderOrderDetails()
-      ) : (
-        <Measurements customer={customer} />
-      );
-      return (
-        <div>
-          <SectionHeader text={headerText} />
-          <div className="order-show">
-            {this.renderEditOrder(role, orderEditPath)}
-            {this.renderDetailsOrMeasurementsbutton(role, this.state)}
-            {mainContent}
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <SectionHeader text={headerText} />
-          <div>Loading..</div>
-        </div>
-      );
+    if (!isEmpty(order)) {
+      mainContent = this.setMainContent();
+      headerText = `Orders / ${store.name} / #${order.id}`;
     }
+
+    return (
+      <div>
+        <SectionHeader text={headerText} />
+        <div className="order-show">{mainContent}</div>
+      </div>
+    );
   }
 }
 
@@ -541,6 +631,7 @@ const mapStateToProps = store => {
     currentStore: store.currentStore,
     openOrders: store.storeOrders,
     currentOrder: store.currentOrder,
+    userRoles: store.userRoles,
   };
 };
 
@@ -551,6 +642,7 @@ const mapDispatchToProps = dispatch => {
       updateOrder,
       setLoader,
       removeLoader,
+      setGrowler,
     },
     dispatch
   );

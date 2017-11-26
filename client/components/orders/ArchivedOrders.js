@@ -3,94 +3,19 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import moment from 'moment';
 import {Redirect, Link} from 'react-router-dom';
-import SectionHeader from '../SectionHeader';
+import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
+
 import {getArchivedOrders, setLoader, removeLoader} from '../../actions';
 
-class ArchivedOrders extends Component {
-  componentDidMount() {
-    const {setLoader, removeLoader, getArchivedOrders} = this.props;
-
-    setLoader();
-    getArchivedOrders().then(() => removeLoader());
-  }
-
-  renderOrderRows() {
-    const {archivedOrders} = this.props;
-    if (archivedOrders.length > 0) {
-      return archivedOrders.map((order, i) => {
-        const fulfilledDate = moment(order.fulfilled_date).format('MM-DD-YYYY');
-        let customerOrTailor, quantityOrRetailer;
-        const {id, tailor, retailer, customer, alterations_count} = order;
-
-        if (tailor) {
-          customerOrTailor = tailor.name;
-          quantityOrRetailer = retailer.name;
-        } else {
-          const {first_name, last_name} = customer;
-          const name = `${first_name} ${last_name}`;
-          customerOrTailor = name;
-          quantityOrRetailer = alterations_count;
-        }
-
-        const route = `/orders/${id}`;
-        return (
-          <div key={id}>
-            <div className="order-row">
-              <Link to={route} className="flex-container">
-                <div className="order-data">#{id}</div>
-                <div className="order-data" style={{color: 'green'}}>
-                  {fulfilledDate}
-                </div>
-                <div className="order-data">{customerOrTailor}</div>
-                <div className="order-data">{quantityOrRetailer}</div>
-              </Link>
-            </div>
-            <hr className="order-row-hr" />
-          </div>
-        );
-      });
-    } else {
-      return <div>Loading...</div>;
-    }
-  }
-
-  render() {
-    if (!this.props.currentStore) {
-      return <Redirect to="/" />;
-    }
-    const headerText = `Archived Orders / ${this.props.currentStore.name}`;
-    const role = this.props.currentUser.user.roles[0].name;
-    let customerOrTailor, quantityOrSource;
-    if (role === 'admin') {
-      customerOrTailor = 'Tailor';
-      quantityOrSource = 'Source';
-    } else {
-      customerOrTailor = 'Customer';
-      quantityOrSource = 'Quantity';
-    }
-    return (
-      <div>
-        <SectionHeader text={headerText} />
-        <div className="orders">
-          <div className="order-row-header">
-            <h3 className="order-column">Order</h3>
-            <h3 className="order-column">FulFilled Date</h3>
-            <h3 className="order-column">{customerOrTailor}</h3>
-            <h3 className="order-column">{quantityOrSource}</h3>
-          </div>
-          <hr className="order-header-hr" />
-          <div className="order-rows">{this.renderOrderRows()}</div>
-        </div>
-      </div>
-    );
-  }
-}
+import SectionHeader from '../SectionHeader';
 
 const mapStateToProps = store => {
   return {
     currentUser: store.currentUser,
     currentStore: store.currentStore,
     archivedOrders: store.archivedOrders,
+    userRoles: store.userRoles,
   };
 };
 
@@ -100,5 +25,133 @@ const mapDispatchToProps = dispatch => {
     dispatch
   );
 };
+
+class ArchivedOrders extends Component {
+  constructor(props) {
+    super();
+    this.state = {loadingOrders: true};
+  }
+
+  static propTypes = {
+    currentUser: PropTypes.object.isRequired, // mapStateToProps
+    currentStore: PropTypes.object.isRequired, // mapStateToProps
+    archivedOrders: PropTypes.array.isRequired, // mapStateToProps
+    userRoles: PropTypes.object.isRequired, // mapStateToProps
+    getArchivedOrders: PropTypes.func.isRequired, // mapDispatchToProps
+    setLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
+  };
+
+  componentDidMount() {
+    const {setLoader, removeLoader, getArchivedOrders} = this.props;
+
+    setLoader();
+    getArchivedOrders().then(() => removeLoader());
+  }
+
+  renderArchivedOrderRow(order) {
+    const {userRoles: roles} = this.props;
+    const {id, tailor, retailer, customer, alterations_count} = order;
+
+    const fulfilledDate = moment(order.fulfilled_date).format('MM-DD-YYYY');
+    let customerOrTailor, quantityOrRetailer;
+    if (roles.admin) {
+      if (!tailor || !retailer) {
+        return '';
+      }
+      customerOrTailor = tailor.name;
+      quantityOrRetailer = retailer.name;
+    } else {
+      const {first_name, last_name} = customer;
+      const name = `${first_name} ${last_name}`;
+      customerOrTailor = name;
+      quantityOrRetailer = alterations_count;
+    }
+
+    const route = `/orders/${id}`;
+    return (
+      <div className="archive-row" key={id}>
+        <Link to={route} className="archive-link">
+          <div className="archive-order-cell">#{id}</div>
+          <div className="archive-order-cell" style={{color: 'green'}}>
+            {fulfilledDate}
+          </div>
+          <div className="archive-order-cell">{customerOrTailor}</div>
+          <div className="archive-order-cell">{quantityOrRetailer}</div>
+        </Link>
+        <div className="archive-break-row" />
+      </div>
+    );
+  }
+
+  renderArchivedOrderRows = () => {
+    const {archivedOrders} = this.props;
+
+    if (!isEmpty(archivedOrders)) {
+      return (
+        <div className="archive-container">
+          {archivedOrders.map(order => this.renderArchivedOrderRow(order))}
+        </div>
+      );
+    } else if (this.state.loadingOrders) {
+      return (
+        <div className="table-row">
+          <div className="loading-orders">Loading Orders...</div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="table-row">
+          <div className="no-orders">No orders found!</div>
+        </div>
+      );
+    }
+  };
+
+  renderArchivedOrderHeaders = () => {
+    const {userRoles: role} = this.props;
+    let customerOrTailor, quantityOrSource;
+
+    if (role.admin) {
+      customerOrTailor = 'Tailor';
+      quantityOrSource = 'Source';
+    } else {
+      customerOrTailor = 'Customer';
+      quantityOrSource = 'Quantity';
+    }
+
+    return (
+      <div>
+        <div className="archive-headers-container">
+          <div className="archive-headers-row">
+            <h3 className="archive-header-cell">Order</h3>
+            <h3 className="archive-header-cell">FulFilled Date</h3>
+            <h3 className="archive-header-cell">{customerOrTailor}</h3>
+            <h3 className="archive-header-cell">{quantityOrSource}</h3>
+          </div>
+        </div>
+        <div className="archive-header-break-row" />
+      </div>
+    );
+  };
+  render() {
+    if (!this.props.currentStore) {
+      return <Redirect to="/" />;
+    }
+    const headerText = `Archived Orders / ${this.props.currentStore.name}`;
+    const archivedOrderHeaders = this.renderArchivedOrderHeaders;
+    const archivedOrderRows = this.renderArchivedOrderRows;
+
+    return (
+      <div>
+        <SectionHeader text={headerText} />
+        <div className="archive">
+          {archivedOrderHeaders()}
+          {archivedOrderRows()}
+        </div>
+      </div>
+    );
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArchivedOrders);

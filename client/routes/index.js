@@ -10,7 +10,7 @@ import OrdersEdit from '../components/orders/OrdersEdit';
 import ArchivedOrders from '../components/orders/ArchivedOrders';
 import StoresEdit from '../components/stores/StoresEdit';
 import StoresNew from '../components/stores/StoresNew';
-import CustomerEdit from '../components/CustomerEdit';
+import CustomerEdit from '../components/customers/CustomerEdit';
 import NewOrders from '../components/admin/NewOrders';
 import ConversationsIndex from '../components/conversations/ConversationsIndex';
 import ConversationShow from '../components/conversations/ConversationsShow';
