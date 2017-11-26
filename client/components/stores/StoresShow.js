@@ -59,12 +59,12 @@ class StoresShow extends Component {
     currentUser: PropTypes.object.isRequired, // mapStateToProps
     currentStore: PropTypes.object.isRequired, // mapStateToProps
     openOrders: PropTypes.array.isRequired, // mapStateToProps
-    userRoles: PropTypes.object.isRequired // mapStateToProps
+    userRoles: PropTypes.object.isRequired, // mapStateToProps
     getStoreOrders: PropTypes.func.isRequired, // mapDispatchToProps
     setLoader: PropTypes.func.isRequired, // mapDispatchToProps
     removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
     setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
-  }
+  };
 
   componentDidMount() {
     this.refreshStoreOrders();
@@ -193,7 +193,7 @@ class StoresShow extends Component {
     }, 500);
   }
 
-  makeLabels ([...orders]) => {
+  makeLabels = ([...orders]) => {
     const {userRoles: roles} = this.props;
     if (!isEmpty(orders)) {
       const order = [...orders][0];
@@ -209,7 +209,7 @@ class StoresShow extends Component {
         this.printBulkShippingLabel();
       });
     }
-  }
+  };
 
   sendMessenger = ([...orders]) => {
     const {userRoles: roles} = this.props;
@@ -220,7 +220,7 @@ class StoresShow extends Component {
         this.setState({selectedOrders: new Set()})
       );
     }
-  }
+  };
 
   alertCustomers() {
     const {userRoles: roles, currentStore: {id: store_id}} = this.props;
@@ -289,7 +289,7 @@ class StoresShow extends Component {
         )}
       </div>
     );
-  }
+  };
 
   renderLabelsButton = () => {
     const {userRoles: roles} = this.props;
