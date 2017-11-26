@@ -1,10 +1,15 @@
 import Axios from 'axios';
-import {SET_CURRENT_REPORT} from './constants';
+import {SET_CURRENT_REPORT, expressApi} from './constants';
 
-export const {setLoader, removeLoader} = require('../../../../actions');
+export const {
+  setLoader,
+  removeLoader,
+  validateToken,
+  setTokens,
+} = require('../../../../actions');
 
 export const getCurrentReport = () => {
-  const url = `${expressApi}/reports/currentReport`;
+  const url = `api/reports/currentReport`;
   return dispatch => {
     return validateToken()
       .then(setTokens)

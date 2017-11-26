@@ -47,7 +47,7 @@ import {
 
 import {removeFalseyValuesFromObject} from '../utils/format';
 
-const setTokens = res => {
+export const setTokens = res => {
   // if we get a 401 from the server, then log out the current user
   if (!res.data.headers || !res.data.headers['access-token']) {
     if (!res.data.body || res.data.body.status === 401) {

@@ -28,6 +28,13 @@ class OrdersReport extends Component {
     removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
+  componentDidMount() {
+    this.props
+      .getCurrentReport()
+      .then(res => console.log('res', res))
+      .catch(err => console.log('err', err));
+  }
+
   render() {
     console.log(this.props.report);
     return (
