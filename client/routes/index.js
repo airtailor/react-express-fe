@@ -8,6 +8,7 @@ import OrderRoutes from './OrderRoutes';
 import MessageRoutes from './MessageRoutes';
 import ConversationRoutes from './ConversationRoutes';
 import AdminRoutes from './AdminRoutes';
+import StoreRoutes from './StoreRoutes';
 
 class AvailableRoutes extends Component {
   static propTypes = {
@@ -24,6 +25,7 @@ class AvailableRoutes extends Component {
         <SiteRoutes {...this.props} />
         <AuthRoutes {...this.props} />
         <OrderRoutes {...this.props} />
+        <StoreRoutes {...this.props} />
         <MessageRoutes {...this.props} />
         <ConversationRoutes {...this.props} />
         <AdminRoutes {...this.props} />
