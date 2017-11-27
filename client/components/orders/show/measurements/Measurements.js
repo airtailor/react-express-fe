@@ -1,23 +1,42 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
 import {
   getCustomerMeasurements,
-  createCustomerMeasurements,
+  createCustomerMeasurements
 } from '../../../../actions';
 import InputMeasurement from './InputMeasurement';
-import {FrontImage, BackImage} from '../../../../images/measurements';
+import { FrontImage, BackImage } from '../../../../images/measurements';
+
+const mapStateToProps = store => {
+  return {
+    measurements: store.measurements
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    { getCustomerMeasurements, createCustomerMeasurements },
+    dispatch
+  );
+};
 
 class Measurements extends Component {
+  static propTypes = {
+    measurements: PropTypes.array.isRequired, // mapStateToProps
+    getCustomerMeasurements: PropTypes.func.isRequired, // mapDispatchToProps
+    createCustomerMeasurements: PropTypes.func.isRequired // mapDispatchToProps
+  };
+
   constructor(props) {
     super();
     this.state = {
       showFront: true,
       editEnabled: false,
-      measurements: props.measurements,
+      measurements: props.measurements
     };
-    this.updateMeasurement = this.updateMeasurement.bind(this);
   }
 
   componentDidMount() {
@@ -26,19 +45,19 @@ class Measurements extends Component {
 
   resetCustomerMeasurements() {
     console.log('reset customer measuremnts');
-    const {getCustomerMeasurements, customer} = this.props;
+    const { getCustomerMeasurements, customer } = this.props;
 
     const customer_id = customer.id;
-    getCustomerMeasurements({customer_id})
+    getCustomerMeasurements({ customer_id })
       .then(res => {
         console.log('res');
-        this.setState({measurements: this.props.measurements});
+        this.setState({ measurements: this.props.measurements });
       })
       .catch(err => console.log('err', err));
   }
 
   getImage(state) {
-    const {showFront} = this.state;
+    const { showFront } = this.state;
     let alt, image;
 
     if (showFront) {
@@ -53,7 +72,7 @@ class Measurements extends Component {
   }
 
   showFrontOrBack(boolean) {
-    this.setState({showFront: boolean});
+    this.setState({ showFront: boolean });
   }
 
   enableEditButton(editEnabled) {
@@ -79,7 +98,7 @@ class Measurements extends Component {
   }
 
   submitNewMeasurements(measurements) {
-    this.setState({editEnabled: false});
+    this.setState({ editEnabled: false });
     this.props
       .createCustomerMeasurements(this.state.measurements)
       .then(res => this.resetCustomerMeasurements())
@@ -107,14 +126,14 @@ class Measurements extends Component {
   }
 
   toggleEditEnabled(editEnabled) {
-    this.setState({editEnabled: !editEnabled});
+    this.setState({ editEnabled: !editEnabled });
   }
 
-  updateMeasurement(kind, value) {
+  updateMeasurement = (kind, value) => {
     let newState = this.state;
     newState.measurements[kind] = value;
     this.setState(newState);
-  }
+  };
 
   validateMeasurement(value) {
     const last = value[0];
@@ -248,7 +267,7 @@ class Measurements extends Component {
   }
 
   render() {
-    const {showFront, editEnabled, measurements} = this.state;
+    const { showFront, editEnabled, measurements } = this.state;
     return (
       <div className="customer-measurements">
         <div className="measurements-header">
@@ -262,18 +281,5 @@ class Measurements extends Component {
     );
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    measurements: store.measurements,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {getCustomerMeasurements, createCustomerMeasurements},
-    dispatch
-  );
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Measurements);

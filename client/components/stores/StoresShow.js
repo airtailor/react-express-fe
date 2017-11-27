@@ -14,6 +14,7 @@ import SectionHeader from '../SectionHeader';
 import isEmpty from 'lodash/isEmpty';
 import Checkbox from '../Checkbox';
 import OrderComplete from '../prints/OrderComplete.js';
+import PropTypes from 'prop-types';
 
 import {
   fireShipmentCreate,
@@ -23,32 +24,45 @@ import {
   messengerAllowed
 } from '../shipping/shippingFunctions';
 
+const mapStateToProps = store => {
+  return {
+    currentUser: store.currentUser,
+    currentStore: store.currentStore,
+    openOrders: store.storeOrders,
+    userRoles: store.userRoles
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      getStoreOrders,
+      setLoader,
+      removeLoader,
+      setGrowler
+    },
+    dispatch
+  );
+};
+
 class StoresShow extends Component {
+  static propTypes = {
+    currentUser: PropTypes.object.isRequired, // mapStateToProps
+    currentStore: PropTypes.object.isRequired, // mapStateToProps
+    userRoles: PropTypes.object.isRequired, // mapStateToProps
+    openOrders: PropTypes.array.isRequired, // mapStateToProps
+    getStoreOrders: PropTypes.func.isRequired, // mapDispatchToProps
+    setLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired // mapDispatchToProps
+  };
+
   constructor(props) {
     super();
     this.state = {
       showOrderState: 'new_orders',
       selectedOrders: new Set()
     };
-
-    this.toggleOrderSelect = this.toggleOrderSelect.bind(this);
-    this.setOrderTabState = this.setOrderTabState.bind(this);
-
-    this.renderShippingControls = this.renderShippingControls.bind(this);
-    this.renderStateTabs = this.renderStateTabs.bind(this);
-
-    this.renderRetailerHeaders = this.renderRetailerHeaders.bind(this);
-    this.renderRetailerRows = this.renderRetailerRows.bind(this);
-
-    this.renderTailorHeaders = this.renderTailorHeaders.bind(this);
-    this.renderTailorRows = this.renderTailorRows.bind(this);
-    this.renderAlertButton = this.renderAlertButton.bind(this);
-
-    this.renderLabelsButton = this.renderLabelsButton.bind(this);
-    this.makeLabels = this.makeLabels.bind(this);
-
-    this.renderMessengerButton = this.renderMessengerButton.bind(this);
-    this.sendMessenger = this.sendMessenger.bind(this);
   }
 
   componentDidMount() {
@@ -81,10 +95,19 @@ class StoresShow extends Component {
     return fireShipmentCreate(orders, action, type)
       .then(res => {
         this.props.removeLoader();
-        this.setState({
-          loadingLabel: false,
-          selectedOrderShipments: res.data.body
-        });
+        this.setState({ loadingLabel: false });
+
+        const errors = res.data.body.errors;
+        if (isEmpty(errors)) {
+          this.setState({ selectedOrderShipments: res.data.body });
+        } else {
+          Object.keys(errors).map(key => {
+            this.props.setGrowler({
+              kind: 'warning',
+              message: errors[key][0].message
+            });
+          });
+        }
       })
       .then(() => {
         return this.refreshStoreOrders();
@@ -178,7 +201,7 @@ class StoresShow extends Component {
     }, 500);
   }
 
-  makeLabels([...orders]) {
+  makeLabels = ([...orders]) => {
     const { userRoles: roles } = this.props;
     if (!isEmpty(orders)) {
       const order = [...orders][0];
@@ -194,9 +217,9 @@ class StoresShow extends Component {
         this.printBulkShippingLabel();
       });
     }
-  }
+  };
 
-  sendMessenger([...orders]) {
+  sendMessenger = ([...orders]) => {
     const { userRoles: roles } = this.props;
     if (!isEmpty(orders)) {
       const order = orders[0];
@@ -205,7 +228,7 @@ class StoresShow extends Component {
         this.setState({ selectedOrders: new Set() })
       );
     }
-  }
+  };
 
   alertCustomers() {
     const { userRoles: roles, currentStore: { id: store_id } } = this.props;
@@ -223,7 +246,7 @@ class StoresShow extends Component {
     });
   }
 
-  toggleOrderSelect(order) {
+  toggleOrderSelect = order => {
     if (!this.state.selectedOrders.has(order)) {
       const newSelectedOrders = this.state.selectedOrders;
       newSelectedOrders.add(order);
@@ -233,11 +256,11 @@ class StoresShow extends Component {
       newSelectedOrders.delete(order);
       this.setState({ selectedOrders: newSelectedOrders });
     }
-  }
+  };
 
-  setOrderTabState(state) {
+  setOrderTabState = state => {
     this.setState({ showOrderState: state });
-  }
+  };
 
   renderButton(text, params, callback = () => console.log('')) {
     const className = params.className;
@@ -256,7 +279,7 @@ class StoresShow extends Component {
     );
   }
 
-  renderMessengerButton() {
+  renderMessengerButton = () => {
     const { userRoles: roles } = this.props;
     const orders = this.state.selectedOrders;
     const disabled = this.state.sendingMessenger;
@@ -274,9 +297,9 @@ class StoresShow extends Component {
         )}
       </div>
     );
-  }
+  };
 
-  renderLabelsButton() {
+  renderLabelsButton = () => {
     const { userRoles: roles } = this.props;
     const orders = [...this.state.selectedOrders];
     const disabled = this.state.loadingLabel;
@@ -296,9 +319,9 @@ class StoresShow extends Component {
         <OrderComplete shipmentSet={this.state.selectedOrderShipments} />
       </div>
     );
-  }
+  };
 
-  renderAlertButton() {
+  renderAlertButton = () => {
     const orders = this.state.selectedOrders;
     const onClick = () => this.alertCustomers();
     return (
@@ -314,9 +337,9 @@ class StoresShow extends Component {
         )}
       </div>
     );
-  }
+  };
 
-  renderShippingControls() {
+  renderShippingControls = () => {
     const { userRoles: roles } = this.props;
     if (roles.admin || roles.retailer) {
       const labelFunction = this.renderLabelsButton;
@@ -335,7 +358,7 @@ class StoresShow extends Component {
     } else {
       return <div />;
     }
-  }
+  };
 
   renderOrderRow(order) {
     const orderStatus = this.getOrderStatus(order);
@@ -403,7 +426,7 @@ class StoresShow extends Component {
     );
   }
 
-  renderStateTabs() {
+  renderStateTabs = () => {
     const allTabs = [
       { className: 'order-state-tab', status: 'new_orders', text: 'New' },
       {
@@ -443,7 +466,7 @@ class StoresShow extends Component {
     });
 
     return <div className="order-state-row">{tabs}</div>;
-  }
+  };
 
   renderHeaderCell(text, withSelect, isSelect) {
     if (isSelect) {
@@ -455,7 +478,7 @@ class StoresShow extends Component {
     }
   }
 
-  renderTailorHeaders() {
+  renderTailorHeaders = () => {
     const orderHeader = this.renderHeaderCell;
     return (
       <div className="order-headers-container">
@@ -469,9 +492,9 @@ class StoresShow extends Component {
         </div>
       </div>
     );
-  }
+  };
 
-  renderRetailerHeaders() {
+  renderRetailerHeaders = () => {
     const orderHeader = this.renderHeaderCell;
     return (
       <div className="order-headers-container">
@@ -487,9 +510,9 @@ class StoresShow extends Component {
         </div>
       </div>
     );
-  }
+  };
 
-  renderRetailerRows() {
+  renderRetailerRows = () => {
     const { openOrders } = this.props;
     if (!isEmpty(openOrders)) {
       const status = this.state.showOrderState;
@@ -514,9 +537,9 @@ class StoresShow extends Component {
         </div>
       );
     }
-  }
+  };
 
-  renderTailorRows() {
+  renderTailorRows = () => {
     const { openOrders } = this.props;
     if (!isEmpty(openOrders)) {
       const ordersWithShipments = this.sortOrdersByStatus('new_orders');
@@ -540,7 +563,7 @@ class StoresShow extends Component {
         </div>
       );
     }
-  }
+  };
 
   render() {
     if (!this.props.currentStore) {
@@ -584,26 +607,5 @@ class StoresShow extends Component {
     }
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    currentUser: store.currentUser,
-    currentStore: store.currentStore,
-    openOrders: store.storeOrders,
-    userRoles: store.userRoles
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      getStoreOrders,
-      setLoader,
-      removeLoader,
-      setGrowler
-    },
-    dispatch
-  );
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoresShow);

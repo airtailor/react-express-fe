@@ -1,19 +1,34 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import moment from "moment";
-import isEmpty from "lodash/isEmpty";
-import { Redirect, Link } from "react-router-dom";
-import { getTailorList, setLoader, removeLoader } from "../../../actions";
-import SectionHeader from "../../SectionHeader";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import moment from 'moment';
+import isEmpty from 'lodash/isEmpty';
+import { Redirect, Link } from 'react-router-dom';
+import { getTailorList, setLoader, removeLoader } from '../../../actions';
+import SectionHeader from '../../SectionHeader';
+import PropTypes from 'prop-types';
+
+const mapStateToProps = store => {
+  return {
+    tailorList: store.tailorList
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    { setLoader, removeLoader, getTailorList },
+    dispatch
+  );
+};
 
 class TailorsIndex extends Component {
-  constructor(props) {
-    super();
+  static propTypes = {
+    tailorList: PropTypes.array.isRequired, // mapStateToProps
+    setLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    getTailorList: PropTypes.func.isRequired // mapDispatchToProps
+  };
 
-    this.renderTailorHeaders = this.renderTailorHeaders.bind(this);
-    this.renderTailorRows = this.renderTailorRows.bind(this);
-  }
   componentDidMount() {
     const { setLoader, removeLoader, getTailorList } = this.props;
     setLoader();
@@ -25,7 +40,7 @@ class TailorsIndex extends Component {
     return name.length > 14 ? `${name.substring(0, 11)}...` : name;
   }
 
-  renderTailorRow(tailor) {
+  renderTailorRow = tailor => {
     const {
       id,
       name,
@@ -44,7 +59,7 @@ class TailorsIndex extends Component {
             <div className="tailor-data-cell">{truncatedTailorName}</div>
             <div className="tailor-data-cell">{assigned}</div>
             <div className="tailor-data-cell">{arrived}</div>
-            <div className="tailor-data-cell" style={{ color: "red" }}>
+            <div className="tailor-data-cell" style={{ color: 'red' }}>
               {late}
             </div>
           </Link>
@@ -52,9 +67,9 @@ class TailorsIndex extends Component {
         <hr className="tailor-break-row" />
       </div>
     );
-  }
+  };
 
-  renderTailorRows() {
+  renderTailorRows = () => {
     const { tailorList } = this.props;
     if (!isEmpty(tailorList)) {
       return (
@@ -69,9 +84,9 @@ class TailorsIndex extends Component {
         </div>
       );
     }
-  }
+  };
 
-  renderTailorHeaders() {
+  renderTailorHeaders = () => {
     return (
       <div>
         <div className="tailor-headers-container">
@@ -85,14 +100,14 @@ class TailorsIndex extends Component {
         </div>
       </div>
     );
-  }
+  };
 
   render() {
     const tailorOrderHeaders = this.renderTailorHeaders;
     const tailorOrderRows = this.renderTailorRows;
     return (
       <div>
-        <SectionHeader text={"Manage Tailors"} />
+        <SectionHeader text={'Manage Tailors'} />
         <div className="tailors">
           {tailorOrderHeaders()}
           {tailorOrderRows()}
@@ -101,18 +116,5 @@ class TailorsIndex extends Component {
     );
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    tailorList: store.tailorList
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    { setLoader, removeLoader, getTailorList },
-    dispatch
-  );
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TailorsIndex);
