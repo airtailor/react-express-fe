@@ -146,15 +146,11 @@ class Cart extends Component {
 
     createOrValidateCustomer(cartCustomer).then(res => {
       if (res.data.body && res.data.body.errors) {
-        console.log('\n\n\n\n\n!!!!!!! res!!!!!!!');
-        console.log(res);
         const kind = 'warning';
         const message = res.data.body.errors[0];
         setGrowler({kind, message});
         renderOrderDetails();
       } else {
-        console.log('\n\n\n\n\n!!!!!!! res!!!!!!!');
-        console.log(res);
         setCartCustomer(res.data.body);
         renderCheckout();
       }
