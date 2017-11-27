@@ -136,8 +136,6 @@ export class OrderDetails extends Component {
 
   render() {
     const {cart, cartCustomer} = this.props;
-    console.log('props', this.props);
-
     return (
       <div className="order-details">
         {redirectToStageOneIfNoAlterations(this.props)}

@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import {isEmpty, uniqBy} from 'lodash';
 
 import {
   getCurrentOrder,
@@ -18,9 +19,6 @@ import {
   messengerAllowed,
   fireShipmentCreate,
 } from '../../shipping/shippingFunctions';
-import isEmpty from 'lodash/isEmpty';
-import PropTypes from 'prop-types';
-import uniqBy from 'lodash/uniqBy';
 
 import {
   tieImage,
@@ -37,29 +35,6 @@ import logoImage from '../../../images/logo.png';
 import Measurements from './measurements/Measurements';
 import SectionHeader from '../../SectionHeader';
 import OrderComplete from '../../prints/OrderComplete';
-
-const mapStateToProps = store => {
-  return {
-    currentUser: store.currentUser,
-    currentStore: store.currentStore,
-    openOrders: store.storeOrders,
-    currentOrder: store.currentOrder,
-    userRoles: store.userRoles,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      getCurrentOrder,
-      updateOrder,
-      setLoader,
-      removeLoader,
-      setGrowler,
-    },
-    dispatch
-  );
-};
 
 const mapStateToProps = store => {
   return {

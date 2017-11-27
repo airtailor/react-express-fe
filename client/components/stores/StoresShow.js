@@ -21,6 +21,10 @@ import {
   messengerAllowed,
 } from '../shipping/shippingFunctions';
 
+import SectionHeader from '../SectionHeader';
+import OrderComplete from '../prints/OrderComplete';
+import Checkbox from '../Checkbox';
+
 const mapStateToProps = store => {
   return {
     currentUser: store.currentUser,
@@ -206,7 +210,7 @@ class StoresShow extends Component {
     setTimeout(() => {
       return window.print();
       this.setState({printSet: []});
-    }, 500);
+    }, 1000);
   }
 
   makeLabels = ([...orders]) => {

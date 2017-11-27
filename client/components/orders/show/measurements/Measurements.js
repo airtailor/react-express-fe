@@ -24,19 +24,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-const mapStateToProps = store => {
-  return {
-    measurements: store.measurements,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {getCustomerMeasurements, createCustomerMeasurements},
-    dispatch
-  );
-};
-
 class Measurements extends Component {
   static propTypes = {
     measurements: PropTypes.array.isRequired, // mapStateToProps
