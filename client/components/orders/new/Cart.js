@@ -40,7 +40,7 @@ class Cart extends Component {
     cartCustomer: PropTypes.object.isRequired, // mapStateToProps
     removeGarmentFromCart: PropTypes.func.isRequired, // mapDispatchToProps
     updateCartNotes: PropTypes.func.isRequired, // mapDispatchToProps
-    setGrowler: PropTypes.func.isRequires, // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
     setCartCustomer: PropTypes.func.isRequired, // mapDispatchToProps
     renderStageOne: PropTypes.func.isRequired, // Parent Component
     stage: PropTypes.number.isRequired, // Parent Component

@@ -1,24 +1,38 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import {
   getCustomerMeasurements,
-  createCustomerMeasurements
+  createCustomerMeasurements,
 } from '../../../../actions';
+
 import InputMeasurement from './InputMeasurement';
-import { FrontImage, BackImage } from '../../../../images/measurements';
+import {FrontImage, BackImage} from '../../../../images/measurements';
 
 const mapStateToProps = store => {
   return {
-    measurements: store.measurements
+    measurements: store.measurements,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { getCustomerMeasurements, createCustomerMeasurements },
+    {getCustomerMeasurements, createCustomerMeasurements},
+    dispatch
+  );
+};
+
+const mapStateToProps = store => {
+  return {
+    measurements: store.measurements,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {getCustomerMeasurements, createCustomerMeasurements},
     dispatch
   );
 };
@@ -27,7 +41,7 @@ class Measurements extends Component {
   static propTypes = {
     measurements: PropTypes.array.isRequired, // mapStateToProps
     getCustomerMeasurements: PropTypes.func.isRequired, // mapDispatchToProps
-    createCustomerMeasurements: PropTypes.func.isRequired // mapDispatchToProps
+    createCustomerMeasurements: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   constructor(props) {
@@ -35,29 +49,35 @@ class Measurements extends Component {
     this.state = {
       showFront: true,
       editEnabled: false,
-      measurements: props.measurements
+      measurements: props.measurements,
     };
   }
+
+  static propTypes = {
+    measurements: PropTypes.object.isRequired, // mapStateToProps
+    getCustomerMeasurements: PropTypes.func.isRequired, // mapDispatchToProps
+    createCustomerMeasurements: PropTypes.func.isRequired, // mapDispatchToProps
+    customer: PropTypes.object.isRequired, // parentComponent
+  };
 
   componentDidMount() {
     this.resetCustomerMeasurements();
   }
 
-  resetCustomerMeasurements() {
-    console.log('reset customer measuremnts');
-    const { getCustomerMeasurements, customer } = this.props;
+  resetCustomerMeasurements = () => {
+    const {getCustomerMeasurements, customer} = this.props;
 
     const customer_id = customer.id;
-    getCustomerMeasurements({ customer_id })
+    const self = this;
+    getCustomerMeasurements({customer_id})
       .then(res => {
-        console.log('res');
-        this.setState({ measurements: this.props.measurements });
+        self.setState({measurements: res});
       })
       .catch(err => console.log('err', err));
-  }
+  };
 
   getImage(state) {
-    const { showFront } = this.state;
+    const {showFront} = this.state;
     let alt, image;
 
     if (showFront) {
@@ -72,14 +92,14 @@ class Measurements extends Component {
   }
 
   showFrontOrBack(boolean) {
-    this.setState({ showFront: boolean });
+    this.setState({showFront: boolean});
   }
 
   enableEditButton(editEnabled) {
     if (!editEnabled) {
       return (
         <input
-          className="pink-button tiny-button"
+          className="tiny-button"
           readOnly={true}
           value="Edit"
           onClick={() => this.toggleEditEnabled(editEnabled)}
@@ -88,7 +108,7 @@ class Measurements extends Component {
     } else {
       return (
         <input
-          className="pink-button tiny-button"
+          className="tiny-button"
           readOnly={true}
           value="Submit"
           onClick={() => this.submitNewMeasurements(this.state.measurements)}
@@ -98,7 +118,7 @@ class Measurements extends Component {
   }
 
   submitNewMeasurements(measurements) {
-    this.setState({ editEnabled: false });
+    this.setState({editEnabled: false});
     this.props
       .createCustomerMeasurements(this.state.measurements)
       .then(res => this.resetCustomerMeasurements())
@@ -109,13 +129,13 @@ class Measurements extends Component {
     return (
       <div className="measurement-buttons-container">
         <input
-          className="pink-button tiny-button"
+          className="tiny-button"
           readOnly={true}
           value="Front"
           onClick={() => this.showFrontOrBack(true)}
         />
         <input
-          className="pink-button tiny-button"
+          className="tiny-button"
           readOnly={true}
           value="Back"
           onClick={() => this.showFrontOrBack(false)}
@@ -126,7 +146,7 @@ class Measurements extends Component {
   }
 
   toggleEditEnabled(editEnabled) {
-    this.setState({ editEnabled: !editEnabled });
+    this.setState({editEnabled: !editEnabled});
   }
 
   updateMeasurement = (kind, value) => {
@@ -267,7 +287,7 @@ class Measurements extends Component {
   }
 
   render() {
-    const { showFront, editEnabled, measurements } = this.state;
+    const {showFront, editEnabled, measurements} = this.state;
     return (
       <div className="customer-measurements">
         <div className="measurements-header">

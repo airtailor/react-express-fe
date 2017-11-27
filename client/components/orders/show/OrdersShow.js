@@ -1,27 +1,26 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import {
   getCurrentOrder,
   updateOrder,
   setLoader,
   removeLoader,
-  setGrowler
+  setGrowler,
 } from '../../../actions';
-
 import {
   shipmentTypes,
   shipmentActions,
   labelState,
   messengerAllowed,
-  fireShipmentCreate
+  fireShipmentCreate,
 } from '../../shipping/shippingFunctions';
-
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import uniqBy from 'lodash/uniqBy';
-import SectionHeader from '../../SectionHeader';
 
 import {
   tieImage,
@@ -30,13 +29,14 @@ import {
   skirtImage,
   dressImage,
   pantsImage,
-  coatImage
+  coatImage,
 } from '../../../images/garments';
 
 import suppliesImage from '../../../images/supplies.png';
 import logoImage from '../../../images/logo.png';
 import Measurements from './measurements/Measurements';
-import OrderComplete from '../../prints/OrderComplete.js';
+import SectionHeader from '../../SectionHeader';
+import OrderComplete from '../../prints/OrderComplete';
 
 const mapStateToProps = store => {
   return {
@@ -44,7 +44,7 @@ const mapStateToProps = store => {
     currentStore: store.currentStore,
     openOrders: store.storeOrders,
     currentOrder: store.currentOrder,
-    userRoles: store.userRoles
+    userRoles: store.userRoles,
   };
 };
 
@@ -55,7 +55,30 @@ const mapDispatchToProps = dispatch => {
       updateOrder,
       setLoader,
       removeLoader,
-      setGrowler
+      setGrowler,
+    },
+    dispatch
+  );
+};
+
+const mapStateToProps = store => {
+  return {
+    currentUser: store.currentUser,
+    currentStore: store.currentStore,
+    openOrders: store.storeOrders,
+    currentOrder: store.currentOrder,
+    userRoles: store.userRoles,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      getCurrentOrder,
+      updateOrder,
+      setLoader,
+      removeLoader,
+      setGrowler,
     },
     dispatch
   );
@@ -72,7 +95,7 @@ class OrdersShow extends Component {
     updateOrder: PropTypes.func.isRequired, // mapDispatchToProps
     setLoader: PropTypes.func.isRequired, // mapDispatchToProps
     removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
-    setGrowler: PropTypes.func.isRequired // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   constructor(props) {
@@ -82,15 +105,28 @@ class OrdersShow extends Component {
       displayNotesForm: false,
       showMeasurements: false,
       loadingLabel: false,
-      sendingMessenger: false
+      sendingMessenger: false,
     };
   }
 
+  static propTypes = {
+    currentUser: PropTypes.object.isRequired, // mapStateToProps
+    currentStore: PropTypes.object.isRequired, // mapStateToProps
+    openOrders: PropTypes.array.isRequired, // mapStateToProps
+    currentOrder: PropTypes.object.isRequired, // mapStateToProps
+    userRoles: PropTypes.object.isRequired, // mapStateToProps
+    getCurrentOrder: PropTypes.func.isRequired, // mapDispatchToProps
+    updateOrder: PropTypes.func.isRequired, // mapDispatchToProps
+    setLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
+  };
+
   refreshCurrentOrder() {
     this.props.setLoader();
-    const { order_id } = this.props.match.params;
+    const {order_id} = this.props.match.params;
     const store_id = this.props.currentStore.id;
-    const { getCurrentOrder } = this.props;
+    const {getCurrentOrder} = this.props;
 
     getCurrentOrder(store_id, order_id)
       .then(() => this.props.removeLoader())
@@ -104,14 +140,14 @@ class OrdersShow extends Component {
   getUniqueItemTypes(items) {
     return uniqBy(
       items.map(i => {
-        return { type: i.item_type.name, items: [] };
+        return {type: i.item_type.name, items: []};
       }),
       'type'
     );
   }
 
   sortItemsByType() {
-    const { items } = this.props.currentOrder;
+    const {items} = this.props.currentOrder;
 
     if (isEmpty(items)) return [];
 
@@ -157,18 +193,18 @@ class OrdersShow extends Component {
   }
 
   updateNotes(notes) {
-    this.setState({ notes });
+    this.setState({notes});
   }
 
   submitNotes(event) {
     event.preventDefault();
     const {
-      currentOrder: { id: orderId, store_id: storeId },
-      userRoles: { tailor }
+      currentOrder: {id: orderId, store_id: storeId},
+      userRoles: {tailor},
     } = this.props;
     const key = tailor ? 'provider_notes' : 'requester_notes';
     const data = {
-      order: { [key]: this.state.notes, id: orderId, store_id: storeId }
+      order: {[key]: this.state.notes, id: orderId, store_id: storeId},
     };
 
     this.props.updateOrder(data).catch(err => console.log(err));
@@ -176,29 +212,29 @@ class OrdersShow extends Component {
 
   checkOrderIn = () => {
     const {
-      currentOrder: { id: orderId, store_id: storeId },
-      userRoles: { tailor }
+      currentOrder: {id: orderId, store_id: storeId},
+      userRoles: {tailor},
     } = this.props;
-    const data = { order: { id: orderId, store_id: storeId, arrived: true } };
+    const data = {order: {id: orderId, store_id: storeId, arrived: true}};
 
     this.props.updateOrder(data).catch(err => console.log(err));
   };
 
   showHideNotesForm() {
-    this.setState({ displayNotesForm: !this.state.displayNotesForm });
+    this.setState({displayNotesForm: !this.state.displayNotesForm});
   }
 
   fulfillOrder = () => {
-    const { currentOrder: { id: orderId, store_id: storeId } } = this.props;
-    const data = { order: { id: orderId, store_id: storeId, fulfilled: true } };
+    const {currentOrder: {id: orderId, store_id: storeId}} = this.props;
+    const data = {order: {id: orderId, store_id: storeId, fulfilled: true}};
 
     this.props.setLoader();
-    this.setState({ loadingLabel: true });
+    this.setState({loadingLabel: true});
 
     this.props
       .updateOrder(data)
       .then(res => {
-        const { currentOrder: order, userRoles: roles } = this.props;
+        const {currentOrder: order, userRoles: roles} = this.props;
         const shipmentAction = shipmentActions(order, roles);
         const shipmentType = shipmentTypes(roles);
 
@@ -216,11 +252,11 @@ class OrdersShow extends Component {
         if (res.data.body.errors) {
           const message = res.data.body.errors[0];
           const kind = 'warning';
-          this.props.setGrowler({ kind, message });
+          this.props.setGrowler({kind, message});
         } else {
           this.refreshCurrentOrder();
         }
-        this.setState({ loadingLabel: false });
+        this.setState({loadingLabel: false});
         this.props.removeLoader();
       })
       .catch(err => console.log('err', err));
@@ -238,24 +274,24 @@ class OrdersShow extends Component {
     return window.print();
   }
 
-  toggleMeasurementDetailButton(boolean) {
-    this.setState({ showMeasurements: !boolean });
-  }
+  toggleMeasurementDetailButton = boolean => {
+    this.setState({showMeasurements: !boolean});
+  };
 
   renderDisabledCustLink() {
-    const { first_name, last_name } = this.props.currentOrder.customer;
+    const {first_name, last_name} = this.props.currentOrder.customer;
     return this.renderLink({
       text: `${first_name} ${last_name}`,
-      enabled: false
+      enabled: false,
     });
   }
 
   renderEnabledCustLink() {
-    const { first_name, last_name, id } = this.props.currentOrder.customer;
+    const {first_name, last_name, id} = this.props.currentOrder.customer;
     return this.renderLink({
       text: `${first_name} ${last_name}`,
       path: `/customers/${id}/edit`,
-      enabled: true
+      enabled: true,
     });
   }
 
@@ -275,12 +311,12 @@ class OrdersShow extends Component {
     const hemAlts = [
       'Shorten Pant Length - Original Hem',
       'Shorten Pant Length - Blind Stitch Hem',
-      'Shorten Pant Length - Cuffed Hem'
+      'Shorten Pant Length - Cuffed Hem',
     ];
 
     const className = hemAlts.includes(alteration.name) ? 'red' : '';
     const splitAlt = alteration.name.split(' - ');
-    const alt = { name: splitAlt[0] + ' - ', specific: splitAlt[1] };
+    const alt = {name: splitAlt[0] + ' - ', specific: splitAlt[1]};
 
     if (splitAlt[1]) {
       return (
@@ -295,7 +331,7 @@ class OrdersShow extends Component {
   }
 
   renderLink(args) {
-    const { text, path, enabled } = args;
+    const {text, path, enabled} = args;
     let linkDiv;
 
     if (enabled == true) {
@@ -315,7 +351,7 @@ class OrdersShow extends Component {
   renderArrivedButton = () => {
     return this.renderButton(
       'Check Order In',
-      { disabled: false },
+      {disabled: false},
       this.checkOrderIn
     );
   };
@@ -323,17 +359,17 @@ class OrdersShow extends Component {
   renderFulfillButton = () => {
     return this.renderButton(
       'Fulfill This Order',
-      { disabled: false },
+      {disabled: false},
       this.fulfillOrder
     );
   };
 
   renderCompletedButton = () => {
-    return this.renderButton('Order Completed ✔️', { disabled: true });
+    return this.renderButton('Order Completed ✔️', {disabled: true});
   };
 
   renderPrintLabel = () => {
-    const { currentOrder: order, userRoles: roles } = this.props;
+    const {currentOrder: order, userRoles: roles} = this.props;
     const disabled = this.state.loadingLabel;
     const shipmentAction = shipmentActions(order, roles);
 
@@ -359,7 +395,7 @@ class OrdersShow extends Component {
       <div>
         {this.renderButton(
           printPrompt,
-          { disabled: disabled, clickArgs: clickArgs },
+          {disabled: disabled, clickArgs: clickArgs},
           onClick
         )}
         {shipmentDiv}
@@ -410,7 +446,7 @@ class OrdersShow extends Component {
 
   renderNotesForm = () => {
     if (this.state.displayNotesForm) {
-      const { tailor: isTailor, admin: isAdmin } = this.props.userRoles;
+      const {tailor: isTailor, admin: isAdmin} = this.props.userRoles;
       let prompt, party;
 
       if (isTailor) {
@@ -472,9 +508,9 @@ class OrdersShow extends Component {
   }
 
   renderOrderControls() {
-    const { currentOrder: order, userRoles: roles } = this.props;
-    const { admin, tailor, retailer, customer } = roles;
-    const { arrived, fulfilled } = order;
+    const {currentOrder: order, userRoles: roles} = this.props;
+    const {admin, tailor, retailer, customer} = roles;
+    const {arrived, fulfilled} = order;
     const action = shipmentActions(order, roles);
 
     // NOTE: This all needs to go into a higher-order interface component.
@@ -487,7 +523,7 @@ class OrdersShow extends Component {
       labelButton,
       messengerButton,
       notesButton,
-      completedButton
+      completedButton,
     ] = this.renderEmptyButtonDivs(8);
 
     if (tailor || admin) {
@@ -528,7 +564,7 @@ class OrdersShow extends Component {
   }
 
   renderOrderDetails() {
-    const { userRoles: { admin, retailer, tailor, customer } } = this.props;
+    const {userRoles: {admin, retailer, tailor, customer}} = this.props;
 
     const renderList = this.renderList();
     const requesterNotes = this.renderOrderNotes('requester_notes');
@@ -554,8 +590,8 @@ class OrdersShow extends Component {
         id: orderId,
         requester_notes: requesterNotes,
         provider_notes: providerNotes,
-        customer: { first_name: firstName, last_name: lastName }
-      }
+        customer: {first_name: firstName, last_name: lastName},
+      },
     } = this.props;
     const orderNotes = requesterNotes || 'Not Provided';
     const tailorNotes = providerNotes || 'Not Provided';
@@ -563,44 +599,47 @@ class OrdersShow extends Component {
 
     return (
       <div>
-        {this.renderButton('Print Instructions', { disabled: false }, () =>
+        {this.renderButton('Print Instructions', {disabled: false}, () =>
           window.print()
         )}
         <div className="print print-instructions">
           <div>
-            <img src={logoImage} style={{ maxWidth: '100px' }} />
+            <img src={logoImage} style={{maxWidth: '100px'}} />
           </div>
           <h2>Alterations for Order #{orderId}</h2>
           <h4>Customer Name: {`${firstName} ${lastName}`}</h4>
           {printableContent}
           <h3>
-            Order Notes: <p style={{ display: 'inline' }}>{orderNotes}</p>
+            Order Notes: <p style={{display: 'inline'}}>{orderNotes}</p>
           </h3>
           <h3>
-            Taior Notes: <p style={{ display: 'inline' }}>{tailorNotes}</p>
+            Taior Notes: <p style={{display: 'inline'}}>{tailorNotes}</p>
           </h3>
         </div>
       </div>
     );
   };
 
-  renderDetailsOrMeasurementsButton(roles, state) {
-    const { showMeasurements } = this.state;
+  renderDetailsOrMeasurementsButton() {
+    const {showMeasurements} = this.state;
+    const {userRoles: {tailor, admin}} = this.props;
     const value = showMeasurements ? 'See Order Details' : 'See Measurements';
     const toggleFunction = this.toggleMeasurementDetailButton;
 
-    return (
-      <input
-        type="submit"
-        value={value}
-        className="short-button"
-        onClick={() => toggleFunction(showMeasurements)}
-      />
-    );
+    if (tailor || admin) {
+      return (
+        <input
+          type="submit"
+          value={value}
+          className="short-button"
+          onClick={() => toggleFunction(showMeasurements)}
+        />
+      );
+    }
   }
 
   renderMeasurements() {
-    const { currentOrder: { order: { customer } } } = this.props;
+    const {currentOrder: {customer}} = this.props;
     return <Measurements customer={customer} />;
   }
 
@@ -613,8 +652,10 @@ class OrdersShow extends Component {
     } else {
       const details = this.renderOrderDetails();
       const controls = this.renderOrderControls();
+      // NOTE: here we should be rendering 1 of 2 main components
       mainContent = (
         <div>
+          {this.renderDetailsOrMeasurementsButton()}
           {details}
           {controls}
         </div>
@@ -625,7 +666,7 @@ class OrdersShow extends Component {
   }
 
   render() {
-    const { currentStore: store, currentOrder: order } = this.props;
+    const {currentStore: store, currentOrder: order} = this.props;
     let mainContent = <div />;
     let headerText = '';
 
