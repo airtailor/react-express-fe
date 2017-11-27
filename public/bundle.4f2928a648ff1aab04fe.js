@@ -9525,7 +9525,6 @@ var Checkout = function (_Component) {
     value: function render() {
       var garments = this.props.cart.garments;
 
-      console.log(this.props);
       return _react2.default.createElement(
         'div',
         null,
@@ -10621,12 +10620,12 @@ var FindCustomerByPhone = function (_Component) {
 
         var _res$data = res.data,
             _res$data$body = _res$data.body,
-            status = _res$data$body.status,
+            errors = _res$data$body.errors,
             id = _res$data$body.id,
             customer = _res$data.body;
 
 
-        if (status === 404) {
+        if (errors && errors.status === 404) {
           updateCartCustomer('phone', phone);
           updateCustomerExists(false);
         } else if (id) {
@@ -19658,4 +19657,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAi8AAAJmCAYAAAHj
 
 /***/ })
 ],[396]);
-//# sourceMappingURL=bundle.95b7769ab9b40fb4c893.js.map
+//# sourceMappingURL=bundle.4f2928a648ff1aab04fe.js.map
