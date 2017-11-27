@@ -8892,6 +8892,8 @@ var Cart = function (_Component) {
 
 
       (0, _actions.createOrValidateCustomer)(cartCustomer).then(function (res) {
+        console.log('\n\n\n\n\n!!!!!!! res!!!!!!!');
+        console.log(res);
         if (res.data.body.errors) {
           var kind = 'warning';
           var message = res.data.body.errors[0];
@@ -19657,4 +19659,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAi8AAAJmCAYAAAHj
 
 /***/ })
 ],[396]);
-//# sourceMappingURL=bundle.4f2928a648ff1aab04fe.js.map
+//# sourceMappingURL=bundle.3d182472a864c834a1ac.js.map

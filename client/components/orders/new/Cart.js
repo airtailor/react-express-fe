@@ -145,6 +145,8 @@ class Cart extends Component {
     } = this.props;
 
     createOrValidateCustomer(cartCustomer).then(res => {
+      console.log('\n\n\n\n\n!!!!!!! res!!!!!!!');
+      console.log(res);
       if (res.data.body.errors) {
         const kind = 'warning';
         const message = res.data.body.errors[0];
