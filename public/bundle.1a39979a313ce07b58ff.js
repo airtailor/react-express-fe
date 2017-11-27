@@ -8892,14 +8892,16 @@ var Cart = function (_Component) {
 
 
       (0, _actions.createOrValidateCustomer)(cartCustomer).then(function (res) {
-        console.log('\n\n\n\n\n!!!!!!! res!!!!!!!');
-        console.log(res);
-        if (res.data.body.errors) {
+        if (res.data.body && res.data.body.errors) {
+          console.log('\n\n\n\n\n!!!!!!! res!!!!!!!');
+          console.log(res);
           var kind = 'warning';
           var message = res.data.body.errors[0];
           setGrowler({ kind: kind, message: message });
           renderOrderDetails();
         } else {
+          console.log('\n\n\n\n\n!!!!!!! res!!!!!!!');
+          console.log(res);
           setCartCustomer(res.data.body);
           renderCheckout();
         }
@@ -19659,4 +19661,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAi8AAAJmCAYAAAHj
 
 /***/ })
 ],[396]);
-//# sourceMappingURL=bundle.3d182472a864c834a1ac.js.map
+//# sourceMappingURL=bundle.1a39979a313ce07b58ff.js.map
