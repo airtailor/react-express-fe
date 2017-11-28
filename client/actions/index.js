@@ -45,7 +45,7 @@ import {
   SET_CART_CUSTOMER,
 } from '../utils/constants';
 
-import {removeFalseyValuesFromObject} from '../utils/format';
+import { removeFalseyValuesFromObject } from '../utils/format';
 
 const setTokens = res => {
   // if we get a 401 from the server, then log out the current user
@@ -55,9 +55,9 @@ const setTokens = res => {
     }
     return;
   }
-  const {client, uid, expiry} = res.data.headers;
+  const { client, uid, expiry } = res.data.headers;
   const accessToken = res.data.headers['access-token'];
-  const AirTailorTokens = {accessToken, client, uid, expiry};
+  const AirTailorTokens = { accessToken, client, uid, expiry };
   setAuthToken(AirTailorTokens);
   setLocalStorageAuth(AirTailorTokens);
 };
@@ -70,23 +70,23 @@ const resetTokens = () => {
 
 export const userSignIn = (email, password) => {
   const url = `${expressApi}/sign_in`;
-  const data = {email, password};
+  const data = { email, password };
   return dispatch => {
     return Axios.post(url, data)
       .then(res => {
         if (res.data.status === 401) {
-          return {errors: true, status: 401};
+          return { errors: true, status: 401 };
         } else if (res.data.body) {
           const dataRes = res.data.body.data;
-          const {id, email, store_id, roles, uid} = dataRes;
+          const { id, email, store_id, roles, uid } = dataRes;
           setTokens(res);
           dispatch(setUserRole(roles[0].name));
           setLocalStorageUser(dataRes);
 
           // right now, the code assumes that a user has a single role, but it's
           // written to work with multiple roles if/when that becomes necessary.
-          dispatch(setCurrentUser({id, email, store_id, roles}));
-          return {success: true};
+          dispatch(setCurrentUser({ id, email, store_id, roles }));
+          return { success: true };
         }
       })
       .catch(err => {
@@ -218,13 +218,13 @@ export function updateCustomer(customer) {
     state_province,
     zip_code,
   } = customer;
-  customer.address = {street, street_two, city, state_province, zip_code};
+  customer.address = { street, street_two, city, state_province, zip_code };
 
   const url = `${expressApi}/customers/${id}`;
   return validateToken()
     .then(setTokens)
     .then(res => {
-      return Axios.put(url, {customer});
+      return Axios.put(url, { customer });
     })
     .catch(err => console.log(err));
 }
@@ -234,6 +234,15 @@ export function createStore(data) {
     .then(setTokens)
     .then(() => {
       const url = `${expressApi}/stores/`;
+      return Axios.post(url, data);
+    });
+}
+
+export function createCompany(data) {
+  return validateToken()
+    .then(setTokens)
+    .then(() => {
+      const url = `${expressApi}/companies/`;
       return Axios.post(url, data);
     });
 }
@@ -258,18 +267,18 @@ export function getTailorList() {
 export function updateStore(data) {
   const {
     store,
-    store: {id, street, unit: street_two, city, state_province, zip_code},
+    store: { id, street, unit: street_two, city, state_province, zip_code },
   } = data;
 
   const url = `${expressApi}/stores/${id}`;
-  const storeObj = {...data.store};
-  storeObj.address = {street, street_two, city, state_province, zip_code};
+  const storeObj = { ...data.store };
+  storeObj.address = { street, street_two, city, state_province, zip_code };
 
   return dispatch => {
     return validateToken()
       .then(setTokens)
       .then(() => {
-        return Axios.put(url, {store: storeObj})
+        return Axios.put(url, { store: storeObj })
           .then(res => {
             if (!res.data.body.errors) {
               dispatch(setCurrentStore(storeObj));
@@ -340,7 +349,7 @@ export function getCustomerMeasurements(data) {
 
 export function createCustomerMeasurements(measurement) {
   const url = `${expressApi}/customers/${measurement.customer_id}/measurements`;
-  const data = {measurement};
+  const data = { measurement };
   return dispatch => {
     return validateToken()
       .then(setTokens)
@@ -419,13 +428,13 @@ export function getMessages(store_id, conversation_id) {
 }
 
 export function createMessage(message) {
-  const {store_id, conversation_id} = message;
+  const { store_id, conversation_id } = message;
   const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}/messages`;
   return dispatch => {
     return validateToken()
       .then(setTokens)
       .then(() => {
-        return Axios.post(url, {message})
+        return Axios.post(url, { message })
           .then(res => {
             dispatch(setMessages(res.data.body.messages));
             return res;
@@ -438,13 +447,13 @@ export function createMessage(message) {
 }
 
 export function updateMessage(message) {
-  const {store_id, conversation_id, id} = message;
+  const { store_id, conversation_id, id } = message;
   const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}/messages/${id}`;
   return dispatch => {
     return validateToken()
       .then(setTokens)
       .then(() => {
-        return Axios.put(url, {message})
+        return Axios.put(url, { message })
           .then(res => {
             dispatch(setMessages(res.data.body.messages));
             return res;
@@ -461,7 +470,7 @@ export function findOrCreateCustomer(customerInfo) {
   return validateToken()
     .then(setTokens)
     .then(() => {
-      return Axios.post(url, {customer: customerInfo});
+      return Axios.post(url, { customer: customerInfo });
     });
 }
 
@@ -470,18 +479,18 @@ function createOrder(order) {
   return validateToken()
     .then(setTokens)
     .then(res => {
-      return Axios.post(url, {order});
+      return Axios.post(url, { order });
     });
 }
 
 export function createOrValidateCustomer(customer) {
-  const {street, unit: street_two, city, state_province, zip_code} = customer;
-  customer.address = {street, street_two, city, state_province, zip_code};
+  const { street, unit: street_two, city, state_province, zip_code } = customer;
+  customer.address = { street, street_two, city, state_province, zip_code };
   const url = `${expressApi}/create_or_validate_customer`;
   return validateToken()
     .then(setTokens)
     .then(res => {
-      return Axios.post(url, {...customer});
+      return Axios.post(url, { ...customer });
     });
 }
 
@@ -500,7 +509,7 @@ function getOrderTotal(cart) {
 }
 
 export function submitOrder(props) {
-  const {cart, currentStore, cartCustomer: {id: customer_id}} = props;
+  const { cart, currentStore, cartCustomer: { id: customer_id } } = props;
 
   return dispatch => {
     // find or create new customer flow
@@ -603,13 +612,13 @@ export function searchOrders(query) {
               console.log('hmmm something went wrong', res);
               const message = 'Hmm something went wrong with your search.';
               const kind = 'warning';
-              dispatch(setGrowler({kind, message}));
+              dispatch(setGrowler({ kind, message }));
             }
           })
           .catch(err => {
             const message = 'Hmm something went wrong with your search.';
             const kind = 'warning';
-            dispatch(setGrowler({kind, message}));
+            dispatch(setGrowler({ kind, message }));
           });
       })
       .catch(err => console.log('err index.js line 488', err));
@@ -674,7 +683,7 @@ function setCurrentCustomer(customer) {
 export function updateCurrentCustomer(field, value) {
   return {
     type: UPDATE_CURRENT_CUSTOMER,
-    customer: {field, value},
+    customer: { field, value },
   };
 }
 
@@ -769,7 +778,7 @@ export function updateCartNotes(notes) {
 export function updateCartCustomer(field, value) {
   return {
     type: UPDATE_CART_CUSTOMER,
-    customer: {field, value},
+    customer: { field, value },
   };
 }
 

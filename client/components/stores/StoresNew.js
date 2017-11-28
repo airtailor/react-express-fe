@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {getCompanies, createStore} from '../../actions';
-import {storeTypes} from '../../utils/constants';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { getCompanies, createStore } from '../../actions';
+import { storeTypes } from '../../utils/constants';
 import FormField from '../FormField';
 import FormSelect from '../FormSelect';
 
@@ -29,13 +29,13 @@ class StoresNew extends Component {
   }
 
   updateState(field, value) {
-    this.setState({[field]: value});
+    this.setState({ [field]: value });
   }
 
   handleSubmit(e) {
     e.preventDefault();
     const store = this.state;
-    createStore({store}).catch(err => console.log('err', err));
+    createStore({ store }).catch(err => console.log('err', err));
   }
 
   render() {
@@ -137,7 +137,7 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({getCompanies}, dispatch);
+  return bindActionCreators({ getCompanies }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoresNew);

@@ -307,31 +307,6 @@ router.get('/api/tailors', (req, res) => {
     });
 });
 
-router.get('/api/companies', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = { client, ['access-token']: accessToken, uid, expiry };
-
-  Axios.get(`${apiUrl}/api/companies`, {
-    headers,
-  })
-    .then(response => {
-      // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
-      res.json({ headers: response.headers, body: response.data });
-    })
-    .catch(err => {
-      if (err instanceof Error) {
-        console.log('@@@@@@@@@@@@@', err.response.status);
-        res.json(err.response.status);
-      } else {
-        console.log('error: ', err);
-        res.json(err);
-      }
-    });
-});
-
 router.put('/api/stores/:store_id/', (req, res) => {
   const { store_id } = req.params;
   const client = req.get('client');
@@ -801,7 +776,7 @@ router.post(`/api/create_or_validate_customer`, (req, res) => {
     });
 });
 
-// router.use('/api/reports', require('./routes/reports'));
+router.use('/api/companies', require('./routes/companies'));
 
 router.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/../public/index.html'));
