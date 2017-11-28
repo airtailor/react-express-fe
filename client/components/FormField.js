@@ -4,9 +4,8 @@ const FormField = props => {
   const { title, value, fieldName, onChange, className, type } = props;
   const inputType = type ? type : 'text';
   return (
-    <div>
-      <label>{title}</label>
-      <br />
+    <div className="form-row">
+      <label className="form-label">{title}</label>
       <input
         type={inputType}
         className={`form-input ${className}`}
@@ -14,8 +13,6 @@ const FormField = props => {
         value={value}
         onChange={e => onChange(fieldName, e.target.value)}
       />
-      <br />
-      <br />
     </div>
   );
 };

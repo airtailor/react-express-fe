@@ -111,7 +111,7 @@ class CustomerEdit extends Component {
     return (
       <div>
         <Link to={backLink}>Back</Link>
-        <form onSubmit={e => this.handleSubmit(e)}>
+        <form className="form" onSubmit={e => this.handleSubmit(e)}>
           <FormField
             value={email}
             fieldName={'email'}
