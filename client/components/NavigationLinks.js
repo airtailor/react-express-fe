@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import NavigationLink from './NavigationLink';
 import SearchBar from './SearchBar';
 import Intercom from 'react-intercom';
@@ -16,7 +16,7 @@ import {
 
 class NavigationLinks extends Component {
   adminNavbar() {
-    const {toggleNavState, navState, store} = this.props;
+    const { toggleNavState, navState, store } = this.props;
     const editStoreRoute = `/stores/${store.id}/edit`;
     return (
       <div>
@@ -76,6 +76,13 @@ class NavigationLinks extends Component {
 
           <NavigationLink
             cssClass="new-order-link"
+            route="/admin/companies/new"
+            text="New Company"
+            image={homeImage}
+          />
+
+          <NavigationLink
+            cssClass="new-order-link"
             route="/admin/tailors"
             text="Tailors"
             image={tailorsImage}
@@ -95,7 +102,7 @@ class NavigationLinks extends Component {
   }
 
   tailorNavbar() {
-    const {toggleNavState, navState, store} = this.props;
+    const { toggleNavState, navState, store } = this.props;
     const editStoreRoute = `/stores/${store.id}/edit`;
     return (
       <div>
@@ -145,10 +152,10 @@ class NavigationLinks extends Component {
   }
 
   closeMenu(props) {
-    const {toggleNavState, navState} = props;
+    const { toggleNavState, navState } = props;
     if (window.innerWidth < 981) {
       return (
-        <div style={{marginTop: '50%'}}>
+        <div style={{ marginTop: '50%' }}>
           <li>
             <a
               className="navbar-links-li close-menu-link"
@@ -164,7 +171,7 @@ class NavigationLinks extends Component {
   }
 
   retailerNavbar() {
-    const {currentUser, toggleNavState, navState, store} = this.props;
+    const { currentUser, toggleNavState, navState, store } = this.props;
     const user = {
       user_id: currentUser.user.id,
       email: currentUser.user.email,

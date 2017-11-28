@@ -35,11 +35,10 @@ router.post(rootCompaniesUrl, (req, res) => {
   const accessToken = req.get('access-token');
   const uid = req.get('uid');
   const headers = { client, ['access-token']: accessToken, uid };
-  console.log(req);
 
   const { company } = req.body;
 
-  Axios.post(`${apiUrl}/api/companies`, { company })
+  Axios.post(`${apiUrl}/api/companies`, { company, headers })
     .then(response => {
       res.json({ headers: response.headers, body: response.data });
     })
