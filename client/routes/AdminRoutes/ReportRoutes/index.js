@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {Route, Redirect} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import OrderReports from '../../../components/reports/orders';
-import ReportsIndex from '../../../components/reports';
+// import OrderReports from '../../../components/reports/orders';
+// import ReportsIndex from '../../../components/reports';
 
 class ReportRoutes extends Component {
   static propTypes = {
@@ -10,23 +10,25 @@ class ReportRoutes extends Component {
   };
 
   render() {
-    const {admin} = this.props;
+    const { admin } = this.props;
     return (
-      <div>
-        <Route
-          exact
-          path="/admin/reports"
-          render={props =>
-            admin ? <ReportsIndex {...props} /> : <Redirect to="/sign_in" />}
-        />
-
-        <Route
-          exact
-          path="/admin/reports/orders"
-          render={props =>
-            admin ? <OrderReports {...props} /> : <Redirect to="/sign_in" />}
-        />
-      </div>
+      <div />
+      /*// <Redirect to="/sign_in" />*/
+      /* <div>
+      //   <Route
+      //     exact
+      //     path="/admin/reports"
+      //     render={props =>
+      //       admin ? <ReportsIndex {...props} /> : <Redirect to="/sign_in" />}
+      //   />
+      //
+      //   <Route
+      //     exact
+      //     path="/admin/reports/orders"
+      //     render={props =>
+      //       admin ? <OrderReports {...props} /> : <Redirect to="/sign_in" />}
+      //   />
+      // </div> */
     );
   }
 }
