@@ -10,7 +10,7 @@ import {
   getCurrentCustomer,
   setGrowler,
   getCurrentOrder,
-  updateCurrentCustomer
+  updateCurrentCustomer,
 } from '../../actions';
 
 import { ValidateEmail } from '../../utils/validations';
@@ -21,7 +21,7 @@ const mapStateToProps = store => {
   return {
     currentOrder: store.currentOrder,
     currentCustomer: store.currentCustomer,
-    currentStore: store.currentStore
+    currentStore: store.currentStore,
   };
 };
 
@@ -40,7 +40,7 @@ class CustomerEdit extends Component {
     setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
     getCurrentOrder: PropTypes.func.isRequired, // mapDispatchToProps
     getCurrentCustomer: PropTypes.func.isRequired, // mapDispatchToProps
-    updateCurrentCustomer: PropTypes.func.isRequired // mapDispatchToProps
+    updateCurrentCustomer: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   componentDidMount() {
@@ -64,7 +64,7 @@ class CustomerEdit extends Component {
       getCurrentOrder,
       setGrowler,
       currentCustomer: customer,
-      currentCustomer: { email }
+      currentCustomer: { email },
     } = this.props;
 
     if (ValidateEmail(email)) {
@@ -103,9 +103,9 @@ class CustomerEdit extends Component {
         unit,
         city,
         state_province,
-        zip_code
+        zip_code,
       },
-      updateCurrentCustomer
+      updateCurrentCustomer,
     } = this.props;
 
     return (
