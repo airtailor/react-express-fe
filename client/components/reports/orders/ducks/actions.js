@@ -29,6 +29,6 @@ export const getCurrentReport = () => {
 const setCurrentReport = report => {
   return {
     type: SET_CURRENT_REPORT,
-    repoert,
+    report,
   };
 };

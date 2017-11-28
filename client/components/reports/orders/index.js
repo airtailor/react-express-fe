@@ -36,7 +36,7 @@ class OrdersReport extends Component {
   }
 
   render() {
-    console.log(this.props.report);
+    console.log('props', this.props.report);
     return (
       <div>
         <h1>Hi Im Order Reports</h1>
