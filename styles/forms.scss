@@ -1,20 +1,22 @@
-
 .form-input {
- border: none;
- background-color: rgba(216, 237, 252, .5);
- margin-top: 10px;
- height: 40px;
- width: 360px;
- padding-left: 40px;
- border-radius: 5px;
- border: 1px solid $primary-blue;
+  border: none;
+  background-color: rgba(216, 237, 252, 0.5);
+  margin-top: 10px;
+  height: 40px;
+  width: 360px;
+  padding-left: 40px;
+  border-radius: 5px;
+  border: 1px solid $primary-blue;
 }
 
-input[type="submit"] {
+.form-label {
+}
+
+input[type='submit'] {
   @extend .button;
 }
 
-input[type="submit"]:disabled{
+input[type='submit']:disabled {
   opacity: 0.65;
   cursor: not-allowed;
 }

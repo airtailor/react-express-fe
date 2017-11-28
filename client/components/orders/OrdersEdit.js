@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 const mapStateToProps = store => {
   return {
     order: store.currentOrder,
-    tailors: store.tailorList
+    tailors: store.tailorList,
   };
 };
 
@@ -24,7 +24,7 @@ class OrdersEdit extends Component {
     order: PropTypes.object.isRequired, // mapStateToProps
     tailors: PropTypes.array.isRequired, // mapStateToProps
     getTailorList: PropTypes.func.isRequired, // mapDispatchToProps
-    updateOrder: PropTypes.func.isRequired // mapDispatchToProps
+    updateOrder: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   constructor(props) {
@@ -40,7 +40,6 @@ class OrdersEdit extends Component {
     e.preventDefault();
     this.props
       .updateOrder({ order: this.state })
-      // .then(res => console.log('res', res))
       .catch(err => console.log('errr', err));
   }
 

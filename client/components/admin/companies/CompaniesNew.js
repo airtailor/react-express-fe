@@ -55,7 +55,7 @@ class CompaniesNew extends Component {
     createCompany({ company })
       .then(res => {
         this.props.removeLoader();
-        console.log(res);
+
         const errors = res.data.body.errors;
         if (isEmpty(errors)) {
           this.setState({ name: '' });
