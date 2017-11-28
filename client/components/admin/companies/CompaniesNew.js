@@ -23,7 +23,6 @@ class CompaniesNew extends Component {
     super();
     this.state = {
       name: '',
-      hq_store_id: '',
     };
   }
 

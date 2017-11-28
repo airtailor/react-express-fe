@@ -4,7 +4,9 @@ const router = express.Router();
 
 const apiUrl = 'http://localhost:3000';
 
-router.get('/api/companies', (req, res) => {
+const rootCompaniesUrl = '/';
+
+router.get(rootCompaniesUrl, (req, res) => {
   const client = req.get('client');
   const accessToken = req.get('access-token');
   const uid = req.get('uid');
@@ -15,7 +17,6 @@ router.get('/api/companies', (req, res) => {
     headers,
   })
     .then(response => {
-      // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
       res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
@@ -29,28 +30,28 @@ router.get('/api/companies', (req, res) => {
     });
 });
 
-router.post('/api/companies/:id', (req, res) => {
+router.post(rootCompaniesUrl, (req, res) => {
   const client = req.get('client');
   const accessToken = req.get('access-token');
   const uid = req.get('uid');
   const headers = { client, ['access-token']: accessToken, uid };
+  console.log(req);
 
-  console.log('I AM A POST, YO');
+  const { company } = req.body;
 
-  // Axios.get(`${apiUrl}/api/stores/${req.params.id}`, { headers })
-  //   .then(response => {
-  //     // console.log('return headers get store/id', response.headers);
-  //     res.json({ headers: response.headers, body: response.data });
-  //   })
-  //   .catch(err => {
-  //     if (err instanceof Error) {
-  //       console.log('@@@@@@@@@@@@@', err);
-  //       res.json({ status: err.response.status, error: err });
-  //     } else {
-  //       console.log('error: ', err);
-  //       res.json(err);
-  //     }
-  //   });
+  Axios.post(`${apiUrl}/api/companies`, { company })
+    .then(response => {
+      res.json({ headers: response.headers, body: response.data });
+    })
+    .catch(err => {
+      if (err instanceof Error) {
+        console.log('@@@@@@@@@@@@@', err);
+        res.json({ status: err.response.status, error: err });
+      } else {
+        console.log('error: ', err);
+        res.json(err);
+      }
+    });
 });
 
 module.exports = router;
