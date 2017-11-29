@@ -2,7 +2,7 @@ import React from 'react';
 import {BrowserRouter, Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import NavigationBar from './components/NavigationBar';
-import AvailableRoutes from './components/AvailableRoutes';
+import AvailableRoutes from './routes/';
 import SignIn from './components/SignIn';
 import Growler from './components/growler';
 import Loader from './components/loader';
