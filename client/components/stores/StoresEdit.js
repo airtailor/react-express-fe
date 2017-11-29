@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
 import {
@@ -24,7 +24,7 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    {getCurrentStore, updateStore, setGrowler, setLoader, removeLoader},
+    { getCurrentStore, updateStore, setGrowler, setLoader, removeLoader },
     dispatch
   );
 };
@@ -47,7 +47,7 @@ class StoresEdit extends Component {
   };
 
   componentDidMount() {
-    const store = {...this.props.store};
+    const store = { ...this.props.store };
     this.setState(store);
     this.props
       .getCurrentStore(this.props.match.params.store_id)
@@ -55,7 +55,7 @@ class StoresEdit extends Component {
   }
 
   updateState(field, value) {
-    this.setState({[field]: value});
+    this.setState({ [field]: value });
   }
 
   handleSubmit(e) {
@@ -64,20 +64,20 @@ class StoresEdit extends Component {
     const store = this.state;
     this.props.setLoader();
     this.props
-      .updateStore({store})
+      .updateStore({ store })
       .then(res => {
         if (res.data.body.errors) {
           const kind = 'warning';
           const message = res.data.body.errors[0];
 
           self.setState(self.props.store);
-          self.props.setGrowler({kind, message});
+          self.props.setGrowler({ kind, message });
         } else if (res.data.body) {
           const kind = 'success';
           const message = 'Store Updated Successfully!';
           this.props.getCurrentStore(store.id);
 
-          this.props.setGrowler({kind, message});
+          this.props.setGrowler({ kind, message });
         }
       })
       .then(res => {
@@ -87,7 +87,7 @@ class StoresEdit extends Component {
           this.setState(this.props.store);
         });
 
-        this.props.setGrowler({kind, message});
+        this.props.setGrowler({ kind, message });
         this.props.removeLoader();
       })
       .catch(err => {
@@ -97,7 +97,15 @@ class StoresEdit extends Component {
   }
 
   renderForm(data) {
-    const {name, phone, street, unit, city, state_province, zip_code} = data;
+    const {
+      name,
+      phone,
+      street,
+      unit = '',
+      city,
+      state_province,
+      zip_code,
+    } = data;
 
     return (
       <div>
@@ -157,7 +165,7 @@ class StoresEdit extends Component {
   }
 
   render() {
-    const {store} = this.props;
+    const { store } = this.props;
     if (!store) {
       return <div>Loading...</div>;
     } else {
