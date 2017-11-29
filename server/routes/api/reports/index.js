@@ -1,8 +1,6 @@
 const express = require('express');
-const path = require('path');
 const Axios = require('axios');
 const router = express.Router();
-
 const { apiUrl, getHeaders } = require('../../config');
 
 router.get('/currentReport', (req, res) => {

@@ -13,8 +13,8 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(express.static('public'));
 }
 
-app.use(bodyParser.json({limit: '1000mb'}));
-app.use(require('./router'));
+app.use(bodyParser.json({ limit: '1000mb' }));
+app.use(require('./routes'));
 
 app.listen(PORT, () => {
   console.log('alive on port', PORT);
