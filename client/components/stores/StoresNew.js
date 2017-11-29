@@ -82,16 +82,6 @@ class StoresNew extends Component {
       .catch(err => console.log(err));
   }
 
-<<<<<<< HEAD
-  updateState = (field, value) => {
-    this.setState({ [field]: value });
-  };
-
-  handleSubmit = e => {
-    e.preventDefault();
-    const store = this.state;
-    createStore({ store }).catch(err => console.log('err', err));
-=======
   updateStoreState = (field, value) => {
     this.setState({ [field]: value });
   };
@@ -145,7 +135,6 @@ class StoresNew extends Component {
       const errorString = 'Please enter all fields before submitting.';
       this.props.setGrowler({ kind: 'warning', message: errorString });
     }
->>>>>>> sandbox
   };
 
   render() {
@@ -155,24 +144,6 @@ class StoresNew extends Component {
       company_id,
       name,
       phone,
-<<<<<<< HEAD
-      street,
-      street_two,
-      city,
-      state_province,
-      zip_code,
-    } = this.state;
-    const { companies } = this.props;
-    const updateState = this.updateState;
-    const submit = e => this.handleSubmit(e);
-
-    if (!isEmpty(companies)) {
-      return <div>Loading...</div>;
-    } else {
-      return (
-        <div>
-          <h3>Store New</h3>
-=======
       address: { type, street, street_two, city, state_province, zip_code },
     } = this.state;
 
@@ -187,83 +158,54 @@ class StoresNew extends Component {
       return (
         <div>
           <SectionHeader text={headerText} includeLink={false} />
->>>>>>> sandbox
           <form onSubmit={submit}>
             <FormField
               value={name}
               fieldName={'name'}
               title={'Name: '}
-<<<<<<< HEAD
-              onChange={updateState}
-=======
               onChange={updateStoreState}
->>>>>>> sandbox
             />
 
             <FormField
               value={phone}
               fieldName={'phone'}
               title={'Phone: '}
-<<<<<<< HEAD
-              onChange={updateState}
-=======
               onChange={updateStoreState}
->>>>>>> sandbox
             />
 
             <FormField
               value={street}
               fieldName={'street'}
               title={'Street:'}
-<<<<<<< HEAD
-              onChange={updateState}
-=======
               onChange={updateAddressState}
->>>>>>> sandbox
             />
 
             <FormField
               value={street_two}
               fieldName={'street_two'}
               title={'Unit:'}
-<<<<<<< HEAD
-              onChange={updateState}
-=======
               onChange={updateAddressState}
->>>>>>> sandbox
             />
 
             <FormField
               value={city}
               fieldName={'city'}
               title={'City:'}
-<<<<<<< HEAD
-              onChange={updateState}
-=======
               onChange={updateAddressState}
->>>>>>> sandbox
             />
 
             <FormField
               value={state_province}
               fieldName={'state_province'}
               title={'State:'}
-<<<<<<< HEAD
-              onChange={updateState}
-=======
               onChange={updateAddressState}
->>>>>>> sandbox
             />
 
             <FormField
               value={zip_code}
               fieldName={'zip_code'}
               title={'Zip:'}
-<<<<<<< HEAD
-              onChange={updateState}
-=======
               onChange={updateAddressState}
->>>>>>> sandbox
             />
 
             <FormSelect
@@ -271,11 +213,7 @@ class StoresNew extends Component {
               options={companies}
               fieldName={'company_id'}
               title={'Company:'}
-<<<<<<< HEAD
-              onChange={updateState}
-=======
               onChange={updateStoreState}
->>>>>>> sandbox
             />
 
             <FormSelect
@@ -283,11 +221,7 @@ class StoresNew extends Component {
               options={storeTypes}
               fieldName={'type'}
               title={'Store Type:'}
-<<<<<<< HEAD
-              onChange={updateState}
-=======
               onChange={updateStoreState}
->>>>>>> sandbox
             />
 
             <input
