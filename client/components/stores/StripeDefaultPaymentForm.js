@@ -27,28 +27,18 @@ class StripeDefaultPaymentForm extends Component {
     }), // injectStripe HOC
   };
 
-  handleSuccess(token) {
-    const { removeLoader, setGrowler } = this.props;
-
-    removeLoader();
+  handleSuccess(res) {
+    const { setGrowler } = this.props;
     const kind = 'success';
     const message = 'Default Payment Updated';
     setGrowler({ kind, message });
-    console.log('Received Stripe token:', token);
   }
 
   handleError(err) {
-    const {
-      removeLoader,
-      setGrowler,
-      currentStore: { name: storeName },
-    } = this.props;
-
-    removeLoader();
+    const { setGrowler } = this.props;
     const kind = 'warning';
-    const message = 'Oops Something Went Wrong';
+    const message = err.message;
     setGrowler({ kind, message });
-    console.log(err);
   }
 
   handleSubmit = e => {
@@ -58,15 +48,22 @@ class StripeDefaultPaymentForm extends Component {
       stripe: { createToken },
       setLoader,
       currentStore: { name: storeName },
+      removeLoader,
     } = this.props;
     setLoader();
 
     // we should be passing in the store's stripe id once that is a thing
     createToken({ name: storeName })
-      .then(({ token }) => {
-        this.handleSuccess(token);
+      .then(res => {
+        removeLoader();
+        if (res.error) {
+          this.handleError(res.error);
+        } else {
+          this.handleSuccess(res);
+        }
       })
       .catch(err => {
+        removeLoader();
         this.handleError(err);
       });
   };
