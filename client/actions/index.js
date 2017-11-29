@@ -238,6 +238,15 @@ export function createStore(data) {
     });
 }
 
+export function createCompany(data) {
+  return validateToken()
+    .then(setTokens)
+    .then(() => {
+      const url = `${expressApi}/companies/`;
+      return Axios.post(url, data);
+    });
+}
+
 export function getTailorList() {
   const url = `${expressApi}/stores/tailors`;
   return dispatch => {
@@ -329,6 +338,7 @@ export function getCustomerMeasurements(data) {
         return Axios.get(url)
           .then(res => {
             dispatch(setCustomerMeasurements(res.data.body));
+            return res.data.body;
           })
           .catch(err => {
             debugger;

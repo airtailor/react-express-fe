@@ -75,9 +75,9 @@ class FindCustomerByPhone extends Component {
     findOrCreateCustomer({phone}).then(res => {
       removeLoader();
 
-      const {body: {status, id}, body: customer} = res.data;
+      const {body: {errors, id}, body: customer} = res.data;
 
-      if (status === 404) {
+      if (errors && errors.status === 404) {
         updateCartCustomer('phone', phone);
         updateCustomerExists(false);
       } else if (id) {

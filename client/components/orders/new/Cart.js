@@ -40,7 +40,7 @@ class Cart extends Component {
     cartCustomer: PropTypes.object.isRequired, // mapStateToProps
     removeGarmentFromCart: PropTypes.func.isRequired, // mapDispatchToProps
     updateCartNotes: PropTypes.func.isRequired, // mapDispatchToProps
-    setGrowler: PropTypes.func.isRequires, // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
     setCartCustomer: PropTypes.func.isRequired, // mapDispatchToProps
     renderStageOne: PropTypes.func.isRequired, // Parent Component
     stage: PropTypes.number.isRequired, // Parent Component
@@ -145,7 +145,7 @@ class Cart extends Component {
     } = this.props;
 
     createOrValidateCustomer(cartCustomer).then(res => {
-      if (res.data.body.errors) {
+      if (res.data.body && res.data.body.errors) {
         const kind = 'warning';
         const message = res.data.body.errors[0];
         setGrowler({kind, message});

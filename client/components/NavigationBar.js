@@ -1,27 +1,43 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import NavigationLinks from './NavigationLinks';
 import LogoMessage from './LogoMessage';
 import Hamburger from '../images/hamburger.png';
-import {logoutImage} from '../images';
-import {signOutCurrentUser} from '../actions';
+import { logoutImage } from '../images';
+import { signOutCurrentUser } from '../actions';
+import PropTypes from 'prop-types';
+
+const mapStateToProps = store => {
+  return {
+    currentUser: store.currentUser
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ signOutCurrentUser }, dispatch);
+};
 
 class NavigationBar extends Component {
+  static propTypes = {
+    currentUser: PropTypes.object.isRequired, // mapStateToProps
+    signOutCurrentUser: PropTypes.func.isRequired // mapDispatchToProps
+  };
+
   constructor() {
     super();
     this.state = {
-      active: this.getNavActive(window),
+      active: this.getNavActive(window)
     };
-    // Need to bind toggleActiveState in order to pass it down as a prop to
-    // the NavigationLinks component
-    this.toggleActiveState = this.toggleActiveState.bind(this);
+  }
 
-    // Need to bind handleResize in order to maintain the component as 'this'
-    // after it is passed to the event listeners in comoponentWillMount and
-    // componentDidMount
-    this.handleResize = this.handleResize.bind(this);
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
   }
 
   handleSignOut() {
@@ -36,34 +52,26 @@ class NavigationBar extends Component {
   }
 
   getNavActive(window) {
-    return window.innerWidth < 981 ? false : true;
+    return window.innerWidth > 980;
   }
 
-  handleResize() {
+  handleResize = () => {
     const state = this.getNavActive(window);
-    this.setState({active: state});
-  }
+    this.setState({ active: state });
+  };
 
-  componentDidMount() {
-    window.addEventListener('resize', this.handleResize);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
-  }
-
-  toggleActiveState(boolean) {
+  toggleActiveState = boolean => {
     // If the Nav Bar should NOT be open by default (based on the window size)
     if (!this.getNavActive(window)) {
       const state = !boolean;
-      this.setState({active: state});
+      this.setState({ active: state });
     }
-  }
+  };
 
   navBar() {
-    const {loggedIn, admin, retailer} = this.props;
+    const { loggedIn, admin, retailer } = this.props;
     const logoText = retailer ? 'STORE PORTAL' : 'SHOP PORTAL';
-    const {active} = this.state;
+    const { active } = this.state;
     return (
       <nav className="navbar">
         <LogoMessage className="navbar-logo" text={logoText} />
@@ -97,7 +105,7 @@ class NavigationBar extends Component {
   }
 
   render() {
-    const {active} = this.state;
+    const { active } = this.state;
     if (active) {
       return this.navBar();
     } else {
@@ -105,15 +113,5 @@ class NavigationBar extends Component {
     }
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    currentUser: store.currentUser,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({signOutCurrentUser}, dispatch);
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar);

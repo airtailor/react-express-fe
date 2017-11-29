@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import logo from '../../images/logo.png';
 import isEmpty from 'lodash/isEmpty';
-import {getShipmentForRole} from '../shipping/shippingFunctions';
-import {renderAlterationList} from '../../utils/alterationsLists';
+import { getShipmentForRole } from '../shipping/shippingFunctions';
+import { renderAlterationList } from '../../utils/alterationsLists';
 
 class OrderComplete extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class OrderComplete extends Component {
   }
 
   renderOrderText(order) {
-    const {id, items, customer: {first_name: firstName}} = order;
+    const { id, items, customer: { first_name: firstName } } = order;
     return (
       <div>
         <h3>Thank you for your Air Tailor order, {firstName}</h3>
@@ -40,7 +40,7 @@ class OrderComplete extends Component {
   }
 
   renderOrderItems(order) {
-    const {id, items} = order;
+    const { id, items } = order;
     return (
       <div>
         <p className="packing-slip-info-orderid">
@@ -58,7 +58,7 @@ class OrderComplete extends Component {
   }
 
   renderBulkShippingOrderItems(order) {
-    const {id, items} = order;
+    const { id, items } = order;
     return (
       <div>
         <p className="packing-slip-info-orderid">
@@ -96,10 +96,10 @@ class OrderComplete extends Component {
 
   renderBulkShippingLabels(shipmentSet) {
     const shipment = shipmentSet[0];
-    const {orders} = shipment;
-    const {userRoles: roles} = this.props;
+    const { orders } = shipment;
+    const { userRoles: roles } = this.props;
     const labelShipment = shipment || getShipmentForRole(roles, order);
-    const {shipping_label: shippingLabel} = labelShipment;
+    const { shipping_label: shippingLabel } = labelShipment;
 
     const ordersContent = this.renderBulkShippingOrderContent(orders);
     const label = this.renderShippingLabelImage(shippingLabel);
@@ -124,9 +124,9 @@ class OrderComplete extends Component {
   }
 
   renderShippingLabel(order, shipment) {
-    const {userRoles: roles} = this.props;
+    const { userRoles: roles } = this.props;
     const labelShipment = shipment || getShipmentForRole(roles, order);
-    const {shipping_label: shippingLabel} = labelShipment;
+    const { shipping_label: shippingLabel } = labelShipment;
 
     const label = this.renderShippingLabelImage;
     const text = this.renderOrderText;
@@ -144,7 +144,7 @@ class OrderComplete extends Component {
   }
 
   render() {
-    const {currentOrder: order, shipmentSet} = this.props;
+    const { currentOrder: order, shipmentSet } = this.props;
     if (shipmentSet || order) {
       let labelFunction, labelObj;
       if (shipmentSet) {
@@ -166,7 +166,7 @@ class OrderComplete extends Component {
 const mapStateToProps = store => {
   return {
     currentOrder: store.currentOrder,
-    userRoles: store.userRoles,
+    userRoles: store.userRoles
   };
 };
 

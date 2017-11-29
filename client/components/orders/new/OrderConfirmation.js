@@ -31,7 +31,7 @@ const mapDispatchToProps = dispatch => {
 class OrderConfirmation extends Component {
   static propTypes = {
     cartCustomer: PropTypes.object.isRequired, // mapStateToProps
-    currentStore: PropTypes.func.isRequired, // mapStateToProps
+    currentStore: PropTypes.object.isRequired, // mapStateToProps
     confirmedNewOrder: PropTypes.object.isRequired, // mapStateToProps
     resetCart: PropTypes.func.isRequired, // mapDispatchToProps
     setConfirmedNewOrder: PropTypes.func.isRequired, // mapDispatchToProps

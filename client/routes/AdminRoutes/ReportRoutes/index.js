@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Route, Redirect} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import OrderReports from '../../../components/reports/orders';
 import ReportsIndex from '../../../components/reports';
@@ -10,7 +10,7 @@ class ReportRoutes extends Component {
   };
 
   render() {
-    const {admin} = this.props;
+    const { admin } = this.props;
     return (
       <div>
         <Route
