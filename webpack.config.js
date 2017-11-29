@@ -9,12 +9,15 @@ const VENDOR_LIBS = [
   'lodash',
   'moment',
   'node-fetch',
+  'prop-types',
   'react',
   'react-dom',
   'react-intercom',
   'react-modal',
   'react-print',
   'react-redux',
+  'react-router-dom',
+  'react-stripe-elements',
   'redux-logger',
   'redux-thunk',
 ];
@@ -63,7 +66,7 @@ const config = {
   plugins: [
     new ExtractTextPlugin('style.css'),
     //new UglifyJSPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({names: ['vendor', 'manifest']}),
+    new webpack.optimize.CommonsChunkPlugin({ names: ['vendor', 'manifest'] }),
     new HtmlWebpackPlugin({
       template: 'client/index.html',
     }),

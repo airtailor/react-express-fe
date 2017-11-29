@@ -21,7 +21,7 @@ import {
   SET_CONVERSATIONS,
   ADD_GARMENT_TO_CART,
   REMOVE_GARMENT_FROM_CART,
-  UPDATE_CART_CUSTOMER_INFO,
+  UPDATE_CART_CUSTOMER,
   UPDATE_CART_SHIP_TO,
   SET_CONFIRMED_NEW_ORDER,
   RESET_CART,
@@ -33,11 +33,21 @@ import {
   SET_ARCHIVED_ORDERS,
   SET_LOADER,
   REMOVE_LOADER,
+  SHIP_RETAILER_TO_TAILOR,
+  SHIP_TAILOR_TO_RETAILER,
+  SHIP_CUSTOMER_TO_TAILOR,
+  SHIP_TAILOR_TO_CUSTOMER,
+  SHIP_RETAILER_TO_CUSTOMER,
+  SET_USER_ROLE,
+  RESET_USER_ROLE,
+  SET_CURRENT_CUSTOMER,
+  UPDATE_CURRENT_CUSTOMER,
+  SET_CART_CUSTOMER,
 } from '../utils/constants';
 
-import {removeFalseyValuesFromObject} from '../utils/format';
+import { removeFalseyValuesFromObject } from '../utils/format';
 
-const setTokens = res => {
+export const setTokens = res => {
   // if we get a 401 from the server, then log out the current user
   if (!res.data.headers || !res.data.headers['access-token']) {
     if (!res.data.body || res.data.body.status === 401) {
@@ -45,12 +55,11 @@ const setTokens = res => {
     }
     return;
   }
-  const {client, uid, expiry} = res.data.headers;
+  const { client, uid, expiry } = res.data.headers;
   const accessToken = res.data.headers['access-token'];
-  const AirTailorTokens = {accessToken, client, uid, expiry};
+  const AirTailorTokens = { accessToken, client, uid, expiry };
   setAuthToken(AirTailorTokens);
   setLocalStorageAuth(AirTailorTokens);
-  //console.log('new token', AirTailorTokens.accessToken)
 };
 
 const resetTokens = () => {
@@ -60,19 +69,24 @@ const resetTokens = () => {
 };
 
 export const userSignIn = (email, password) => {
-  const url = `${expressApi}/sign_in`;
-  const data = {email, password};
+  const url = `${expressApi}/auth/sign_in`;
+  const data = { email, password };
   return dispatch => {
     return Axios.post(url, data)
       .then(res => {
         if (res.data.status === 401) {
-          return {errors: true, status: 401};
+          return { errors: true, status: 401 };
         } else if (res.data.body) {
+          const dataRes = res.data.body.data;
+          const { id, email, store_id, roles, uid } = dataRes;
           setTokens(res);
-          setLocalStorageUser(res.data.body.data);
-          const {id, email, store_id, roles, uid} = res.data.body.data;
-          dispatch(setCurrentUser({id, email, store_id, roles}));
-          return {success: true};
+          dispatch(setUserRole(roles[0].name));
+          setLocalStorageUser(dataRes);
+
+          // right now, the code assumes that a user has a single role, but it's
+          // written to work with multiple roles if/when that becomes necessary.
+          dispatch(setCurrentUser({ id, email, store_id, roles }));
+          return { success: true };
         }
       })
       .catch(err => {
@@ -82,18 +96,18 @@ export const userSignIn = (email, password) => {
 };
 
 export function validateToken() {
-  const url = `${expressApi}/validate_token`;
+  const url = `${expressApi}/auth/validate_token`;
   return Axios.post(url);
 }
 
 export function signOutCurrentUser() {
-  const url = `${expressApi}/sign_out`;
+  const url = `${expressApi}/auth/sign_out`;
   return dispatch => {
     delete localStorage.AirTailorTokens;
     delete localStorage.CurrentUser;
     delete localStorage.CurrentStore;
     setAuthToken({});
-    dispatch(setCurrentUser({}), setCurrentStore({}));
+    dispatch(setCurrentUser({}), setCurrentStore({}), setUserRole({}));
     window.location = '/';
 
     return Axios.post(url)
@@ -108,7 +122,6 @@ export function getStoreOrders(store_id) {
   const url = `${expressApi}/stores/${store_id}/orders`;
   return dispatch => {
     return validateToken()
-      .catch(err => console.log('line 88', err))
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
@@ -130,12 +143,6 @@ export function getCurrentOrder(store_id, order_id) {
       .then(() => {
         return Axios.get(url)
           .then(res => {
-            // if (res.data.headers.client && res.data.headers.uid){
-            //   setTokens(res);
-            //   setLocalStorageUser(res.data.body);
-            // } else {
-            //   // console.log('getStoreOrders - no new auth headers');
-            // }
             dispatch(setCurrentOrder(res.data.body));
           })
           .catch(err => {
@@ -153,58 +160,8 @@ export function getCurrentStore(store_id) {
       .then(() => {
         return Axios.post(url)
           .then(res => {
-            //if (res.data.headers.client && res.data.headers.uid){
-            //  setTokens(res);
-            //  setLocalStorageUser(res.data.body);
-            //} else {
-            //  // console.log('getStoreOrders - no new auth headers');
-            //}
-            const {
-              company_id,
-              city,
-              id,
-              name,
-              phone,
-              primary_contact_id,
-              state,
-              street1,
-              street2,
-              zip,
-              active_orders_count,
-              late_orders_count,
-            } = res.data.body;
-
-            setLocalStorageStore({
-              company_id,
-              city,
-              id,
-              name,
-              phone,
-              primary_contact_id,
-              state,
-              street1,
-              street2,
-              zip,
-              active_orders_count,
-              late_orders_count,
-            });
-
-            dispatch(
-              setCurrentStore({
-                company_id,
-                city,
-                id,
-                name,
-                phone,
-                primary_contact_id,
-                state,
-                street1,
-                street2,
-                zip,
-                active_orders_count,
-                late_orders_count,
-              })
-            );
+            setLocalStorageStore(res.data.body);
+            dispatch(setCurrentStore(res.data.body));
             return res;
           })
           .catch(err => {
@@ -234,12 +191,40 @@ export function updateOrder(data) {
   };
 }
 
-export function updateCustomer(data) {
-  const url = `${expressApi}/customers/${data.customer.id}`;
+export function alertCustomersPickup(orders, store_id) {
+  const url = `${expressApi}/stores/${store_id}/orders/alert_customers`;
+  const data = [...orders].map(order => order.id);
+
+  return validateToken()
+    .then(setTokens)
+    .then(() => {
+      return Axios.put(url, data)
+        .then(res => {
+          return res.data;
+        })
+        .catch(err => {
+          debugger;
+        });
+    })
+    .catch(err => console.log('err index.js line 155', err));
+}
+
+export function updateCustomer(customer) {
+  const {
+    id,
+    street,
+    unit: street_two,
+    city,
+    state_province,
+    zip_code,
+  } = customer;
+  customer.address = { street, street_two, city, state_province, zip_code };
+
+  const url = `${expressApi}/customers/${id}`;
   return validateToken()
     .then(setTokens)
     .then(res => {
-      return Axios.put(url, data);
+      return Axios.put(url, { customer });
     })
     .catch(err => console.log(err));
 }
@@ -253,8 +238,17 @@ export function createStore(data) {
     });
 }
 
+export function createCompany(data) {
+  return validateToken()
+    .then(setTokens)
+    .then(() => {
+      const url = `${expressApi}/companies/`;
+      return Axios.post(url, data);
+    });
+}
+
 export function getTailorList() {
-  const url = `${expressApi}/tailors`;
+  const url = `${expressApi}/stores/tailors`;
   return dispatch => {
     return validateToken()
       .then(setTokens)
@@ -271,20 +265,29 @@ export function getTailorList() {
 }
 
 export function updateStore(data) {
-  const url = `${expressApi}/stores/${data.store.id}`;
+  const {
+    store,
+    store: { id, street, unit: street_two, city, state_province, zip_code },
+  } = data;
+
+  const url = `${expressApi}/stores/${id}`;
+  const storeObj = { ...data.store };
+  storeObj.address = { street, street_two, city, state_province, zip_code };
+
   return dispatch => {
     return validateToken()
       .then(setTokens)
       .then(() => {
-        return Axios.put(url, data)
+        return Axios.put(url, { store: storeObj })
           .then(res => {
             if (!res.data.body.errors) {
-              dispatch(setCurrentStore(res.data.body));
+              dispatch(setCurrentStore(storeObj));
             }
             return res;
           })
           .catch(err => {
-            return res;
+            debugger;
+            return err;
           });
       });
   };
@@ -308,12 +311,22 @@ export function getCompanies() {
 }
 
 export function createShipment(data) {
+  if (Array.isArray(data.shipment.shipment_action)) {
+    debugger;
+  }
   return validateToken()
     .then(setTokens)
     .then(() => {
       const url = `${expressApi}/shipments`;
       return Axios.post(url, data);
     });
+}
+
+export function setShipmentType(typeString) {
+  return {
+    type: typeString,
+    notes,
+  };
 }
 
 export function getCustomerMeasurements(data) {
@@ -325,6 +338,7 @@ export function getCustomerMeasurements(data) {
         return Axios.get(url)
           .then(res => {
             dispatch(setCustomerMeasurements(res.data.body));
+            return res.data.body;
           })
           .catch(err => {
             debugger;
@@ -335,7 +349,7 @@ export function getCustomerMeasurements(data) {
 
 export function createCustomerMeasurements(measurement) {
   const url = `${expressApi}/customers/${measurement.customer_id}/measurements`;
-  const data = {measurement};
+  const data = { measurement };
   return dispatch => {
     return validateToken()
       .then(setTokens)
@@ -352,7 +366,7 @@ export function createCustomerMeasurements(measurement) {
 }
 
 export function getNewOrders() {
-  const url = `${expressApi}/new_orders`;
+  const url = `${expressApi}/orders/new_orders`;
   return dispatch => {
     return validateToken()
       .then(setTokens)
@@ -414,13 +428,13 @@ export function getMessages(store_id, conversation_id) {
 }
 
 export function createMessage(message) {
-  const {store_id, conversation_id} = message;
+  const { store_id, conversation_id } = message;
   const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}/messages`;
   return dispatch => {
     return validateToken()
       .then(setTokens)
       .then(() => {
-        return Axios.post(url, {message})
+        return Axios.post(url, { message })
           .then(res => {
             dispatch(setMessages(res.data.body.messages));
             return res;
@@ -433,13 +447,13 @@ export function createMessage(message) {
 }
 
 export function updateMessage(message) {
-  const {store_id, conversation_id, id} = message;
+  const { store_id, conversation_id, id } = message;
   const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}/messages/${id}`;
   return dispatch => {
     return validateToken()
       .then(setTokens)
       .then(() => {
-        return Axios.put(url, {message})
+        return Axios.put(url, { message })
           .then(res => {
             dispatch(setMessages(res.data.body.messages));
             return res;
@@ -451,12 +465,12 @@ export function updateMessage(message) {
   };
 }
 
-function findOrCreateCustomer(customerInfo) {
+export function findOrCreateCustomer(customerInfo) {
   const url = `${expressApi}/customers/find_or_create`;
   return validateToken()
     .then(setTokens)
     .then(() => {
-      return Axios.post(url, {customer: customerInfo});
+      return Axios.post(url, { customer: customerInfo });
     });
 }
 
@@ -464,8 +478,19 @@ function createOrder(order) {
   const url = `${expressApi}/orders`;
   return validateToken()
     .then(setTokens)
-    .then(() => {
-      return Axios.post(url, {order});
+    .then(res => {
+      return Axios.post(url, { order });
+    });
+}
+
+export function createOrValidateCustomer(customer) {
+  const { street, unit: street_two, city, state_province, zip_code } = customer;
+  customer.address = { street, street_two, city, state_province, zip_code };
+  const url = `${expressApi}/customers/create_or_validate_customer`;
+  return validateToken()
+    .then(setTokens)
+    .then(res => {
+      return Axios.post(url, { ...customer });
     });
 }
 
@@ -484,68 +509,70 @@ function getOrderTotal(cart) {
 }
 
 export function submitOrder(props) {
-  const {cart, currentStore} = props;
-  const {customerInfo} = props.cart;
+  const { cart, currentStore, cartCustomer: { id: customer_id } } = props;
+
   return dispatch => {
-    return findOrCreateCustomer(removeFalseyValuesFromObject(customerInfo))
+    // find or create new customer flow
+    // return findOrCreateCustomer(removeFalseyValuesFromObject(cartCustomer))
+    // .then(res => {
+    //   if (res.data.body.errors) {
+    //     return {
+    //       errors: true,
+    //       message: res.data.body.errors.customer[0],
+    //     };
+    //   } else {
+    //     const customer_id = res.data.body.id;
+
+    const requester_id = currentStore.id;
+    const weight = getOrderWeight(cart);
+    const total = getOrderTotal(cart);
+    const source = 'React-Portal';
+
+    const garments = cart.garments.map(garment => {
+      delete garment.image;
+      garment.alterations.map(alt => {
+        delete alt.howToPin;
+        return alt;
+      });
+      return garment;
+    });
+
+    const ship_to_store = cart.shipToStore;
+    const requester_notes = cart.notes;
+    const type = 'TailorOrder';
+
+    const order = {
+      customer_id,
+      requester_id,
+      weight,
+      total,
+      garments,
+      source,
+      requester_notes,
+      type,
+      ship_to_store,
+    };
+
+    return createOrder(order)
       .then(res => {
         if (res.data.body.errors) {
           return {
             errors: true,
-            message: res.data.body.errors.customer[0],
+            message: res.data.body.errors,
           };
-        } else {
-          const customer_id = res.data.body.id;
-          const requester_id = currentStore.id;
-          const weight = getOrderWeight(cart);
-          const total = getOrderTotal(cart);
-          const source = 'React-Portal';
-
-          const garments = cart.garments.map(garment => {
-            delete garment.image;
-            garment.alterations.map(alt => {
-              delete alt.howToPin;
-              return alt;
-            });
-            return garment;
-          });
-
-          const ship_to_store = cart.shipToStore;
-          const requester_notes = cart.notes;
-          const type = 'TailorOrder';
-
-          const order = {
-            customer_id,
-            requester_id,
-            weight,
-            total,
-            garments,
-            source,
-            requester_notes,
-            type,
-            ship_to_store,
-          };
-
-          return createOrder(order)
-            .then(res => {
-              if (res.data.body.errors) {
-                return {
-                  errors: true,
-                  message: res.data.body.errors,
-                };
-              }
-              return dispatch(setConfirmedNewOrder(res.data.body));
-            })
-            .catch(err => {
-              debugger;
-            });
         }
+        return dispatch(setConfirmedNewOrder(res.data.body));
       })
       .catch(err => {
-        console.log('create order error', err);
+        debugger;
       });
   };
+  //  })
+  // .catch(err => {
+  //   console.log('create order error', err);
+  // });
 }
+//}
 
 export function updatePassword(data) {
   const url = `${expressApi}/users/update_password`;
@@ -585,13 +612,13 @@ export function searchOrders(query) {
               console.log('hmmm something went wrong', res);
               const message = 'Hmm something went wrong with your search.';
               const kind = 'warning';
-              dispatch(setGrowler({kind, message}));
+              dispatch(setGrowler({ kind, message }));
             }
           })
           .catch(err => {
             const message = 'Hmm something went wrong with your search.';
             const kind = 'warning';
-            dispatch(setGrowler({kind, message}));
+            dispatch(setGrowler({ kind, message }));
           });
       })
       .catch(err => console.log('err index.js line 488', err));
@@ -620,7 +647,58 @@ export function getArchivedOrders() {
       .catch(err => console.log('err index.js line 488', err));
   };
 }
+
+export function getCurrentCustomer(id) {
+  const url = `${expressApi}/customers/${id}`;
+  return dispatch => {
+    return validateToken()
+      .then(setTokens)
+      .then(() => {
+        return Axios.get(url)
+          .then(res => {
+            if (!res.data.body.errors) {
+              dispatch(setCurrentCustomer(res.data.body));
+              return res.data.body;
+            } else {
+              console.log('hmmm something went wrong', res);
+            }
+          })
+          .catch(err => {
+            debugger;
+          });
+      })
+      .catch(err => console.log('err index.js line 488', err));
+  };
+}
+
 // actions
+
+function setCurrentCustomer(customer) {
+  return {
+    type: SET_CURRENT_CUSTOMER,
+    customer,
+  };
+}
+
+export function updateCurrentCustomer(field, value) {
+  return {
+    type: UPDATE_CURRENT_CUSTOMER,
+    customer: { field, value },
+  };
+}
+
+export function resetUserRole() {
+  return {
+    type: RESET_USER_ROLE,
+  };
+}
+
+export function setUserRole(role) {
+  return {
+    type: SET_USER_ROLE,
+    role,
+  };
+}
 
 export function removeLoader() {
   return {
@@ -697,10 +775,17 @@ export function updateCartNotes(notes) {
   };
 }
 
-export function updateCartCustomerInfo(customerInfo) {
+export function updateCartCustomer(field, value) {
   return {
-    type: UPDATE_CART_CUSTOMER_INFO,
-    customerInfo,
+    type: UPDATE_CART_CUSTOMER,
+    customer: { field, value },
+  };
+}
+
+export function setCartCustomer(customer) {
+  return {
+    type: SET_CART_CUSTOMER,
+    customer,
   };
 }
 

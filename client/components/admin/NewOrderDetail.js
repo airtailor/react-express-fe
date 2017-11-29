@@ -1,44 +1,65 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import {
   updateOrder,
   createShipment,
   setLoader,
   removeLoader,
-  setGrowler,
+  setGrowler
 } from '../../actions';
-//import {renderAlterationList} from '../../utils/alterationsLists';
 
 import {
-  getShippingType,
-  getPrintButtonPrompt,
-  lowerCaseFirstLetter,
-  toSnakeCaseFromCamelCase,
+  shipmentTypes,
+  shipmentActions,
+  labelState,
+  makeShippingLabel,
+  fireShipmentCreate
 } from '../shipping/shippingFunctions';
 
 import WelcomeKitPrint from '../prints/WelcomeKitPrint.js';
-import {SetFulfilledButton} from '../orders/orderForms/SetFulfilled';
 import SelectTailor from '../orders/orderForms/SelectTailor';
-//import UpdateNotes from '../orders/orderForms/UpdateNotes';
+
+const mapStateToProps = store => {
+  return {
+    tailors: store.tailorList,
+    currentUser: store.currentUser,
+    userRoles: store.userRoles
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    { updateOrder, setLoader, removeLoader, setGrowler },
+    dispatch
+  );
+};
 
 class NewOrderDetail extends Component {
+  static propTypes = {
+    tailors: PropTypes.array.isRequired, // mapStateToProps
+    currentUser: PropTypes.object.isRequired, // mapStateToProps
+    userRoles: PropTypes.object.isRequired, // mapStateToProps
+    updateOrder: PropTypes.func.isRequired, // mapDispatchToProps
+    setLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired // mapDispatchToProps
+  };
+
   constructor(props) {
     super();
     this.state = {
       loadingLabel: false,
-      notes: '',
+      notes: ''
     };
-    this.updateState = this.updateState.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.setFulfilled = this.setFulfilled.bind(this);
-    this.updateOrderNotes = this.updateOrderNotes.bind(this);
-    this.fulfillOrder = this.fulfillOrder.bind(this);
   }
 
   refreshNewOrdersList(props) {
-    this.props.getNewOrders().catch(err => console.log('error', err));
+    const { setLoader, getNewOrders, removeLoader } = this.props;
+    setLoader();
+    getNewOrders().then(() => removeLoader());
   }
 
   componentDidMount() {
@@ -51,151 +72,143 @@ class NewOrderDetail extends Component {
 
   updateOrderFromProps() {
     const order = this.props.order;
-    this.setState({order});
+    this.setState({ order });
   }
 
-  updateState(field, value) {
-    this.setState({[field]: value});
-  }
+  updateState = (field, value) => {
+    this.setState({ [field]: value });
+  };
 
-  handleSubmit() {
+  handleSubmit = () => {
     this.props.setLoader();
     let obj = this.state;
     obj.id = this.props.order.id;
     this.props
-      .updateOrder({order: obj})
+      .updateOrder({ order: obj })
       .then(res => {
-        this.refreshNewOrdersList({order: {}});
+        this.refreshNewOrdersList({ order: {} });
         const message = 'Tailor Assigned';
         const kind = 'success';
-        this.props.setGrowler({kind, message});
+        this.props.setGrowler({ kind, message });
         this.props.removeLoader();
       })
       .catch(err => console.log('errr', err));
-  }
+  };
 
-  updateOrderNotes(notes, order) {
+  updateOrderNotes = (notes, order) => {
     order.requester_notes = notes;
-    this.props.updateOrder({order}).catch(err => console.log('err', err));
-  }
+    this.props.updateOrder({ order }).catch(err => console.log('err', err));
+  };
 
-  makeShippingLabel(type, order_id) {
-    const data = {shipment: {type, order_id}};
-    createShipment(data)
+  postShipment = (orders, action, type) => {
+    this.props.setLoader();
+    fireShipmentCreate(orders, action, type)
       .then(res => {
-        const order = res.data.body;
-        this.props
-          .updateOrder({order})
-          .then(res => {
-            this.props.selectOrder(order);
-            this.setState({loadingLabel: false});
-            this.props.removeLoader();
-          })
-          .catch(err => console.log('err', err));
+        this.props.removeLoader();
+        this.setState({ loadingLabel: false });
+        this.props.removeLoader();
+        this.props.selectOrder(orders[0]);
       })
       .catch(err => console.log('err', err));
-  }
+  };
 
-  renderPrintLabels() {
-    if (!this.props.order.fulfilled) {
-      return;
-    }
-
-    const {currentUser, order} = this.props;
-    const role = currentUser.user.roles[0].name;
-    const shippingType = getShippingType(role, order.type);
-    const printPrompt = getPrintButtonPrompt(
-      shippingType,
-      order,
-      this.state.loadingLabel
-    );
-
-    if (printPrompt.split(' ')[0] === 'Print') {
-      const url = this.props.order[
-        toSnakeCaseFromCamelCase(lowerCaseFirstLetter(shippingType))
-      ].shipping_label;
-      return (
-        <div>
-          <button className="pink-button" onClick={() => window.print()}>
-            {printPrompt}
-          </button>
-
-          <WelcomeKitPrint />
-        </div>
-      );
-    } else if (printPrompt.split(' ')[0] === 'Creating') {
-      return (
-        <button className="pink-button" disabled={this.state.loadingLabel}>
-          {printPrompt}
-        </button>
-      );
-    } else if (printPrompt.split(' ')[0] === 'Create') {
-      return (
-        <button
-          className="pink-button"
-          disabled={this.state.loadingLabel}
-          onClick={() => this.makeShippingLabel(shippingType, order.id)}
-        >
-          {printPrompt}
-        </button>
-      );
-    }
-  }
-
-  fulfillOrder(order) {
-    const {id, store_id, type} = order;
-    this.props.setLoader();
-    const data = {
-      order: {
-        id,
-        store_id,
-        fulfilled: true,
-      },
-    };
-    this.setState({loadingLabel: true});
-    this.props
-      .updateOrder(data)
-      .then(res => {
-        const role = this.props.currentUser.user.roles[0].name;
-        const shippingType = getShippingType(role, type);
-        this.makeShippingLabel(shippingType, order.id);
-      })
-      .catch(err => console.log(err));
+  makeShippingLabel(action) {
+    return this.postShipment([this.props.order], action, 'mail_shipment');
   }
 
   renderFulfillButton() {
-    if (this.props.order.outgoingShipment) {
-      return this.renderPrintLabels(this.props.order);
-    } else {
-      return (
-        <div>
-          <button onClick={() => this.fulfillOrder()} className="pink-button">
-            Fulfill This Order!
-          </button>
-        </div>
-      );
-    }
+    return this.renderButton(
+      'Fulfill This Order',
+      { disabled: false },
+      this.fulfillOrder
+    );
   }
 
-  setFulfilled(order) {
-    order.fulfilled = true;
-    this.props.updateOrder({order}).catch(err => console.log('errr', err));
+  renderButton(text, params, callback = () => console.log('')) {
+    const className = params.className || 'pink-button';
+    const clickArgs = params.clickArgs || undefined;
+    const disabled = params.disabled;
+    return (
+      <div>
+        <button
+          onClick={() => callback(clickArgs)}
+          disabled={disabled}
+          className={className}
+        >
+          {text}
+        </button>
+      </div>
+    );
   }
+
+  renderPrintLabel() {
+    const { order, userRoles: roles } = this.props;
+    const disabled = this.state.loadingLabel;
+    const shipmentAction = shipmentActions(order, roles);
+
+    let onClick, printPrompt, clickArgs, shipmentDiv;
+    switch (labelState(roles, order, disabled)) {
+      case 'needs_label':
+        printPrompt = 'Create Label';
+        onClick = this.makeShippingLabel;
+        clickArgs = shipmentAction;
+        break;
+      case 'in_progress':
+        printPrompt = 'Creating Label';
+      case 'label_created':
+        this.refreshNewOrdersList();
+        printPrompt = 'Print Label';
+        onClick = () => window.print();
+        // NOTE: we need to make sure that orderComplete gets the correct shipment.
+        shipmentDiv = <WelcomeKitPrint />;
+        break;
+      default:
+        break;
+    }
+
+    return (
+      <div>
+        {this.renderButton(
+          printPrompt,
+          { disabled: disabled, clickArgs: clickArgs },
+          onClick
+        )}
+        {shipmentDiv}
+      </div>
+    );
+  }
+
+  fulfillOrder = () => {
+    const { order: { id: orderId, store_id: storeId } } = this.props;
+    const data = { order: { id: orderId, store_id: storeId, fulfilled: true } };
+
+    this.props.setLoader();
+    this.setState({ loadingLabel: true });
+
+    this.props
+      .updateOrder(data)
+      .then(res => {
+        const { order, userRoles: roles } = this.props;
+        const shipmentAction = shipmentActions(order, roles);
+        const shipmentType = shipmentTypes(roles);
+
+        if (shipmentType.has('mail_shipment')) {
+          this.makeShippingLabel(shipmentAction);
+        }
+      })
+      .catch(err => console.log(err));
+  };
 
   welcomeKit(order) {
     if (!order.fulfilled) {
-      return (
-        <div>
-          <SetFulfilledButton order={order} onClick={this.fulfillOrder} />
-        </div>
-      );
+      return this.renderFulfillButton();
     } else {
-      return this.renderPrintLabels(order);
+      return this.renderPrintLabel();
     }
   }
 
   updateNotes(notes) {
-    this.setState({notes});
+    this.setState({ notes });
   }
 
   submitNotes(event) {
@@ -205,15 +218,15 @@ class NewOrderDetail extends Component {
       order: {
         requester_notes: this.state.notes,
         id: this.props.order.id,
-        store_id: this.props.order.store_id,
-      },
+        store_id: this.props.order.store_id
+      }
     };
 
     const kind = 'success';
     const message = 'Notes Updated Successfully';
     this.props
       .updateOrder(data)
-      .then(res => this.props.setGrowler({kind, message}))
+      .then(res => this.props.setGrowler({ kind, message }))
       .catch(err => console.log(err));
   }
 
@@ -260,7 +273,7 @@ class NewOrderDetail extends Component {
   }
 
   render() {
-    const {order} = this.props;
+    const { order } = this.props;
     if (order.customer) {
       const {
         id,
@@ -269,7 +282,7 @@ class NewOrderDetail extends Component {
         total,
         provider_notes,
         items,
-        provider_id,
+        provider_id
       } = order;
 
       const tailorId = provider_id ? provider_id : '';
@@ -307,19 +320,5 @@ class NewOrderDetail extends Component {
     }
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    tailors: store.tailorList,
-    currentUser: store.currentUser,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {updateOrder, setLoader, removeLoader, setGrowler},
-    dispatch
-  );
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewOrderDetail);

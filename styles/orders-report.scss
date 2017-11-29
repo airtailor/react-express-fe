@@ -1,0 +1,50 @@
+.report-headers-row {
+  @extend .table-row;
+  padding-top: 10px;
+}
+
+.report-header-cell {
+  @extend .table-header-cell;
+  flex-basis: 18.5%;
+}
+
+.report-header-break-row {
+  @extend .break-row;
+  width: 85%;
+}
+
+.report-break-row {
+  @extend .break-row;
+}
+
+.reports-container {
+  width: 100%;
+  padding-left: 3%;
+  padding-right: 5%;
+}
+
+.report-row {
+  @extend .table-row;
+}
+
+.report-row-container {
+  @extend .table-row-container;
+}
+
+.report-row-link {
+  @extend .table-cell;
+  @extend .flex-container;
+  @extend .table-link;
+
+  border-bottom: 1px solid gray;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  flex-basis: 85%;
+}
+
+.report-cell {
+  @extend .table-cell;
+  flex-basis: 20%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

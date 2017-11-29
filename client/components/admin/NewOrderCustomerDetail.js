@@ -1,24 +1,41 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 class NewOrderCustomerDetail extends Component {
-  render(){
-    if (this.props.order.customer){
-      const {id, first_name, last_name, email, phone, street1, street2, city, state, zip} = this.props.order.customer;
+  render() {
+    if (this.props.order.customer) {
+      const {
+        id,
+        first_name,
+        last_name,
+        email,
+        phone,
+        street,
+        street_two,
+        city,
+        state_province,
+        zip_code
+      } = this.props.order.customer;
       const customerEditLink = `/customers/${id}/edit`;
-      return(
+      return (
         <div>
           <h3>Customer Details:</h3>
-          <p>Name: {first_name} {last_name}</p>
+          <p>
+            Name: {first_name} {last_name}
+          </p>
           <p>Email: {email}</p>
           <p>Phone: {phone}</p>
-          <p>Address: {street1} {street2} {city}, {state} {zip}</p>
-          <Link to={customerEditLink}><button className='button small-button'> Edit Customer</button></Link>
+          {/*<p>
+            Address: {street} {street_two} {city}, {state_province} {zip_code}
+          </p>*/}
+          <Link to={customerEditLink}>
+            <button className="button short-button"> Edit Customer</button>
+          </Link>
         </div>
-      )
+      );
     } else {
-      return <div>Select a Customer</div>
+      return <div>Select a Customer</div>;
     }
   }
 }

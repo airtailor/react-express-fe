@@ -1,56 +1,22 @@
-
 .form-input {
- border: none;
- background-color: rgba(216, 237, 252, .5);
- margin-top: 10px;
- height: 40px;
- width: 360px;
- padding-left: 40px;
- border-radius: 5px;
- border: 1px solid $primary-blue;
-}
-
-.button {
-  background-color: $primary-blue;
-  color: white;
-  margin-top: 15px;
+  border: none;
+  background-color: rgba(216, 237, 252, 0.5);
+  margin-top: 10px;
   height: 40px;
+  width: 360px;
+  padding-left: 40px;
   border-radius: 5px;
-  font-size: 12px;
-  cursor: pointer;
-  font-weight: bold;
-  height: 50px;
+  border: 1px solid $primary-blue;
 }
 
-input[type="submit"] {
+.form-label {
+}
+
+input[type='submit'] {
   @extend .button;
 }
 
-.long-button {
-  width: 365px;
-}
-.pink-button {
-  @extend .button;
-  @extend .long-button;
-  background-color: pink;
-  border: 2px hotpink solid;
-  color: $primary-blue;
-  padding-top: 15px;
-  padding-bottom: 15px;
-
-}
-
-.short-button {
-  width: 150px;
-}
-
-input[type="submit"]:disabled{
+input[type='submit']:disabled {
   opacity: 0.65;
   cursor: not-allowed;
-}
-
-.tiny-button {
-  text-align: center;
-  width: 80px;
-  padding: 0;
 }

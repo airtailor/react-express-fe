@@ -3,9 +3,10 @@
 @import 'base-classes';
 @import 'navbar';
 @import 'forms';
+@import 'buttons';
+@import 'tables';
 @import 'sign-in';
 @import 'section-header';
-@import 'order-rows';
 @import 'home';
 @import 'order-form';
 @import 'order-show';
@@ -19,3 +20,8 @@
 @import 'checkbox';
 @import 'growler';
 @import 'edit-account';
+@import 'archive';
+@import 'orders-index';
+@import 'conversations-index';
+@import 'tailor-index';
+@import 'orders-report';

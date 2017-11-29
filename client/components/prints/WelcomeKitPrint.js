@@ -6,11 +6,15 @@ class WelcomeKitPrint extends Component {
     const {currentOrder} = this.props;
 
     if (currentOrder) {
-      const {shipping_label} = currentOrder.outgoing_shipment;
+      const {shipping_label} = currentOrder.shipments[0];
       return (
         <div className="print">
           <div className="packing-slip-info">
-            <img className="packing-slip-label" src={shipping_label} />
+            <img
+              className="packing-slip-label"
+              src={shipping_label}
+              alt="shipping label"
+            />
           </div>
         </div>
       );

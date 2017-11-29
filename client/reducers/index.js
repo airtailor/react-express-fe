@@ -18,6 +18,10 @@ import searchResultsReducer from './searchResultsReducer';
 import growlerReducer from './growlerReducer';
 import archivedOrdersReducer from './archivedOrdersReducer';
 import loaderReducer from './loaderReducer';
+import userRoleReducer from './userRoleReducer';
+import currentCustomerReducer from './currentCustomerReducer';
+import cartCustomerReducer from '../components/orders/new/reducers/cartCustomerReducer';
+import currentReportReducer from '../components/reports/orders/ducks/currentReportReducer';
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
@@ -39,6 +43,10 @@ const rootReducer = combineReducers({
   growl: growlerReducer,
   archivedOrders: archivedOrdersReducer,
   loader: loaderReducer,
+  userRoles: userRoleReducer,
+  currentCustomer: currentCustomerReducer,
+  cartCustomer: cartCustomerReducer,
+  currentReport: currentReportReducer,
 });
 
 export default rootReducer;

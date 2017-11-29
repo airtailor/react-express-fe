@@ -2,16 +2,50 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
-import {removeGarmentFromCart, updateCartNotes} from '../../../actions';
+import PropTypes from 'prop-types';
+
+import {
+  removeGarmentFromCart,
+  updateCartNotes,
+  createOrValidateCustomer,
+  setCartCustomer,
+  setGrowler,
+} from '../../../actions';
 import {
   ValidateEmail,
   ValidatePhone,
   ValidateZip,
 } from '../../../utils/validations';
-import {basketImage} from '../../../images';
 import {getTotal} from './utils';
 
+import {basketImage} from '../../../images';
+
+const mapStateToProps = store => {
+  return {
+    cart: store.cart,
+    cartCustomer: store.cartCustomer,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {removeGarmentFromCart, updateCartNotes, setCartCustomer, setGrowler},
+    dispatch
+  );
+};
+
 class Cart extends Component {
+  static propTypes = {
+    cart: PropTypes.object.isRequired, // mapStateToProps
+    cartCustomer: PropTypes.object.isRequired, // mapStateToProps
+    removeGarmentFromCart: PropTypes.func.isRequired, // mapDispatchToProps
+    updateCartNotes: PropTypes.func.isRequired, // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
+    setCartCustomer: PropTypes.func.isRequired, // mapDispatchToProps
+    renderStageOne: PropTypes.func.isRequired, // Parent Component
+    stage: PropTypes.number.isRequired, // Parent Component
+  };
+
   renderGarmentAlterations(garment) {
     // this garment is being injected from the menu, not the Cart
     //console.log('cart js 10', garment);
@@ -70,18 +104,20 @@ class Cart extends Component {
     }
   }
 
-  readyToCheckout(props) {
-    const {customerInfo, shipToStore} = props.cart;
+  readyToCheckout() {
+    const {cartCustomer, cart: {shipToStore}} = this.props;
     const {
+      id,
       first_name,
       last_name,
       phone,
       email,
-      street1,
+      street,
+      unit,
       city,
-      state,
-      zip,
-    } = customerInfo;
+      state_province,
+      zip_code,
+    } = cartCustomer;
 
     if (
       first_name &&
@@ -90,7 +126,8 @@ class Cart extends Component {
       ValidateEmail(email) &&
       // Condition Below:
       // Tailor will ship to store, OR customer has provided address
-      (shipToStore || (street1 && city && state && ValidateZip(zip)))
+      (shipToStore ||
+        (street && city && state_province && ValidateZip(zip_code)))
     ) {
       return true;
     } else {
@@ -98,74 +135,83 @@ class Cart extends Component {
     }
   }
 
+  checkForValidCustomer = () => {
+    const {
+      cartCustomer,
+      renderCheckout,
+      setCartCustomer,
+      renderOrderDetails,
+      setGrowler,
+    } = this.props;
+
+    createOrValidateCustomer(cartCustomer).then(res => {
+      if (res.data.body && res.data.body.errors) {
+        const kind = 'warning';
+        const message = res.data.body.errors[0];
+        setGrowler({kind, message});
+        renderOrderDetails();
+      } else {
+        setCartCustomer(res.data.body);
+        renderCheckout();
+      }
+    });
+  };
+
+  createNextButton(onClick, text, disabled = false) {
+    return (
+      <input
+        onClick={() => onClick()}
+        disabled={disabled}
+        className="short-button"
+        type="submit"
+        value={text}
+      />
+    );
+  }
+
   renderNextButton(props) {
-    if (props.cart.garments.length > 0) {
-      if (props.stage === 4) {
+    const {
+      cart: {garments},
+      renderOrderDetails,
+      renderStageOne,
+      stage,
+    } = this.props;
+
+    if (garments.length > 0) {
+      if (stage === 4) {
         return <div />;
-      } else if (this.readyToCheckout(props) && props.stage !== 3) {
+      } else if (this.readyToCheckout() && stage !== 3) {
         return (
           <div className="cart-buttons-container">
-            <input
-              onClick={props.renderOrderDetails}
-              className="short-button"
-              type="submit"
-              value="Edit Order Details"
-            />
+            {this.createNextButton(renderOrderDetails, 'Edit Order Details')}
 
-            <input
-              onClick={() => this.props.renderCheckout()}
-              className="short-button"
-              type="submit"
-              value="Checkout"
-            />
+            {this.createNextButton(this.checkForValidCustomer, 'Checkout')}
           </div>
         );
-      } else if (this.readyToCheckout(props) && props.stage === 3) {
+      } else if (this.readyToCheckout(this.props) && stage === 3) {
         return (
           <div className="cart-buttons-container">
-            <input
-              onClick={() => this.props.renderStageOne()}
-              className="short-button"
-              type="submit"
-              value="Add More Items"
-            />
+            {this.createNextButton(renderStageOne, 'Add More Items')}
 
-            <input
-              onClick={() => this.props.renderCheckout()}
-              className="short-button"
-              type="submit"
-              value="Checkout"
-            />
+            {this.createNextButton(this.checkForValidCustomer, 'Checkout')}
           </div>
         );
       } else if (!this.readyToCheckout(props) && props.stage === 3) {
         return (
           <div className="cart-buttons-container">
-            <input
-              onClick={() => this.props.renderStageOne()}
-              className="short-button"
-              type="submit"
-              value="Add More Items"
-            />
+            {this.createNextButton(renderStageOne, 'Add More Items')}
 
-            <input
-              onClick={() => this.props.renderCheckout()}
-              className="short-button"
-              type="submit"
-              value="Checkout"
-              disabled={true}
-            />
+            {this.createNextButton(
+              this.checkForValidCustomer,
+              'Checkout',
+              true
+            )}
           </div>
         );
       } else if (props.stage === 2 || props.stage === 1) {
         return (
           <div className="cart-buttons-container">
-            <input
-              onClick={props.renderOrderDetails}
-              className="short-button"
-              type="submit"
-              value="Add Order Details"
-            />
+            {this.createNextButton(renderOrderDetails, 'Add Order Details')}
           </div>
         );
       }
@@ -225,15 +271,5 @@ class Cart extends Component {
     }
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    cart: store.cart,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({removeGarmentFromCart, updateCartNotes}, dispatch);
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

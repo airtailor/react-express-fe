@@ -1,0 +1,168 @@
+.orders {
+  color: $primary-blue;
+  width: 100%;
+}
+
+.order-state-container {
+  background: $accent-gray;
+}
+
+.order-state-row {
+  @extend .flex-container;
+}
+
+.order-state-tab {
+  flex: 1 0 20%;
+  text-align: center;
+  padding-top: 2%;
+  height: 5%;
+}
+
+.order-state-tab.selected {
+  background: white;
+  -webkit-clip-path: polygon(20% 0, 0 100%, 100% 100%, 80% 0);
+  clip-path: polygon(20% 0, 0 100%, 100% 100%, 80% 0);
+}
+
+.order-state-tab.selected:nth-child(1) {
+  -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%, 80% 0);
+  clip-path: polygon(0 0, 0 100%, 100% 100%, 80% 0);
+}
+
+.order-state-tab.selected:last-child {
+  -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%, 80% 0);
+  clip-path: polygon(20% 0, 0 100%, 100% 100%, 100% 0);
+}
+
+.order-state-tab h3 {
+  font-family: $sans-serif;
+  text-transform: uppercase;
+  font-weight: lighter;
+}
+
+.late-orders h3 {
+  color: $primary-red;
+}
+
+.break-row {
+  width: 95%;
+  margin: 0 auto;
+  border-top: 1px solid gray;
+}
+
+.order-header-break-row {
+  @extend .break-row;
+}
+
+.order-data-break-row {
+  @extend .break-row;
+  width: 90%;
+}
+
+.order-data-container {
+  width: 100%;
+}
+
+.order-headers {
+  width: 100%;
+}
+
+.order-row {
+  @extend .table-row;
+}
+
+.order-headers-row-no-select {
+  @extend .order-headers-row;
+  flex-basis: 100%;
+}
+
+.order-row-link-no-select {
+  @extend .table-cell;
+  @extend .flex-container;
+  @extend .table-link;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+  flex-basis: 100%;
+}
+
+.order-cell-no-select {
+  @extend .order-row-cell;
+  flex-basis: 25%;
+}
+
+.order-header-cell-no-select {
+  @extend .table-header-cell;
+  flex-basis: 25%;
+}
+
+.order-headers-row {
+  @extend .table-row;
+  flex-basis: 95%;
+
+  font-family: arial;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.order-row-link {
+  @extend .table-cell;
+  @extend .flex-container;
+  @extend .table-link;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+  flex-basis: 80%;
+}
+
+.order-select-header-cell {
+  @extend .table-header-cell;
+  flex-basis: 15%;
+  text-align: right;
+}
+
+.order-data-header-cell {
+  @extend .table-header-cell;
+  flex-basis: 20%;
+}
+
+.order-data-headers-container {
+  @extend .table-header-cell;
+  @extend .flex-container;
+  flex-basis: 80%;
+}
+
+.order-headers-container-no-select {
+  @extend .table-header-cell;
+  @extend .flex-container;
+  flex-basis: 100%;
+}
+
+.order-row-cell {
+  @extend .table-cell;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.order-select-cell {
+  @extend .order-row-cell;
+  text-align: right;
+  flex-basis: 15%;
+  padding-top: 15px;
+  padding-bottom: 12px;
+}
+
+.order-data-cell {
+  @extend .order-row-cell;
+  flex-basis: 20%;
+}
+
+.loading-orders {
+  @extend .full-width-text-row;
+  font-style: italic;
+}
+
+.no-orders {
+  @extend .full-width-text-row;
+}

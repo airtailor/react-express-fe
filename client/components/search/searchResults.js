@@ -38,18 +38,18 @@ class SearchResults extends Component {
         return (
           <div key={id}>
             <div className="order-row">
-              <Link to={route} className="flex-container">
-                <div className="order-data">#{id}</div>
-                <div className="order-data" style={{color}}>
+              <Link to={route} className="order-row-link">
+                <div className="order-data-cell">#{id}</div>
+                <div className="order-data-cell" style={{ color }}>
                   {status}
                 </div>
-                <div className="order-data">
+                <div className="order-data-cell">
                   {first_name} {last_name}
                 </div>
-                <div className="order-data">{alterations_count}</div>
+                <div className="order-data-cell">{alterations_count}</div>
               </Link>
             </div>
-            <hr className="order-row-hr" />
+            <hr className="order-row-break-row" />
           </div>
         );
       });
@@ -67,14 +67,16 @@ class SearchResults extends Component {
       <div>
         <SectionHeader text={headerText} />
         <div className="orders">
-          <div className="order-row-header">
-            <h3 className="order-column">Order</h3>
-            <h3 className="order-column">Status</h3>
-            <h3 className="order-column">Customer</h3>
-            <h3 className="order-column">Quantity</h3>
+          <div className="order-headers-container">
+            <div className="order-headers-row">
+              <h3 className="order-data-header-cell">Order</h3>
+              <h3 className="order-data-header-cell">Status</h3>
+              <h3 className="order-data-header-cell">Customer</h3>
+              <h3 className="order-data-header-cell">Quantity</h3>
+            </div>
           </div>
-          <hr className="order-header-hr" />
-          <div className="order-rows">{this.renderOrderRows()}</div>
+          <div className="order-header-break-row" />
+          <div className="order-data-container">{this.renderOrderRows()}</div>
         </div>
       </div>
     );

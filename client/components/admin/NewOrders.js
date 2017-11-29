@@ -1,23 +1,47 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {getNewOrders, getCurrentOrder, setCurrentOrder} from '../../actions';
-import {bindActionCreators} from 'redux';
-import {RenderNewOrderList} from '../../utils/newOrderLists';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getNewOrders, getCurrentOrder, setCurrentOrder } from '../../actions';
+import { bindActionCreators } from 'redux';
+import { RenderNewOrderList } from '../../utils/newOrderLists';
 import NewOrderDetail from './NewOrderDetail';
 import NewOrderCustomerDetail from './NewOrderCustomerDetail';
 import SectionHeader from '../SectionHeader';
+import PropTypes from 'prop-types';
+
+const mapStateToProps = store => {
+  return {
+    currentUser: store.currentUser,
+    currentStore: store.currentStore,
+    newOrders: store.newOrders,
+    currentOrder: store.currentOrder,
+    userRoles: store.userRoles
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    { getNewOrders, getCurrentOrder, setCurrentOrder },
+    dispatch
+  );
+};
 
 class NewOrders extends Component {
-  constructor() {
-    super();
-    this.selectOrderDetail = this.selectOrderDetail.bind(this);
-  }
+  static propTypes = {
+    currentUser: PropTypes.object.isRequired, // mapStateToProps
+    currentStore: PropTypes.object.isRequired, // mapStateToProps
+    newOrders: PropTypes.object.isRequired, // mapStateToProps
+    currentOrder: PropTypes.object.isRequired, // mapStateToProps
+    userRoles: PropTypes.object.isRequired, // mapStateToProps
+    getNewOrders: PropTypes.func.isRequired, // mapDispatchToProps
+    getCurrentOrder: PropTypes.func.isRequired, // mapDispatchToProps
+    setCurrentOrder: PropTypes.func.isRequired // mapDispatchToProps
+  };
 
-  selectOrderDetail(order) {
+  selectOrderDetail = order => {
     this.props
       .getCurrentOrder(order.provider_id, order.id)
       .catch(err => console.log('err', err));
-  }
+  };
 
   componentDidMount() {
     this.props.setCurrentOrder({});
@@ -59,21 +83,5 @@ class NewOrders extends Component {
     );
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    currentUser: store.currentUser,
-    currentStore: store.currentStore,
-    newOrders: store.newOrders,
-    currentOrder: store.currentOrder,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {getNewOrders, getCurrentOrder, setCurrentOrder},
-    dispatch
-  );
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewOrders);

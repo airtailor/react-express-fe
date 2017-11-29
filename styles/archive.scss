@@ -1,0 +1,54 @@
+.archive {
+  @extend .orders;
+}
+
+.archive-headers-row {
+  @extend .table-row;
+  padding-top: 10px;
+}
+
+.archive-header-cell {
+  @extend .table-header-cell;
+  flex-basis: 25%;
+}
+
+.archive-header-break-row {
+  @extend .break-row;
+  width: 95%;
+}
+
+.archive-link {
+  @extend .table-cell;
+  @extend .flex-container;
+  @extend .table-link;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+  flex-basis: 100%;
+}
+
+.archive-break-row {
+  @extend .break-row;
+  width: 100%;
+}
+
+.archive-headers-container {
+  @extend .table-headers-container;
+  padding-left: 6%;
+  padding-right: 8%;
+}
+
+.archive-container {
+  @extend .table-row-container;
+  padding-left: 6%;
+  padding-right: 8%;
+}
+
+.archive-row {
+  @extend .table-row;
+}
+
+.archive-order-cell {
+  @extend .table-cell;
+  flex-basis: 25%;
+}

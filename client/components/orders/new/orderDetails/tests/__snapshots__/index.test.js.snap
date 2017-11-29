@@ -1,0 +1,253 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OrderDeails /> should render correctly 1`] = `
+ShallowWrapper {
+  "complexSelector": ComplexSelector {
+    "buildPredicate": [Function],
+    "childrenOfNode": [Function],
+    "findWhereUnwrapped": [Function],
+  },
+  "length": 1,
+  "node": <div
+    className="order-details"
+  >
+    <h2>
+      ORDER DETAILS
+    </h2>
+    <CustomerInfo
+      customerInfo={
+        Object {
+          "agrees_to_terms": true,
+          "city": "",
+          "email": "",
+          "first_name": "",
+          "last_name": "",
+          "phone": "",
+          "state_province": "",
+          "street": "",
+          "street_two": "",
+          "zip_code": "",
+        }
+      }
+      updateCustomerInfo={[Function]}
+    />
+    <h3>
+      Shipping
+    </h3>
+    <div>
+      <br />
+      <div>
+        <Checkbox
+          checked={true}
+          name="ship-to-store"
+          onChange={[Function]}
+          text="Ship To Store"
+        />
+        <br />
+        <br />
+        <Checkbox
+          checked={false}
+          name="ship-to-customer"
+          onChange={[Function]}
+          text="Ship To Customer"
+        />
+        <br />
+        <br />
+      </div>
+    </div>
+  </div>,
+  "nodes": Array [
+    <div
+      className="order-details"
+    >
+      <h2>
+        ORDER DETAILS
+      </h2>
+      <CustomerInfo
+        customerInfo={
+          Object {
+            "agrees_to_terms": true,
+            "city": "",
+            "email": "",
+            "first_name": "",
+            "last_name": "",
+            "phone": "",
+            "state_province": "",
+            "street": "",
+            "street_two": "",
+            "zip_code": "",
+          }
+        }
+        updateCustomerInfo={[Function]}
+      />
+      <h3>
+        Shipping
+      </h3>
+      <div>
+        <br />
+        <div>
+          <Checkbox
+            checked={true}
+            name="ship-to-store"
+            onChange={[Function]}
+            text="Ship To Store"
+          />
+          <br />
+          <br />
+          <Checkbox
+            checked={false}
+            name="ship-to-customer"
+            onChange={[Function]}
+            text="Ship To Customer"
+          />
+          <br />
+          <br />
+        </div>
+      </div>
+    </div>,
+  ],
+  "options": Object {},
+  "renderer": ReactShallowRenderer {
+    "_context": Object {},
+    "_element": <OrderDetails
+      cart={
+        Object {
+          "customerInfo": Object {
+            "agrees_to_terms": true,
+            "city": "",
+            "email": "",
+            "first_name": "",
+            "last_name": "",
+            "phone": "",
+            "state_province": "",
+            "street": "",
+            "street_two": "",
+            "zip_code": "",
+          },
+          "garments": Array [],
+          "notes": "",
+          "shipToStore": true,
+          "storeInfo": Object {},
+        }
+      }
+      renderStageOne={[Function]}
+      updateCartCustomerInfo={[Function]}
+      updateCartShipTo={[Function]}
+    />,
+    "_forcedUpdate": false,
+    "_instance": OrderDetails {
+      "context": Object {},
+      "props": Object {
+        "cart": Object {
+          "customerInfo": Object {
+            "agrees_to_terms": true,
+            "city": "",
+            "email": "",
+            "first_name": "",
+            "last_name": "",
+            "phone": "",
+            "state_province": "",
+            "street": "",
+            "street_two": "",
+            "zip_code": "",
+          },
+          "garments": Array [],
+          "notes": "",
+          "shipToStore": true,
+          "storeInfo": Object {},
+        },
+        "renderStageOne": [Function],
+        "updateCartCustomerInfo": [Function],
+        "updateCartShipTo": [Function],
+      },
+      "refs": Object {},
+      "state": Object {},
+      "updateCustomerInfo": [Function],
+      "updater": Updater {
+        "_renderer": [Circular],
+      },
+    },
+    "_newState": null,
+    "_rendered": <div
+      className="order-details"
+    >
+      <h2>
+        ORDER DETAILS
+      </h2>
+      <CustomerInfo
+        customerInfo={
+          Object {
+            "agrees_to_terms": true,
+            "city": "",
+            "email": "",
+            "first_name": "",
+            "last_name": "",
+            "phone": "",
+            "state_province": "",
+            "street": "",
+            "street_two": "",
+            "zip_code": "",
+          }
+        }
+        updateCustomerInfo={[Function]}
+      />
+      <h3>
+        Shipping
+      </h3>
+      <div>
+        <br />
+        <div>
+          <Checkbox
+            checked={true}
+            name="ship-to-store"
+            onChange={[Function]}
+            text="Ship To Store"
+          />
+          <br />
+          <br />
+          <Checkbox
+            checked={false}
+            name="ship-to-customer"
+            onChange={[Function]}
+            text="Ship To Customer"
+          />
+          <br />
+          <br />
+        </div>
+      </div>
+    </div>,
+    "_rendering": false,
+    "_updater": Updater {
+      "_renderer": [Circular],
+    },
+    "getRenderOutput": [Function],
+    "render": [Function],
+  },
+  "root": [Circular],
+  "unrendered": <OrderDetails
+    cart={
+      Object {
+        "customerInfo": Object {
+          "agrees_to_terms": true,
+          "city": "",
+          "email": "",
+          "first_name": "",
+          "last_name": "",
+          "phone": "",
+          "state_province": "",
+          "street": "",
+          "street_two": "",
+          "zip_code": "",
+        },
+        "garments": Array [],
+        "notes": "",
+        "shipToStore": true,
+        "storeInfo": Object {},
+      }
+    }
+    renderStageOne={[Function]}
+    updateCartCustomerInfo={[Function]}
+    updateCartShipTo={[Function]}
+  />,
+}
+`;
