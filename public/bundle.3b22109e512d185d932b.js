@@ -9236,14 +9236,14 @@ var OrdersEdit = function (_Component) {
       var order = this.props.order;
 
       if ((0, _isEmpty2.default)(order)) {
-        var _props$match = this.props.match,
-            orderId = _props$match.params.order_id,
-            storeId = _props$match.currentStore.id;
-
         debugger;
+        var _props = this.props,
+            orderId = _props.match.params.order_id,
+            storeId = _props.store.id;
+
 
         this.props.setLoader();
-        (0, _actions.getCurrentOrder)(storeId, orderId).then(function (res) {
+        this.props.getCurrentOrder(storeId, orderId).then(function (res) {
           _this2.props.removeLoader();
           debugger;
           var order = res.data.body;
@@ -9271,18 +9271,12 @@ var OrdersEdit = function (_Component) {
       var _this4 = this;
 
       var order = this.state;
-      if ((0, _isEmpty2.default)(order)) {
-        order = this.props.order;
-      }
-
-      debugger;
-      var _order = order,
-          first_name = _order.first_name,
-          last_name = _order.last_name,
-          customer = _order.customer,
-          total = _order.total,
-          weight = _order.weight,
-          provider_id = _order.provider_id;
+      var first_name = order.first_name,
+          last_name = order.last_name,
+          customer = order.customer,
+          total = order.total,
+          weight = order.weight,
+          provider_id = order.provider_id;
 
 
       var customerName = first_name + ' ' + last_name;
@@ -21087,4 +21081,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAi8AAAJmCAYAAAHj
 
 /***/ })
 ],[404]);
-//# sourceMappingURL=bundle.0d6bb0b5ac06b97bd1db.js.map
+//# sourceMappingURL=bundle.3b22109e512d185d932b.js.map

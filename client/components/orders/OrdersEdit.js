@@ -61,15 +61,15 @@ class OrdersEdit extends Component {
     const { order } = this.props;
     if (isEmpty(order)) {
       const {
-        match: { params: { order_id: orderId }, currentStore: { id: storeId } },
+        match: { params: { order_id: orderId } },
+        store: { id: storeId },
       } = this.props;
-      debugger;
 
       this.props.setLoader();
-      getCurrentOrder(storeId, orderId)
+      this.props
+        .getCurrentOrder(storeId, orderId)
         .then(res => {
           this.props.removeLoader();
-          debugger;
           const order = res.data.body;
           this.setState({ order });
         })
@@ -92,12 +92,7 @@ class OrdersEdit extends Component {
   }
 
   render() {
-    let order = this.state;
-    if (isEmpty(order)) {
-      order = this.props.order;
-    }
-
-    debugger;
+    const order = this.state;
     const {
       first_name,
       last_name,
