@@ -801,6 +801,8 @@ router.post(`/api/create_or_validate_customer`, (req, res) => {
     });
 });
 
+router.use('/api/reports', require('./routes/reports'));
+
 router.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/../public/index.html'));
 });
