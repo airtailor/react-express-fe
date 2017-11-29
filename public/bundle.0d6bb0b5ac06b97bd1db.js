@@ -985,8 +985,7 @@ var storeTypes = exports.storeTypes = [{ name: 'Tailor', id: 'Tailor' }, { name:
 /* 12 */,
 /* 13 */,
 /* 14 */,
-/* 15 */,
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1073,6 +1072,7 @@ var mapStateToProps = function mapStateToProps(store) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(SectionHeader);
 
 /***/ }),
+/* 16 */,
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1926,7 +1926,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _actions = __webpack_require__(8);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -3104,7 +3104,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -3186,7 +3186,7 @@ var _isEmpty2 = _interopRequireDefault(_isEmpty);
 
 var _actions = __webpack_require__(8);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -3683,7 +3683,7 @@ var _moment2 = _interopRequireDefault(_moment);
 
 var _actions = __webpack_require__(8);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -4282,7 +4282,7 @@ var _actions = __webpack_require__(8);
 
 var _shippingFunctions = __webpack_require__(59);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -8344,7 +8344,7 @@ var _NewOrderCustomerDetail = __webpack_require__(368);
 
 var _NewOrderCustomerDetail2 = _interopRequireDefault(_NewOrderCustomerDetail);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -8490,7 +8490,7 @@ var _reactRouterDom = __webpack_require__(6);
 
 var _actions = __webpack_require__(8);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -8652,7 +8652,7 @@ var _reactRouterDom = __webpack_require__(6);
 
 var _actions = __webpack_require__(8);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -8869,7 +8869,7 @@ var _reactRouterDom = __webpack_require__(6);
 
 var _actions = __webpack_require__(8);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -9171,6 +9171,14 @@ var _SelectTailor = __webpack_require__(134);
 
 var _SelectTailor2 = _interopRequireDefault(_SelectTailor);
 
+var _isEmpty = __webpack_require__(24);
+
+var _isEmpty2 = _interopRequireDefault(_isEmpty);
+
+var _SectionHeader = __webpack_require__(15);
+
+var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
+
 var _propTypes = __webpack_require__(4);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -9188,12 +9196,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var mapStateToProps = function mapStateToProps(store) {
   return {
     order: store.currentOrder,
+    store: store.currentStore,
     tailors: store.tailorList
   };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return (0, _redux.bindActionCreators)({ getTailorList: _actions.getTailorList, updateOrder: _actions.updateOrder }, dispatch);
+  return (0, _redux.bindActionCreators)({
+    getTailorList: _actions.getTailorList,
+    getCurrentOrder: _actions.getCurrentOrder,
+    updateOrder: _actions.updateOrder,
+    setLoader: _actions.setLoader,
+    removeLoader: _actions.removeLoader,
+    setGrowler: _actions.setGrowler
+  }, dispatch);
 };
 
 var OrdersEdit = function (_Component) {
@@ -9213,79 +9229,111 @@ var OrdersEdit = function (_Component) {
   }
 
   _createClass(OrdersEdit, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var order = this.props.order;
+
+      if ((0, _isEmpty2.default)(order)) {
+        var _props$match = this.props.match,
+            orderId = _props$match.params.order_id,
+            storeId = _props$match.currentStore.id;
+
+        debugger;
+
+        this.props.setLoader();
+        (0, _actions.getCurrentOrder)(storeId, orderId).then(function (res) {
+          _this2.props.removeLoader();
+          debugger;
+          var order = res.data.body;
+          _this2.setState({ order: order });
+        }).catch(function (err) {
+          return console.log(err);
+        });
+      }
+    }
+  }, {
     key: 'handleSubmit',
     value: function handleSubmit(e) {
+      var _this3 = this;
+
       e.preventDefault();
-      this.props.updateOrder({ order: this.state }).catch(function (err) {
+      this.props.updateOrder({ order: this.state }).then(function () {
+        _this3.props.setGrowler({ kind: 'success', message: 'Order updated!' });
+      }).catch(function (err) {
         return console.log('errr', err);
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this4 = this;
 
-      var _state = this.state,
-          customer = _state.customer,
-          total = _state.total,
-          weight = _state.weight,
-          provider_id = _state.provider_id;
-      var first_name = customer.first_name,
-          last_name = customer.last_name;
+      var order = this.state;
+      if ((0, _isEmpty2.default)(order)) {
+        order = this.props.order;
+      }
+
+      debugger;
+      var _order = order,
+          first_name = _order.first_name,
+          last_name = _order.last_name,
+          customer = _order.customer,
+          total = _order.total,
+          weight = _order.weight,
+          provider_id = _order.provider_id;
+
 
       var customerName = first_name + ' ' + last_name;
       var backLink = '/orders/' + this.state.id;
 
-      if (this.props.order) {
-        return _react2.default.createElement(
-          'div',
-          null,
-          _react2.default.createElement(
-            _reactRouterDom.Link,
-            { to: backLink },
-            'Back'
-          ),
-          _react2.default.createElement(
-            'form',
-            { onSubmit: function onSubmit(e) {
-                return _this2.handleSubmit(e);
-              } },
-            _react2.default.createElement(_FormField2.default, {
-              value: customerName,
-              fieldName: 'name',
-              title: 'Name:',
-              onChange: function onChange() {
-                return console.log('dont do nuthin');
-              }
-            }),
-            _react2.default.createElement(_FormField2.default, {
-              value: total,
-              fieldName: 'total',
-              title: 'Total: $',
-              onChange: this.updateState
-            }),
-            _react2.default.createElement(_FormField2.default, {
-              value: weight,
-              fieldName: 'weight',
-              title: 'Weight (grams):',
-              onChange: this.updateState
-            }),
-            _react2.default.createElement(_SelectTailor2.default, {
-              provider_id: provider_id,
-              onChange: this.updateState
-            }),
-            _react2.default.createElement(_FormField2.default, {
-              value: this.state.total,
-              fieldName: 'total',
-              title: 'Total:',
-              onChange: this.updateState
-            }),
-            _react2.default.createElement('input', { type: 'submit', className: 'short-button', value: 'Update' })
-          )
-        );
-      } else {
-        return _react2.default.createElement('div', null);
-      }
+      var submit = function submit(e) {
+        return _this4.handleSubmit(e);
+      };
+      var updateState = this.updateState;
+      var headerText = 'Orders / Edit / ' + this.state.id;
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_SectionHeader2.default, { text: headerText }),
+        _react2.default.createElement(
+          _reactRouterDom.Link,
+          { to: backLink },
+          'Back'
+        ),
+        _react2.default.createElement(
+          'form',
+          { onSubmit: submit },
+          _react2.default.createElement(_FormField2.default, {
+            value: customerName,
+            fieldName: 'name',
+            title: 'Name:',
+            onChange: function onChange() {}
+          }),
+          _react2.default.createElement(_FormField2.default, {
+            value: total,
+            fieldName: 'total',
+            title: 'Total: $',
+            onChange: updateState
+          }),
+          _react2.default.createElement(_FormField2.default, {
+            value: weight,
+            fieldName: 'weight',
+            title: 'Weight (grams):',
+            onChange: updateState
+          }),
+          _react2.default.createElement(_SelectTailor2.default, { provider_id: provider_id, onChange: updateState }),
+          _react2.default.createElement(_FormField2.default, {
+            value: total,
+            fieldName: 'total',
+            title: 'Total:',
+            onChange: updateState
+          }),
+          _react2.default.createElement('input', { type: 'submit', className: 'short-button', value: 'Update' })
+        )
+      );
     }
   }]);
 
@@ -9296,7 +9344,11 @@ OrdersEdit.propTypes = {
   order: _propTypes2.default.object.isRequired, // mapStateToProps
   tailors: _propTypes2.default.array.isRequired, // mapStateToProps
   getTailorList: _propTypes2.default.func.isRequired, // mapDispatchToProps
-  updateOrder: _propTypes2.default.func.isRequired // mapDispatchToProps
+  getCurrentOrder: _propTypes2.default.func.isRequired, // mapDispatchToProps
+  updateOrder: _propTypes2.default.func.isRequired, // mapDispatchToProps
+  setLoader: _propTypes2.default.func.isRequired, // mapDispatchToProps
+  removeLoader: _propTypes2.default.func.isRequired, // mapDispatchToProps
+  setGrowler: _propTypes2.default.func.isRequired // mapDispatchToProps
 };
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(OrdersEdit);
 
@@ -10087,7 +10139,7 @@ var _actions = __webpack_require__(8);
 
 var _format = __webpack_require__(47);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -10420,7 +10472,7 @@ var _SelectGarment = __webpack_require__(382);
 
 var _SelectGarment2 = _interopRequireDefault(_SelectGarment);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -11611,7 +11663,7 @@ var _Measurements = __webpack_require__(390);
 
 var _Measurements2 = _interopRequireDefault(_Measurements);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -13426,7 +13478,7 @@ var _moment2 = _interopRequireDefault(_moment);
 
 var _reactRouterDom = __webpack_require__(6);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -13633,7 +13685,7 @@ var _FormField = __webpack_require__(28);
 
 var _FormField2 = _interopRequireDefault(_FormField);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -14047,7 +14099,7 @@ var _FormSelect = __webpack_require__(75);
 
 var _FormSelect2 = _interopRequireDefault(_FormSelect);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -14103,23 +14155,41 @@ var StoresNew = function (_Component) {
       _this.setState({ address: address });
     };
 
+    _this.emptyParamsPresent = function () {
+      var store = _this.state;
+      var address = store.address;
+
+      var missingStoreParams = !_this.hasAllParams(store);
+      var missingAddressParams = !_this.hasAllParams(address);
+      return missingStoreParams && missingAddressParams;
+    };
+
     _this.handleSubmit = function (e) {
       e.preventDefault();
-      var missingParams = _this.emptyStoreParamsPresent();
-      debugger;
+      var missingParams = _this.emptyParamsPresent();
       if (!missingParams) {
         var store = _this.state;
         _this.props.setLoader();
         (0, _actions.createStore)({ store: store }).then(function (res) {
           _this.props.removeLoader();
-          _this.setState(_this.initialStateObject());
-          _this.props.setGrowler({
-            kind: 'success',
-            message: 'New Store Created!'
-          });
+          console.log(res);
+          var errors = res.data.body.errors;
+          if ((0, _isEmpty2.default)(errors)) {
+            _this.setState(_this.initialStateObject());
+            _this.props.setGrowler({
+              kind: 'success',
+              message: 'New Store Created!'
+            });
+          } else {
+            if (errors['invalid_address']) {
+              _this.props.setGrowler({
+                kind: 'warning',
+                message: 'Invalid Address! Check your inputs.'
+              });
+            }
+          }
         }).catch(function (err) {
-          _this.props.removeLoader();
-          _this.props.setGrowler({ kind: 'warning', message: err });
+          return console.log(err);
         });
       } else {
         var errorString = 'Please enter all fields before submitting.';
@@ -14152,30 +14222,26 @@ var StoresNew = function (_Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.props.getCompanies().catch(function (err) {
+      var _this2 = this;
+
+      this.props.setLoader();
+      this.props.getCompanies().then(function () {
+        return _this2.props.removeLoader();
+      }).catch(function (err) {
         return console.log(err);
       });
     }
   }, {
     key: 'hasAllParams',
     value: function hasAllParams(obj) {
-      (0, _isEmpty2.default)(Object.keys(obj).filter(function (k) {
-        return k != '';
+      return (0, _isEmpty2.default)(Object.keys(obj).filter(function (k) {
+        return k == '';
       }));
-    }
-  }, {
-    key: 'emptyStoreParamsPresent',
-    value: function emptyStoreParamsPresent() {
-      var store = this.state;
-      var address = store.address;
-
-      debugger;
-      return this.hasAllParams(store) && this.hasAllParams(address);
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       console.log(this.state);
       var companies = this.props.companies;
@@ -14195,16 +14261,12 @@ var StoresNew = function (_Component) {
       var updateStoreState = this.updateStoreState;
       var updateAddressState = this.updateAddressState;
       var submit = function submit(e) {
-        return _this2.handleSubmit(e);
+        return _this3.handleSubmit(e);
       };
       var headerText = 'Stores / New';
 
       if ((0, _isEmpty2.default)(companies)) {
-        return _react2.default.createElement(
-          'div',
-          null,
-          'Loading...'
-        );
+        return _react2.default.createElement(_SectionHeader2.default, { text: headerText, includeLink: false });
       } else {
         return _react2.default.createElement(
           'div',
@@ -14318,7 +14380,7 @@ var _FormField = __webpack_require__(28);
 
 var _FormField2 = _interopRequireDefault(_FormField);
 
-var _SectionHeader = __webpack_require__(16);
+var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
@@ -21025,4 +21087,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAi8AAAJmCAYAAAHj
 
 /***/ })
 ],[404]);
-//# sourceMappingURL=bundle.b20dcb93ee4c443491f5.js.map
+//# sourceMappingURL=bundle.0d6bb0b5ac06b97bd1db.js.map

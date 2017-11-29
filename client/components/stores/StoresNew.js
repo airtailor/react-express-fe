@@ -11,18 +11,6 @@ import {
 import { storeTypes } from '../../utils/constants';
 import FormField from '../FormField';
 import FormSelect from '../FormSelect';
-import isEmpty from 'lodash/isEmpty';
-import PropTypes from 'prop-types';
-
-const mapStateToProps = store => {
-  return {
-    companies: store.companyList,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ getCompanies }, dispatch);
-};
 
 import SectionHeader from '../SectionHeader';
 import isEmpty from 'lodash/isEmpty';

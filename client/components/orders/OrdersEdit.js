@@ -4,19 +4,40 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FormSelect from '../FormSelect';
 import FormField from '../FormField';
-import { updateOrder, getTailorList } from '../../actions';
+import {
+  getCurrentOrder,
+  updateOrder,
+  getTailorList,
+  setLoader,
+  removeLoader,
+  setGrowler,
+} from '../../actions';
 import SelectTailor from './orderForms/SelectTailor';
+
+import isEmpty from 'lodash/isEmpty';
+import SectionHeader from '../SectionHeader';
 import PropTypes from 'prop-types';
 
 const mapStateToProps = store => {
   return {
     order: store.currentOrder,
+    store: store.currentStore,
     tailors: store.tailorList,
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ getTailorList, updateOrder }, dispatch);
+  return bindActionCreators(
+    {
+      getTailorList,
+      getCurrentOrder,
+      updateOrder,
+      setLoader,
+      removeLoader,
+      setGrowler,
+    },
+    dispatch
+  );
 };
 
 class OrdersEdit extends Component {
@@ -24,12 +45,36 @@ class OrdersEdit extends Component {
     order: PropTypes.object.isRequired, // mapStateToProps
     tailors: PropTypes.array.isRequired, // mapStateToProps
     getTailorList: PropTypes.func.isRequired, // mapDispatchToProps
+    getCurrentOrder: PropTypes.func.isRequired, // mapDispatchToProps
     updateOrder: PropTypes.func.isRequired, // mapDispatchToProps
+    setLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   constructor(props) {
     super();
     this.state = props.order;
+  }
+
+  componentDidMount() {
+    const { order } = this.props;
+    if (isEmpty(order)) {
+      const {
+        match: { params: { order_id: orderId }, currentStore: { id: storeId } },
+      } = this.props;
+      debugger;
+
+      this.props.setLoader();
+      getCurrentOrder(storeId, orderId)
+        .then(res => {
+          this.props.removeLoader();
+          debugger;
+          const order = res.data.body;
+          this.setState({ order });
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   updateState = (field, value) => {
@@ -40,61 +85,74 @@ class OrdersEdit extends Component {
     e.preventDefault();
     this.props
       .updateOrder({ order: this.state })
+      .then(() => {
+        this.props.setGrowler({ kind: 'success', message: 'Order updated!' });
+      })
       .catch(err => console.log('errr', err));
   }
 
   render() {
-    const { customer, total, weight, provider_id } = this.state;
-    const { first_name, last_name } = customer;
+    let order = this.state;
+    if (isEmpty(order)) {
+      order = this.props.order;
+    }
+
+    debugger;
+    const {
+      first_name,
+      last_name,
+      customer,
+      total,
+      weight,
+      provider_id,
+    } = order;
+
     const customerName = first_name + ' ' + last_name;
     const backLink = `/orders/${this.state.id}`;
 
-    if (this.props.order) {
-      return (
-        <div>
-          <Link to={backLink}>Back</Link>
+    const submit = e => this.handleSubmit(e);
+    const updateState = this.updateState;
+    const headerText = `Orders / Edit / ${this.state.id}`;
 
-          <form onSubmit={e => this.handleSubmit(e)}>
-            <FormField
-              value={customerName}
-              fieldName={'name'}
-              title={'Name:'}
-              onChange={() => console.log('dont do nuthin')}
-            />
+    return (
+      <div>
+        <SectionHeader text={headerText} />
+        <Link to={backLink}>Back</Link>
+        <form onSubmit={submit}>
+          <FormField
+            value={customerName}
+            fieldName={'name'}
+            title={'Name:'}
+            onChange={() => {}}
+          />
 
-            <FormField
-              value={total}
-              fieldName={'total'}
-              title={'Total: $'}
-              onChange={this.updateState}
-            />
+          <FormField
+            value={total}
+            fieldName={'total'}
+            title={'Total: $'}
+            onChange={updateState}
+          />
 
-            <FormField
-              value={weight}
-              fieldName={'weight'}
-              title={'Weight (grams):'}
-              onChange={this.updateState}
-            />
+          <FormField
+            value={weight}
+            fieldName={'weight'}
+            title={'Weight (grams):'}
+            onChange={updateState}
+          />
 
-            <SelectTailor
-              provider_id={provider_id}
-              onChange={this.updateState}
-            />
+          <SelectTailor provider_id={provider_id} onChange={updateState} />
 
-            <FormField
-              value={this.state.total}
-              fieldName={'total'}
-              title={'Total:'}
-              onChange={this.updateState}
-            />
+          <FormField
+            value={total}
+            fieldName={'total'}
+            title={'Total:'}
+            onChange={updateState}
+          />
 
-            <input type="submit" className="short-button" value="Update" />
-          </form>
-        </div>
-      );
-    } else {
-      return <div />;
-    }
+          <input type="submit" className="short-button" value="Update" />
+        </form>
+      </div>
+    );
   }
 }
 
