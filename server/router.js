@@ -1,45 +1,36 @@
 const express = require('express');
 const path = require('path');
 const Axios = require('axios');
+const { apiUrl, getHeaders } = require('./config');
+
 const router = express.Router();
 
-const apiUrl =
-  process.env.NODE_ENV === 'production'
-    ? process.env.API_URL
-    : 'http://localhost:3000';
-
 router.post('/api/validate_token', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const headers = {client, ['access-token']: accessToken, uid};
+  const headers = getHeaders(req);
 
-  Axios.get(`${apiUrl}/auth/validate_token`, {headers})
+  Axios.get(`${apiUrl}/auth/validate_token`, { headers })
     .then(response => {
-      res.json({headers: response.headers, body: response.data.data});
+      res.json({ headers: response.headers, body: response.data.data });
     })
     .catch(err => {
       if (err instanceof Error) {
-        //console.log('\n\n', err.response);
         console.log('\n\n', 'status: ' + err.response.status);
-        //console.log('\n\n\n\n\n\n\n\n@@@@@@@@@@@@@', err);
-        res.json({status: err.response.status});
-        //res.json({err});
+        res.json({ status: err.response.status });
       } else {
         console.log('error: ', err);
-        res.json({err});
+        res.json({ err });
       }
     });
 });
 
 router.post('/api/sign_in', (req, res) => {
-  const {email, password} = req.body;
+  const { email, password } = req.body;
   Axios.post(`${apiUrl}/auth/sign_in`, {
     email,
     password,
   })
     .then(response => {
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -50,20 +41,20 @@ router.post('/api/sign_in', (req, res) => {
         });
       } else {
         console.log('error: ', err.response);
-        res.json({error: err.response});
+        res.json({ error: err.response });
       }
     });
 });
 
 router.post('/api/sign_up', (req, res, next) => {
-  const {email, password, passwordConfirmation} = req.body;
+  const { email, password, passwordConfirmation } = req.body;
   Axios.post(`${apiUrl}/auth`, {
     email,
     password,
     password_confirmation: passwordConfirmation,
   })
     .then(response => {
-      res.json({body: response.data.data});
+      res.json({ body: response.data.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -80,21 +71,16 @@ router.post('/api/sign_up', (req, res, next) => {
 });
 
 router.post('/api/stores/:id', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const headers = {client, ['access-token']: accessToken, uid};
-  //console.log('outgoing headers get store/id', headers);
+  const headers = getHeaders(req);
 
-  Axios.get(`${apiUrl}/api/stores/${req.params.id}`, {headers})
+  Axios.get(`${apiUrl}/api/stores/${req.params.id}`, { headers })
     .then(response => {
-      // console.log('return headers get store/id', response.headers);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
         console.log('@@@@@@@@@@@@@', err);
-        res.json({status: err.response.status, error: err});
+        res.json({ status: err.response.status, error: err });
       } else {
         console.log('error: ', err);
         res.json(err);
@@ -103,13 +89,9 @@ router.post('/api/stores/:id', (req, res) => {
 });
 
 router.post('/api/sign_out', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const headers = {client, ['access-token']: accessToken, uid};
-  //console.log('outgoing headers signout', headers);
+  const headers = getHeaders(req);
 
-  Axios.delete(`${apiUrl}/auth/sign_out`, {headers})
+  Axios.delete(`${apiUrl}/auth/sign_out`, { headers })
     .then(response => {
       res.json(response.status);
     })
@@ -125,15 +107,12 @@ router.post('/api/sign_out', (req, res) => {
 });
 
 router.post('/api/orders', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const headers = {client, ['access-token']: accessToken, uid};
-  const {order} = req.body;
+  const headers = getHeaders(req);
+  const { order } = req.body;
 
-  Axios.post(`${apiUrl}/api/orders`, {headers, order})
+  Axios.post(`${apiUrl}/api/orders`, { headers, order })
     .then(response => {
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -147,17 +126,12 @@ router.post('/api/orders', (req, res) => {
 });
 
 router.get('/api/stores/:store_id/orders', (req, res) => {
-  const {store_id} = req.params;
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const headers = {client, ['access-token']: accessToken, uid};
-  //console.log('outgoing headers get store/id/orders', headers);
+  const { store_id } = req.params;
+  const headers = getHeaders(req);
 
-  Axios.get(`${apiUrl}/api/stores/${store_id}/orders`, {headers})
+  Axios.get(`${apiUrl}/api/stores/${store_id}/orders`, { headers })
     .then(response => {
-      // console.log('return headers get store/id/orders', response.headers);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -171,18 +145,13 @@ router.get('/api/stores/:store_id/orders', (req, res) => {
 });
 
 router.get('/api/stores/:store_id/orders/:order_id', (req, res) => {
-  const {store_id, order_id} = req.params;
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const headers = {client, ['access-token']: accessToken, uid};
-  //console.log('outgoing headers get store/id/orders/id', headers);
-  //const url = `${apiUrl}/api/stores/${store_id}/orders/${order_id}`;
+  const { store_id, order_id } = req.params;
+  const headers = getHeaders(req);
+
   const url = `${apiUrl}/api/orders/${order_id}`;
-  Axios.get(url, {headers})
+  Axios.get(url, { headers })
     .then(response => {
-      //console.log('return headers get store/id/orders/id', response.headers);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -196,24 +165,16 @@ router.get('/api/stores/:store_id/orders/:order_id', (req, res) => {
 });
 
 router.post('/api/stores/:store_id/orders/:order_id/edit', (req, res) => {
-  const {store_id, order_id} = req.params;
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid, expiry};
+  const { store_id, order_id } = req.params;
+  const headers = getHeaders(req);
   const data = req.body;
-  // console.log("!!!!! DATA!!", data);
-  // console.log("!!!!! req.body!!", req.body);
-  // console.log('outgoing headers put store/id/orders/id', headers);
 
   Axios.put(`${apiUrl}/api/stores/${store_id}/orders/${order_id}`, {
     order: data.order,
     headers,
   })
     .then(response => {
-      // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -227,21 +188,16 @@ router.post('/api/stores/:store_id/orders/:order_id/edit', (req, res) => {
 });
 
 router.post('/api/customers/find_or_create', (req, res) => {
-  const {customer_id} = req.params;
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid, expiry};
+  const { customer_id } = req.params;
+  const headers = getHeaders(req);
   const data = req.body;
-  console.log('\n\nn\n\n\n******************', data);
 
   Axios.post(`${apiUrl}/api/customers/find_or_create`, {
     customer: data.customer,
     headers,
   })
     .then(response => {
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -255,12 +211,9 @@ router.post('/api/customers/find_or_create', (req, res) => {
 });
 
 router.put('/api/customers/:customer_id/', (req, res) => {
-  const {customer_id} = req.params;
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid, expiry};
+  const { customer_id } = req.params;
+
+  const headers = getHeaders(req);
   const data = req.body;
 
   Axios.put(`${apiUrl}/api/customers/${customer_id}`, {
@@ -268,8 +221,7 @@ router.put('/api/customers/:customer_id/', (req, res) => {
     headers,
   })
     .then(response => {
-      //console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -283,18 +235,13 @@ router.put('/api/customers/:customer_id/', (req, res) => {
 });
 
 router.get('/api/tailors', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid, expiry};
+  const headers = getHeaders(req);
 
   Axios.get(`${apiUrl}/api/tailors`, {
     headers,
   })
     .then(response => {
-      //console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -308,18 +255,13 @@ router.get('/api/tailors', (req, res) => {
 });
 
 router.get('/api/companies', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid, expiry};
+  const headers = getHeaders(req);
 
   Axios.get(`${apiUrl}/api/companies`, {
     headers,
   })
     .then(response => {
-      // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -333,12 +275,8 @@ router.get('/api/companies', (req, res) => {
 });
 
 router.put('/api/stores/:store_id/', (req, res) => {
-  const {store_id} = req.params;
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid, expiry};
+  const { store_id } = req.params;
+  const headers = getHeaders(req);
   const data = req.body;
 
   Axios.put(`${apiUrl}/api/stores/${store_id}`, {
@@ -346,8 +284,7 @@ router.put('/api/stores/:store_id/', (req, res) => {
     headers,
   })
     .then(response => {
-      // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -361,11 +298,7 @@ router.put('/api/stores/:store_id/', (req, res) => {
 });
 
 router.post('/api/stores', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid, expiry};
+  const headers = getHeaders(req);
   const data = req.body;
 
   Axios.post(`${apiUrl}/api/stores`, {
@@ -373,8 +306,7 @@ router.post('/api/stores', (req, res) => {
     headers,
   })
     .then(response => {
-      // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -388,11 +320,7 @@ router.post('/api/stores', (req, res) => {
 });
 
 router.post('/api/shipments', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid, expiry};
+  const headers = getHeaders(req);
   const data = req.body;
 
   Axios.post(`${apiUrl}/api/shipments`, {
@@ -400,8 +328,7 @@ router.post('/api/shipments', (req, res) => {
     headers,
   })
     .then(response => {
-      // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -415,23 +342,13 @@ router.post('/api/shipments', (req, res) => {
 });
 
 router.get('/api/customers/:customer_id/measurements/last', (req, res) => {
-  const {customer_id} = req.params;
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const headers = {client, ['access-token']: accessToken, uid};
+  const { customer_id } = req.params;
+  const headers = getHeaders(req);
   const url = `${apiUrl}/api/customers/${customer_id}/measurements/last`;
-  //console.log('outgoing headers get store/id/orders', headers);
 
-  console.log('###################################################', url);
-  Axios.get(url, {headers})
+  Axios.get(url, { headers })
     .then(response => {
-      // console.log('return headers get store/id/orders', response.headers);
-      console.log(
-        '###################################################',
-        response.body
-      );
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -445,22 +362,17 @@ router.get('/api/customers/:customer_id/measurements/last', (req, res) => {
 });
 
 router.post('/api/customers/:customer_id/measurements', (req, res) => {
-  const {customer_id} = req.params;
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid, expiry};
+  const { customer_id } = req.params;
+  const headers = getHeaders(req);
   const data = req.body;
   const url = `${apiUrl}/api/customers/${customer_id}/measurements`;
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!,', data);
+
   Axios.post(url, {
     measurement: data.measurement,
     headers,
   })
     .then(response => {
-      // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -474,19 +386,14 @@ router.post('/api/customers/:customer_id/measurements', (req, res) => {
 });
 
 router.get('/api/new_orders', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid, expiry};
+  const headers = getHeaders(req);
   const url = `${apiUrl}/api/new_orders`;
 
   Axios.get(url, {
     headers,
   })
     .then(response => {
-      // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -500,19 +407,15 @@ router.get('/api/new_orders', (req, res) => {
 });
 
 router.get('/api/stores/:store_id/orders_and_messages_count', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid, expiry};
-  const {store_id} = req.params;
+  const headers = getHeaders(req);
+  const { store_id } = req.params;
   const url = `${apiUrl}/api/stores/${store_id}/orders_and_messages_count`;
+
   Axios.get(url, {
     headers,
   })
     .then(response => {
-      // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -526,19 +429,15 @@ router.get('/api/stores/:store_id/orders_and_messages_count', (req, res) => {
 });
 
 router.get('/api/stores/:store_id/conversations', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid, expiry};
-  const {store_id} = req.params;
+  const headers = getHeaders(req);
+  const { store_id } = req.params;
   const url = `${apiUrl}/api/stores/${store_id}/conversations`;
+
   Axios.get(url, {
     headers,
   })
     .then(response => {
-      // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -554,19 +453,15 @@ router.get('/api/stores/:store_id/conversations', (req, res) => {
 router.get(
   '/api/stores/:store_id/conversations/:conversation_id',
   (req, res) => {
-    const client = req.get('client');
-    const accessToken = req.get('access-token');
-    const uid = req.get('uid');
-    const expiry = req.get('expiry');
-    const headers = {client, ['access-token']: accessToken, uid, expiry};
-    const {store_id, conversation_id} = req.params;
+    const headers = getHeaders(req);
+    const { store_id, conversation_id } = req.params;
     const url = `${apiUrl}/api/stores/${store_id}/conversations/${conversation_id}`;
+
     Axios.get(url, {
       headers,
     })
       .then(response => {
-        // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn]\nreturn headers put store/id/orders/id', response.headers);
-        res.json({headers: response.headers, body: response.data});
+        res.json({ headers: response.headers, body: response.data });
       })
       .catch(err => {
         if (err instanceof Error) {
@@ -583,29 +478,20 @@ router.get(
 router.post(
   '/api/stores/:store_id/conversations/:conversation_id/messages',
   (req, res) => {
-    const {store_id, conversation_id} = req.params;
-    const client = req.get('client');
-    const accessToken = req.get('access-token');
-    const uid = req.get('uid');
-    const headers = {client, ['access-token']: accessToken, uid};
-    const {message} = req.body;
-    console.log(
-      'o!!!!!!!!!!!!!!!!!!!!!!!!!!/n/n/n/n/nn/n/n/nn/n/n/n*************/n',
-      message
-    );
-
+    const { store_id, conversation_id } = req.params;
+    const headers = getHeaders(req);
+    const { message } = req.body;
     Axios.post(
       `${apiUrl}/api/stores/${store_id}/conversations/${conversation_id}/messages`,
-      {headers, message}
+      { headers, message }
     )
       .then(response => {
-        // console.log('return headers get store/id', response.headers);
-        res.json({headers: response.headers, body: response.data});
+        res.json({ headers: response.headers, body: response.data });
       })
       .catch(err => {
         if (err instanceof Error) {
           console.log('@@@@@@@@@@@@@', err);
-          res.json({status: err.response.status, error: err});
+          res.json({ status: err.response.status, error: err });
         } else {
           console.log('error: ', err);
           res.json(err);
@@ -617,24 +503,19 @@ router.post(
 router.put(
   '/api/stores/:store_id/conversations/:conversation_id/messages/:message_id',
   (req, res) => {
-    const {store_id, conversation_id, message_id} = req.params;
-    const client = req.get('client');
-    const accessToken = req.get('access-token');
-    const uid = req.get('uid');
-    const headers = {client, ['access-token']: accessToken, uid};
-
-    const {message} = req.body;
-
+    const { store_id, conversation_id, message_id } = req.params;
+    const headers = getHeaders(req);
+    const { message } = req.body;
     const url = `${apiUrl}/api/stores/${store_id}/conversations/${conversation_id}/messages/${message_id}`;
-    Axios.put(url, {headers, message})
+
+    Axios.put(url, { headers, message })
       .then(response => {
-        // console.log('return headers get store/id', response.headers);
-        res.json({headers: response.headers, body: response.data});
+        res.json({ headers: response.headers, body: response.data });
       })
       .catch(err => {
         if (err instanceof Error) {
           console.log('@@@@@@@@@@@@@', err);
-          res.json({status: err.response.status, error: err});
+          res.json({ status: err.response.status, error: err });
         } else {
           console.log('error: ', err);
           res.json(err);
@@ -644,11 +525,7 @@ router.put(
 );
 
 router.put('/api/users/update_password', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid};
+  const headers = getHeaders(req);
   const data = req.body;
 
   Axios.put(`${apiUrl}/api/users/${data.id}/update_password`, {
@@ -656,7 +533,7 @@ router.put('/api/users/update_password', (req, res) => {
     headers,
   })
     .then(response => {
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -670,18 +547,14 @@ router.put('/api/users/update_password', (req, res) => {
 });
 
 router.get('/api/orders/search/:query', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid};
-  const {query} = req.params;
+  const headers = getHeaders(req);
+  const { query } = req.params;
 
   Axios.get(`${apiUrl}/api/orders/search/${query}`, {
     headers,
   })
     .then(response => {
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -695,17 +568,13 @@ router.get('/api/orders/search/:query', (req, res) => {
 });
 
 router.get('/api/orders/archived', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid};
+  const headers = getHeaders(req);
 
   Axios.get(`${apiUrl}/api/orders/archived`, {
     headers,
   })
     .then(response => {
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -719,24 +588,15 @@ router.get('/api/orders/archived', (req, res) => {
 });
 
 router.put(`/api/stores/:store_id/orders/alert_customers`, (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid};
-  const {store_id} = req.params;
+  const headers = getHeaders(req);
+  const { store_id } = req.params;
 
-  console.log(
-    '\n\n\n\n\n\n\n\n !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n',
-    req.body
-  );
-  console.log(`${apiUrl}/stores/${store_id}/orders/alert_customers`);
   Axios.put(`${apiUrl}/api/stores/${store_id}/orders/alert_customers`, {
     orders: req.body,
     headers,
   })
     .then(response => {
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -750,19 +610,14 @@ router.put(`/api/stores/:store_id/orders/alert_customers`, (req, res) => {
 });
 
 router.get(`/api/customers/:id`, (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid};
-  const {id} = req.params;
-  console.log("'BOUT TO TRY TO MAKE THIS GO.'");
+  const headers = getHeaders(req);
+  const { id } = req.params;
+
   Axios.get(`${apiUrl}/api/customers/${id}`, {
     headers,
   })
     .then(response => {
-      console.log('CAME BACK', response);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
@@ -776,19 +631,15 @@ router.get(`/api/customers/:id`, (req, res) => {
 });
 
 router.post(`/api/create_or_validate_customer`, (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const expiry = req.get('expiry');
-  const headers = {client, ['access-token']: accessToken, uid};
+  const headers = getHeaders(req);
   const customer = req.body;
+
   Axios.post(`${apiUrl}/api/customers/create_or_validate_customer`, {
     customer: customer,
     headers,
   })
     .then(response => {
-      console.log('CAME BACK', response);
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {

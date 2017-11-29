@@ -3,17 +3,14 @@ const path = require('path');
 const Axios = require('axios');
 const router = express.Router();
 
-const apiUrl = 'http://localhost:3000';
+const { apiUrl, getHeaders } = require('../../config');
 
 router.get('/currentReport', (req, res) => {
-  const client = req.get('client');
-  const accessToken = req.get('access-token');
-  const uid = req.get('uid');
-  const headers = {client, ['access-token']: accessToken, uid};
+  const headers = getHeaders(req);
 
-  Axios.get(`${apiUrl}/api/reports/current_report`, {headers})
+  Axios.get(`${apiUrl}/api/reports/current_report`, { headers })
     .then(response => {
-      res.json({headers: response.headers, body: response.data});
+      res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
       if (err instanceof Error) {
