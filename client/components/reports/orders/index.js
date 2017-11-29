@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
 import WithSectionHeader from '../../HOC/WithSectionHeader';
 import OrderReportRows from './OrderReportRows';
-import {setLoader, removeLoader, getCurrentReport} from './ducks/actions';
+import { setLoader, removeLoader, getCurrentReport } from './ducks/actions';
 
 const mapStateToProps = store => {
   return {
@@ -15,7 +15,7 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    {getCurrentReport, setLoader, removeLoader},
+    { getCurrentReport, setLoader, removeLoader },
     dispatch
   );
 };
@@ -29,19 +29,38 @@ class OrdersReport extends Component {
   };
 
   componentDidMount() {
-    this.props
-      .getCurrentReport()
-      .then(res => console.log('res', res))
-      .catch(err => console.log('err', err));
+    this.props.getCurrentReport();
+  }
+
+  renderReportHeaders() {
+    return (
+      <div>
+        <div className="report-headers-container">
+          <div className="report-headers-row">
+            <h3 className="report-header-cell">Order</h3>
+            <h3 className="report-header-cell">Total</h3>
+            <h3 className="report-header-cell">Fulfilled</h3>
+            <h3 className="report-header-cell">Tailor</h3>
+            <h3 className="report-header-cell">retailer</h3>
+          </div>
+        </div>
+        <div className="report-header-break-row" />
+      </div>
+    );
   }
 
   render() {
-    console.log('props', this.props.report);
+    const { start_date, end_date, orders } = this.props.report;
     return (
       <div>
-        <h1>Hi Im Order Reports</h1>
-        <Link to="/admin/reports">All Reports</Link>
-        <OrderReportRows {...this.props} />
+        <div className="reports-container">
+          <h1>Current Orders Report</h1>
+          <p>Start Date: {start_date}</p>
+          <p>End Date: {end_date}</p>
+          <Link to="/admin/reports">All Reports</Link>
+        </div>
+        {this.renderReportHeaders()}
+        <OrderReportRows orders={orders} />
       </div>
     );
   }
