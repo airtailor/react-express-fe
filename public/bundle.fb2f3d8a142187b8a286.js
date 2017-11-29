@@ -9236,7 +9236,6 @@ var OrdersEdit = function (_Component) {
       var order = this.props.order;
 
       if ((0, _isEmpty2.default)(order)) {
-        debugger;
         var _props = this.props,
             orderId = _props.match.params.order_id,
             storeId = _props.store.id;
@@ -9245,7 +9244,6 @@ var OrdersEdit = function (_Component) {
         this.props.setLoader();
         this.props.getCurrentOrder(storeId, orderId).then(function (res) {
           _this2.props.removeLoader();
-          debugger;
           var order = res.data.body;
           _this2.setState({ order: order });
         }).catch(function (err) {
@@ -12294,11 +12292,32 @@ var OrdersShow = function (_Component) {
       return output;
     }
   }, {
+    key: 'renderEditOrderButton',
+    value: function renderEditOrderButton() {
+      var _props2 = this.props,
+          admin = _props2.userRoles.admin,
+          order = _props2.currentOrder;
+
+      var orderEditPath = '/orders/' + order.id + '/edit';
+
+      if (admin) {
+        return _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            _reactRouterDom.Link,
+            { to: orderEditPath },
+            _react2.default.createElement('input', { className: 'short-button', type: 'submit', value: 'Edit Order' })
+          )
+        );
+      }
+    }
+  }, {
     key: 'renderOrderControls',
     value: function renderOrderControls() {
-      var _props2 = this.props,
-          order = _props2.currentOrder,
-          roles = _props2.userRoles;
+      var _props3 = this.props,
+          order = _props3.currentOrder,
+          roles = _props3.userRoles;
       var admin = roles.admin,
           tailor = roles.tailor,
           retailer = roles.retailer,
@@ -12423,13 +12442,16 @@ var OrdersShow = function (_Component) {
           measurements
         );
       } else {
+        var editButton = this.renderEditOrderButton();
+        var measurementsButton = this.renderDetailsOrMeasurementsButton();
         var details = this.renderOrderDetails();
         var controls = this.renderOrderControls();
         // NOTE: here we should be rendering 1 of 2 main components
         mainContent = _react2.default.createElement(
           'div',
           null,
-          this.renderDetailsOrMeasurementsButton(),
+          editButton,
+          measurementsButton,
           details,
           controls
         );
@@ -12440,9 +12462,9 @@ var OrdersShow = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _props3 = this.props,
-          store = _props3.currentStore,
-          order = _props3.currentOrder;
+      var _props4 = this.props,
+          store = _props4.currentStore,
+          order = _props4.currentOrder;
 
       var mainContent = _react2.default.createElement('div', null);
       var headerText = '';
@@ -21081,4 +21103,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAi8AAAJmCAYAAAHj
 
 /***/ })
 ],[404]);
-//# sourceMappingURL=bundle.3b22109e512d185d932b.js.map
+//# sourceMappingURL=bundle.fb2f3d8a142187b8a286.js.map

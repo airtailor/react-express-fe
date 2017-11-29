@@ -485,6 +485,21 @@ class OrdersShow extends Component {
     return output;
   }
 
+  renderEditOrderButton() {
+    const { userRoles: { admin }, currentOrder: order } = this.props;
+    const orderEditPath = `/orders/${order.id}/edit`;
+
+    if (admin) {
+      return (
+        <div>
+          <Link to={orderEditPath}>
+            <input className="short-button" type="submit" value="Edit Order" />
+          </Link>
+        </div>
+      );
+    }
+  }
+
   renderOrderControls() {
     const { currentOrder: order, userRoles: roles } = this.props;
     const { admin, tailor, retailer, customer } = roles;
@@ -628,12 +643,15 @@ class OrdersShow extends Component {
       const measurements = this.renderMeasurements();
       mainContent = <div>{measurements}</div>;
     } else {
+      const editButton = this.renderEditOrderButton();
+      const measurementsButton = this.renderDetailsOrMeasurementsButton();
       const details = this.renderOrderDetails();
       const controls = this.renderOrderControls();
       // NOTE: here we should be rendering 1 of 2 main components
       mainContent = (
         <div>
-          {this.renderDetailsOrMeasurementsButton()}
+          {editButton}
+          {measurementsButton}
           {details}
           {controls}
         </div>
