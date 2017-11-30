@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
+
 import FormSelect from '../FormSelect';
 import FormField from '../FormField';
 import {
@@ -13,10 +16,8 @@ import {
   setGrowler,
 } from '../../actions';
 import SelectTailor from './orderForms/SelectTailor';
-
-import isEmpty from 'lodash/isEmpty';
 import SectionHeader from '../SectionHeader';
-import PropTypes from 'prop-types';
+import Checkbox from '../Checkbox';
 
 const mapStateToProps = store => {
   return {
@@ -55,7 +56,7 @@ class OrdersEdit extends Component {
   constructor(props) {
     super();
 
-    this.state = { order: props.order };
+    this.state = props.order;
   }
 
   componentDidMount() {
@@ -73,7 +74,7 @@ class OrdersEdit extends Component {
           this.props.removeLoader();
 
           const { order } = this.props;
-          this.setState({ order });
+          this.setState(order);
         })
         .catch(err => console.log(err));
     }
@@ -88,14 +89,13 @@ class OrdersEdit extends Component {
     this.props
       .updateOrder({ order: this.state })
       .then(res => {
-        console.log(res);
         this.props.setGrowler({ kind: 'success', message: 'Order updated!' });
       })
       .catch(err => console.log('errr', err));
   }
 
   render() {
-    const { order } = this.state;
+    const order = this.state;
     const submit = e => this.handleSubmit(e);
     const updateState = this.updateState;
 
@@ -135,19 +135,21 @@ class OrdersEdit extends Component {
               onChange={() => {}}
             />
 
-            <FormField
-              value={fulfilled}
-              fieldName={'arrived'}
-              title={'Arrived?'}
-              type={'checkbox'}
+            <Checkbox
+              checked={arrived}
+              type="checkbox"
+              text={'Arrived?'}
+              name={'arrived'}
+              fieldName="arrived"
               onChange={updateState}
             />
 
-            <FormField
-              value={fulfilled}
-              fieldName={'fulfilled'}
-              title={'Fulfilled?'}
-              type={'checkbox'}
+            <Checkbox
+              checked={fulfilled}
+              type="checkbox"
+              text={'Fulfilled?'}
+              name={'fulfilled'}
+              fieldName="fulfilled"
               onChange={updateState}
             />
 
