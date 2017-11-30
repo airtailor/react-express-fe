@@ -54,7 +54,8 @@ class OrdersEdit extends Component {
 
   constructor(props) {
     super();
-    this.state = props.order;
+
+    this.state = { order: props.order };
   }
 
   componentDidMount() {
@@ -70,7 +71,8 @@ class OrdersEdit extends Component {
         .getCurrentOrder(storeId, orderId)
         .then(res => {
           this.props.removeLoader();
-          const order = res.data.body;
+
+          const { order } = this.props;
           this.setState({ order });
         })
         .catch(err => console.log(err));
@@ -85,69 +87,98 @@ class OrdersEdit extends Component {
     e.preventDefault();
     this.props
       .updateOrder({ order: this.state })
-      .then(() => {
+      .then(res => {
+        console.log(res);
         this.props.setGrowler({ kind: 'success', message: 'Order updated!' });
       })
       .catch(err => console.log('errr', err));
   }
 
   render() {
-    const order = this.state;
-    const {
-      first_name,
-      last_name,
-      customer,
-      total,
-      weight,
-      provider_id,
-    } = order;
-
-    const customerName = first_name + ' ' + last_name;
-    const backLink = `/orders/${this.state.id}`;
-
+    const { order } = this.state;
     const submit = e => this.handleSubmit(e);
     const updateState = this.updateState;
-    const headerText = `Orders / Edit / ${this.state.id}`;
 
-    return (
-      <div>
-        <SectionHeader text={headerText} />
-        <Link to={backLink}>Back</Link>
-        <form onSubmit={submit}>
-          <FormField
-            value={customerName}
-            fieldName={'name'}
-            title={'Name:'}
-            onChange={() => {}}
-          />
+    let headerText = `Orders / Edit`;
+    if (isEmpty(order)) {
+      return <SectionHeader text={headerText} />;
+    } else {
+      const {
+        id,
+        fulfilled,
+        arrived,
+        customer: { first_name: firstName, last_name: lastName },
+        total,
+        weight,
+        provider_id,
+      } = order;
 
-          <FormField
-            value={total}
-            fieldName={'total'}
-            title={'Total: $'}
-            onChange={updateState}
-          />
+      headerText = `Orders / Edit / ${id}`;
+      const backLink = `/orders/${this.state.id}`;
 
-          <FormField
-            value={weight}
-            fieldName={'weight'}
-            title={'Weight (grams):'}
-            onChange={updateState}
-          />
+      return (
+        <div>
+          <SectionHeader text={headerText} />
+          <Link to={backLink}>Back</Link>
+          <form onSubmit={submit}>
+            <FormField
+              value={firstName}
+              fieldName={'first_name'}
+              title={'First Name:'}
+              onChange={() => {}}
+            />
 
-          <SelectTailor provider_id={provider_id} onChange={updateState} />
+            <FormField
+              value={lastName}
+              fieldName={'last_name'}
+              title={'Last Name:'}
+              onChange={() => {}}
+            />
 
-          <FormField
-            value={total}
-            fieldName={'total'}
-            title={'Total:'}
-            onChange={updateState}
-          />
+            <FormField
+              value={fulfilled}
+              fieldName={'arrived'}
+              title={'Arrived?'}
+              type={'checkbox'}
+              onChange={updateState}
+            />
 
-          <input type="submit" className="short-button" value="Update" />
-        </form>
-      </div>
-    );
+            <FormField
+              value={fulfilled}
+              fieldName={'fulfilled'}
+              title={'Fulfilled?'}
+              type={'checkbox'}
+              onChange={updateState}
+            />
+
+            <FormField
+              value={total}
+              fieldName={'total'}
+              title={'Total: $'}
+              onChange={updateState}
+            />
+
+            <FormField
+              value={weight}
+              fieldName={'weight'}
+              title={'Weight (grams):'}
+              onChange={updateState}
+            />
+
+            <SelectTailor provider_id={provider_id} onChange={updateState} />
+
+            <FormField
+              value={total}
+              fieldName={'total'}
+              title={'Total:'}
+              onChange={updateState}
+            />
+
+            <input type="submit" className="short-button" value="Update" />
+          </form>
+        </div>
+      );
+    }
   }
 }
 

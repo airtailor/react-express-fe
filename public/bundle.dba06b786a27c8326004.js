@@ -9224,7 +9224,7 @@ var OrdersEdit = function (_Component) {
       _this.setState(_defineProperty({}, field, value));
     };
 
-    _this.state = props.order;
+    _this.state = { order: props.order };
     return _this;
   }
 
@@ -9244,7 +9244,9 @@ var OrdersEdit = function (_Component) {
         this.props.setLoader();
         this.props.getCurrentOrder(storeId, orderId).then(function (res) {
           _this2.props.removeLoader();
-          var order = res.data.body;
+
+          var order = _this2.props.order;
+
           _this2.setState({ order: order });
         }).catch(function (err) {
           return console.log(err);
@@ -9257,7 +9259,8 @@ var OrdersEdit = function (_Component) {
       var _this3 = this;
 
       e.preventDefault();
-      this.props.updateOrder({ order: this.state }).then(function () {
+      this.props.updateOrder({ order: this.state }).then(function (res) {
+        console.log(res);
         _this3.props.setGrowler({ kind: 'success', message: 'Order updated!' });
       }).catch(function (err) {
         return console.log('errr', err);
@@ -9268,64 +9271,92 @@ var OrdersEdit = function (_Component) {
     value: function render() {
       var _this4 = this;
 
-      var order = this.state;
-      var first_name = order.first_name,
-          last_name = order.last_name,
-          customer = order.customer,
-          total = order.total,
-          weight = order.weight,
-          provider_id = order.provider_id;
-
-
-      var customerName = first_name + ' ' + last_name;
-      var backLink = '/orders/' + this.state.id;
+      var order = this.state.order;
 
       var submit = function submit(e) {
         return _this4.handleSubmit(e);
       };
       var updateState = this.updateState;
-      var headerText = 'Orders / Edit / ' + this.state.id;
 
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(_SectionHeader2.default, { text: headerText }),
-        _react2.default.createElement(
-          _reactRouterDom.Link,
-          { to: backLink },
-          'Back'
-        ),
-        _react2.default.createElement(
-          'form',
-          { onSubmit: submit },
-          _react2.default.createElement(_FormField2.default, {
-            value: customerName,
-            fieldName: 'name',
-            title: 'Name:',
-            onChange: function onChange() {}
-          }),
-          _react2.default.createElement(_FormField2.default, {
-            value: total,
-            fieldName: 'total',
-            title: 'Total: $',
-            onChange: updateState
-          }),
-          _react2.default.createElement(_FormField2.default, {
-            value: weight,
-            fieldName: 'weight',
-            title: 'Weight (grams):',
-            onChange: updateState
-          }),
-          _react2.default.createElement(_SelectTailor2.default, { provider_id: provider_id, onChange: updateState }),
-          _react2.default.createElement(_FormField2.default, {
-            value: total,
-            fieldName: 'total',
-            title: 'Total:',
-            onChange: updateState
-          }),
-          _react2.default.createElement('input', { type: 'submit', className: 'short-button', value: 'Update' })
-        )
-      );
+      var headerText = 'Orders / Edit';
+      if ((0, _isEmpty2.default)(order)) {
+        return _react2.default.createElement(_SectionHeader2.default, { text: headerText });
+      } else {
+        var id = order.id,
+            fulfilled = order.fulfilled,
+            arrived = order.arrived,
+            _order$customer = order.customer,
+            firstName = _order$customer.first_name,
+            lastName = _order$customer.last_name,
+            total = order.total,
+            weight = order.weight,
+            provider_id = order.provider_id;
+
+
+        headerText = 'Orders / Edit / ' + id;
+        var backLink = '/orders/' + this.state.id;
+
+        return _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(_SectionHeader2.default, { text: headerText }),
+          _react2.default.createElement(
+            _reactRouterDom.Link,
+            { to: backLink },
+            'Back'
+          ),
+          _react2.default.createElement(
+            'form',
+            { onSubmit: submit },
+            _react2.default.createElement(_FormField2.default, {
+              value: firstName,
+              fieldName: 'first_name',
+              title: 'First Name:',
+              onChange: function onChange() {}
+            }),
+            _react2.default.createElement(_FormField2.default, {
+              value: lastName,
+              fieldName: 'last_name',
+              title: 'Last Name:',
+              onChange: function onChange() {}
+            }),
+            _react2.default.createElement(_FormField2.default, {
+              value: fulfilled,
+              fieldName: 'arrived',
+              title: 'Arrived?',
+              type: 'checkbox',
+              onChange: updateState
+            }),
+            _react2.default.createElement(_FormField2.default, {
+              value: fulfilled,
+              fieldName: 'fulfilled',
+              title: 'Fulfilled?',
+              type: 'checkbox',
+              onChange: updateState
+            }),
+            _react2.default.createElement(_FormField2.default, {
+              value: total,
+              fieldName: 'total',
+              title: 'Total: $',
+              onChange: updateState
+            }),
+            _react2.default.createElement(_FormField2.default, {
+              value: weight,
+              fieldName: 'weight',
+              title: 'Weight (grams):',
+              onChange: updateState
+            }),
+            _react2.default.createElement(_SelectTailor2.default, { provider_id: provider_id, onChange: updateState }),
+            _react2.default.createElement(_FormField2.default, {
+              value: total,
+              fieldName: 'total',
+              title: 'Total:',
+              onChange: updateState
+            }),
+            _react2.default.createElement('input', { type: 'submit', className: 'short-button', value: 'Update' })
+          )
+        );
+      }
     }
   }]);
 
@@ -21103,4 +21134,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAi8AAAJmCAYAAAHj
 
 /***/ })
 ],[404]);
-//# sourceMappingURL=bundle.fb2f3d8a142187b8a286.js.map
+//# sourceMappingURL=bundle.dba06b786a27c8326004.js.map
