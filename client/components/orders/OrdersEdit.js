@@ -70,7 +70,7 @@ class OrdersEdit extends Component {
       this.props.setLoader();
       this.props
         .getCurrentOrder(storeId, orderId)
-        .then(res => {
+        .then(() => {
           this.props.removeLoader();
 
           const { order } = this.props;
