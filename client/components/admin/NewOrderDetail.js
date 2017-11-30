@@ -8,7 +8,7 @@ import {
   createShipment,
   setLoader,
   removeLoader,
-  setGrowler
+  setGrowler,
 } from '../../actions';
 
 import {
@@ -16,7 +16,7 @@ import {
   shipmentActions,
   labelState,
   makeShippingLabel,
-  fireShipmentCreate
+  fireShipmentCreate,
 } from '../shipping/shippingFunctions';
 
 import WelcomeKitPrint from '../prints/WelcomeKitPrint.js';
@@ -26,7 +26,7 @@ const mapStateToProps = store => {
   return {
     tailors: store.tailorList,
     currentUser: store.currentUser,
-    userRoles: store.userRoles
+    userRoles: store.userRoles,
   };
 };
 
@@ -45,14 +45,14 @@ class NewOrderDetail extends Component {
     updateOrder: PropTypes.func.isRequired, // mapDispatchToProps
     setLoader: PropTypes.func.isRequired, // mapDispatchToProps
     removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
-    setGrowler: PropTypes.func.isRequired // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   constructor(props) {
     super();
     this.state = {
       loadingLabel: false,
-      notes: ''
+      notes: '',
     };
   }
 
@@ -104,7 +104,6 @@ class NewOrderDetail extends Component {
     this.props.setLoader();
     fireShipmentCreate(orders, action, type)
       .then(res => {
-        this.props.removeLoader();
         this.setState({ loadingLabel: false });
         this.props.removeLoader();
         this.props.selectOrder(orders[0]);
@@ -218,8 +217,8 @@ class NewOrderDetail extends Component {
       order: {
         requester_notes: this.state.notes,
         id: this.props.order.id,
-        store_id: this.props.order.store_id
-      }
+        store_id: this.props.order.store_id,
+      },
     };
 
     const kind = 'success';
@@ -282,7 +281,7 @@ class NewOrderDetail extends Component {
         total,
         provider_notes,
         items,
-        provider_id
+        provider_id,
       } = order;
 
       const tailorId = provider_id ? provider_id : '';
