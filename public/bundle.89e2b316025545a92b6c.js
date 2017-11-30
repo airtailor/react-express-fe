@@ -26,7 +26,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Redirect", function() { return __WEBPACK_IMPORTED_MODULE_6__Redirect__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Route__ = __webpack_require__(318);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Route", function() { return __WEBPACK_IMPORTED_MODULE_7__Route__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Router__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Router__ = __webpack_require__(109);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Router", function() { return __WEBPACK_IMPORTED_MODULE_8__Router__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__StaticRouter__ = __webpack_require__(656);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "StaticRouter", function() { return __WEBPACK_IMPORTED_MODULE_9__StaticRouter__["a"]; });
@@ -142,7 +142,7 @@ var _axios = __webpack_require__(36);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _setAuthToken = __webpack_require__(117);
+var _setAuthToken = __webpack_require__(118);
 
 var _setAuthToken2 = _interopRequireDefault(_setAuthToken);
 
@@ -1847,6 +1847,73 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var Checkbox = function Checkbox(props) {
+  var _onChange = props.onChange,
+      checked = props.checked,
+      fieldName = props.fieldName,
+      text = props.text,
+      name = props.name;
+
+  if (!fieldName) {
+    return _react2.default.createElement(
+      'div',
+      { style: { display: 'inline' } },
+      _react2.default.createElement('input', {
+        type: 'checkbox',
+        id: name + '-check',
+        name: name,
+        checked: checked,
+        onChange: _onChange
+      }),
+      _react2.default.createElement(
+        'label',
+        { htmlFor: name + '-check', className: 'checkbox-label' },
+        _react2.default.createElement('span', null),
+        text
+      )
+    );
+  }
+
+  return _react2.default.createElement(
+    'div',
+    { style: { display: 'inline' } },
+    _react2.default.createElement('input', {
+      type: 'checkbox',
+      id: name + '-check',
+      name: name,
+      checked: checked,
+      onChange: function onChange() {
+        return _onChange(fieldName, !checked);
+      }
+    }),
+    _react2.default.createElement(
+      'label',
+      { htmlFor: name + '-check', className: 'checkbox-label' },
+      _react2.default.createElement('span', null),
+      text
+    )
+  );
+};
+
+exports.default = Checkbox;
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var addPleaseSelect = function addPleaseSelect(options) {
   return [{ id: '', name: 'Please Select' }].concat(options);
 };
@@ -1890,7 +1957,7 @@ var renderOptions = function renderOptions(options) {
 exports.default = FormSelect;
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2161,7 +2228,7 @@ ArchivedOrders.propTypes = {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ArchivedOrders);
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2179,7 +2246,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(5);
 
-var _logo = __webpack_require__(115);
+var _logo = __webpack_require__(116);
 
 var _logo2 = _interopRequireDefault(_logo);
 
@@ -2434,9 +2501,9 @@ var mapStateToProps = function mapStateToProps(store) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(OrderComplete);
 
 /***/ }),
-/* 78 */,
 /* 79 */,
-/* 80 */
+/* 80 */,
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2520,7 +2587,7 @@ var locationsAreEqual = exports.locationsAreEqual = function locationsAreEqual(a
 };
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2611,7 +2678,7 @@ var createTransitionManager = function createTransitionManager() {
 exports.default = createTransitionManager;
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2696,9 +2763,9 @@ var createTransitionManager = function createTransitionManager() {
 /* harmony default export */ __webpack_exports__["a"] = (createTransitionManager);
 
 /***/ }),
-/* 83 */,
 /* 84 */,
-/* 85 */
+/* 85 */,
+/* 86 */
 /***/ (function(module, exports) {
 
 /**
@@ -2733,7 +2800,6 @@ module.exports = isObjectLike;
 
 
 /***/ }),
-/* 86 */,
 /* 87 */,
 /* 88 */,
 /* 89 */,
@@ -2755,18 +2821,19 @@ module.exports = isObjectLike;
 /* 105 */,
 /* 106 */,
 /* 107 */,
-/* 108 */
+/* 108 */,
+/* 109 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_Router__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_Router__ = __webpack_require__(110);
 // Written in this round about way for babel-transform-imports
 
 
 /* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_react_router_es_Router__["a" /* default */]);
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2885,7 +2952,7 @@ Router.childContextTypes = {
 /* harmony default export */ __webpack_exports__["a"] = (Router);
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2962,18 +3029,18 @@ var matchPath = function matchPath(pathname) {
 /* harmony default export */ __webpack_exports__["a"] = (matchPath);
 
 /***/ }),
-/* 111 */,
 /* 112 */,
 /* 113 */,
 /* 114 */,
-/* 115 */
+/* 115 */,
+/* 116 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,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"
 
 /***/ }),
-/* 116 */,
-/* 117 */
+/* 117 */,
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3013,7 +3080,6 @@ function setAuthToken(token) {
 }
 
 /***/ }),
-/* 118 */,
 /* 119 */,
 /* 120 */,
 /* 121 */,
@@ -3021,73 +3087,7 @@ function setAuthToken(token) {
 /* 123 */,
 /* 124 */,
 /* 125 */,
-/* 126 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Checkbox = function Checkbox(props) {
-  var _onChange = props.onChange,
-      checked = props.checked,
-      fieldName = props.fieldName,
-      text = props.text,
-      name = props.name;
-
-  if (!fieldName) {
-    return _react2.default.createElement(
-      'div',
-      { style: { display: 'inline' } },
-      _react2.default.createElement('input', {
-        type: 'checkbox',
-        id: name + '-check',
-        name: name,
-        checked: checked,
-        onChange: _onChange
-      }),
-      _react2.default.createElement(
-        'label',
-        { htmlFor: name + '-check', className: 'checkbox-label' },
-        _react2.default.createElement('span', null),
-        text
-      )
-    );
-  }
-
-  return _react2.default.createElement(
-    'div',
-    { style: { display: 'inline' } },
-    _react2.default.createElement('input', {
-      type: 'checkbox',
-      id: name + '-check',
-      name: name,
-      checked: checked,
-      onChange: function onChange() {
-        return _onChange(fieldName, !checked);
-      }
-    }),
-    _react2.default.createElement(
-      'label',
-      { htmlFor: name + '-check', className: 'checkbox-label' },
-      _react2.default.createElement('span', null),
-      text
-    )
-  );
-};
-
-exports.default = Checkbox;
-
-/***/ }),
+/* 126 */,
 /* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3434,7 +3434,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(6);
 
-var _logo = __webpack_require__(115);
+var _logo = __webpack_require__(116);
 
 var _logo2 = _interopRequireDefault(_logo);
 
@@ -4132,7 +4132,7 @@ var _redux = __webpack_require__(7);
 
 var _actions = __webpack_require__(8);
 
-var _FormSelect = __webpack_require__(75);
+var _FormSelect = __webpack_require__(76);
 
 var _FormSelect2 = _interopRequireDefault(_FormSelect);
 
@@ -4286,11 +4286,11 @@ var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
-var _OrderComplete = __webpack_require__(77);
+var _OrderComplete = __webpack_require__(78);
 
 var _OrderComplete2 = _interopRequireDefault(_OrderComplete);
 
-var _Checkbox = __webpack_require__(126);
+var _Checkbox = __webpack_require__(75);
 
 var _Checkbox2 = _interopRequireDefault(_Checkbox);
 
@@ -5813,7 +5813,7 @@ Link.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(111);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -6498,7 +6498,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _OrderComplete = __webpack_require__(77);
+var _OrderComplete = __webpack_require__(78);
 
 var _OrderComplete2 = _interopRequireDefault(_OrderComplete);
 
@@ -9157,7 +9157,15 @@ var _reactRedux = __webpack_require__(5);
 
 var _redux = __webpack_require__(7);
 
-var _FormSelect = __webpack_require__(75);
+var _isEmpty = __webpack_require__(24);
+
+var _isEmpty2 = _interopRequireDefault(_isEmpty);
+
+var _propTypes = __webpack_require__(4);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _FormSelect = __webpack_require__(76);
 
 var _FormSelect2 = _interopRequireDefault(_FormSelect);
 
@@ -9171,17 +9179,13 @@ var _SelectTailor = __webpack_require__(134);
 
 var _SelectTailor2 = _interopRequireDefault(_SelectTailor);
 
-var _isEmpty = __webpack_require__(24);
-
-var _isEmpty2 = _interopRequireDefault(_isEmpty);
-
 var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
-var _propTypes = __webpack_require__(4);
+var _Checkbox = __webpack_require__(75);
 
-var _propTypes2 = _interopRequireDefault(_propTypes);
+var _Checkbox2 = _interopRequireDefault(_Checkbox);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9224,7 +9228,7 @@ var OrdersEdit = function (_Component) {
       _this.setState(_defineProperty({}, field, value));
     };
 
-    _this.state = { order: props.order };
+    _this.state = props.order;
     return _this;
   }
 
@@ -9247,7 +9251,7 @@ var OrdersEdit = function (_Component) {
 
           var order = _this2.props.order;
 
-          _this2.setState({ order: order });
+          _this2.setState(order);
         }).catch(function (err) {
           return console.log(err);
         });
@@ -9260,7 +9264,6 @@ var OrdersEdit = function (_Component) {
 
       e.preventDefault();
       this.props.updateOrder({ order: this.state }).then(function (res) {
-        console.log(res);
         _this3.props.setGrowler({ kind: 'success', message: 'Order updated!' });
       }).catch(function (err) {
         return console.log('errr', err);
@@ -9271,8 +9274,7 @@ var OrdersEdit = function (_Component) {
     value: function render() {
       var _this4 = this;
 
-      var order = this.state.order;
-
+      var order = this.state;
       var submit = function submit(e) {
         return _this4.handleSubmit(e);
       };
@@ -9320,18 +9322,20 @@ var OrdersEdit = function (_Component) {
               title: 'Last Name:',
               onChange: function onChange() {}
             }),
-            _react2.default.createElement(_FormField2.default, {
-              value: fulfilled,
-              fieldName: 'arrived',
-              title: 'Arrived?',
+            _react2.default.createElement(_Checkbox2.default, {
+              checked: arrived,
               type: 'checkbox',
+              text: 'Arrived?',
+              name: 'arrived',
+              fieldName: 'arrived',
               onChange: updateState
             }),
-            _react2.default.createElement(_FormField2.default, {
-              value: fulfilled,
-              fieldName: 'fulfilled',
-              title: 'Fulfilled?',
+            _react2.default.createElement(_Checkbox2.default, {
+              checked: fulfilled,
               type: 'checkbox',
+              text: 'Fulfilled?',
+              name: 'fulfilled',
+              fieldName: 'fulfilled',
               onChange: updateState
             }),
             _react2.default.createElement(_FormField2.default, {
@@ -10967,7 +10971,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactModal = __webpack_require__(119);
+var _reactModal = __webpack_require__(120);
 
 var _reactModal2 = _interopRequireDefault(_reactModal);
 
@@ -11420,7 +11424,7 @@ var _FormField = __webpack_require__(28);
 
 var _FormField2 = _interopRequireDefault(_FormField);
 
-var _Checkbox = __webpack_require__(126);
+var _Checkbox = __webpack_require__(75);
 
 var _Checkbox2 = _interopRequireDefault(_Checkbox);
 
@@ -11678,7 +11682,7 @@ var _supplies = __webpack_require__(702);
 
 var _supplies2 = _interopRequireDefault(_supplies);
 
-var _logo = __webpack_require__(115);
+var _logo = __webpack_require__(116);
 
 var _logo2 = _interopRequireDefault(_logo);
 
@@ -11690,7 +11694,7 @@ var _SectionHeader = __webpack_require__(15);
 
 var _SectionHeader2 = _interopRequireDefault(_SectionHeader);
 
-var _OrderComplete = __webpack_require__(77);
+var _OrderComplete = __webpack_require__(78);
 
 var _OrderComplete2 = _interopRequireDefault(_OrderComplete);
 
@@ -14142,7 +14146,7 @@ var _FormField = __webpack_require__(28);
 
 var _FormField2 = _interopRequireDefault(_FormField);
 
-var _FormSelect = __webpack_require__(75);
+var _FormSelect = __webpack_require__(76);
 
 var _FormSelect2 = _interopRequireDefault(_FormSelect);
 
@@ -14648,7 +14652,7 @@ var _reducers = __webpack_require__(339);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
-var _setAuthToken = __webpack_require__(117);
+var _setAuthToken = __webpack_require__(118);
 
 var _setAuthToken2 = _interopRequireDefault(_setAuthToken);
 
@@ -14722,7 +14726,7 @@ var _config = __webpack_require__(405);
 
 var _config2 = _interopRequireDefault(_config);
 
-var _nodeFetch = __webpack_require__(118);
+var _nodeFetch = __webpack_require__(119);
 
 var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
 
@@ -16232,7 +16236,7 @@ var _propTypes = __webpack_require__(4);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _ArchivedOrders = __webpack_require__(76);
+var _ArchivedOrders = __webpack_require__(77);
 
 var _ArchivedOrders2 = _interopRequireDefault(_ArchivedOrders);
 
@@ -16322,7 +16326,7 @@ var _StoresShow = __webpack_require__(137);
 
 var _StoresShow2 = _interopRequireDefault(_StoresShow);
 
-var _ArchivedOrders = __webpack_require__(76);
+var _ArchivedOrders = __webpack_require__(77);
 
 var _ArchivedOrders2 = _interopRequireDefault(_ArchivedOrders);
 
@@ -16417,7 +16421,7 @@ var _OrdersEdit = __webpack_require__(376);
 
 var _OrdersEdit2 = _interopRequireDefault(_OrdersEdit);
 
-var _ArchivedOrders = __webpack_require__(76);
+var _ArchivedOrders = __webpack_require__(77);
 
 var _ArchivedOrders2 = _interopRequireDefault(_ArchivedOrders);
 
@@ -17117,11 +17121,11 @@ var _invariant = __webpack_require__(22);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _LocationUtils = __webpack_require__(80);
+var _LocationUtils = __webpack_require__(81);
 
 var _PathUtils = __webpack_require__(49);
 
-var _createTransitionManager = __webpack_require__(81);
+var _createTransitionManager = __webpack_require__(82);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
@@ -17428,11 +17432,11 @@ var _invariant = __webpack_require__(22);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _LocationUtils = __webpack_require__(80);
+var _LocationUtils = __webpack_require__(81);
 
 var _PathUtils = __webpack_require__(49);
 
-var _createTransitionManager = __webpack_require__(81);
+var _createTransitionManager = __webpack_require__(82);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
@@ -17758,9 +17762,9 @@ var _warning2 = _interopRequireDefault(_warning);
 
 var _PathUtils = __webpack_require__(49);
 
-var _LocationUtils = __webpack_require__(80);
+var _LocationUtils = __webpack_require__(81);
 
-var _createTransitionManager = __webpack_require__(81);
+var _createTransitionManager = __webpack_require__(82);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
@@ -17926,7 +17930,7 @@ exports.default = createMemoryHistory;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PathUtils__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(83);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(145);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -18230,7 +18234,7 @@ var createBrowserHistory = function createBrowserHistory() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PathUtils__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createTransitionManager__ = __webpack_require__(83);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DOMUtils__ = __webpack_require__(145);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -18549,7 +18553,7 @@ var createHashHistory = function createHashHistory() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_warning___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_warning__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PathUtils__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LocationUtils__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__createTransitionManager__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__createTransitionManager__ = __webpack_require__(83);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -18835,7 +18839,7 @@ module.exports = WeakMap;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(61),
-    isObjectLike = __webpack_require__(85);
+    isObjectLike = __webpack_require__(86);
 
 /** `Object#toString` result references. */
 var argsTag = '[object Arguments]';
@@ -18913,7 +18917,7 @@ module.exports = baseIsNative;
 
 var baseGetTag = __webpack_require__(61),
     isLength = __webpack_require__(156),
-    isObjectLike = __webpack_require__(85);
+    isObjectLike = __webpack_require__(86);
 
 /** `Object#toString` result references. */
 var argsTag = '[object Arguments]',
@@ -19297,7 +19301,7 @@ module.exports = overArg;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsArguments = __webpack_require__(514),
-    isObjectLike = __webpack_require__(85);
+    isObjectLike = __webpack_require__(86);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -19636,7 +19640,7 @@ module.exports = stubFalse;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createBrowserHistory__ = __webpack_require__(472);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createBrowserHistory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_history_createBrowserHistory__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(109);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -19703,7 +19707,7 @@ BrowserRouter.propTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createHashHistory__ = __webpack_require__(473);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createHashHistory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_history_createHashHistory__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(109);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -19897,7 +19901,7 @@ NavLink.defaultProps = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_matchPath__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router_es_matchPath__ = __webpack_require__(111);
 // Written in this round about way for babel-transform-imports
 
 
@@ -19927,7 +19931,7 @@ NavLink.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createMemoryHistory__ = __webpack_require__(474);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_createMemoryHistory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_history_createMemoryHistory__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(110);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -20195,7 +20199,7 @@ Redirect.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_history_PathUtils__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_history_PathUtils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_history_PathUtils__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Router__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Router__ = __webpack_require__(110);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -20376,7 +20380,7 @@ StaticRouter.childContextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_warning___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_warning__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_invariant__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_invariant__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__matchPath__ = __webpack_require__(111);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -21134,4 +21138,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAi8AAAJmCAYAAAHj
 
 /***/ })
 ],[404]);
-//# sourceMappingURL=bundle.dba06b786a27c8326004.js.map
+//# sourceMappingURL=bundle.89e2b316025545a92b6c.js.map
