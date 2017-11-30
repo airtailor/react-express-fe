@@ -1,15 +1,10 @@
-import React, {Component} from 'react';
-import {Route, Redirect} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import StoresShow from '../../components/stores/StoresShow';
-import OrdersShow from '../components/orders/show/OrdersShow';
-import OrdersEdit from '../components/orders/OrdersEdit';
-import ArchivedOrders from '../components/orders/ArchivedOrders';
-import StoreOrdersRoutes from './StoreOrdersRoutes';
-import OrdersNew from '../components/orders/new/OrdersNew';
+import CustomerEdit from '../../components/customers/CustomerEdit';
 
-class OrderRoutes extends Component {
+class CustomerRoutes extends Component {
   static propTypes = {
     loggedIn: PropTypes.bool.isRequired, // parentComponent
     admin: PropTypes.bool.isRequired, // parentComponent
@@ -17,7 +12,7 @@ class OrderRoutes extends Component {
   };
 
   render() {
-    const {loggedIn, admin, retailer} = this.props;
+    const { loggedIn, admin, retailer } = this.props;
     return (
       <div>
         <Route
@@ -34,4 +29,4 @@ class OrderRoutes extends Component {
   }
 }
 
-export default OrderRoutes;
+export default CustomerRoutes;
