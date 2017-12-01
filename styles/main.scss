@@ -1,27 +1,42 @@
+// Structural/Base Classes
 @import 'normalize';
 @import 'variables';
 @import 'base-classes';
+
+// Layout
 @import 'navbar';
-@import 'forms';
-@import 'buttons';
-@import 'tables';
-@import 'sign-in';
 @import 'section-header';
-@import 'home';
-@import 'order-form';
-@import 'order-show';
-@import 'measurements';
-@import 'print';
-@import 'messages';
-@import 'orders-new';
-@import 'cart';
-@import 'checkout';
-@import 'admin-manage-new-orders';
+
+// Buttons
+@import 'buttons';
 @import 'checkbox';
+
+// Modals
 @import 'growler';
-@import 'edit-account';
-@import 'archive';
-@import 'orders-index';
+@import 'loader';
+
+// Forms
+@import 'forms';
+@import 'customer-edit-form';
+
+// Tables
+@import 'tables';
 @import 'conversations-index';
 @import 'tailor-index';
 @import 'orders-report';
+@import 'archive';
+@import 'orders-index';
+@import 'edit-account';
+@import 'orders-new';
+@import 'sign-in';
+@import 'order-form';
+
+// Other!
+@import 'print';
+@import 'messages';
+@import 'home';
+@import 'order-show';
+@import 'measurements';
+@import 'cart';
+@import 'checkout';
+@import 'admin-manage-new-orders';

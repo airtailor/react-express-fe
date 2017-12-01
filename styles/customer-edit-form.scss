@@ -1,0 +1,35 @@
+.customer-edit-form {
+  @extend .form;
+  width: 100%;
+}
+
+.customer-edit-form-container {
+  width: 100%;
+}
+
+.customer-edit-form-row-container {
+  @extend .form-row-container;
+}
+
+.customer-edit-form-row {
+  @extend .form-row;
+  margin-bottom: 1.5%;
+}
+
+.customer-edit-form-input {
+  @extend .form-input;
+  text-align: center;
+}
+
+.customer-edit-form-label {
+  @extend .form-label;
+  padding-top: 0.5%;
+}
+
+.customer-edit-form-input[type='submit'] {
+  @extend .form-input;
+}
+
+.customer-edit-form-button-container {
+  @extend .form-button-container;
+}

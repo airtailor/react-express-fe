@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import isEmpty from 'lodash/isEmpty';
-import PropTypes from 'prop-types';
-
 import {
   updateCustomer,
   getCurrentCustomer,
@@ -14,7 +11,10 @@ import {
 } from '../../actions';
 
 import { ValidateEmail } from '../../utils/validations';
+import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
 
+import SectionHeader from '../SectionHeader.js';
 import FormField from '../FormField.js';
 
 const mapStateToProps = store => {
@@ -56,7 +56,7 @@ class CustomerEdit extends Component {
     this.setState({ [field]: value });
   };
 
-  handleSubmit(e) {
+  handleSubmit = e => {
     e.preventDefault();
     const {
       currentStore,
@@ -88,13 +88,13 @@ class CustomerEdit extends Component {
       const message = 'Email must be valid';
       this.props.setGrowler({ kind, message });
     }
-  }
+  };
 
   render() {
-    const { currentOrder: { id: currentOrderId } } = this.props;
-    const backLink = `/orders/${currentOrderId}`;
     const {
+      currentOrder: { id: currentOrderId },
       currentCustomer: {
+        id,
         email,
         first_name,
         last_name,
@@ -108,76 +108,99 @@ class CustomerEdit extends Component {
       updateCurrentCustomer,
     } = this.props;
 
-    console.log('customer edit');
+    const backLink = `/orders/${currentOrderId}`;
+    const callback = e => this.handleSubmit(e);
+
+    let headerText = `Customer / Edit`;
+    if (id) {
+      headerText = `Customer / Edit / #${id}`;
+    }
+
+    const formName = 'customer-edit-form';
+    const containerClass = `${formName}-container`;
+    const buttonContainerClass = `${formName}-button-container`;
+    const buttonRowClass = `${formName}-button-row`;
+
     return (
       <div>
+        <SectionHeader text={headerText} includeLink={false} />
         <Link to={backLink}>Back</Link>
-        <form className="form" onSubmit={e => this.handleSubmit(e)}>
-          <FormField
-            value={email}
-            fieldName={'email'}
-            title={'Email'}
-            onChange={updateCurrentCustomer}
-          />
-
-          <FormField
-            value={first_name}
-            fieldName={'first_name'}
-            title={'First Name'}
-            onChange={updateCurrentCustomer}
-          />
-
-          <FormField
-            value={last_name}
-            fieldName={'last_name'}
-            title={'Last Name'}
-            onChange={updateCurrentCustomer}
-          />
-
-          <FormField
-            value={phone}
-            fieldName={'phone'}
-            title={'Phone'}
-            onChange={updateCurrentCustomer}
-          />
-
-          <FormField
-            value={street}
-            fieldName={'street'}
-            title={'Street'}
-            onChange={updateCurrentCustomer}
-          />
-
-          <FormField
-            value={unit}
-            fieldName={'unit'}
-            title={'Unit'}
-            onChange={updateCurrentCustomer}
-          />
-
-          <FormField
-            value={city}
-            fieldName={'city'}
-            title={'City'}
-            onChange={updateCurrentCustomer}
-          />
-
-          <FormField
-            value={state_province}
-            fieldName={'state_province'}
-            title={'State/Province'}
-            onChange={updateCurrentCustomer}
-          />
-
-          <FormField
-            value={zip_code}
-            fieldName={'zip_code'}
-            title={'Zip Code'}
-            onChange={updateCurrentCustomer}
-          />
-
-          <input className="short-button " type="submit" value="Update" />
-        </form>
+        <div className={containerClass}>
+          <form className={formName} onSubmit={callback}>
+            <FormField
+              value={email}
+              fieldName={'email'}
+              formName={formName}
+              title={'Email: '}
+              onChange={updateCurrentCustomer}
+            />
+            <FormField
+              value={first_name}
+              fieldName={'first_name'}
+              formName={formName}
+              title={'First Name: '}
+              onChange={updateCurrentCustomer}
+            />
+            <FormField
+              value={last_name}
+              fieldName={'last_name'}
+              formName={formName}
+              title={'Last Name: '}
+              onChange={updateCurrentCustomer}
+            />
+            <FormField
+              value={phone}
+              fieldName={'phone'}
+              formName={formName}
+              title={'Phone: '}
+              onChange={updateCurrentCustomer}
+            />
+            <FormField
+              value={street}
+              fieldName={'street'}
+              formName={formName}
+              title={'Street: '}
+              onChange={updateCurrentCustomer}
+            />
+            <FormField
+              value={unit}
+              fieldName={'unit'}
+              formName={formName}
+              title={'Unit: '}
+              onChange={updateCurrentCustomer}
+            />
+            <FormField
+              value={city}
+              fieldName={'city'}
+              formName={formName}
+              title={'City: '}
+              onChange={updateCurrentCustomer}
+            />
+            <FormField
+              value={state_province}
+              fieldName={'state_province'}
+              formName={formName}
+              title={'State/Province: '}
+              onChange={updateCurrentCustomer}
+            />
+            <FormField
+              value={zip_code}
+              fieldName={'zip_code'}
+              formName={formName}
+              title={'Zip Code: '}
+              onChange={updateCurrentCustomer}
+            />
+            <div className={buttonContainerClass}>
+              <div className={buttonRowClass}>
+                <input
+                  className="standard-button"
+                  type="submit"
+                  value="Update"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }
