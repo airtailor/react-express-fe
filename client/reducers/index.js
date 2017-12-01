@@ -21,6 +21,7 @@ import loaderReducer from './loaderReducer';
 import userRoleReducer from './userRoleReducer';
 import currentCustomerReducer from './currentCustomerReducer';
 import cartCustomerReducer from '../components/orders/new/reducers/cartCustomerReducer';
+import currentReportReducer from '../components/reports/orders/ducks/currentReportReducer';
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
@@ -45,6 +46,7 @@ const rootReducer = combineReducers({
   userRoles: userRoleReducer,
   currentCustomer: currentCustomerReducer,
   cartCustomer: cartCustomerReducer,
+  currentReport: currentReportReducer,
 });
 
 export default rootReducer;

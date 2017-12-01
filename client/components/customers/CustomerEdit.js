@@ -108,6 +108,7 @@ class CustomerEdit extends Component {
       updateCurrentCustomer,
     } = this.props;
 
+    console.log('customer edit');
     return (
       <div>
         <Link to={backLink}>Back</Link>

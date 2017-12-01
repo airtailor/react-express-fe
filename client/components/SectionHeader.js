@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 // const CustomerLink = props => {
 //   const {linkTo, linkText, userRoles} = this.props;
@@ -20,13 +20,13 @@ import {Link} from 'react-router-dom';
 // };
 
 const CartRibbon = props => {
-  const {rotate, userRoles} = props;
+  const { rotate, userRoles, includeLink = true } = props;
   let link = props.link;
   if (!link) {
     link = '/orders/new';
   }
 
-  if (props.userRoles.tailor) {
+  if (props.userRoles.tailor || !includeLink) {
     return <div />;
   }
 
@@ -51,7 +51,7 @@ const SectionHeader = props => {
 const mapStateToProps = store => {
   return {
     currentUser: store.currentUser,
-    userRoles: store.userRoles
+    userRoles: store.userRoles,
   };
 };
 
