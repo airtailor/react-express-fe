@@ -7,12 +7,25 @@
   width: 100%;
 }
 
+.customer-edit-form-button-container {
+  @extend .form-row-container;
+  // background-color: yellow;
+}
+
 .customer-edit-form-row-container {
   @extend .form-row-container;
+  // background-color: green;
 }
 
 .customer-edit-form-row {
   @extend .form-row;
+  // background-color: blue;
+  margin-bottom: 1.5%;
+}
+
+.customer-edit-form-button-row {
+  @extend .form-row;
+  // background-color: red;
   margin-bottom: 1.5%;
 }
 
@@ -24,12 +37,9 @@
 .customer-edit-form-label {
   @extend .form-label;
   padding-top: 0.5%;
+  text-align: left;
 }
 
 .customer-edit-form-input[type='submit'] {
   @extend .form-input;
-}
-
-.customer-edit-form-button-container {
-  @extend .form-button-container;
 }
