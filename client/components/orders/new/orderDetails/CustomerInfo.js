@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
-import {updateCartCustomer} from '../../../../actions';
-import {formatPhone} from '../../../../utils/format';
+import { updateCartCustomer } from '../../../../actions';
+import { formatPhone } from '../../../../utils/format';
 import FindCustomerByPhone from './FindCustomerByPhone';
 
 import FormField from '../../../FormField';
@@ -87,16 +87,16 @@ class CustomerInfo extends Component {
   }
 
   updateCustomerExists = value => {
-    this.setState({customerExists: value});
+    this.setState({ customerExists: value });
   };
 
   render() {
     const {
-      cartCustomer: {first_name, last_name, phone, email, id},
+      cartCustomer: { first_name, last_name, phone, email, id },
       updateCartCustomer,
     } = this.props;
 
-    const {customerExists} = this.state;
+    const { customerExists } = this.state;
 
     if (customerExists === null && !id) {
       return (
