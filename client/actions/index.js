@@ -74,6 +74,7 @@ export const userSignIn = (email, password) => {
   return dispatch => {
     return Axios.post(url, data)
       .then(res => {
+        console.log(`USER SIGNIN`, res);
         if (res.data.status === 401) {
           return { errors: true, status: 401 };
         } else if (res.data.body) {
