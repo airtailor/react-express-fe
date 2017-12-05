@@ -28,7 +28,7 @@ if (AirTailorTokens && CurrentUser && CurrentStore) {
   const { valid_roles: roles } = parsedUser;
   const parsedStore = JSON.parse(CurrentStore);
 
-  if (!roles) {
+  if (!roles && parsedToken) {
     wipeLocalData();
   } else {
     setAuthToken(parsedToken);
