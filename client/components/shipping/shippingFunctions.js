@@ -37,6 +37,9 @@ export const messengerAllowed = (action, roles) => {
 export const getShipmentForRole = (roles, order) => {
   const { shipments } = order;
 
+  console.log('shipments', shipments);
+  debugger;
+
   if (roles.admin && order.type === 'WelcomeKit') {
     return shipments.find(s => {
       return (
@@ -54,11 +57,13 @@ export const getShipmentForRole = (roles, order) => {
       });
     } else {
       return shipments.find(s => {
+        const { destination_type } = s;
         const { address_type, street1, zip, first_name } = s.destination;
 
         // if address's destination_type is 'customer'
         // or if this is a customer with a first name, street1, and street2
-        const addressFieldsExist = address_type === 'customer';
+        const addressFieldsExist =
+          address_type === 'customer' || destination_type === 'Customer';
         const customerFieldsExist = street1 && zip && first_name;
         const srcAddyIsTailor = s.source.address_type === 'tailor';
 
