@@ -6,7 +6,7 @@ import {
   SHIP_RETAILER_TO_CUSTOMER,
 } from '../../utils/constants';
 
-import {createShipment} from '../../actions';
+import { createShipment } from '../../actions';
 
 export const fireShipmentCreate = (orders, action, type) => {
   const orderIds = orders.map(o => o.id);
@@ -20,7 +20,7 @@ export const fireShipmentCreate = (orders, action, type) => {
 };
 
 export const messengerAllowed = (action, roles) => {
-  const {admin, retailer} = roles;
+  const { admin, retailer } = roles;
 
   switch (action) {
     case SHIP_RETAILER_TO_TAILOR:
@@ -35,7 +35,8 @@ export const messengerAllowed = (action, roles) => {
 };
 
 export const getShipmentForRole = (roles, order) => {
-  const {shipments} = order;
+  const { shipments } = order;
+
   if (roles.admin && order.type === 'WelcomeKit') {
     return shipments.find(s => {
       return (
@@ -53,10 +54,17 @@ export const getShipmentForRole = (roles, order) => {
       });
     } else {
       return shipments.find(s => {
-        return (
-          s.destination.address_type === 'customer' &&
-          s.source.address_type === 'tailor'
-        );
+        const { destination_type } = s;
+        const { address_type, street1, zip, first_name } = s.destination;
+
+        // if address's destination_type is 'customer'
+        // or if this is a customer with a first name, street1, and street2
+        const addressFieldsExist =
+          address_type === 'customer' || destination_type === 'Customer';
+        const customerFieldsExist = street1 && zip && first_name;
+        const srcAddyIsTailor = s.source.address_type === 'tailor';
+
+        return (addressFieldsExist || customerFieldsExist) && srcAddyIsTailor;
       });
     }
   } else if (roles.retailer) {
@@ -70,7 +78,7 @@ export const getShipmentForRole = (roles, order) => {
 };
 
 export const correctShipmentExists = (roles, order) => {
-  const {shipments} = order;
+  const { shipments } = order;
   if (!shipments || shipments.length == 0) return false;
   const correctShipment = getShipmentForRole(roles, order);
   return correctShipment; // either an object, or undefined
@@ -103,7 +111,7 @@ export const messengerState = (roles, order, sendingMessenger) => {
 };
 
 export const shipmentTypes = roles => {
-  const {retailer, tailor, admin, customer} = roles;
+  const { retailer, tailor, admin, customer } = roles;
   const allShipmentTypes = new Set(['mail_shipment', 'messenger_shipment']);
 
   if (admin || retailer) {
@@ -118,8 +126,8 @@ export const shipmentTypes = roles => {
 };
 
 export const shipmentActions = (order, roles) => {
-  const {ship_to_store, type} = order;
-  const {retailer, tailor, admin, customer} = roles;
+  const { ship_to_store, type } = order;
+  const { retailer, tailor, admin, customer } = roles;
 
   if (ship_to_store && tailor) {
     return SHIP_TAILOR_TO_RETAILER;

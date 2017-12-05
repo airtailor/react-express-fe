@@ -104,7 +104,6 @@ class NewOrderDetail extends Component {
     this.props.setLoader();
     fireShipmentCreate(orders, action, type)
       .then(res => {
-        this.props.removeLoader();
         this.setState({ loadingLabel: false });
         this.props.removeLoader();
         this.props.selectOrder(orders[0]);
@@ -112,9 +111,9 @@ class NewOrderDetail extends Component {
       .catch(err => console.log('err', err));
   };
 
-  makeShippingLabel(action) {
+  makeShippingLabel = action => {
     return this.postShipment([this.props.order], action, 'mail_shipment');
-  }
+  };
 
   renderFulfillButton() {
     return this.renderButton(
