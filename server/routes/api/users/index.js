@@ -3,17 +3,18 @@ const Axios = require('axios');
 const router = express.Router();
 const { apiUrl, getHeaders } = require('../../config');
 
-// post for new users
-// put for edit users
-
 router.put('/update_password', (req, res) => {
   const headers = getHeaders(req);
   const data = req.body;
+  const params = {};
 
-  Axios.put(`${apiUrl}/api/users/${data.id}/update_password`, {
-    user: data,
-    headers,
-  })
+  [data, headers].forEach(function(field) {
+    Object.keys(field).forEach(function(key) {
+      params[key] = field[key];
+    });
+  });
+
+  Axios.put(`${apiUrl}/auth/password`, params)
     .then(response => {
       res.json({ headers: response.headers, body: response.data });
     })
