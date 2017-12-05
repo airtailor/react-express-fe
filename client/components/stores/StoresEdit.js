@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
 import {
@@ -14,16 +14,18 @@ import {
 import FormField from './../FormField';
 import SectionHeader from './../SectionHeader';
 import UsersEdit from '../users/UsersEdit';
+import SelectTailor from '../orders/orderForms/SelectTailor';
 
 const mapStateToProps = store => {
   return {
     store: store.currentStore,
+    tailors: store.tailorList,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    {getCurrentStore, updateStore, setGrowler, setLoader, removeLoader},
+    { getCurrentStore, updateStore, setGrowler, setLoader, removeLoader },
     dispatch
   );
 };
@@ -32,8 +34,6 @@ class StoresEdit extends Component {
   constructor(props) {
     super();
     this.state = {};
-    this.updateState = this.updateState.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   static propTypes = {
@@ -46,37 +46,37 @@ class StoresEdit extends Component {
   };
 
   componentDidMount() {
-    const store = {...this.props.store};
+    const store = { ...this.props.store };
     this.setState(store);
     this.props
       .getCurrentStore(this.props.match.params.store_id)
       .catch(err => console.log(err));
   }
 
-  updateState(field, value) {
-    this.setState({[field]: value});
-  }
+  updateState = (field, value) => {
+    this.setState({ [field]: value });
+  };
 
-  handleSubmit(e) {
+  handleSubmit = e => {
     e.preventDefault();
     var self = this;
     const store = this.state;
     this.props.setLoader();
     this.props
-      .updateStore({store})
+      .updateStore({ store })
       .then(res => {
         if (res.data.body.errors) {
           const kind = 'warning';
           const message = res.data.body.errors[0];
 
           self.setState(self.props.store);
-          self.props.setGrowler({kind, message});
+          self.props.setGrowler({ kind, message });
         } else if (res.data.body) {
           const kind = 'success';
           const message = 'Store Updated Successfully!';
           this.props.getCurrentStore(store.id);
 
-          this.props.setGrowler({kind, message});
+          this.props.setGrowler({ kind, message });
         }
       })
       .then(res => {
@@ -86,17 +86,27 @@ class StoresEdit extends Component {
           this.setState(this.props.store);
         });
 
-        this.props.setGrowler({kind, message});
+        this.props.setGrowler({ kind, message });
         this.props.removeLoader();
       })
       .catch(err => {
         debugger;
         console.log(err);
       });
-  }
+  };
 
   renderForm(data) {
-    const {name, phone, street, unit, city, state_province, zip_code} = data;
+    const {
+      name,
+      phone,
+      street,
+      unit,
+      city,
+      state_province,
+      zip_code,
+      default_tailor_id,
+    } = data;
+    const tailorId = default_tailor_id ? default_tailor_id : '';
 
     return (
       <div>
@@ -113,6 +123,13 @@ class StoresEdit extends Component {
             fieldName={'phone'}
             title={'Phone:'}
             onChange={this.updateState}
+          />
+
+          <SelectTailor
+            onChange={this.updateState}
+            fieldName="default_tailor_id"
+            headerText="Set Default Tailor"
+            tailorId={tailorId}
           />
 
           <FormField
@@ -156,7 +173,7 @@ class StoresEdit extends Component {
   }
 
   render() {
-    const {store} = this.props;
+    const { store } = this.props;
     if (!store) {
       return <div>Loading...</div>;
     } else {
