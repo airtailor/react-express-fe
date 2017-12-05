@@ -8,6 +8,7 @@ import SectionHeader from './SectionHeader';
 import OrderCard from './OrderCard';
 import OrderCardIcon from './OrderCardIcon';
 import { ordersImage, messageImage, exclamationImage } from '../images';
+import PropTypes from 'prop-types';
 
 const mapStateToProps = store => {
   return {

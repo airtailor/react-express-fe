@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { updatePassword, setGrowler } from '../../actions';
+import { createUser, setGrowler } from '../../actions';
 import FormField from './../FormField';
 import SectionHeader from './../SectionHeader';
-import { ValidatePassword } from '../../utils/validations';
+import { ValidatePassword, ValidateEmail } from '../../utils/validations';
 import PropTypes from 'prop-types';
 
 const mapStateToProps = store => {
@@ -13,14 +13,16 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ updatePassword, setGrowler }, dispatch);
+  return bindActionCreators({ createUser, setGrowler }, dispatch);
 };
 
 class UsersNew extends Component {
   constructor() {
     super();
-    // going to need to add a user here.
     this.state = {
+      name: '',
+      email: '',
+      role: '',
       password: '',
       passwordConfirmation: '',
       submitDisabled: true,
@@ -28,7 +30,7 @@ class UsersNew extends Component {
   }
 
   static propTypes = {
-    updatePassword: PropTypes.func.isRequired, // mapDispatchToProps
+    createUser: PropTypes.func.isRequired, // mapDispatchToProps
     setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
@@ -38,6 +40,8 @@ class UsersNew extends Component {
         this.state.password,
         this.state.passwordConfirmation
       );
+
+      this.validateEmail(this.state.email);
     });
   };
 
@@ -47,14 +51,14 @@ class UsersNew extends Component {
     if (password === passwordConfirmation) {
       const id = this.props.user.user.id;
       this.props
-        .updatePassword({
+        .createUser({
           id,
           password,
           password_confirmation: passwordConfirmation,
         })
         .then(res => {
           const kind = 'success';
-          const message = 'Password Updated';
+          const message = 'User Created!';
           this.props.setGrowler({ kind, message });
           this.setState({
             password: '',
@@ -71,25 +75,76 @@ class UsersNew extends Component {
       if (ValidatePassword(password)) {
         this.setState({ submitDisabled: false });
         return;
+      } else {
+        const kind = 'warning';
+        const message =
+          'Please enter a valid password! It should be longer than 6 characters';
+        this.props.setGrowler({ kind, message });
       }
+    } else {
+      const kind = 'warning';
+      const message =
+        'Your password confirmation did not match your chosen password.';
+      this.props.setGrowler({ kind, message });
+    }
+    this.setState({ submitDisabled: true });
+  }
+
+  validateEmail(email) {
+    if (ValidateEmail(password)) {
+      this.setState({ submitDisabled: false });
+      return;
+    } else {
+      const kind = 'warning';
+      const message = 'Please enter a valid email!';
+      this.props.setGrowler({ kind, message });
     }
     this.setState({ submitDisabled: true });
   }
 
   render() {
-    const { password, passwordConfirmation, submitDisabled } = this.state;
+    const {
+      name,
+      email,
+      role,
+      password,
+      passwordConfirmation,
+      submitDisabled,
+    } = this.state;
     return (
       <div>
-        <h3>Edit User</h3>
+        <SectionHeader includeLink={false} />
+        <h3>Create User</h3>
         <form onSubmit={this.handleSubmit}>
+          <FormField
+            value={name}
+            type="name"
+            fieldName={'name'}
+            title={'Name:'}
+            onChange={this.updateState}
+          />
+          <FormField
+            value={email}
+            type="email"
+            fieldName={'email'}
+            title={'Email:'}
+            onChange={this.updateState}
+          />
+          // probably needs to be a selectRole
+          <FormField
+            value={role}
+            type="role"
+            fieldName={'role'}
+            title={'Role:'}
+            onChange={this.updateState}
+          />
           <FormField
             value={password}
             type="password"
             fieldName={'password'}
-            title={'Reset Password:'}
+            title={'Password:'}
             onChange={this.updateState}
           />
-
           <FormField
             value={passwordConfirmation}
             fieldName={'passwordConfirmation'}
@@ -97,7 +152,6 @@ class UsersNew extends Component {
             type="password"
             onChange={this.updateState}
           />
-
           <input
             disabled={submitDisabled}
             type="submit"
@@ -110,4 +164,4 @@ class UsersNew extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(UsersNew);
