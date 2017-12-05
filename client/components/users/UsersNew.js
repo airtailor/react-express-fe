@@ -6,26 +6,31 @@ import { updatePassword, setGrowler } from '../../actions';
 import FormField from './../FormField';
 import SectionHeader from './../SectionHeader';
 import { ValidatePassword } from '../../utils/validations';
+import PropTypes from 'prop-types';
 
 const mapStateToProps = store => {
-  return {
-    user: store.currentUser,
-  };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({ updatePassword, setGrowler }, dispatch);
 };
 
-class UsersEdit extends Component {
+class UsersNew extends Component {
   constructor() {
     super();
+    // going to need to add a user here.
     this.state = {
       password: '',
       passwordConfirmation: '',
       submitDisabled: true,
     };
   }
+
+  static propTypes = {
+    updatePassword: PropTypes.func.isRequired, // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
+  };
 
   updateState = (key, value) => {
     this.setState({ [key]: value }, () => {

@@ -580,12 +580,7 @@ export function submitOrder(props) {
         debugger;
       });
   };
-  //  })
-  // .catch(err => {
-  //   console.log('create order error', err);
-  // });
 }
-//}
 
 export function updatePassword(data) {
   const url = `${expressApi}/users/update_password`;

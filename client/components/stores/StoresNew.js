@@ -21,16 +21,15 @@ class StoresNew extends Component {
       state_province: '',
       zip_code: '',
     };
-    this.updateState = this.updateState.bind(this);
   }
 
   componentDidMount() {
     this.props.getCompanies().catch(err => console.log(err));
   }
 
-  updateState(field, value) {
+  updateState = (field, value) => {
     this.setState({ [field]: value });
-  }
+  };
 
   handleSubmit(e) {
     e.preventDefault();

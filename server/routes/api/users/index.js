@@ -3,6 +3,9 @@ const Axios = require('axios');
 const router = express.Router();
 const { apiUrl, getHeaders } = require('../../config');
 
+// post for new users
+// put for edit users
+
 router.put('/update_password', (req, res) => {
   const headers = getHeaders(req);
   const data = req.body;
