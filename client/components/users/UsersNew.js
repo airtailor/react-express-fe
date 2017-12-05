@@ -52,12 +52,13 @@ class UsersNew extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { password, passwordConfirmation } = this.state;
-    if (password === passwordConfirmation) {
-      const id = this.props.user.user.id;
+    const { password, passwordConfirmation, email } = this.state;
+    console.log(this.state);
+    if (password === passwordConfirmation && email) {
+      console.log('FIRING EVENT');
       this.props
         .createUser({
-          id,
+          email,
           password,
           password_confirmation: passwordConfirmation,
         })
@@ -96,7 +97,7 @@ class UsersNew extends Component {
   }
 
   validateEmail(email) {
-    if (ValidateEmail(password)) {
+    if (ValidateEmail(email)) {
       this.setState({ submitDisabled: false });
       return;
     } else {
