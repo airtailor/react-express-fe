@@ -13,6 +13,12 @@ import { setCurrentUser, setCurrentStore, setUserRole } from './actions/';
 // import logger from 'redux-logger';
 //const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 
+const wipeLocalData = () => {
+  delete localStorage.AirTailorToken;
+  delete localStorage.CurrentUser;
+  delete localStorage.CurrentStore;
+};
+
 const store = createStore(rootReducer, applyMiddleware(thunk));
 const { AirTailorTokens, CurrentUser, CurrentStore } = localStorage;
 
@@ -22,14 +28,16 @@ if (AirTailorTokens && CurrentUser && CurrentStore) {
   const { valid_roles: roles } = parsedUser;
   const parsedStore = JSON.parse(CurrentStore);
 
-  setAuthToken(parsedToken);
-  store.dispatch(setCurrentUser(parsedUser));
-  store.dispatch(setUserRole(roles));
-  store.dispatch(setCurrentStore(parsedStore));
+  if (!roles) {
+    wipeLocalData();
+  } else {
+    setAuthToken(parsedToken);
+    store.dispatch(setCurrentUser(parsedUser));
+    store.dispatch(setUserRole(roles));
+    store.dispatch(setCurrentStore(parsedStore));
+  }
 } else {
-  delete localStorage.AirTailorToken;
-  delete localStorage.CurrentUser;
-  delete localStorage.CurrentStore;
+  wipeLocalData();
 }
 
 ReactDOM.render(
