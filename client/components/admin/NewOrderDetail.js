@@ -111,9 +111,9 @@ class NewOrderDetail extends Component {
       .catch(err => console.log('err', err));
   };
 
-  makeShippingLabel(action) {
+  makeShippingLabel = action => {
     return this.postShipment([this.props.order], action, 'mail_shipment');
-  }
+  };
 
   renderFulfillButton() {
     return this.renderButton(

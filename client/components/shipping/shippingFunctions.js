@@ -37,9 +37,6 @@ export const messengerAllowed = (action, roles) => {
 export const getShipmentForRole = (roles, order) => {
   const { shipments } = order;
 
-  console.log('shipments', shipments);
-  debugger;
-
   if (roles.admin && order.type === 'WelcomeKit') {
     return shipments.find(s => {
       return (
