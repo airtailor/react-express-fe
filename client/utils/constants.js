@@ -42,6 +42,6 @@ export const SET_CURRENT_CUSTOMER = 'SET_CURRENT_CUSTOMER';
 export const UPDATE_CURRENT_CUSTOMER = 'UPDATE_CURRENT_CUSTOMER';
 
 export const storeTypes = [
-  {name: 'Tailor', id: 'tailor'},
-  {name: 'Retailer', id: 'retailer'},
+  { name: 'Tailor', id: 'Tailor' },
+  { name: 'Retailer', id: 'Retailer' },
 ];

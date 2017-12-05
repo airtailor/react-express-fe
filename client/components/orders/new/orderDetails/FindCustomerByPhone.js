@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
 import {
@@ -11,14 +11,20 @@ import {
   setCartCustomer,
   updateCartCustomer,
 } from '../../../../actions';
-import {ValidatePhone} from '../../../../utils/validations';
-import {formatPhone} from '../../../../utils/format';
+import { ValidatePhone } from '../../../../utils/validations';
+import { formatPhone } from '../../../../utils/format';
 
 import FormField from '../../../FormField';
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    {setLoader, removeLoader, setGrowler, setCartCustomer, updateCartCustomer},
+    {
+      setLoader,
+      removeLoader,
+      setGrowler,
+      setCartCustomer,
+      updateCartCustomer,
+    },
     dispatch
   );
 };
@@ -72,18 +78,18 @@ class FindCustomerByPhone extends Component {
     } = this.props;
 
     setLoader();
-    findOrCreateCustomer({phone}).then(res => {
+    findOrCreateCustomer({ phone }).then(res => {
       removeLoader();
 
-      const {body: {errors, id}, body: customer} = res.data;
+      const { body: { status, id }, body: customer } = res.data;
 
-      if (errors && errors.status === 404) {
+      if (status && status === 404) {
         updateCartCustomer('phone', phone);
         updateCustomerExists(false);
       } else if (id) {
         const kind = 'success';
         const message = 'Found Customer';
-        setGrowler({kind, message});
+        setGrowler({ kind, message });
         setCartCustomer(customer);
         updateCustomerExists(true);
       }
@@ -91,7 +97,7 @@ class FindCustomerByPhone extends Component {
   }
 
   render() {
-    const {phone, customer} = this.state;
+    const { phone, customer } = this.state;
     const displayPhone = formatPhone(phone);
     return (
       <div>
