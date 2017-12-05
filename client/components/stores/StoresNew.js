@@ -74,11 +74,6 @@ class StoresNew extends Component {
       .catch(err => console.log(err));
   }
 
-<<<<<<< HEAD
-  updateState = (field, value) => {
-    this.setState({ [field]: value });
-  };
-=======
   updateStoreState = (field, value) => {
     this.setState({ [field]: value });
   };
@@ -92,7 +87,6 @@ class StoresNew extends Component {
   hasAllParams(obj) {
     return isEmpty(Object.keys(obj).filter(k => k == ''));
   }
->>>>>>> local-storage-auth-bug
 
   emptyParamsPresent = () => {
     const store = this.state;

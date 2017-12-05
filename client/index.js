@@ -27,12 +27,7 @@ if (AirTailorTokens && CurrentUser && CurrentStore) {
   const parsedUser = JSON.parse(CurrentUser);
   const { valid_roles: roles } = parsedUser;
   const parsedStore = JSON.parse(CurrentStore);
-<<<<<<< HEAD
-  console.log(roles, parsedToken);
-  if (!roles && parsedToken) {
-=======
   if (!roles || !parsedToken) {
->>>>>>> local-storage-auth-bug
     wipeLocalData();
   } else {
     setAuthToken(parsedToken);

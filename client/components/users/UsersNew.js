@@ -36,12 +36,17 @@ class UsersNew extends Component {
 
   updateState = (key, value) => {
     this.setState({ [key]: value }, () => {
-      this.validatePasswords(
-        this.state.password,
-        this.state.passwordConfirmation
-      );
+      const { password, passwordConfirmation, email } = this.state;
+      if (password && passwordConfirmation) {
+        this.validatePasswords(
+          this.state.password,
+          this.state.passwordConfirmation
+        );
+      }
 
-      this.validateEmail(this.state.email);
+      if (email) {
+        this.validateEmail(this.state.email);
+      }
     });
   };
 
@@ -155,7 +160,7 @@ class UsersNew extends Component {
           <input
             disabled={submitDisabled}
             type="submit"
-            value="Update Password"
+            value="Create User"
             className="short-button"
           />
         </form>
