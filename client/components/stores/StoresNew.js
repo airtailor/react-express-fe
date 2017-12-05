@@ -47,8 +47,8 @@ class StoresNew extends Component {
       street,
       street_two,
       city,
-      state,
-      zip,
+      state_province,
+      zip_code,
     } = this.state;
     if (this.props.companies.length > 0) {
       return (

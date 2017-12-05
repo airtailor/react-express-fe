@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -62,7 +62,7 @@ const config = {
   },
   plugins: [
     new ExtractTextPlugin('style.css'),
-    new UglifyJSPlugin(),
+    // new UglifyJSPlugin(),
     new webpack.optimize.CommonsChunkPlugin({names: ['vendor', 'manifest']}),
     new HtmlWebpackPlugin({
       template: 'client/index.html',
