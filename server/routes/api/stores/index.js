@@ -23,7 +23,7 @@ router.get('/tailors', (req, res) => {
     });
 });
 
-router.post('/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   const headers = getHeaders(req);
 
   Axios.get(`${apiUrl}/api/stores/${req.params.id}`, { headers })

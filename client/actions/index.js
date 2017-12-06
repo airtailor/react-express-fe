@@ -166,7 +166,7 @@ export function getCurrentStore(store_id) {
     return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
-        return Axios.post(url)
+        return Axios.get(url)
           .then(res => {
             setLocalStorageStore(res.data.body);
             dispatch(setCurrentStore(res.data.body));
@@ -267,35 +267,6 @@ export function getTailorList() {
           })
           .catch(err => {
             debugger;
-          });
-      });
-  };
-}
-
-export function updateStore(data) {
-  const {
-    store,
-    store: { id, street, unit: street_two, city, state_province, zip_code },
-  } = data;
-
-  const url = `${expressApi}/stores/${id}`;
-  const storeObj = { ...data.store };
-  storeObj.address = { street, street_two, city, state_province, zip_code };
-
-  return dispatch => {
-    return validateToken(dispatch)
-      .then(setTokens)
-      .then(() => {
-        return Axios.put(url, { store: storeObj })
-          .then(res => {
-            if (!res.data.body.errors) {
-              dispatch(setCurrentStore(storeObj));
-            }
-            return res;
-          })
-          .catch(err => {
-            debugger;
-            return err;
           });
       });
   };

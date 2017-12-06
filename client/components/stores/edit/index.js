@@ -2,92 +2,88 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import isEmpty from 'lodash/isEmpty';
 
 import {
-  getCurrentStore,
+  getEditStore,
+  // updateEditStore is an action that will update the editStoreFormReducer
+  updateEditStore,
+  // updateStore is an action that will send a request to update the store
+  // in the Rails API
   updateStore,
   setGrowler,
   setLoader,
   removeLoader,
-} from '../../actions';
+} from './ducks/actions';
 
-import FormField from './../FormField';
-import SectionHeader from './../SectionHeader';
-import UsersEdit from '../users/UsersEdit';
-import SelectTailor from '../orders/orderForms/SelectTailor';
+import FormField from './../../FormField';
+import SectionHeader from './../../SectionHeader';
+import UsersEdit from '../../users/UsersEdit';
+import SelectTailor from '../../orders/orderForms/SelectTailor';
 
 const mapStateToProps = store => {
   return {
-    store: store.currentStore,
+    store: store.editStore,
     tailors: store.tailorList,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { getCurrentStore, updateStore, setGrowler, setLoader, removeLoader },
+    {
+      getEditStore,
+      updateStore,
+      updateEditStore,
+      setGrowler,
+      setLoader,
+      removeLoader,
+    },
     dispatch
   );
 };
 
 class StoresEdit extends Component {
-  constructor(props) {
-    super();
-    this.state = {};
-  }
-
   static propTypes = {
     store: PropTypes.object.isRequired, // mapStateToProps
-    getCurrentStore: PropTypes.func.isRequired, // mapDispatchToProps
+    getEditStore: PropTypes.func.isRequired, // mapDispatchToProps
     updateStore: PropTypes.func.isRequired, // mapDispatchToProps
+    updateEditStore: PropTypes.func.isRequired, // mapDispatchToProps
     setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
     setLoader: PropTypes.func.isRequired, // mapDispatchToProps,
     removeLoader: PropTypes.func.isRequired, // mapDispatchToProps,
   };
 
   componentDidMount() {
-    const store = { ...this.props.store };
-    this.setState(store);
     this.props
-      .getCurrentStore(this.props.match.params.store_id)
+      .getEditStore(this.props.match.params.store_id)
       .catch(err => console.log(err));
   }
 
   updateState = (field, value) => {
-    this.setState({ [field]: value });
+    console.log(field, value);
+    this.props.updateEditStore(field, value);
   };
 
   handleSubmit = e => {
     e.preventDefault();
     var self = this;
-    const store = this.state;
+    const { store } = this.props;
     this.props.setLoader();
     this.props
       .updateStore({ store })
       .then(res => {
+        this.props.removeLoader();
+
         if (res.data.body.errors) {
           const kind = 'warning';
           const message = res.data.body.errors[0];
-
           self.setState(self.props.store);
           self.props.setGrowler({ kind, message });
         } else if (res.data.body) {
           const kind = 'success';
           const message = 'Store Updated Successfully!';
-          this.props.getCurrentStore(store.id);
-
           this.props.setGrowler({ kind, message });
         }
-      })
-      .then(res => {
-        const kind = 'success';
-        const message = 'Store Updated Successfully!';
-        this.props.getCurrentStore(store.id).then(() => {
-          this.setState(this.props.store);
-        });
-
-        this.props.setGrowler({ kind, message });
-        this.props.removeLoader();
       })
       .catch(err => {
         debugger;
@@ -95,7 +91,7 @@ class StoresEdit extends Component {
       });
   };
 
-  renderForm(data) {
+  renderForm() {
     const {
       name,
       phone,
@@ -105,7 +101,7 @@ class StoresEdit extends Component {
       state_province,
       zip_code,
       default_tailor_id,
-    } = data;
+    } = this.props.store;
 
     const tailorId = default_tailor_id ? default_tailor_id : '';
     console.log('stores edit', tailorId);
@@ -176,24 +172,25 @@ class StoresEdit extends Component {
 
   render() {
     const { store } = this.props;
-    if (!store) {
-      return <div>Loading...</div>;
-    } else {
-      return (
-        <div className="pos-rel">
-          <SectionHeader text={`Edit / ${store.name}`} />
-          <div className="form-container edit-account">
-            <h3>Edit Store</h3>
 
-            {this.renderForm(this.state)}
-            <br />
-            <hr />
-            <br />
-            <UsersEdit />
-          </div>
-        </div>
-      );
+    if (isEmpty(store)) {
+      return <div>Loading...</div>;
     }
+
+    return (
+      <div className="pos-rel">
+        <SectionHeader text={`Edit / ${store.name}`} />
+        <div className="form-container edit-account">
+          <h3>Edit Store</h3>
+
+          {this.renderForm()}
+          <br />
+          <hr />
+          <br />
+          <UsersEdit />
+        </div>
+      </div>
+    );
   }
 }
 
