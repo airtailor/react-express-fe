@@ -59,10 +59,18 @@ class UsersNew extends Component {
         role,
       })
         .then(res => {
-          const kind = 'success';
-          const message = 'User Created!';
-          this.props.setGrowler({ kind, message });
-          this.setState(this.initialStateObject());
+          // error logging
+          if (res.data === 422) {
+            const kind = 'warning';
+            const message =
+              "User was not created. Make sure they don't already exist in the database.";
+            this.props.setGrowler({ kind, message });
+          } else {
+            const kind = 'success';
+            const message = 'User Created!';
+            this.props.setGrowler({ kind, message });
+            this.setState(this.initialStateObject());
+          }
         })
         .catch(err => console.log('err', err));
     }
