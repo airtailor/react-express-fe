@@ -53,6 +53,7 @@ class NewOrderDetail extends Component {
     this.state = {
       loadingLabel: false,
       notes: '',
+      provider_id: '',
     };
   }
 
@@ -274,17 +275,9 @@ class NewOrderDetail extends Component {
   render() {
     const { order } = this.props;
     if (order.customer) {
-      const {
-        id,
-        weight,
-        created_at,
-        total,
-        provider_notes,
-        items,
-        provider_id,
-      } = order;
+      const { id, weight, created_at, total, provider_notes, items } = order;
+      const { provider_id } = this.state;
 
-      const tailorId = provider_id ? provider_id : '';
       const orderDate = moment(created_at).format('MM-DD-YYYY');
 
       const selectTailor = (
@@ -292,7 +285,7 @@ class NewOrderDetail extends Component {
           <p>Alterations:</p>
 
           {this.renderGarments(order.items)}
-          <SelectTailor onChange={this.updateState} tailorId={tailorId} />
+          <SelectTailor onChange={this.updateState} tailorId={provider_id} />
           <button className="button short-button" onClick={this.handleSubmit}>
             Change Tailor
           </button>

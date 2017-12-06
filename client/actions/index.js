@@ -100,14 +100,9 @@ export function validateToken(dispatch = undefined) {
   const url = `${expressApi}/auth/validate_token`;
   return Axios.post(url).then(res => {
     if (dispatch) {
-      const {
-        id,
-        email,
-        store_id: storeId,
-        valid_roles: roles,
-      } = res.data.body;
+      const { id, email, store_id, valid_roles: roles } = res.data.body;
       dispatch(setUserRole(roles));
-      dispatch(setCurrentUser({ id, email, storeId }));
+      dispatch(setCurrentUser({ id, email, store_id }));
     }
     return res;
   });

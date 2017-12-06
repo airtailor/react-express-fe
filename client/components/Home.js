@@ -20,11 +20,16 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const { currentUser, getCurrentStore } = this.props;
-    getOrderAndMessagesCount(this.props.currentUser.user.store_id).then(res => {
+    const {
+      currentUser: { user: { store_id: storeId } },
+      getCurrentStore,
+    } = this.props;
+
+    getOrderAndMessagesCount(storeId).then(res => {
       this.setState(res.data.body);
     });
-    getCurrentStore(currentUser.user.store_id).catch(err => {
+
+    getCurrentStore(storeId).catch(err => {
       console.log(err);
     });
   }
@@ -35,6 +40,7 @@ class Home extends Component {
       late_orders_count,
       unread_messages_count,
     } = this.state;
+
     return (
       <div className="store-boxes">
         <OrderCard

@@ -106,7 +106,9 @@ class StoresEdit extends Component {
       zip_code,
       default_tailor_id,
     } = data;
+
     const tailorId = default_tailor_id ? default_tailor_id : '';
+    console.log('stores edit', tailorId);
 
     return (
       <div>
