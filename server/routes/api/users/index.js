@@ -29,7 +29,7 @@ router.put('/update_password', (req, res) => {
     });
 });
 
-router.put('/create_user', (req, res) => {
+router.post('/create_user', (req, res) => {
   const headers = getHeaders(req);
   const data = req.body;
   const params = {};
@@ -40,8 +40,10 @@ router.put('/create_user', (req, res) => {
     });
   });
 
-  Axios.post(`${apiUrl}/auth`, params)
+  Axios.post(`${apiUrl}/auth/`, params)
     .then(response => {
+      console.log('\n\n\n');
+      console.log('FOUND IT', response);
       res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {

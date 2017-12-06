@@ -250,7 +250,8 @@ export function createUser(data) {
   return validateToken()
     .then(setTokens)
     .then(() => {
-      const url = `${expressApi}/create_user`;
+      console.log('GOT THROUGH SET TOKENS');
+      const url = `${expressApi}/users/create_user`;
       return Axios.post(url, data);
     });
 }

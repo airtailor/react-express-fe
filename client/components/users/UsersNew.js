@@ -53,9 +53,9 @@ class UsersNew extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { password, passwordConfirmation, email } = this.state;
-    console.log(this.state);
     if (password === passwordConfirmation && email) {
       console.log('FIRING EVENT');
+      debugger;
       this.props
         .createUser({
           email,
@@ -63,6 +63,8 @@ class UsersNew extends Component {
           password_confirmation: passwordConfirmation,
         })
         .then(res => {
+          console.log('RES CAME BACK', res);
+          debugger;
           const kind = 'success';
           const message = 'User Created!';
           this.props.setGrowler({ kind, message });
