@@ -44,7 +44,7 @@ class OrdersEdit extends Component {
   }
 
   render() {
-    const { customer, total, weight, provider_id } = this.state;
+    const { customer, total, weight, provider_id: tailorId } = this.state;
     const { first_name, last_name } = customer;
     const customerName = first_name + ' ' + last_name;
     const backLink = `/orders/${this.state.id}`;
@@ -76,10 +76,7 @@ class OrdersEdit extends Component {
               onChange={this.updateState}
             />
 
-            <SelectTailor
-              provider_id={provider_id}
-              onChange={this.updateState}
-            />
+            <SelectTailor tailorId={tailorId} onChange={this.updateState} />
 
             <FormField
               value={this.state.total}

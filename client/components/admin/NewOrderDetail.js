@@ -111,9 +111,9 @@ class NewOrderDetail extends Component {
       .catch(err => console.log('err', err));
   };
 
-  makeShippingLabel(action) {
+  makeShippingLabel = action => {
     return this.postShipment([this.props.order], action, 'mail_shipment');
-  }
+  };
 
   renderFulfillButton() {
     return this.renderButton(
@@ -292,7 +292,7 @@ class NewOrderDetail extends Component {
           <p>Alterations:</p>
 
           {this.renderGarments(order.items)}
-          <SelectTailor onChange={this.updateState} provider_id={tailorId} />
+          <SelectTailor onChange={this.updateState} tailorId={tailorId} />
           <button className="button short-button" onClick={this.handleSubmit}>
             Change Tailor
           </button>
