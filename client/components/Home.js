@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import {getCurrentStore, getOrderAndMessagesCount} from '../actions';
+import { getCurrentStore, getOrderAndMessagesCount } from '../actions';
 import SectionHeader from './SectionHeader';
 import OrderCard from './OrderCard';
 import OrderCardIcon from './OrderCardIcon';
-import {ordersImage, messageImage, exclamationImage} from '../images';
+import { ordersImage, messageImage, exclamationImage } from '../images';
 
 class Home extends Component {
   constructor() {
@@ -20,7 +20,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const {currentUser, getCurrentStore} = this.props;
+    const { currentUser, getCurrentStore } = this.props;
     getOrderAndMessagesCount(this.props.currentUser.user.store_id).then(res => {
       this.setState(res.data.body);
     });
@@ -138,8 +138,8 @@ class Home extends Component {
 
   renderStore() {
     if (!isEmpty(this.props.currentStore)) {
-      const {currentStore, currentUser, userRoles} = this.props;
-      const {id, name} = currentStore;
+      const { currentStore, currentUser, userRoles } = this.props;
+      const { id, name } = currentStore;
       const roles = userRoles;
       const storeEditPath = `/stores/${id}/edit`;
       const storeOrShop = roles.retailer ? 'store' : 'shop';
@@ -163,7 +163,7 @@ class Home extends Component {
       <div>
         <SectionHeader
           text={`Home / ${this.props.currentStore.name}`}
-          showCart={ !this.props.userRoles.tailor ? ( true ) : ( false ) }
+          showCart={!this.props.userRoles.tailor ? true : false}
           link={'/orders/new'}
           rotate={''}
         />
@@ -177,12 +177,12 @@ const mapStateToProps = store => {
   return {
     currentUser: store.currentUser,
     userRoles: store.userRoles,
-    currentStore: store.currentStore
+    currentStore: store.currentStore,
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({getCurrentStore}, dispatch);
+  return bindActionCreators({ getCurrentStore }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

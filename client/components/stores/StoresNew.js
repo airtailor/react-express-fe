@@ -136,9 +136,14 @@ class StoresNew extends Component {
     const { companies } = this.props;
     const {
       company_id,
+      type,
       name,
       phone,
-      address: { type, street, street_two, city, state_province, zip_code },
+      street,
+      street_two,
+      city,
+      state_province,
+      zip_code,
     } = this.state;
 
     const updateStoreState = this.updateStoreState;

@@ -10,7 +10,7 @@ const initialState = {
 const userRoleReducer = (state = initialState, action) => {
   switch(action.type){
     case SET_USER_ROLE:
-      return {...state, [action.role]: true};
+      return {...state, ...action.roles};
     case RESET_USER_ROLE:
       return initialState;
     default:
