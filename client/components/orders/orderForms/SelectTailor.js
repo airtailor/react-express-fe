@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import isEmpty from 'lodash/isEmpty';
-
 import { getTailorList } from '../../../actions';
-
 import FormSelect from '../../FormSelect';
+import PropTypes from 'prop-types';
 
 const mapStateToProps = store => {
   return {
@@ -18,37 +16,33 @@ const mapDispatchToProps = dispatch => {
 };
 
 class SelectTailor extends Component {
+  static propTypes = {
+    tailors: PropTypes.array.isRequired, // mapStateToProps
+    getTailorList: PropTypes.func.isRequired, // mapDispatchToProps
+    onChange: PropTypes.func.isRequired, // parentComponent
+    provider_id: PropTypes.string, // parentComponent
+  };
+
   componentDidMount() {
     this.props.getTailorList().catch(err => console.log(err));
   }
 
   render() {
-    const {
-      tailors,
-      onChange,
-      tailorId,
-      handleSubmit,
-      fieldName = 'provider_id',
-      title = 'Tailor Shop:',
-      headerText = 'Select Tailor',
-    } = this.props;
-
-    if (isEmpty(tailors)) {
-      return <div />;
+    const { tailors, onChange, provider_id } = this.props;
+    if (tailors) {
+      return (
+        <div className="SelectTailor">
+          <h3>Select Tailor</h3>
+          <FormSelect
+            value={provider_id}
+            options={tailors}
+            fieldName={'provider_id'}
+            title={'Tailor Shop:'}
+            onChange={onChange}
+          />
+        </div>
+      );
     }
-
-    return (
-      <div className={'SelectTailor'}>
-        <h3>{headerText}</h3>
-        <FormSelect
-          value={tailorId}
-          options={tailors}
-          fieldName={'provider_id'}
-          title={title}
-          onChange={onChange}
-        />
-      </div>
-    );
   }
 }
 

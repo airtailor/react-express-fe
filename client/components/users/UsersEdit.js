@@ -7,6 +7,16 @@ import FormField from './../FormField';
 import SectionHeader from './../SectionHeader';
 import { ValidatePassword } from '../../utils/validations';
 
+const mapStateToProps = store => {
+  return {
+    user: store.currentUser,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ updatePassword, setGrowler }, dispatch);
+};
+
 class UsersEdit extends Component {
   constructor() {
     super();
@@ -15,20 +25,18 @@ class UsersEdit extends Component {
       passwordConfirmation: '',
       submitDisabled: true,
     };
-    this.updateState = this.updateState.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  updateState(key, value) {
+  updateState = (key, value) => {
     this.setState({ [key]: value }, () => {
       this.validatePasswords(
         this.state.password,
         this.state.passwordConfirmation
       );
     });
-  }
+  };
 
-  handleSubmit(e) {
+  handleSubmit = e => {
     e.preventDefault();
     const { password, passwordConfirmation } = this.state;
     if (password === passwordConfirmation) {
@@ -51,7 +59,7 @@ class UsersEdit extends Component {
         })
         .catch(err => console.log('err', err));
     }
-  }
+  };
 
   validatePasswords(password, passwordConfirmation) {
     if (password === passwordConfirmation) {
@@ -97,13 +105,4 @@ class UsersEdit extends Component {
   }
 }
 
-const mapStateToProps = store => {
-  return {
-    user: store.currentUser,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ updatePassword, setGrowler }, dispatch);
-};
 export default connect(mapStateToProps, mapDispatchToProps)(UsersEdit);

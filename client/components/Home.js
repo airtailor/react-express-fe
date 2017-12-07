@@ -8,6 +8,19 @@ import SectionHeader from './SectionHeader';
 import OrderCard from './OrderCard';
 import OrderCardIcon from './OrderCardIcon';
 import { ordersImage, messageImage, exclamationImage } from '../images';
+import PropTypes from 'prop-types';
+
+const mapStateToProps = store => {
+  return {
+    currentUser: store.currentUser,
+    userRoles: store.userRoles,
+    currentStore: store.currentStore,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ getCurrentStore }, dispatch);
+};
 
 class Home extends Component {
   constructor() {
@@ -18,6 +31,13 @@ class Home extends Component {
       unread_messages_count: 0,
     };
   }
+
+  static propTypes = {
+    currentUser: PropTypes.object.isRequired, // mapStateToProps
+    userRoles: PropTypes.object.isRequired, // mapStateToProps
+    currentStore: PropTypes.object.isRequired, // mapStateToProps
+    getCurrentStore: PropTypes.func.isRequired, // mapDispatchToProps
+  };
 
   componentDidMount() {
     console.log('home');
@@ -179,17 +199,5 @@ class Home extends Component {
     );
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    currentUser: store.currentUser,
-    userRoles: store.userRoles,
-    currentStore: store.currentStore,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ getCurrentStore }, dispatch);
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
