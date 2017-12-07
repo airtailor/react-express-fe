@@ -97,8 +97,8 @@ class NavigationLinks extends Component {
 
           <NavigationLink
             cssClass="new-order-link"
-            route="/admin/reports"
-            text="Reports"
+            route="/admin/retailers"
+            text="Retailers"
             image={tailorsImage}
           />
 

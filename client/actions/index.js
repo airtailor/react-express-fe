@@ -99,6 +99,7 @@ export const userSignIn = (email, password) => {
 export function validateToken(dispatch = undefined) {
   const url = `${expressApi}/auth/validate_token`;
   return Axios.post(url).then(res => {
+<<<<<<< HEAD
     if (res.data.status === 401) {
       if (dispatch) {
         dispatch(signOutCurrentUser());
@@ -112,6 +113,12 @@ export function validateToken(dispatch = undefined) {
         dispatch(setCurrentUser({ id, email, store_id }));
       }
       return res;
+=======
+    if (dispatch) {
+      const { id, email, store_id, valid_roles: roles } = res.data.body;
+      dispatch(setUserRole(roles));
+      dispatch(setCurrentUser({ id, email, store_id }));
+>>>>>>> sandbox
     }
   });
 }
@@ -174,7 +181,7 @@ export function getCurrentStore(store_id) {
     return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
-        return Axios.post(url)
+        return Axios.get(url)
           .then(res => {
             setLocalStorageStore(res.data.body);
             dispatch(setCurrentStore(res.data.body));
@@ -284,35 +291,6 @@ export function getTailorList() {
           })
           .catch(err => {
             debugger;
-          });
-      });
-  };
-}
-
-export function updateStore(data) {
-  const {
-    store,
-    store: { id, street, unit: street_two, city, state_province, zip_code },
-  } = data;
-
-  const url = `${expressApi}/stores/${id}`;
-  const storeObj = { ...data.store };
-  storeObj.address = { street, street_two, city, state_province, zip_code };
-
-  return dispatch => {
-    return validateToken(dispatch)
-      .then(setTokens)
-      .then(() => {
-        return Axios.put(url, { store: storeObj })
-          .then(res => {
-            if (!res.data.body.errors) {
-              dispatch(setCurrentStore(storeObj));
-            }
-            return res;
-          })
-          .catch(err => {
-            debugger;
-            return err;
           });
       });
   };

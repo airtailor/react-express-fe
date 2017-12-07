@@ -1,7 +1,7 @@
 import React from 'react';
 
 const addPleaseSelect = options => {
-  return [{id: '', name: 'Please Select'}].concat(options);
+  return [{ id: '', name: 'Please Select' }].concat(options);
 };
 
 const FormSelect = props => {
@@ -11,7 +11,7 @@ const FormSelect = props => {
       <label>{props.title}</label>
       <br />
       <select
-        defaultValue={props.value}
+        value={props.value}
         onChange={e => props.onChange(props.fieldName, e.target.value)}
       >
         {renderOptions(selectOptions)}

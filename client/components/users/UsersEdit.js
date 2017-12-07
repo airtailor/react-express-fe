@@ -6,6 +6,7 @@ import { updatePassword, setGrowler } from '../../actions';
 import FormField from './../FormField';
 import SectionHeader from './../SectionHeader';
 import { ValidatePassword } from '../../utils/validations';
+<<<<<<< HEAD
 
 const mapStateToProps = store => {
   return {
@@ -16,6 +17,8 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({ updatePassword, setGrowler }, dispatch);
 };
+=======
+>>>>>>> sandbox
 
 class UsersEdit extends Component {
   constructor() {
@@ -27,7 +30,11 @@ class UsersEdit extends Component {
     };
   }
 
+<<<<<<< HEAD
   updateState = (key, value) => {
+=======
+  updateState(key, value) {
+>>>>>>> sandbox
     this.setState({ [key]: value }, () => {
       this.validatePasswords(
         this.state.password,
@@ -80,8 +87,8 @@ class UsersEdit extends Component {
           <FormField
             value={password}
             type="password"
-            fieldName={'password'}
-            title={'Reset Password:'}
+            fieldName="password"
+            title="Reset Password:"
             onChange={this.updateState}
           />
 
@@ -105,4 +112,16 @@ class UsersEdit extends Component {
   }
 }
 
+<<<<<<< HEAD
+=======
+const mapStateToProps = store => {
+  return {
+    user: store.currentUser,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ updatePassword, setGrowler }, dispatch);
+};
+>>>>>>> sandbox
 export default connect(mapStateToProps, mapDispatchToProps)(UsersEdit);
