@@ -65,6 +65,10 @@ const setEditStore = store => {
 };
 
 export const updateEditStore = (field, value) => {
+  if (field === 'provider_id') {
+    field = 'default_tailor_id';
+  }
+
   return {
     type: UPDATE_EDIT_STORE,
     store: { [field]: value },

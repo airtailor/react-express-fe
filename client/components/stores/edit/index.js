@@ -25,6 +25,8 @@ const mapStateToProps = store => {
   return {
     store: store.editStore,
     tailors: store.tailorList,
+    userRoles: store.userRoles,
+    currentUser: store.currentUser,
   };
 };
 
@@ -45,6 +47,8 @@ const mapDispatchToProps = dispatch => {
 class StoresEdit extends Component {
   static propTypes = {
     store: PropTypes.object.isRequired, // mapStateToProps
+    userRoles: PropTypes.object.isRequired, // mapStateToProps
+    currentUser: PropTypes.object.isRequired, // mapStateToProps
     getEditStore: PropTypes.func.isRequired, // mapDispatchToProps
     updateStore: PropTypes.func.isRequired, // mapDispatchToProps
     updateEditStore: PropTypes.func.isRequired, // mapDispatchToProps
@@ -54,13 +58,19 @@ class StoresEdit extends Component {
   };
 
   componentDidMount() {
-    this.props
-      .getEditStore(this.props.match.params.store_id)
-      .catch(err => console.log(err));
+    const {
+      getEditStore,
+      match: { params: { store_id: paramsId } },
+      currentUser: { user: { store_id: userStoreId } },
+      userRoles: { admin },
+    } = this.props;
+
+    const storeId = admin ? paramsId : userStoreId;
+
+    getEditStore(storeId).catch(err => console.log(err));
   }
 
   updateState = (field, value) => {
-    console.log(field, value);
     this.props.updateEditStore(field, value);
   };
 
