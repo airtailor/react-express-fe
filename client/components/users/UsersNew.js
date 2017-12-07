@@ -8,7 +8,9 @@ import { createUser, setGrowler } from '../../actions';
 import FormField from './../FormField';
 import SectionHeader from './../SectionHeader';
 import { ValidatePassword, ValidateEmail } from '../../utils/validations';
+
 import SelectRole from './SelectRole';
+import SelectStore from './SelectStore';
 
 const mapStateToProps = store => {
   return {};
@@ -33,6 +35,7 @@ class UsersNew extends Component {
       name: '',
       email: '',
       role: '',
+      storeId: '',
       password: '',
       passwordConfirmation: '',
     };
@@ -44,7 +47,7 @@ class UsersNew extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { password, passwordConfirmation, email, role } = this.state;
+    const { password, passwordConfirmation, email, role, storeId } = this.state;
 
     const emailIsValid = this.validateEmail(email);
     const passwordIsValid = this.validatePasswords(
@@ -53,6 +56,8 @@ class UsersNew extends Component {
     );
     if (emailIsValid && passwordIsValid) {
       createUser({
+        name,
+        store_id: storeId,
         email,
         password,
         password_confirmation: passwordConfirmation,
@@ -108,7 +113,14 @@ class UsersNew extends Component {
   }
 
   render() {
-    const { name, email, role, password, passwordConfirmation } = this.state;
+    const {
+      name,
+      email,
+      role,
+      password,
+      storeId,
+      passwordConfirmation,
+    } = this.state;
     return (
       <div>
         <SectionHeader includeLink={false} />
@@ -129,6 +141,7 @@ class UsersNew extends Component {
             onChange={this.updateState}
           />
           <SelectRole role={role} onChange={this.updateState} />
+          <SelectStore storeId={storeId} onChange={this.updateState} />
           <FormField
             value={password}
             type="password"

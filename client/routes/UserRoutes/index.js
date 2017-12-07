@@ -35,7 +35,7 @@ class UserRoutes extends Component {
             )}
         />
         <Route
-          path="/users"
+          path="/users/list"
           render={props =>
             loggedIn && admin ? (
               <UsersList {...props} />

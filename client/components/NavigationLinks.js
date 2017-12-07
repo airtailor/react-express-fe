@@ -69,7 +69,7 @@ class NavigationLinks extends Component {
 
           <NavigationLink
             cssClass="user-list-link"
-            route="/users"
+            route="/users/list"
             text="User List"
             image={homeImage}
           />
