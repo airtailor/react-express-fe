@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import UsersNew from '../../components/users/UsersNew';
 import UsersEdit from '../../components/users/UsersEdit';
+import UsersList from '../../components/users/list/';
 
 class UserRoutes extends Component {
   static propTypes = {

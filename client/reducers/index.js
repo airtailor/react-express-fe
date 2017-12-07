@@ -23,6 +23,7 @@ import currentCustomerReducer from './currentCustomerReducer';
 import cartCustomerReducer from '../components/orders/new/reducers/cartCustomerReducer';
 import currentReportReducer from '../components/reports/orders/ducks/currentReportReducer';
 import editStoreFormReducer from '../components/stores/edit/ducks/editStoreFormReducer';
+import usersListReducer from '../components/users/list/ducks/usersListReducer';
 import retailerListReducer from '../components/admin/retailers/ducks/retailerListReducer';
 
 const rootReducer = combineReducers({
@@ -51,6 +52,7 @@ const rootReducer = combineReducers({
   cartCustomer: cartCustomerReducer,
   currentReport: currentReportReducer,
   editStore: editStoreFormReducer,
+  usersList: usersListReducer,
 });
 
 export default rootReducer;

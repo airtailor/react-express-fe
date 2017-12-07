@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { setGrowler } from '../../actions';
-import SectionHeader from './../SectionHeader';
-import { ValidatePassword } from '../../utils/validations';
+import { setGrowler, updateUserList } from './ducks/actions';
+import SectionHeader from '../../SectionHeader';
+import { ValidatePassword } from '../../../utils/validations';
 
 const mapStateToProps = store => {
   return {
-    users: store.userList,
+    users: store.usersList,
   };
 };
 
@@ -31,4 +31,4 @@ class UsersList extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(UsersList);

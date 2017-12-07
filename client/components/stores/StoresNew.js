@@ -139,7 +139,7 @@ class StoresNew extends Component {
       type,
       name,
       phone,
-      address: { type, street, street_two, city, state_province, zip_code },
+      address: { street, street_two, city, state_province, zip_code },
     } = this.state;
 
     const updateStoreState = this.updateStoreState;
