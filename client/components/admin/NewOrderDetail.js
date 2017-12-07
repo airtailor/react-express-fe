@@ -60,7 +60,9 @@ class NewOrderDetail extends Component {
   refreshNewOrdersList(props) {
     const { setLoader, getNewOrders, removeLoader } = this.props;
     setLoader();
-    getNewOrders().then(() => removeLoader());
+    getNewOrders()
+      .then(() => removeLoader())
+      .catch(() => removeLoader());
   }
 
   componentDidMount() {
@@ -156,9 +158,11 @@ class NewOrderDetail extends Component {
       case 'in_progress':
         printPrompt = 'Creating Label';
       case 'label_created':
-        this.refreshNewOrdersList();
         printPrompt = 'Print Label';
-        onClick = () => window.print();
+        onClick = () => {
+          this.refreshNewOrdersList();
+          window.print();
+        };
         // NOTE: we need to make sure that orderComplete gets the correct shipment.
         shipmentDiv = <WelcomeKitPrint />;
         break;
