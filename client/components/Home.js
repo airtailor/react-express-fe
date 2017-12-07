@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import { getCurrentStore, getOrderAndMessagesCount } from '../actions';
 import SectionHeader from './SectionHeader';

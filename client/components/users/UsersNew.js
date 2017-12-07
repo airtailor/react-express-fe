@@ -110,4 +110,4 @@ class UsersNew extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(UsersNew);
