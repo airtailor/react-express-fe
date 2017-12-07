@@ -59,7 +59,6 @@ class NewOrders extends Component {
   }
 
   render() {
-    console.log('new orders', this.props.currentOrder);
     return (
       <div className="new-order-page">
         <SectionHeader text={`Home / ${this.props.currentStore.name}`} />

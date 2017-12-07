@@ -37,8 +37,6 @@ class SelectTailor extends Component {
       return <div />;
     }
 
-    console.log('tailorId', tailorId);
-
     return (
       <div className={'SelectTailor'}>
         <h3>{headerText}</h3>

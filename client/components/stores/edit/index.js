@@ -114,7 +114,6 @@ class StoresEdit extends Component {
     } = this.props.store;
 
     const tailorId = default_tailor_id ? default_tailor_id : '';
-    console.log('stores edit', tailorId);
 
     return (
       <div>

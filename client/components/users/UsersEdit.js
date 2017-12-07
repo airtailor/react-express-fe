@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {updatePassword, setGrowler} from '../../actions';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { updatePassword, setGrowler } from '../../actions';
 import FormField from './../FormField';
 import SectionHeader from './../SectionHeader';
-import {ValidatePassword} from '../../utils/validations';
+import { ValidatePassword } from '../../utils/validations';
 
 class UsersEdit extends Component {
   constructor() {
@@ -20,7 +20,7 @@ class UsersEdit extends Component {
   }
 
   updateState(key, value) {
-    this.setState({[key]: value}, () => {
+    this.setState({ [key]: value }, () => {
       this.validatePasswords(
         this.state.password,
         this.state.passwordConfirmation
@@ -30,7 +30,7 @@ class UsersEdit extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const {password, passwordConfirmation} = this.state;
+    const { password, passwordConfirmation } = this.state;
     if (password === passwordConfirmation) {
       const id = this.props.user.user.id;
       this.props
@@ -42,7 +42,7 @@ class UsersEdit extends Component {
         .then(res => {
           const kind = 'success';
           const message = 'Password Updated';
-          this.props.setGrowler({kind, message});
+          this.props.setGrowler({ kind, message });
           this.setState({
             password: '',
             passwordConfirmation: '',
@@ -56,15 +56,15 @@ class UsersEdit extends Component {
   validatePasswords(password, passwordConfirmation) {
     if (password === passwordConfirmation) {
       if (ValidatePassword(password)) {
-        this.setState({submitDisabled: false});
+        this.setState({ submitDisabled: false });
         return;
       }
     }
-    this.setState({submitDisabled: true});
+    this.setState({ submitDisabled: true });
   }
 
   render() {
-    const {password, passwordConfirmation, submitDisabled} = this.state;
+    const { password, passwordConfirmation, submitDisabled } = this.state;
     return (
       <div>
         <h3>Edit User</h3>
@@ -72,8 +72,8 @@ class UsersEdit extends Component {
           <FormField
             value={password}
             type="password"
-            fieldName={'password'}
-            title={'Reset Password:'}
+            fieldName="password"
+            title="Reset Password:"
             onChange={this.updateState}
           />
 
@@ -104,6 +104,6 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({updatePassword, setGrowler}, dispatch);
+  return bindActionCreators({ updatePassword, setGrowler }, dispatch);
 };
 export default connect(mapStateToProps, mapDispatchToProps)(UsersEdit);
