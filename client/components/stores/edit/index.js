@@ -101,6 +101,19 @@ class StoresEdit extends Component {
       });
   };
 
+  renderTailorSelect(tailorId, admin) {
+    if (admin) {
+      return (
+        <SelectTailor
+          onChange={this.updateState}
+          fieldName="default_tailor_id"
+          headerText="Set Default Tailor"
+          tailorId={tailorId}
+        />
+      );
+    }
+  }
+
   renderForm() {
     const {
       name,
@@ -112,6 +125,8 @@ class StoresEdit extends Component {
       zip_code,
       default_tailor_id,
     } = this.props.store;
+
+    const { admin } = this.props.userRoles;
 
     const tailorId = default_tailor_id ? default_tailor_id : '';
 
@@ -132,12 +147,7 @@ class StoresEdit extends Component {
             onChange={this.updateState}
           />
 
-          <SelectTailor
-            onChange={this.updateState}
-            fieldName="default_tailor_id"
-            headerText="Set Default Tailor"
-            tailorId={tailorId}
-          />
+          {this.renderTailorSelect(tailorId, admin)}
 
           <FormField
             value={street}
