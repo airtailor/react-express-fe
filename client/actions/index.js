@@ -14,7 +14,6 @@ import {
   SET_CURRENT_ORDER,
   SET_ITEM_TYPES,
   SET_TAILOR_LIST,
-  SET_STORE_LIST,
   SET_COMPANY_LIST,
   SET_CUSTOMER_MEASUREMENTS,
   SET_CURRENT_PRINT,
@@ -282,23 +281,6 @@ export function getTailorList() {
         return Axios.get(url)
           .then(res => {
             dispatch(setTailorList(res.data.body));
-          })
-          .catch(err => {
-            debugger;
-          });
-      });
-  };
-}
-
-export function getStoreList() {
-  const url = `${expressApi}/stores/`;
-  return dispatch => {
-    return validateToken(dispatch)
-      .then(setTokens)
-      .then(() => {
-        return Axios.get(url)
-          .then(res => {
-            dispatch(setStoreList(res.data.body));
           })
           .catch(err => {
             debugger;
@@ -850,13 +832,6 @@ export function setTailorList(tailors) {
   return {
     type: SET_TAILOR_LIST,
     tailors,
-  };
-}
-
-export function setStoreList(storeList) {
-  return {
-    type: SET_STORE_LIST,
-    storeList,
   };
 }
 
