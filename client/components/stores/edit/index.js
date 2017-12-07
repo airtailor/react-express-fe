@@ -32,7 +32,6 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-<<<<<<< HEAD:client/components/stores/edit/index.js
     {
       getEditStore,
       updateStore,
@@ -41,22 +40,11 @@ const mapDispatchToProps = dispatch => {
       setLoader,
       removeLoader,
     },
-=======
-    { getCurrentStore, updateStore, setGrowler, setLoader, removeLoader },
->>>>>>> new-component-users-new:client/components/stores/StoresEdit.js
     dispatch
   );
 };
 
 class StoresEdit extends Component {
-<<<<<<< HEAD:client/components/stores/edit/index.js
-=======
-  constructor(props) {
-    super();
-    this.state = {};
-  }
-
->>>>>>> new-component-users-new:client/components/stores/StoresEdit.js
   static propTypes = {
     store: PropTypes.object.isRequired, // mapStateToProps
     userRoles: PropTypes.object.isRequired, // mapStateToProps
@@ -70,7 +58,6 @@ class StoresEdit extends Component {
   };
 
   componentDidMount() {
-<<<<<<< HEAD:client/components/stores/edit/index.js
     const {
       getEditStore,
       match: { params: { store_id: paramsId } },
@@ -87,19 +74,6 @@ class StoresEdit extends Component {
     this.props.updateEditStore(field, value);
   };
 
-=======
-    const store = { ...this.props.store };
-    this.setState(store);
-    this.props
-      .getCurrentStore(this.props.match.params.store_id)
-      .catch(err => console.log(err));
-  }
-
-  updateState = (field, value) => {
-    this.setState({ [field]: value });
-  };
-
->>>>>>> new-component-users-new:client/components/stores/StoresEdit.js
   handleSubmit = e => {
     e.preventDefault();
     var self = this;
@@ -118,33 +92,14 @@ class StoresEdit extends Component {
         } else if (res.data.body) {
           const kind = 'success';
           const message = 'Store Updated Successfully!';
-<<<<<<< HEAD:client/components/stores/edit/index.js
           this.props.setGrowler({ kind, message });
         }
       })
-=======
-          this.props.getCurrentStore(store.id);
-
-          this.props.setGrowler({ kind, message });
-        }
-      })
-      .then(res => {
-        const kind = 'success';
-        const message = 'Store Updated Successfully!';
-        this.props.getCurrentStore(store.id).then(() => {
-          this.setState(this.props.store);
-        });
-
-        this.props.setGrowler({ kind, message });
-        this.props.removeLoader();
-      })
->>>>>>> new-component-users-new:client/components/stores/StoresEdit.js
       .catch(err => {
         debugger;
         console.log(err);
       });
   };
-<<<<<<< HEAD:client/components/stores/edit/index.js
 
   renderTailorSelect(tailorId, admin) {
     if (admin) {
@@ -174,11 +129,6 @@ class StoresEdit extends Component {
     const { admin } = this.props.userRoles;
 
     const tailorId = default_tailor_id ? default_tailor_id : '';
-=======
-
-  renderForm(data) {
-    const { name, phone, street, unit, city, state_province, zip_code } = data;
->>>>>>> new-component-users-new:client/components/stores/StoresEdit.js
 
     return (
       <div>
@@ -241,12 +191,8 @@ class StoresEdit extends Component {
 
   render() {
     const { store } = this.props;
-<<<<<<< HEAD:client/components/stores/edit/index.js
 
     if (isEmpty(store)) {
-=======
-    if (!store) {
->>>>>>> new-component-users-new:client/components/stores/StoresEdit.js
       return <div>Loading...</div>;
     }
 

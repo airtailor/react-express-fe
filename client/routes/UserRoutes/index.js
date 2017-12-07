@@ -33,6 +33,15 @@ class UserRoutes extends Component {
               <Redirect to="/sign_in" />
             )}
         />
+        <Route
+          path="/users"
+          render={props =>
+            loggedIn && admin ? (
+              <UsersList {...props} />
+            ) : (
+              <Redirect to="/sign_in" />
+            )}
+        />
       </div>
     );
   }
