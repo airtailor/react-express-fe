@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import { getCurrentStore, getOrderAndMessagesCount } from '../actions';
 import SectionHeader from './SectionHeader';
 import OrderCard from './OrderCard';
 import OrderCardIcon from './OrderCardIcon';
 import { ordersImage, messageImage, exclamationImage } from '../images';
-import PropTypes from 'prop-types';
 
 const mapStateToProps = store => {
   return {
@@ -40,7 +40,6 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    console.log('home');
     const {
       currentUser: { user: { store_id: storeId } },
       getCurrentStore,

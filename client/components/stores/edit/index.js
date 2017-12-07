@@ -92,7 +92,6 @@ class StoresEdit extends Component {
         } else if (res.data.body) {
           const kind = 'success';
           const message = 'Store Updated Successfully!';
-
           this.props.setGrowler({ kind, message });
         }
       })
