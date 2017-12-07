@@ -3,12 +3,13 @@ const Axios = require('axios');
 const router = express.Router();
 const { apiUrl, getHeaders } = require('../../config');
 
-router.get('/users', (req, res) => {
+router.get('/list', (req, res) => {
   const headers = getHeaders(req);
-  const url = `${apiUrl}/api/users`;
+  const url = `${apiUrl}/api/users/`;
 
   Axios.get(url, { headers })
     .then(response => {
+      console.log('\n\n\n\n', 'RESPONSE', response);
       res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {
