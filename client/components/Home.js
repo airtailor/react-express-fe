@@ -20,6 +20,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    console.log('home');
     const {
       currentUser: { user: { store_id: storeId } },
       getCurrentStore,
