@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { SET_USER_LIST, expressApi } from './constants';
+import { SET_USERS_LIST, expressApi } from './constants';
 
 export const {
   setGrowler,
@@ -9,7 +9,7 @@ export const {
   setTokens,
 } = require('../../../../actions');
 
-export const getUserList = id => {
+export const getUsersList = id => {
   const url = `${expressApi}/users`;
   return dispatch => {
     return validateToken()
@@ -27,9 +27,9 @@ export const getUserList = id => {
   };
 };
 
-const setUserList = userList => {
+const setUsersList = usersList => {
   return {
-    type: SET_EDIT_STORE,
-    userList,
+    type: SET_USERS_LIST,
+    usersList,
   };
 };

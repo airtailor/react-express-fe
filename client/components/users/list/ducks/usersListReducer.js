@@ -11,4 +11,4 @@ const usersListReducer = (state = initialState, action) => {
   }
 };
 
-export default editStoreFormReducer;
+export default usersListReducer;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { setGrowler, updateUserList } from './ducks/actions';
+import { setGrowler, getUsersList } from './ducks/actions';
 import SectionHeader from '../../SectionHeader';
 import { ValidatePassword } from '../../../utils/validations';
 
@@ -13,10 +13,11 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ setGrowler }, dispatch);
+  return bindActionCreators({ setGrowler, getUsersList }, dispatch);
 };
 
 class UsersList extends Component {
+  componentDidMount() {}
   render() {
     const { users } = this.props;
     console.log('USERS', users);
