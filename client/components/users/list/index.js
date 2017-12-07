@@ -4,13 +4,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setLoader, removeLoader, getUsersList } from './ducks/actions';
 import SectionHeader from '../../SectionHeader';
-import { ValidatePassword } from '../../../utils/validations';
 import { isEmpty, startCase } from 'lodash';
 
 const mapStateToProps = store => {
-  return {
-    users: store.usersList,
-  };
+  return { users: store.usersList };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -21,6 +18,12 @@ const mapDispatchToProps = dispatch => {
 };
 
 class UsersList extends Component {
+  static propTypes = {
+    users: PropTypes.array.isRequired, // mapStateToProps
+    setLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    getUsersList: PropTypes.func.isRequired, // mapDispatchToProps
+  };
   componentDidMount() {
     const { users } = this.props;
     if (isEmpty(users)) {
@@ -30,38 +33,21 @@ class UsersList extends Component {
     }
   }
 
-  extractRoles(roles) {
-    const reducer = (acc, key, i) => {
-      if (roles[key]) {
-        if (i == 0) {
-          return startCase(key);
-        } else {
-          return startCase(key) + ', ' + acc;
-        }
-      }
-    };
-    return Object.keys(roles).reduce(reducer, '');
+  extractRoles(roles, initVal = '') {
+    return Object.keys(roles).reduce(
+      (acc, key, i) =>
+        roles[key] ? startCase(key) + (i == 0 ? null : ', ') + acc : null,
+      initVal
+    );
   }
 
   renderUserRow = user => {
     const { id, email, store } = user;
     const { valid_roles: roles } = user;
-
-    let roleString;
-    if (!isEmpty(roles)) {
-      roleString = this.extractRoles(roles);
-    } else {
-      roleString = 'N/A';
-    }
-
-    console.log(roles, roleString);
-
-    let storeName = 'N/A';
-    if (store) {
-      storeName = store.name;
-    }
-
+    const roleString = isEmpty(roles) ? 'N/A' : this.extractRoles(roles);
+    const storeName = store ? store.name : 'N/A';
     const route = `/users/${id}/edit`;
+
     return (
       <div key={id}>
         <div className="user-data-row">
@@ -109,12 +95,9 @@ class UsersList extends Component {
   render() {
     const userHeaders = this.renderUserHeaders;
     const userRows = this.renderUserRows;
-    const { users } = this.props;
-    console.log(users);
     return (
       <div>
-        // pass in users/new to the link
-        <SectionHeader text={'Manage Users'} />
+        <SectionHeader text={'Manage Users'} link={'/users/new'} />
         <div className="users">
           {userHeaders()}
           {userRows()}
