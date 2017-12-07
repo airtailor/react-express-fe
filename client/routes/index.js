@@ -10,6 +10,7 @@ import ConversationRoutes from './ConversationRoutes';
 import AdminRoutes from './AdminRoutes';
 import StoreRoutes from './StoreRoutes';
 import CustomerRoutes from './CustomerRoutes';
+import UserRoutes from './UserRoutes';
 
 class AvailableRoutes extends Component {
   static propTypes = {
@@ -20,7 +21,6 @@ class AvailableRoutes extends Component {
   };
   render() {
     const { loggedIn, admin, retailer, tailor } = this.props;
-
     return (
       <div className="content">
         <SiteRoutes {...this.props} />
@@ -31,6 +31,7 @@ class AvailableRoutes extends Component {
         <ConversationRoutes {...this.props} />
         <AdminRoutes {...this.props} />
         <CustomerRoutes {...this.props} />
+        <UserRoutes {...this.props} />
       </div>
     );
   }
