@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { setLoader, removeLoader, getUsersList } from './ducks/actions';
 import SectionHeader from '../../SectionHeader';
 import { ValidatePassword } from '../../../utils/validations';
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty, startCase } from 'lodash';
 
 const mapStateToProps = store => {
   return {
@@ -23,7 +23,6 @@ const mapDispatchToProps = dispatch => {
 class UsersList extends Component {
   componentDidMount() {
     const { users } = this.props;
-    console.log('USERS (DID MOUNT)', users);
     if (isEmpty(users)) {
       const { setLoader, removeLoader, getUsersList } = this.props;
       setLoader();
@@ -31,8 +30,31 @@ class UsersList extends Component {
     }
   }
 
+  extractRoles(roles) {
+    const reducer = (acc, key, i) => {
+      if (roles[key]) {
+        if (i == 0) {
+          return startCase(key);
+        } else {
+          return startCase(key) + ', ' + acc;
+        }
+      }
+    };
+    return Object.keys(roles).reduce(reducer, '');
+  }
+
   renderUserRow = user => {
     const { id, email, store } = user;
+    const { valid_roles: roles } = user;
+
+    let roleString;
+    if (!isEmpty(roles)) {
+      roleString = this.extractRoles(roles);
+    } else {
+      roleString = 'N/A';
+    }
+
+    console.log(roles, roleString);
 
     let storeName = 'N/A';
     if (store) {
@@ -47,6 +69,7 @@ class UsersList extends Component {
             <div className="user-data-cell">{id}</div>
             <div className="user-data-cell">{email}</div>
             <div className="user-data-cell">{storeName}</div>
+            <div className="user-data-cell">{roleString}</div>
           </Link>
         </div>
       </div>
@@ -75,6 +98,7 @@ class UsersList extends Component {
             <h3 className="user-header-cell">Id</h3>
             <h3 className="user-header-cell">Email</h3>
             <h3 className="user-header-cell">Store Name</h3>
+            <h3 className="user-header-cell">Role</h3>
           </div>
           <hr className="user-header-break-row" />
         </div>
