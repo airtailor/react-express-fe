@@ -35,14 +35,14 @@
 
 .user-headers-container {
   @extend .table-headers-container;
-  padding-left: 6%;
-  padding-right: 8%;
+  padding-left: 0%;
+  padding-right: 0%;
 }
 
 .user-container {
   @extend .table-row-container;
-  padding-left: 6%;
-  padding-right: 8%;
+  padding-left: 0%;
+  padding-right: 0%;
 }
 
 .user-data-row {

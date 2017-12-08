@@ -37,7 +37,7 @@ class UsersList extends Component {
   extractRoles(roles, initVal = '') {
     return Object.keys(roles).reduce(
       (acc, key, i) =>
-        roles[key] ? startCase(key) + (i == 0 ? null : ', ') + acc : null,
+        roles[key] ? startCase(key) + (i == 0 ? '' : ', ') + acc : '',
       initVal
     );
   }
@@ -67,7 +67,7 @@ class UsersList extends Component {
     const { users } = this.props;
     if (!isEmpty(users)) {
       const userRowSet = users.map(user => this.renderUserRow(user));
-      return <div className="users-container">{userRowSet}</div>;
+      return <div className="user-container">{userRowSet}</div>;
     } else {
       return (
         <div className="table-row">
