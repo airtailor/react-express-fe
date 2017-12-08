@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
 
 import { getTailorList } from '../../../actions';
 
@@ -21,6 +22,13 @@ class SelectTailor extends Component {
   componentDidMount() {
     this.props.getTailorList().catch(err => console.log(err));
   }
+
+  static propTypes = {
+    tailors: PropTypes.array.isRequired, // mapStateToProps
+    getTailorList: PropTypes.func.isRequired, // mapDispatchToProps
+    onChange: PropTypes.func.isRequired, // parentComponent
+    provider_id: PropTypes.string, // parentComponent
+  };
 
   render() {
     const {

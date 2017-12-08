@@ -99,12 +99,20 @@ export const userSignIn = (email, password) => {
 export function validateToken(dispatch = undefined) {
   const url = `${expressApi}/auth/validate_token`;
   return Axios.post(url).then(res => {
-    if (dispatch) {
-      const { id, email, store_id, valid_roles: roles } = res.data.body;
-      dispatch(setUserRole(roles));
-      dispatch(setCurrentUser({ id, email, store_id }));
+    if (res.data.status === 401) {
+      if (dispatch) {
+        dispatch(signOutCurrentUser());
+      } else {
+        return { errors: true, status: 401 };
+      }
+    } else {
+      if (dispatch) {
+        const { id, email, store_id, valid_roles } = res.data.body;
+        dispatch(setUserRole(valid_roles));
+        dispatch(setCurrentUser({ id, email, store_id }));
+      }
+      return res;
     }
-    return res;
   });
 }
 
@@ -242,6 +250,15 @@ export function createStore(data) {
     .then(setTokens)
     .then(() => {
       const url = `${expressApi}/stores/`;
+      return Axios.post(url, data);
+    });
+}
+
+export function createUser(data) {
+  return validateToken()
+    .then(setTokens)
+    .then(() => {
+      const url = `${expressApi}/users/create_user`;
       return Axios.post(url, data);
     });
 }
