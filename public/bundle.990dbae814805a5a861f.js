@@ -3366,7 +3366,6 @@ var Home = function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      console.log('home');
       var _props = this.props,
           storeId = _props.currentUser.user.store_id,
           getCurrentStore = _props.getCurrentStore;
@@ -22437,4 +22436,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAi8AAAJmCAYAAAHj
 
 /***/ })
 ],[417]);
-//# sourceMappingURL=bundle.926dbe6c7e2cb484a7fc.js.map
+//# sourceMappingURL=bundle.990dbae814805a5a861f.js.map

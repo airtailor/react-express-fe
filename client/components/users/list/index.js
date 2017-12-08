@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { setLoader, removeLoader, getUsersList } from './ducks/actions';
 import SectionHeader from '../../SectionHeader';
 import { isEmpty, startCase } from 'lodash';
+import PropTypes from 'prop-types';
 
 const mapStateToProps = store => {
   return { users: store.usersList };
