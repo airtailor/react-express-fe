@@ -52,4 +52,5 @@
 .user-data-cell {
   @extend .table-cell;
   flex-basis: 25%;
+  word-break: break-all;
 }
