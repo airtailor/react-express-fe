@@ -87,8 +87,8 @@ class UsersEdit extends Component {
 
           <FormField
             value={passwordConfirmation}
-            fieldName={'passwordConfirmation'}
-            title={'Password Confirmation:'}
+            fieldName="passwordConfirmation"
+            title="Password Confirmation:"
             type="password"
             onChange={this.updateState}
           />

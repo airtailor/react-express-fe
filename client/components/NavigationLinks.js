@@ -76,13 +76,6 @@ class NavigationLinks extends Component {
 
           <NavigationLink
             cssClass="new-order-link"
-            route="/orders/new"
-            text="New Order"
-            image={homeImage}
-          />
-
-          <NavigationLink
-            cssClass="new-order-link"
             route="/admin/companies/new"
             text="New Company"
             image={homeImage}
