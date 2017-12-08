@@ -1,13 +1,28 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
-import {getCurrentStore, getOrderAndMessagesCount} from '../actions';
+
+import { getCurrentStore, getOrderAndMessagesCount } from '../actions';
+
 import SectionHeader from './SectionHeader';
 import OrderCard from './OrderCard';
 import OrderCardIcon from './OrderCardIcon';
-import {ordersImage, messageImage, exclamationImage} from '../images';
+import { ordersImage, messageImage, exclamationImage } from '../images';
+
+const mapStateToProps = store => {
+  return {
+    currentUser: store.currentUser,
+    userRoles: store.userRoles,
+    currentStore: store.currentStore,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ getCurrentStore }, dispatch);
+};
 
 class Home extends Component {
   constructor() {
@@ -19,12 +34,24 @@ class Home extends Component {
     };
   }
 
+  static propTypes = {
+    currentUser: PropTypes.object.isRequired, // mapStateToProps
+    userRoles: PropTypes.object.isRequired, // mapStateToProps
+    currentStore: PropTypes.object.isRequired, // mapStateToProps
+    getCurrentStore: PropTypes.func.isRequired, // mapDispatchToProps
+  };
+
   componentDidMount() {
-    const {currentUser, getCurrentStore} = this.props;
-    getOrderAndMessagesCount(this.props.currentUser.user.store_id).then(res => {
+    const {
+      currentUser: { user: { store_id: storeId } },
+      getCurrentStore,
+    } = this.props;
+
+    getOrderAndMessagesCount(storeId).then(res => {
       this.setState(res.data.body);
     });
-    getCurrentStore(currentUser.user.store_id).catch(err => {
+
+    getCurrentStore(storeId).catch(err => {
       console.log(err);
     });
   }
@@ -35,6 +62,7 @@ class Home extends Component {
       late_orders_count,
       unread_messages_count,
     } = this.state;
+
     return (
       <div className="store-boxes">
         <OrderCard
@@ -138,8 +166,8 @@ class Home extends Component {
 
   renderStore() {
     if (!isEmpty(this.props.currentStore)) {
-      const {currentStore, currentUser, userRoles} = this.props;
-      const {id, name} = currentStore;
+      const { currentStore, currentUser, userRoles } = this.props;
+      const { id, name } = currentStore;
       const roles = userRoles;
       const storeEditPath = `/stores/${id}/edit`;
       const storeOrShop = roles.retailer ? 'store' : 'shop';
@@ -163,7 +191,7 @@ class Home extends Component {
       <div>
         <SectionHeader
           text={`Home / ${this.props.currentStore.name}`}
-          showCart={ !this.props.userRoles.tailor ? ( true ) : ( false ) }
+          showCart={!this.props.userRoles.tailor ? true : false}
           link={'/orders/new'}
           rotate={''}
         />
@@ -172,17 +200,5 @@ class Home extends Component {
     );
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    currentUser: store.currentUser,
-    userRoles: store.userRoles,
-    currentStore: store.currentStore
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({getCurrentStore}, dispatch);
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

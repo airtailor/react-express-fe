@@ -4,15 +4,20 @@ import logo from '../../images/logo.png';
 import isEmpty from 'lodash/isEmpty';
 import { getShipmentForRole } from '../shipping/shippingFunctions';
 import { renderAlterationList } from '../../utils/alterationsLists';
+import PropTypes from 'prop-types';
+
+const mapStateToProps = store => {
+  return {
+    currentOrder: store.currentOrder,
+    userRoles: store.userRoles,
+  };
+};
 
 class OrderComplete extends Component {
-  constructor(props) {
-    super();
-
-    this.renderBulkShippingLabels = this.renderBulkShippingLabels.bind(this);
-    this.renderShippingLabel = this.renderShippingLabel.bind(this);
-  }
-
+  static propTypes = {
+    currentOrder: PropTypes.object.isRequired, // mapStateToProps
+    userRoles: PropTypes.object.isRequired, // mapStateToProps
+  };
   renderShippingLabelImage(shippingLabel) {
     return (
       <img
@@ -94,7 +99,7 @@ class OrderComplete extends Component {
     });
   }
 
-  renderBulkShippingLabels(shipmentSet) {
+  renderBulkShippingLabels = shipmentSet => {
     const shipment = shipmentSet[0];
     const { orders } = shipment;
     const { userRoles: roles } = this.props;
@@ -121,9 +126,9 @@ class OrderComplete extends Component {
         </div>
       );
     }
-  }
+  };
 
-  renderShippingLabel(order, shipment) {
+  renderShippingLabel = (order, shipment) => {
     const { userRoles: roles } = this.props;
     const labelShipment = shipment || getShipmentForRole(roles, order);
     const { shipping_label: shippingLabel } = labelShipment;
@@ -141,7 +146,7 @@ class OrderComplete extends Component {
         {items(order)}
       </div>
     );
-  }
+  };
 
   render() {
     const { currentOrder: order, shipmentSet } = this.props;
@@ -162,12 +167,5 @@ class OrderComplete extends Component {
     }
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    currentOrder: store.currentOrder,
-    userRoles: store.userRoles
-  };
-};
 
 export default connect(mapStateToProps)(OrderComplete);

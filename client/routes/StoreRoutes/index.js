@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {Route, Redirect, Switch} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import StoresEdit from '../../components/stores/StoresEdit';
+import StoresEdit from '../../components/stores/edit/';
 import StoresNew from '../../components/stores/StoresNew';
 import Home from '../../components/Home.js';
 
@@ -13,7 +13,7 @@ class StoreRoutes extends Component {
   };
 
   render() {
-    const {loggedIn, admin} = this.props;
+    const { loggedIn, admin } = this.props;
     return (
       <div>
         <Switch>

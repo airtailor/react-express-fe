@@ -61,16 +61,16 @@ class NavigationLinks extends Component {
           />
 
           <NavigationLink
-            cssClass="new-store-link"
-            route="/stores/new"
-            text="New Store"
+            cssClass="new-user-link"
+            route="/users/new"
+            text="New User"
             image={homeImage}
           />
 
           <NavigationLink
-            cssClass="new-order-link"
-            route="/orders/new"
-            text="New Order"
+            cssClass="new-store-link"
+            route="/stores/new"
+            text="New Store"
             image={homeImage}
           />
 
@@ -90,8 +90,8 @@ class NavigationLinks extends Component {
 
           <NavigationLink
             cssClass="new-order-link"
-            route="/admin/reports"
-            text="Reports"
+            route="/admin/retailers"
+            text="Retailers"
             image={tailorsImage}
           />
 

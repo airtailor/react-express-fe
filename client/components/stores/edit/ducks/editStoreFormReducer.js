@@ -1,15 +1,19 @@
-import { SET_CURRENT_STORE } from '../utils/constants';
+import { SET_EDIT_STORE, UPDATE_EDIT_STORE } from './constants';
 import isEmpty from 'lodash/isEmpty';
 
 const initialState = {};
 
-const currentStoreReducer = (state = initialState, action) => {
+// lots of repeated code from currentStoreReducer espec. with address stuff
+
+const editStoreFormReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_CURRENT_STORE:
+    case SET_EDIT_STORE:
       const store = formatAddressForStore(action.store);
       return store;
+    case UPDATE_EDIT_STORE:
+      return { ...state, ...action.store };
     default:
-      return state;
+      return { ...state };
   }
 };
 
@@ -24,7 +28,7 @@ const formatAddressForStore = store => {
 };
 
 const formatValidAddressIntoStore = store => {
-  const { id, phone, type, name, address } = store;
+  const { id, phone, type, name, address, default_tailor_id } = store;
   const {
     number = '',
     street = '',
@@ -49,6 +53,7 @@ const formatValidAddressIntoStore = store => {
     city,
     state_province,
     zip_code,
+    default_tailor_id,
   };
 };
 
@@ -93,4 +98,4 @@ const storeHasAddress = store => {
   return false;
 };
 
-export default currentStoreReducer;
+export default editStoreFormReducer;

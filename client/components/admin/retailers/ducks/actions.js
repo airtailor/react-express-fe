@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { SET_CURRENT_REPORT, expressApi } from './constants';
+import { SET_RETAILER_LIST, expressApi } from './constants';
 
 export const {
   setLoader,
@@ -8,27 +8,26 @@ export const {
   setTokens,
 } = require('../../../../actions');
 
-export const getCurrentReport = () => {
-  const url = `/api/reports/currentReport`;
+export function getRetailerList() {
+  const url = `${expressApi}/stores/retailers`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
           .then(res => {
-            dispatch(setCurrentReport(res.data.body));
-            return res;
+            dispatch(setRetailerList(res.data.body));
           })
           .catch(err => {
             debugger;
           });
       });
   };
-};
+}
 
-const setCurrentReport = report => {
+function setRetailerList(retailers) {
   return {
-    type: SET_CURRENT_REPORT,
-    report,
+    type: SET_RETAILER_LIST,
+    retailers,
   };
-};
+}
