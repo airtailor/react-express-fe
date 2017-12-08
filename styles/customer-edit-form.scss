@@ -4,7 +4,9 @@
 }
 
 .customer-edit-form-container {
-  width: 100%;
+  @extend .form-container;
+  padding-left: 5%;
+  padding-top: 2%;
 }
 
 .customer-edit-form-button-container {
@@ -43,4 +45,8 @@
 
 .customer-edit-form-input[type='submit'] {
   @extend .form-input;
+}
+
+.customer-edit-form-back-link {
+  @extend .short-button;
 }

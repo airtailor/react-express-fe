@@ -110,11 +110,7 @@ class CustomerEdit extends Component {
 
     const backLink = `/orders/${currentOrderId}`;
     const callback = e => this.handleSubmit(e);
-
-    let headerText = `Customer / Edit`;
-    if (id) {
-      headerText = `Customer / Edit / #${id}`;
-    }
+    const headerText = `Customer / Edit ${id ? `/ #${id}` : ''}`;
 
     const formName = 'customer-edit-form';
     const containerClass = `${formName}-container`;
@@ -124,7 +120,9 @@ class CustomerEdit extends Component {
     return (
       <div>
         <SectionHeader text={headerText} includeLink={false} />
-        <Link to={backLink}>Back</Link>
+        <Link className="customer-edit-form-back-link" to={backLink}>
+          Back
+        </Link>
         <div className={containerClass}>
           <form className={formName} onSubmit={callback}>
             <FormField
