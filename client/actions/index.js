@@ -44,6 +44,7 @@ import {
   SET_CURRENT_CUSTOMER,
   UPDATE_CURRENT_CUSTOMER,
   SET_CART_CUSTOMER,
+  SET_STORE_LIST,
 } from '../utils/constants';
 
 import { removeFalseyValuesFromObject } from '../utils/format';
@@ -662,7 +663,37 @@ export function getCurrentCustomer(id) {
   };
 }
 
+export function getStoreList() {
+  const url = `${expressApi}/stores`;
+  return dispatch => {
+    return validateToken(dispatch)
+      .then(setTokens)
+      .then(() => {
+        return Axios.get(url)
+          .then(res => {
+            if (!res.data.body.errors) {
+              dispatch(setStoreList(res.data.body));
+              return res.data.body;
+            } else {
+              console.log('hmmm something went wrong', res);
+            }
+          })
+          .catch(err => {
+            debugger;
+          });
+      })
+      .catch(err => console.log('err index.js line 488', err));
+  };
+}
+
 // actions
+
+function setStoreList(stores) {
+  return {
+    type: SET_STORE_LIST,
+    stores
+  }
+}
 
 function setCurrentCustomer(customer) {
   return {

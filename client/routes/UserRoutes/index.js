@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import UsersNew from '../../components/users/UsersNew';
 import UsersEdit from '../../components/users/UsersEdit';
+import UsersList from '../../components/users/list/';
 
 class UserRoutes extends Component {
   static propTypes = {
@@ -29,6 +30,15 @@ class UserRoutes extends Component {
           render={props =>
             loggedIn && admin ? (
               <UsersEdit {...props} />
+            ) : (
+              <Redirect to="/sign_in" />
+            )}
+        />
+        <Route
+          path="/users/list"
+          render={props =>
+            loggedIn && admin ? (
+              <UsersList {...props} />
             ) : (
               <Redirect to="/sign_in" />
             )}

@@ -212,6 +212,25 @@ router.get('/:store_id/conversations', (req, res) => {
     });
 });
 
+router.get('/', (req, res) => {
+  const headers = getHeaders(req);
+  const url = `${apiUrl}/api/stores`;
+
+  Axios.get(url, { headers })
+    .then(response => {
+      res.json({ headers: response.headers, body: response.data });
+    })
+    .catch(err => {
+      if (err instanceof Error) {
+        console.log('@@@@@@@@@@@@@', err.response.status);
+        res.json(err.response.status);
+      } else {
+        console.log('error: ', err);
+        res.json(err);
+      }
+    });
+});
+
 router.get('/:store_id/conversations/:conversation_id', (req, res) => {
   const headers = getHeaders(req);
   const { store_id, conversation_id } = req.params;

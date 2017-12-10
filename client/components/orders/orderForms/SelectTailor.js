@@ -19,16 +19,16 @@ const mapDispatchToProps = dispatch => {
 };
 
 class SelectTailor extends Component {
-  componentDidMount() {
-    this.props.getTailorList().catch(err => console.log(err));
-  }
-
   static propTypes = {
     tailors: PropTypes.array.isRequired, // mapStateToProps
     getTailorList: PropTypes.func.isRequired, // mapDispatchToProps
     onChange: PropTypes.func.isRequired, // parentComponent
     provider_id: PropTypes.string, // parentComponent
   };
+
+  componentDidMount() {
+    this.props.getTailorList().catch(err => console.log(err));
+  }
 
   render() {
     const {
