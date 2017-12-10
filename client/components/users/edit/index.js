@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updatePassword, setGrowler } from '../../../actions';
-import FormField from '.,/../FormField';
-import SectionHeader from '.,/../SectionHeader';
+import FormField from '../../FormField';
+import WithSectionHeader from '../../HOC/WithSectionHeader';
 import { ValidatePassword } from '../../../utils/validations';
 import EditPassword from './EditPassword';
 import SelectRole from '../SelectRole';
@@ -77,6 +77,8 @@ class UsersEdit extends Component {
     const { password, passwordConfirmation, submitDisabled } = this.state;
     return (
       <div>
+        <h2> Edit User </h2>
+        <p> Full Functionality Available Soon </p>
         <SelectRole {...this.props} />
         <EditPassword {...this.props} />;
       </div>
@@ -84,4 +86,6 @@ class UsersEdit extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  WithSectionHeader(UsersEdit)
+);

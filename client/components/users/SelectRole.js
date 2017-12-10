@@ -11,7 +11,7 @@ class SelectRole extends Component {
   render() {
     const { onChange, role } = this.props;
 
-    if (!role.admin) {
+    if (role && !role.admin) {
       return <div />;
     }
 

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { updatePassword, setGrowler } from '../../actions';
-import FormField from '.,/../FormField';
+import { updatePassword, setGrowler } from '../../../actions';
+import FormField from '../../FormField';
 import { ValidatePassword } from '../../../utils/validations';
 
 const mapStateToProps = store => {

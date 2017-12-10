@@ -1,4 +1,4 @@
-import { SET_EDIT_USER } from './constants';
+import { SET_EDIT_USER, UPDATE_EDIT_USER } from './constants';
 
 const initialState = {
   name: '',

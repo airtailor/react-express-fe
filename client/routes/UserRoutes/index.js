@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import UsersNew from '../../components/users/UsersNew';
-import UsersEdit from '../../components/users/UsersEdit';
+import UsersEdit from '../../components/users/edit';
 import UsersList from '../../components/users/list/';
 
 class UserRoutes extends Component {

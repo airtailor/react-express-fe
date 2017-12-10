@@ -6,5 +6,7 @@ export const getSectionHeaderText = props => {
     return 'Air Tailor / Order Reports';
   } else if (path === '/stores/new') {
     return 'Stores / New';
+  } else if (path === '/users/:user_id/edit') {
+    return 'Edit User';
   }
 };
