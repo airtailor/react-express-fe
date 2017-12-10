@@ -1,0 +1,2 @@
+export const SET_EDIT_USER = 'SET_EDIT_USER';
+export const UPDATE_EDUT_USER = 'UPDATE_EDIT_USER';

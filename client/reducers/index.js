@@ -26,6 +26,7 @@ import currentReportReducer from '../components/reports/orders/ducks/currentRepo
 import editStoreFormReducer from '../components/stores/edit/ducks/editStoreFormReducer';
 import usersListReducer from '../components/users/list/ducks/usersListReducer';
 import retailerListReducer from '../components/admin/retailers/ducks/retailerListReducer';
+import editUserReducer from '../components/users/edit/ducks/editUserReducer';
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
@@ -55,6 +56,7 @@ const rootReducer = combineReducers({
   editStore: editStoreFormReducer,
   usersList: usersListReducer,
   storeList: storeListReducer,
+  editUser: editUserReducer,
 });
 
 export default rootReducer;

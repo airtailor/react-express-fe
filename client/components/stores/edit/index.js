@@ -18,7 +18,7 @@ import {
 
 import FormField from './../../FormField';
 import SectionHeader from './../../SectionHeader';
-import UsersEdit from '../../users/UsersEdit';
+import UsersEdit from '../../users/edit';
 import SelectTailor from '../../orders/orderForms/SelectTailor';
 
 const mapStateToProps = store => {

@@ -10,6 +10,11 @@ class SelectRole extends Component {
 
   render() {
     const { onChange, role } = this.props;
+
+    if (!role.admin) {
+      return <div />;
+    }
+
     const validRoles = [
       { id: 'tailor', name: 'Tailor' },
       { id: 'retailer', name: 'Retailer' },

@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { updatePassword, setGrowler } from '../../actions';
-import FormField from './../FormField';
-import SectionHeader from './../SectionHeader';
-import { ValidatePassword } from '../../utils/validations';
+import { updatePassword, setGrowler } from '../../../actions';
+import FormField from '.,/../FormField';
+import SectionHeader from '.,/../SectionHeader';
+import { ValidatePassword } from '../../../utils/validations';
 import EditPassword from './EditPassword';
+import SelectRole from '../SelectRole';
 
 const mapStateToProps = store => {
   return {
@@ -74,7 +75,12 @@ class UsersEdit extends Component {
 
   render() {
     const { password, passwordConfirmation, submitDisabled } = this.state;
-    return <EditPassword {...this.props} />;
+    return (
+      <div>
+        <SelectRole {...this.props} />
+        <EditPassword {...this.props} />;
+      </div>
+    );
   }
 }
 
