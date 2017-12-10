@@ -9,7 +9,6 @@ router.get('/list', (req, res) => {
 
   Axios.get(url, { headers })
     .then(response => {
-      console.log('\n\n\n\n', 'RESPONSE', response);
       res.json({ headers: response.headers, body: response.data });
     })
     .catch(err => {

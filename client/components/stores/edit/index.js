@@ -206,7 +206,7 @@ class StoresEdit extends Component {
           <br />
           <hr />
           <br />
-          <UsersEdit />
+          <UsersEdit match={this.props.match} />
         </div>
       </div>
     );

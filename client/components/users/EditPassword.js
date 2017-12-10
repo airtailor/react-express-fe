@@ -6,7 +6,6 @@ import { updatePassword, setGrowler } from '../../actions';
 import FormField from './../FormField';
 import SectionHeader from './../SectionHeader';
 import { ValidatePassword } from '../../utils/validations';
-import EditPassword from './EditPassword';
 
 const mapStateToProps = store => {
   return {
@@ -18,7 +17,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators({ updatePassword, setGrowler }, dispatch);
 };
 
-class UsersEdit extends Component {
+class EditPassword extends Component {
   constructor() {
     super();
     this.state = {
@@ -72,10 +71,59 @@ class UsersEdit extends Component {
     this.setState({ submitDisabled: true });
   }
 
+  storeIdMatch() {
+    const {
+      user: { user: { store_id: userStoreId } },
+      match: { params: { store_id: paramsStoreId } },
+    } = this.props;
+
+    return userStoreId == paramsStoreId;
+  }
+
+  userIdMatch() {
+    const {
+      user: { user: { id: userId } },
+      match: { params: { user_id: paramsUserId } },
+    } = this.props;
+
+    return userId == paramsUserId;
+  }
   render() {
-    const { password, passwordConfirmation, submitDisabled } = this.state;
-    return <EditPassword {...this.props} />;
+    if (this.storeIdMatch() || this.userIdMatch()) {
+      const { password, passwordConfirmation, submitDisabled } = this.state;
+      return (
+        <div>
+          <h3>Edit Password</h3>
+          <form onSubmit={this.handleSubmit}>
+            <FormField
+              value={password}
+              type="password"
+              fieldName="password"
+              title="Reset Password:"
+              onChange={this.updateState}
+            />
+
+            <FormField
+              value={passwordConfirmation}
+              fieldName="passwordConfirmation"
+              title="Password Confirmation:"
+              type="password"
+              onChange={this.updateState}
+            />
+
+            <input
+              disabled={submitDisabled}
+              type="submit"
+              value="Update Password"
+              className="short-button"
+            />
+          </form>
+        </div>
+      );
+    } else {
+      return <div />;
+    }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(EditPassword);
