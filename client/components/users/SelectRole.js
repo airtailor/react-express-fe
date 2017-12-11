@@ -11,7 +11,7 @@ class SelectRole extends Component {
   render() {
     const { onChange, role } = this.props;
 
-    if (role && !role.admin) {
+    if (role && role == 'admin') {
       return <div />;
     }
 
@@ -19,6 +19,7 @@ class SelectRole extends Component {
       { id: 'tailor', name: 'Tailor' },
       { id: 'retailer', name: 'Retailer' },
     ];
+
     return (
       <div className="SelectRole">
         <h3>Roles</h3>

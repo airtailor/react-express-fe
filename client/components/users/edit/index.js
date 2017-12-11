@@ -79,8 +79,10 @@ class UsersEdit extends Component {
       <div>
         <h2> Edit User </h2>
         <p> Full Functionality Available Soon </p>
-        <SelectRole {...this.props} />
-        <EditPassword {...this.props} />;
+        {/*
+          <SelectRole {...this.props} />
+          <EditPassword {...this.props} />;
+        */}
       </div>
     );
   }

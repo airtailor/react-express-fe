@@ -18,7 +18,7 @@ import {
 
 import FormField from './../../FormField';
 import SectionHeader from './../../SectionHeader';
-import UsersEdit from '../../users/edit';
+import EditPassword from '../../users/edit/EditPassword';
 import SelectTailor from '../../orders/orderForms/SelectTailor';
 
 const mapStateToProps = store => {
@@ -206,7 +206,7 @@ class StoresEdit extends Component {
           <br />
           <hr />
           <br />
-          <UsersEdit match={this.props.match} />
+          <EditPassword match={this.props.match} />
         </div>
       </div>
     );
