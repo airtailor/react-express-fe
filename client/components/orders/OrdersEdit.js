@@ -110,7 +110,7 @@ class OrdersEdit extends Component {
         customer: { first_name: firstName, last_name: lastName },
         total,
         weight,
-        provider_id,
+        provider_id: tailorId,
       } = order;
 
       headerText = `Orders / Edit / ${id}`;
@@ -167,7 +167,7 @@ class OrdersEdit extends Component {
               onChange={updateState}
             />
 
-            <SelectTailor provider_id={provider_id} onChange={updateState} />
+            <SelectTailor tailorId={tailorId} onChange={this.updateState} />
 
             <FormField
               value={total}

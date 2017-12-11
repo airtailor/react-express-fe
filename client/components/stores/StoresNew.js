@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 import {
   getCompanies,
   createStore,
@@ -9,12 +10,12 @@ import {
   setGrowler,
 } from '../../actions';
 import { storeTypes } from '../../utils/constants';
+
 import FormField from '../FormField';
 import FormSelect from '../FormSelect';
-
-import SectionHeader from '../SectionHeader';
-import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
+import WithSectionHeader from '../HOC/WithSectionHeader';
+import isEmpty from 'lodash/isEmpty';
 
 const mapStateToProps = store => {
   return {
@@ -35,15 +36,18 @@ const mapDispatchToProps = dispatch => {
 };
 
 class StoresNew extends Component {
-  static propTypes = {
-    companies: PropTypes.array.isRequired, // mapStateToProps
-    getCompanies: PropTypes.func.isRequired, // mapDispatchToProps
-  };
-
-  constructor(props) {
+  constructor() {
     super();
     this.state = this.initialStateObject();
   }
+
+  static propTypes = {
+    companies: PropTypes.array.isRequired, // mapStateToProps
+    getCompanies: PropTypes.func.isRequired, // mapDispatchToProps
+    setLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
+  };
 
   initialStateObject() {
     return {
@@ -94,24 +98,27 @@ class StoresNew extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    const { setLoader, removeLoader, setGrowler } = this.props;
     const missingParams = this.emptyParamsPresent();
+
     if (!missingParams) {
       const store = this.state;
-      this.props.setLoader();
+      setLoader();
       createStore({ store })
         .then(res => {
-          this.props.removeLoader();
-          console.log(res);
+          removeLoader();
+
           const errors = res.data.body.errors;
           if (isEmpty(errors)) {
             this.setState(this.initialStateObject());
-            this.props.setGrowler({
+
+            setGrowler({
               kind: 'success',
               message: 'New Store Created!',
             });
           } else {
             if (errors['invalid_address']) {
-              this.props.setGrowler({
+              setGrowler({
                 kind: 'warning',
                 message: 'Invalid Address! Check your inputs.',
               });
@@ -121,31 +128,29 @@ class StoresNew extends Component {
         .catch(err => console.log(err));
     } else {
       const errorString = 'Please enter all fields before submitting.';
-      this.props.setGrowler({ kind: 'warning', message: errorString });
+      setGrowler({ kind: 'warning', message: errorString });
     }
   };
 
   render() {
-    console.log(this.state);
     const { companies } = this.props;
     const {
       company_id,
+      type,
       name,
       phone,
-      address: { type, street, street_two, city, state_province, zip_code },
+      address: { street, street_two, city, state_province, zip_code },
     } = this.state;
 
     const updateStoreState = this.updateStoreState;
     const updateAddressState = this.updateAddressState;
     const submit = e => this.handleSubmit(e);
-    const headerText = 'Stores / New';
 
     if (isEmpty(companies)) {
-      return <SectionHeader text={headerText} includeLink={false} />;
+      return <div />;
     } else {
       return (
         <div>
-          <SectionHeader text={headerText} includeLink={false} />
           <form onSubmit={submit}>
             <FormField
               value={name}
@@ -214,7 +219,7 @@ class StoresNew extends Component {
 
             <input
               type="submit"
-              className="Standard Button"
+              className="short-button"
               value="Create New Store"
             />
           </form>
@@ -224,4 +229,6 @@ class StoresNew extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StoresNew);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  WithSectionHeader(StoresNew)
+);

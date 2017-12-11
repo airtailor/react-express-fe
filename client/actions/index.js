@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
+
 import {
   setLocalStorageAuth,
   setLocalStorageUser,
@@ -43,6 +44,7 @@ import {
   SET_CURRENT_CUSTOMER,
   UPDATE_CURRENT_CUSTOMER,
   SET_CART_CUSTOMER,
+  SET_STORE_LIST,
 } from '../utils/constants';
 
 import { removeFalseyValuesFromObject } from '../utils/format';
@@ -78,14 +80,14 @@ export const userSignIn = (email, password) => {
           return { errors: true, status: 401 };
         } else if (res.data.body) {
           const dataRes = res.data.body.data;
-          const { id, email, store_id, roles, uid } = dataRes;
+          const { id, email, store_id, valid_roles, uid } = dataRes;
           setTokens(res);
-          dispatch(setUserRole(roles[0].name));
+          dispatch(setUserRole(valid_roles));
           setLocalStorageUser(dataRes);
 
           // right now, the code assumes that a user has a single role, but it's
           // written to work with multiple roles if/when that becomes necessary.
-          dispatch(setCurrentUser({ id, email, store_id, roles }));
+          dispatch(setCurrentUser({ id, email, store_id }));
           return { success: true };
         }
       })
@@ -95,9 +97,24 @@ export const userSignIn = (email, password) => {
   };
 };
 
-export function validateToken() {
+export function validateToken(dispatch = undefined) {
   const url = `${expressApi}/auth/validate_token`;
-  return Axios.post(url);
+  return Axios.post(url).then(res => {
+    if (res.data.status === 401) {
+      if (dispatch) {
+        dispatch(signOutCurrentUser());
+      } else {
+        return { errors: true, status: 401 };
+      }
+    } else {
+      if (dispatch) {
+        const { id, email, store_id, valid_roles } = res.data.body;
+        dispatch(setUserRole(valid_roles));
+        dispatch(setCurrentUser({ id, email, store_id }));
+      }
+      return res;
+    }
+  });
 }
 
 export function signOutCurrentUser() {
@@ -121,7 +138,7 @@ export function signOutCurrentUser() {
 export function getStoreOrders(store_id) {
   const url = `${expressApi}/stores/${store_id}/orders`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
@@ -138,7 +155,7 @@ export function getStoreOrders(store_id) {
 export function getCurrentOrder(store_id, order_id) {
   const url = `${expressApi}/stores/${store_id}/orders/${order_id}`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
@@ -155,10 +172,10 @@ export function getCurrentOrder(store_id, order_id) {
 export function getCurrentStore(store_id) {
   const url = `${expressApi}/stores/${store_id}`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
-        return Axios.post(url)
+        return Axios.get(url)
           .then(res => {
             setLocalStorageStore(res.data.body);
             dispatch(setCurrentStore(res.data.body));
@@ -175,7 +192,7 @@ export function updateOrder(data) {
   const url = `${expressApi}/stores/${data.order.store_id}/orders/${data.order
     .id}/edit`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.post(url, data)
@@ -238,6 +255,15 @@ export function createStore(data) {
     });
 }
 
+export function createUser(data) {
+  return validateToken()
+    .then(setTokens)
+    .then(() => {
+      const url = `${expressApi}/users/create_user`;
+      return Axios.post(url, data);
+    });
+}
+
 export function createCompany(data) {
   return validateToken()
     .then(setTokens)
@@ -250,7 +276,7 @@ export function createCompany(data) {
 export function getTailorList() {
   const url = `${expressApi}/stores/tailors`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
@@ -264,39 +290,10 @@ export function getTailorList() {
   };
 }
 
-export function updateStore(data) {
-  const {
-    store,
-    store: { id, street, unit: street_two, city, state_province, zip_code },
-  } = data;
-
-  const url = `${expressApi}/stores/${id}`;
-  const storeObj = { ...data.store };
-  storeObj.address = { street, street_two, city, state_province, zip_code };
-
-  return dispatch => {
-    return validateToken()
-      .then(setTokens)
-      .then(() => {
-        return Axios.put(url, { store: storeObj })
-          .then(res => {
-            if (!res.data.body.errors) {
-              dispatch(setCurrentStore(storeObj));
-            }
-            return res;
-          })
-          .catch(err => {
-            debugger;
-            return err;
-          });
-      });
-  };
-}
-
 export function getCompanies() {
   const url = `${expressApi}/companies`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
@@ -332,7 +329,7 @@ export function setShipmentType(typeString) {
 export function getCustomerMeasurements(data) {
   const url = `${expressApi}/customers/${data.customer_id}/measurements/last`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
@@ -351,7 +348,7 @@ export function createCustomerMeasurements(measurement) {
   const url = `${expressApi}/customers/${measurement.customer_id}/measurements`;
   const data = { measurement };
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.post(url, data)
@@ -368,7 +365,7 @@ export function createCustomerMeasurements(measurement) {
 export function getNewOrders() {
   const url = `${expressApi}/orders/new_orders`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
@@ -394,7 +391,7 @@ export function getOrderAndMessagesCount(store_id) {
 export function getConversations(store_id) {
   const url = `${expressApi}/stores/${store_id}/conversations`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
@@ -412,7 +409,7 @@ export function getConversations(store_id) {
 export function getMessages(store_id, conversation_id) {
   const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
@@ -431,7 +428,7 @@ export function createMessage(message) {
   const { store_id, conversation_id } = message;
   const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}/messages`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.post(url, { message })
@@ -450,7 +447,7 @@ export function updateMessage(message) {
   const { store_id, conversation_id, id } = message;
   const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}/messages/${id}`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.put(url, { message })
@@ -567,17 +564,12 @@ export function submitOrder(props) {
         debugger;
       });
   };
-  //  })
-  // .catch(err => {
-  //   console.log('create order error', err);
-  // });
 }
-//}
 
 export function updatePassword(data) {
   const url = `${expressApi}/users/update_password`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.put(url, data)
@@ -600,7 +592,7 @@ export function updatePassword(data) {
 export function searchOrders(query) {
   const url = `${expressApi}/orders/search/${query}`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
@@ -628,7 +620,7 @@ export function searchOrders(query) {
 export function getArchivedOrders() {
   const url = `${expressApi}/orders/archived`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
@@ -651,7 +643,7 @@ export function getArchivedOrders() {
 export function getCurrentCustomer(id) {
   const url = `${expressApi}/customers/${id}`;
   return dispatch => {
-    return validateToken()
+    return validateToken(dispatch)
       .then(setTokens)
       .then(() => {
         return Axios.get(url)
@@ -671,7 +663,37 @@ export function getCurrentCustomer(id) {
   };
 }
 
+export function getStoreList() {
+  const url = `${expressApi}/stores`;
+  return dispatch => {
+    return validateToken(dispatch)
+      .then(setTokens)
+      .then(() => {
+        return Axios.get(url)
+          .then(res => {
+            if (!res.data.body.errors) {
+              dispatch(setStoreList(res.data.body));
+              return res.data.body;
+            } else {
+              console.log('hmmm something went wrong', res);
+            }
+          })
+          .catch(err => {
+            debugger;
+          });
+      })
+      .catch(err => console.log('err index.js line 488', err));
+  };
+}
+
 // actions
+
+function setStoreList(stores) {
+  return {
+    type: SET_STORE_LIST,
+    stores
+  }
+}
 
 function setCurrentCustomer(customer) {
   return {
@@ -693,10 +715,10 @@ export function resetUserRole() {
   };
 }
 
-export function setUserRole(role) {
+export function setUserRole(roles) {
   return {
     type: SET_USER_ROLE,
-    role,
+    roles,
   };
 }
 

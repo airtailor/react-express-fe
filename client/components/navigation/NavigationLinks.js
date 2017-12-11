@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import NavigationLink from './NavigationLink';
-import SearchBar from './SearchBar';
+import SearchBar from '../SearchBar';
 import Intercom from 'react-intercom';
 import {
   editStoreImage,
@@ -12,7 +12,7 @@ import {
   ordersImage,
   archivedImage,
   tailorsImage,
-} from '../images';
+} from '../../images';
 
 class NavigationLinks extends Component {
   adminNavbar() {
@@ -61,37 +61,9 @@ class NavigationLinks extends Component {
           />
 
           <NavigationLink
-            cssClass="new-store-link"
-            route="/stores/new"
-            text="New Store"
-            image={homeImage}
-          />
-
-          <NavigationLink
             cssClass="new-order-link"
-            route="/orders/new"
-            text="New Order"
-            image={homeImage}
-          />
-
-          <NavigationLink
-            cssClass="new-order-link"
-            route="/admin/companies/new"
-            text="New Company"
-            image={homeImage}
-          />
-
-          <NavigationLink
-            cssClass="new-order-link"
-            route="/admin/tailors"
-            text="Tailors"
-            image={tailorsImage}
-          />
-
-          <NavigationLink
-            cssClass="new-order-link"
-            route="/admin/reports"
-            text="Reports"
+            route="/admin/dashboard"
+            text="Dashboard"
             image={tailorsImage}
           />
 
@@ -100,7 +72,16 @@ class NavigationLinks extends Component {
               className="navbar-links-li close-menu-link"
               onClick={() => toggleNavState(navState)}
             >
-              <img src={logoutImage} alt="logout" /> Close Menu
+              <img src={logoutImage} alt="close menu" /> Close Menu
+            </a>
+          </li>
+
+          <li className="signout-link">
+            <a
+              className="navbar-links-li"
+              onClick={() => this.props.handleSignOut()}
+            >
+              <img src={logoutImage} alt="logout" /> LOGOUT
             </a>
           </li>
         </ul>
@@ -152,6 +133,15 @@ class NavigationLinks extends Component {
             text="Account"
             image={editStoreImage}
           />
+
+          <li className="signout-link">
+            <a
+              className="navbar-links-li"
+              onClick={() => this.props.handleSignOut()}
+            >
+              <img src={logoutImage} alt="logout" /> LOGOUT
+            </a>
+          </li>
         </ul>
         {this.closeMenu(this.props)}
       </div>
@@ -227,6 +217,15 @@ class NavigationLinks extends Component {
             text="Account"
             image={editStoreImage}
           />
+
+          <li className="signout-link">
+            <a
+              className="navbar-links-li"
+              onClick={() => this.props.handleSignOut()}
+            >
+              <img src={logoutImage} alt="logout" /> LOGOUT
+            </a>
+          </li>
         </ul>
         {this.closeMenu(this.props)}
         <div className="add">
@@ -255,6 +254,15 @@ class NavigationLinks extends Component {
             route="/sign_up"
             text="Sign Up"
           />
+
+          <li className="signout-link">
+            <a
+              className="navbar-links-li"
+              onClick={() => this.props.handleSignOut()}
+            >
+              <img src={logoutImage} alt="logout" /> LOGOUT
+            </a>
+          </li>
         </ul>
       );
     }

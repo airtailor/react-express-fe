@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import {SET_CURRENT_REPORT, expressApi} from './constants';
+import { SET_CURRENT_REPORT, expressApi } from './constants';
 
 export const {
   setLoader,
@@ -9,7 +9,7 @@ export const {
 } = require('../../../../actions');
 
 export const getCurrentReport = () => {
-  const url = `api/reports/currentReport`;
+  const url = `/api/reports/currentReport`;
   return dispatch => {
     return validateToken()
       .then(setTokens)

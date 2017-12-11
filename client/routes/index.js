@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import '../../styles/main.scss';
 import PropTypes from 'prop-types';
 
@@ -9,6 +9,8 @@ import MessageRoutes from './MessageRoutes';
 import ConversationRoutes from './ConversationRoutes';
 import AdminRoutes from './AdminRoutes';
 import StoreRoutes from './StoreRoutes';
+import CustomerRoutes from './CustomerRoutes';
+import UserRoutes from './UserRoutes';
 
 class AvailableRoutes extends Component {
   static propTypes = {
@@ -18,8 +20,7 @@ class AvailableRoutes extends Component {
     tailor: PropTypes.bool.isRequired, // parentComponent
   };
   render() {
-    const {loggedIn, admin, retailer, tailor} = this.props;
-
+    const { loggedIn, admin, retailer, tailor } = this.props;
     return (
       <div className="content">
         <SiteRoutes {...this.props} />
@@ -29,6 +30,8 @@ class AvailableRoutes extends Component {
         <MessageRoutes {...this.props} />
         <ConversationRoutes {...this.props} />
         <AdminRoutes {...this.props} />
+        <CustomerRoutes {...this.props} />
+        <UserRoutes {...this.props} />
       </div>
     );
   }

@@ -19,6 +19,7 @@ import {
   shortenTie,
   jeansSeatWaistbandTakenInImage,
   shirtSideSeamsTakenIn,
+  takeInJacketShoulders,
 } from '../images/how_to_pin';
 
 export default function() {
@@ -221,8 +222,8 @@ export default function() {
         garmentId: 5,
         title: 'Take Shoulders In',
         price: 50.0,
-        howToPin: jacketSleevesTakenIn,
-        type: 'jacketSleevesTakenIn',
+        howToPin: takeInJacketShoulders,
+        type: 'takeInJacketShoulders',
       },
       {
         id: 26,

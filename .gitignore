@@ -9,5 +9,6 @@ node_modules/*
 *.webm
 *.jpg
 *.hot-update.*
-public/*.js*
-public/index.html
+public/manifest.*.js.map
+public/vendor.*.js.map
+public/bundle.*.js.map
