@@ -691,8 +691,8 @@ export function getStoreList() {
 function setStoreList(stores) {
   return {
     type: SET_STORE_LIST,
-    stores
-  }
+    stores,
+  };
 }
 
 function setCurrentCustomer(customer) {

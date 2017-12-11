@@ -1,4 +1,4 @@
-import {flatten} from 'lodash';
+import { flatten } from 'lodash';
 
 export const getTotal = garments => {
   const alterations = garments.reduce((prev, curr) => {

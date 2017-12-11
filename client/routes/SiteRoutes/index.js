@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Route, Redirect} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Home from '../../components/Home';
 
@@ -9,7 +9,7 @@ class SiteRoutes extends Component {
   };
 
   render() {
-    const {loggedIn} = this.props;
+    const { loggedIn } = this.props;
     return (
       <div>
         <Route

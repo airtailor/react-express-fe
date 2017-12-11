@@ -3,8 +3,8 @@ import React from 'react';
 const renderOrders = (orders, className, selectOrder) => {
   if (orders.length > 0) {
     return orders.map((order, index) => {
-      const {id, customer, total} = order;
-      const {first_name, last_name} = customer;
+      const { id, customer, total } = order;
+      const { first_name, last_name } = customer;
       return (
         <li
           className={`${className}-li`}
@@ -21,7 +21,7 @@ const renderOrders = (orders, className, selectOrder) => {
 };
 
 export const RenderNewOrderList = props => {
-  const {orders, className, selectOrder} = props;
+  const { orders, className, selectOrder } = props;
   return (
     <div className={`${className}-div`}>
       <h3>Manage New Orders</h3>

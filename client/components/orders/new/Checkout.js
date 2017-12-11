@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {Link, Redirect} from 'react-router-dom';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
@@ -10,9 +10,9 @@ import {
   setLoader,
   removeLoader,
 } from '../../../actions';
-import {formatPhone} from '../../../utils/format';
-import {redirectToStageOneIfNoAlterations} from '../ordersHelper';
-import {getTotal} from './utils';
+import { formatPhone } from '../../../utils/format';
+import { redirectToStageOneIfNoAlterations } from '../ordersHelper';
+import { getTotal } from './utils';
 
 const mapStateToProps = store => {
   return {
@@ -56,8 +56,8 @@ class Checkout extends Component {
 
   renderCustomerInfo() {
     const {
-      cartCustomer: {first_name, last_name, phone, email},
-      cart: {shipToStore},
+      cartCustomer: { first_name, last_name, phone, email },
+      cart: { shipToStore },
     } = this.props;
 
     return (
@@ -97,13 +97,13 @@ class Checkout extends Component {
   }
 
   renderOrderInfo() {
-    const {garments, notes} = this.props.cart;
+    const { garments, notes } = this.props.cart;
     return (
       <div>
         <h2>Order Info:</h2>
         {this.renderGarments(garments)}
         <h3>Order Notes:</h3>
-        <p style={{paddingLeft: '15px'}}>{notes || 'Not Provided'}</p>
+        <p style={{ paddingLeft: '15px' }}>{notes || 'Not Provided'}</p>
       </div>
     );
   }
@@ -115,21 +115,21 @@ class Checkout extends Component {
       setGrowler,
       renderOrderDetails,
       removeLoader,
-      cartCustomer: {id: customer_id},
+      cartCustomer: { id: customer_id },
       cart,
     } = this.props;
 
     setLoader();
 
-    submitOrder({...this.props})
+    submitOrder({ ...this.props })
       .then(res => {
         if (res.errors) {
           const kind = 'warning';
           const message = res.message;
-          setGrowler({message, kind});
+          setGrowler({ message, kind });
           renderOrderDetails();
         } else {
-          this.setState({orderCompleted: true});
+          this.setState({ orderCompleted: true });
         }
       })
       .catch(err => {
@@ -222,7 +222,7 @@ class Checkout extends Component {
   }
 
   renderShippingInfo() {
-    const {cart: {shipToStore}} = this.props;
+    const { cart: { shipToStore } } = this.props;
     if (shipToStore) {
       return this.renderShipToStore();
     } else if (!shipToStore) {
@@ -237,7 +237,7 @@ class Checkout extends Component {
   }
 
   render() {
-    const {cart: {garments}} = this.props;
+    const { cart: { garments } } = this.props;
     return (
       <div>
         <div className="checkout-container">

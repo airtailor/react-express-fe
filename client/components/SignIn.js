@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {ValidateEmail, ValidatePassword} from '../utils/validations';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {userSignIn, setGrowler} from '../actions/';
+import React, { Component } from 'react';
+import { ValidateEmail, ValidatePassword } from '../utils/validations';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { userSignIn, setGrowler } from '../actions/';
 import LogoMessage from './LogoMessage';
 
 class SignIn extends Component {
@@ -32,24 +32,24 @@ class SignIn extends Component {
         } else if (res.errors) {
           const kind = 'warning';
           const message = 'Email/password combination is incorrect. Try again!';
-          this.props.setGrowler({kind, message});
+          this.props.setGrowler({ kind, message });
         }
       })
       .catch(err => console.log('err', err));
   }
 
   updateInputText(input) {
-    this.setState({[input.name]: {text: input.value}}, () => {
+    this.setState({ [input.name]: { text: input.value } }, () => {
       this.validateInputs(this.state);
     });
   }
 
   validateInputs(state) {
-    const {email, password} = state;
+    const { email, password } = state;
     if (ValidateEmail(email.text) && ValidatePassword(password.text)) {
       this.setState({
-        email: {text: email.text, valid: true},
-        password: {text: password.text, valid: true},
+        email: { text: email.text, valid: true },
+        password: { text: password.text, valid: true },
       });
       this.updateButtonStatus(false);
     } else {
@@ -58,11 +58,11 @@ class SignIn extends Component {
   }
 
   updateButtonStatus(bool) {
-    this.setState({buttonDisabled: bool});
+    this.setState({ buttonDisabled: bool });
   }
 
   render() {
-    const {buttonDisabled, email, password} = this.state;
+    const { buttonDisabled, email, password } = this.state;
     if (this.props.authenticated) {
       return <h1>Hi {this.props.currentUser.email}</h1>;
     } else {
@@ -117,7 +117,7 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({userSignIn, setGrowler}, dispatch);
+  return bindActionCreators({ userSignIn, setGrowler }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

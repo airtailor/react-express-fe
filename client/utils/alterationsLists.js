@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export const getAlterationsList = items => {
   return items
@@ -8,7 +8,7 @@ export const getAlterationsList = items => {
       });
     })
     .join()
-    .split(",");
+    .split(',');
 };
 
 export const renderAlterationListItems = (alterations, className) => {

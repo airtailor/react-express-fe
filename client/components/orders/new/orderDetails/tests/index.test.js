@@ -1,6 +1,6 @@
 import React from 'react';
-import {shallow, mount, render} from 'enzyme';
-import {OrderDetails} from '../';
+import { shallow, mount, render } from 'enzyme';
+import { OrderDetails } from '../';
 
 const props = {
   updateCartCustomerInfo: jest.fn(),

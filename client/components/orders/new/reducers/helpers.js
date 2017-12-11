@@ -11,7 +11,7 @@ export function formatNewCartCustomer(customer) {
 }
 
 const formatValidAddressIntoCustomer = customer => {
-  const {id, first_name, last_name, phone, email, addresses} = customer;
+  const { id, first_name, last_name, phone, email, addresses } = customer;
   const {
     number = '',
     street = '',
@@ -42,13 +42,13 @@ const formatValidAddressIntoCustomer = customer => {
 };
 
 const customerHasAddress = customer => {
-  const {addresses} = customer;
+  const { addresses } = customer;
 
   if (addresses.length === 0) {
     return false;
   }
 
-  const {street, zip_code, city, state_province} = addresses[0];
+  const { street, zip_code, city, state_province } = addresses[0];
 
   if (addresses.length > 0 && street && zip_code && city && state_province) {
     return true;
@@ -66,7 +66,7 @@ const removeOldAddressFieldsFromCustomer = customer => {
 };
 
 const updateNewFieldsForCustomer = customer => {
-  const {street1, street2, state, zip} = customer;
+  const { street1, street2, state, zip } = customer;
 
   return {
     ...customer,

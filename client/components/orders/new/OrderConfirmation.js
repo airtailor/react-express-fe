@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {Link} from 'react-router-dom';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import {setConfirmedNewOrder, resetCart, setGrowler} from '../../../actions';
-import {formatPhone} from '../../../utils/format';
+import { setConfirmedNewOrder, resetCart, setGrowler } from '../../../actions';
+import { formatPhone } from '../../../utils/format';
 
 import SectionHeader from '../../SectionHeader';
 
@@ -41,7 +41,7 @@ class OrderConfirmation extends Component {
   componentDidMount() {
     const kind = 'success';
     const message = 'Order completed!';
-    this.props.setGrowler({kind, message});
+    this.props.setGrowler({ kind, message });
   }
 
   componentWillUnmount() {
@@ -50,7 +50,7 @@ class OrderConfirmation extends Component {
   }
 
   renderCustomerInfo(customer) {
-    const {first_name, last_name, phone, email} = customer;
+    const { first_name, last_name, phone, email } = customer;
     return (
       <div>
         <h2>Customer Info:</h2>
@@ -88,7 +88,7 @@ class OrderConfirmation extends Component {
   }
 
   renderOrderInfo(confirmedNewOrder) {
-    const {items} = confirmedNewOrder;
+    const { items } = confirmedNewOrder;
     return (
       <div>
         <h2>Order Info:</h2>
@@ -138,7 +138,7 @@ class OrderConfirmation extends Component {
   }
 
   renderShipToStore(store) {
-    const {name, street, unit, city, state_province, zip_code} = store;
+    const { name, street, unit, city, state_province, zip_code } = store;
     return (
       <div>
         <h2>Ship To Store:</h2>
@@ -155,7 +155,7 @@ class OrderConfirmation extends Component {
   renderShippingInfo() {
     const {
       currentStore,
-      confirmedNewOrder: {ship_to_store},
+      confirmedNewOrder: { ship_to_store },
       cartCustomer: customer,
     } = this.props;
 
@@ -167,7 +167,7 @@ class OrderConfirmation extends Component {
   }
 
   render() {
-    const {confirmedNewOrder, cartCustomer} = this.props;
+    const { confirmedNewOrder, cartCustomer } = this.props;
 
     return (
       <div>

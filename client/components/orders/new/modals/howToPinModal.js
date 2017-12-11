@@ -8,7 +8,7 @@ class HowToPinModal extends Component {
   constructor() {
     super();
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
     };
   }
 

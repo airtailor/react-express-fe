@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class WelcomeKitPrint extends Component {
   render() {
-    const {currentOrder} = this.props;
+    const { currentOrder } = this.props;
 
     if (currentOrder) {
-      const {shipping_label} = currentOrder.shipments[0];
+      const { shipping_label } = currentOrder.shipments[0];
       return (
         <div className="print">
           <div className="packing-slip-info">

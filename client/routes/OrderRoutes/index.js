@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Route, Redirect, Switch} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import StoresShow from '../../components/stores/StoresShow';
@@ -21,7 +21,7 @@ class OrderRoutes extends Component {
   };
 
   render() {
-    const {loggedIn, admin, retailer} = this.props;
+    const { loggedIn, admin, retailer } = this.props;
     return (
       <div>
         <Route

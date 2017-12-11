@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class InputMeasurement extends Component {
   render() {
-    const {kind, value, update, disabled} = this.props;
+    const { kind, value, update, disabled } = this.props;
     const editEnabled = disabled;
     const styling = `input-measurement ${kind}`;
     let val;

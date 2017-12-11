@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {Link} from 'react-router-dom';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
@@ -16,9 +16,9 @@ import {
   ValidatePhone,
   ValidateZip,
 } from '../../../utils/validations';
-import {getTotal} from './utils';
+import { getTotal } from './utils';
 
-import {basketImage} from '../../../images';
+import { basketImage } from '../../../images';
 
 const mapStateToProps = store => {
   return {
@@ -29,7 +29,7 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    {removeGarmentFromCart, updateCartNotes, setCartCustomer, setGrowler},
+    { removeGarmentFromCart, updateCartNotes, setCartCustomer, setGrowler },
     dispatch
   );
 };
@@ -63,13 +63,13 @@ class Cart extends Component {
   }
 
   renderCartItems(props) {
-    const {garments} = props.cart;
+    const { garments } = props.cart;
     const garmentList = garments;
-    const {removeGarmentFromCart, renderSelectAlterations} = props;
+    const { removeGarmentFromCart, renderSelectAlterations } = props;
     if (garmentList.length > 0) {
       return garmentList.map((garment, index) => {
         return (
-          <div key={index} style={{marginLeft: '15px'}}>
+          <div key={index} style={{ marginLeft: '15px' }}>
             <h3>
               <span
                 className="cart-item cart-item-title"
@@ -105,7 +105,7 @@ class Cart extends Component {
   }
 
   readyToCheckout() {
-    const {cartCustomer, cart: {shipToStore}} = this.props;
+    const { cartCustomer, cart: { shipToStore } } = this.props;
     const {
       id,
       first_name,
@@ -148,7 +148,7 @@ class Cart extends Component {
       if (res.data.body && res.data.body.errors) {
         const kind = 'warning';
         const message = res.data.body.errors[0];
-        setGrowler({kind, message});
+        setGrowler({ kind, message });
         renderOrderDetails();
       } else {
         setCartCustomer(res.data.body);
@@ -171,7 +171,7 @@ class Cart extends Component {
 
   renderNextButton(props) {
     const {
-      cart: {garments},
+      cart: { garments },
       renderOrderDetails,
       renderStageOne,
       stage,
@@ -231,7 +231,7 @@ class Cart extends Component {
 
   renderOrderNotes(props) {
     return (
-      <div style={{marginLeft: '15px'}}>
+      <div style={{ marginLeft: '15px' }}>
         <h3>Order Notes</h3>
         <textarea
           className="order-details-notes-textarea"
@@ -245,7 +245,7 @@ class Cart extends Component {
   }
 
   render() {
-    const {cart, stage} = this.props;
+    const { cart, stage } = this.props;
 
     if (cart.garments.length > 0) {
       return (
@@ -259,7 +259,7 @@ class Cart extends Component {
           {this.renderOrderNotes(this.props)}
           {this.customerAgreesPrompt(stage)}
 
-          <div style={{marginLeft: '15px'}}>
+          <div style={{ marginLeft: '15px' }}>
             <h3>Total: ${getTotal(cart.garments)}</h3>
           </div>
 

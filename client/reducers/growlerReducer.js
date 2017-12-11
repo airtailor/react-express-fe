@@ -1,4 +1,4 @@
-import {SET_GROWLER, REMOVE_GROWLER} from '../utils/constants';
+import { SET_GROWLER, REMOVE_GROWLER } from '../utils/constants';
 
 const initialState = {};
 

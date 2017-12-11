@@ -1,13 +1,13 @@
-import {SET_CONVERSATIONS} from '../utils/constants';
+import { SET_CONVERSATIONS } from '../utils/constants';
 
 const initialState = [];
 const conversationsReducer = (state = initialState, action) => {
-
-  switch(action.type){
+  switch (action.type) {
     case SET_CONVERSATIONS:
       return action.conversations;
-    default: return state;
+    default:
+      return state;
   }
-}
+};
 
 export default conversationsReducer;

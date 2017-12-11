@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import SectionHeader from '../../SectionHeader';
-import {getSectionHeaderText} from './helper';
+import { getSectionHeaderText } from './helper';
 
 function WithSectionHeader(WrappedComponent) {
   return class WithSectionHeader extends Component {
@@ -13,7 +13,7 @@ function WithSectionHeader(WrappedComponent) {
 
     componentDidMount() {
       const text = getSectionHeaderText(this.props);
-      this.setState({text});
+      this.setState({ text });
     }
 
     render() {

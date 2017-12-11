@@ -1,4 +1,4 @@
-import {formatNewCartCustomer, initialState} from './helpers';
+import { formatNewCartCustomer, initialState } from './helpers';
 import {
   UPDATE_CART_CUSTOMER,
   RESET_CART,

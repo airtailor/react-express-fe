@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 const setNotesType = (roles, order) => {
   if (roles.tailor) {
@@ -24,12 +24,12 @@ class UpdateNotesForm extends Component {
   }
 
   handleChange(value) {
-    this.setState({notes: value});
+    this.setState({ notes: value });
   }
 
   render() {
-    const {order, submitNotes, roles} = this.props;
-    const {displayNotes} = this.state;
+    const { order, submitNotes, roles } = this.props;
+    const { displayNotes } = this.state;
 
     if (displayNotes) {
       return (

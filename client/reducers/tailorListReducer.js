@@ -1,4 +1,4 @@
-import {SET_TAILOR_LIST} from '../utils/constants';
+import { SET_TAILOR_LIST } from '../utils/constants';
 
 const initialState = [];
 const tailorListReducer = (state = initialState, action) => {

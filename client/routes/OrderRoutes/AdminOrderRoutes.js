@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Route, Redirect, Switch} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ArchivedOrders from '../../components/orders/ArchivedOrders';
 import NewOrders from '../../components/admin/NewOrders';
@@ -10,7 +10,7 @@ class AdminOrderRoutes extends Component {
   };
 
   render() {
-    const {admin} = this.props;
+    const { admin } = this.props;
     return (
       <div>
         <Switch>

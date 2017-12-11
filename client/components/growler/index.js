@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {removeGrowler} from '../../actions';
-import {isEmpty} from 'lodash';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { removeGrowler } from '../../actions';
+import { isEmpty } from 'lodash';
 
 class Growler extends Component {
   setTimer() {
@@ -14,7 +14,7 @@ class Growler extends Component {
   render() {
     if (!isEmpty(this.props.growl)) {
       this.setTimer();
-      const {kind, message} = this.props.growl;
+      const { kind, message } = this.props.growl;
       const titleClass = `growl-title ${kind}-growl`;
       const messageClass = `growl-text ${kind}-growl`;
       return (
@@ -40,7 +40,7 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({removeGrowler}, dispatch);
+  return bindActionCreators({ removeGrowler }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Growler);

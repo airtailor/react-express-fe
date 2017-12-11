@@ -1,5 +1,5 @@
-import {SET_CURRENT_REPORT} from './constants';
-import {initialState} from './helper';
+import { SET_CURRENT_REPORT } from './constants';
+import { initialState } from './helper';
 
 const CurrentReportReducer = (state = initialState, action) => {
   switch (action.type) {

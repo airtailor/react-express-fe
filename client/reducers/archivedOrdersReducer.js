@@ -1,4 +1,4 @@
-import {SET_ARCHIVED_ORDERS} from '../utils/constants';
+import { SET_ARCHIVED_ORDERS } from '../utils/constants';
 
 const initialState = [];
 

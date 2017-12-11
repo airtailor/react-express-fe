@@ -6,7 +6,7 @@ import {
   getConversations,
   getMessages,
   createMessage,
-  updateMessage
+  updateMessage,
 } from '../../actions';
 import SectionHeader from '../SectionHeader';
 import PropTypes from 'prop-types';
@@ -17,7 +17,7 @@ const mapStateToProps = store => {
     currentUser: store.currentUser,
     userRoles: store.userRoles,
     messages: store.messages,
-    currentStore: store.currentStore
+    currentStore: store.currentStore,
   };
 };
 
@@ -38,13 +38,13 @@ class Messages extends Component {
     getConversations: PropTypes.func.isRequired, // mapDispatchToProps
     getMessages: PropTypes.func.isRequired, // mapDispatchToProps
     createMessage: PropTypes.func.isRequired, // mapDispatchToProps
-    updateMessage: PropTypes.func.isRequired // mapDispatchToProps
+    updateMessage: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   constructor() {
     super();
     this.state = {
-      newMessage: ''
+      newMessage: '',
     };
   }
 

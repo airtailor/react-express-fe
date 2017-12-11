@@ -1,9 +1,9 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import HowToPinModal from './modals/HowToPinModal';
 
 const renderAlterations = props => {
-  const {garment, alterations} = props;
+  const { garment, alterations } = props;
   const altsForGarment = alterations.filter(
     alt => alt.garmentId === garment.id
   );
