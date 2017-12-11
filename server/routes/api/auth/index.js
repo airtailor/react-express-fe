@@ -47,7 +47,7 @@ router.post('/sign_in', (req, res) => {
 router.post('/sign_out', (req, res) => {
   const headers = getHeaders(req);
 
-  Axios.delete(`${apiUrl}/auth/sign_out`, { headers })
+  Axios.delete(`${apiUrl}/auth`, { headers })
     .then(response => {
       res.json(response.status);
     })
