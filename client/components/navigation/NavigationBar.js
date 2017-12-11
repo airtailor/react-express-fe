@@ -3,15 +3,15 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import NavigationLinks from './NavigationLinks';
-import LogoMessage from './LogoMessage';
-import Hamburger from '../images/hamburger.png';
-import { logoutImage } from '../images';
-import { signOutCurrentUser } from '../actions';
+import LogoMessage from '../LogoMessage';
+import Hamburger from '../../images/hamburger.png';
+import { logoutImage } from '../../images';
+import { signOutCurrentUser } from '../../actions';
 import PropTypes from 'prop-types';
 
 const mapStateToProps = store => {
   return {
-    currentUser: store.currentUser
+    currentUser: store.currentUser,
   };
 };
 
@@ -22,13 +22,13 @@ const mapDispatchToProps = dispatch => {
 class NavigationBar extends Component {
   static propTypes = {
     currentUser: PropTypes.object.isRequired, // mapStateToProps
-    signOutCurrentUser: PropTypes.func.isRequired // mapDispatchToProps
+    signOutCurrentUser: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   constructor() {
     super();
     this.state = {
-      active: this.getNavActive(window)
+      active: this.getNavActive(window),
     };
   }
 
@@ -40,7 +40,7 @@ class NavigationBar extends Component {
     window.removeEventListener('resize', this.handleResize);
   }
 
-  handleSignOut() {
+  handleSignOut = () => {
     this.props
       .signOutCurrentUser()
       .then(res => {
@@ -49,7 +49,7 @@ class NavigationBar extends Component {
       .catch(err => {
         console.log('oops something went wrong');
       });
-  }
+  };
 
   getNavActive(window) {
     return window.innerWidth > 980;
@@ -82,13 +82,9 @@ class NavigationBar extends Component {
             admin={admin}
             toggleNavState={this.toggleActiveState}
             navState={active}
+            handleSignOut={this.handleSignOut}
           />
         </div>
-        <li className="signout-link">
-          <a className="navbar-links-li" onClick={() => this.handleSignOut()}>
-            <img src={logoutImage} alt="logout" /> LOGOUT
-          </a>
-        </li>
       </nav>
     );
   }

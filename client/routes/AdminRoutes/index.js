@@ -3,6 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TailorIndex from '../../components/admin/tailors/TailorIndex';
 import RetailerIndex from '../../components/admin/retailers/index';
+import Dashboard from '../../components/admin/index';
 import ReportRoutes from './ReportRoutes';
 import CompanyRoutes from './CompanyRoutes';
 
@@ -26,6 +27,13 @@ class AdminRoutes extends Component {
           path="/admin/retailers"
           render={props =>
             admin ? <RetailerIndex {...props} /> : <Redirect to="/" />}
+        />
+
+        <Route
+          exact
+          path="/admin/dashboard"
+          render={props =>
+            admin ? <Dashboard {...props} /> : <Redirect to="/" />}
         />
 
         <ReportRoutes {...this.props} />
