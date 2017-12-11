@@ -14,7 +14,7 @@ const mapStateToProps = store => {
     currentStore: store.currentStore,
     newOrders: store.newOrders,
     currentOrder: store.currentOrder,
-    userRoles: store.userRoles
+    userRoles: store.userRoles,
   };
 };
 
@@ -34,7 +34,7 @@ class NewOrders extends Component {
     userRoles: PropTypes.object.isRequired, // mapStateToProps
     getNewOrders: PropTypes.func.isRequired, // mapDispatchToProps
     getCurrentOrder: PropTypes.func.isRequired, // mapDispatchToProps
-    setCurrentOrder: PropTypes.func.isRequired // mapDispatchToProps
+    setCurrentOrder: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   selectOrderDetail = order => {

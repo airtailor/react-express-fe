@@ -1,0 +1,56 @@
+.users {
+  color: $primary-blue;
+  width: 100%;
+}
+
+.user-headers-row {
+  @extend .table-row;
+  padding-top: 10px;
+}
+
+.user-header-cell {
+  @extend .table-header-cell;
+  flex-basis: 25%;
+}
+
+.user-header-break-row {
+  @extend .break-row;
+  width: 95%;
+}
+
+.user-link {
+  @extend .table-cell;
+  @extend .flex-container;
+  @extend .table-link;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+  flex-basis: 100%;
+}
+
+.user-break-row {
+  @extend .break-row;
+  width: 100%;
+}
+
+.user-headers-container {
+  @extend .table-headers-container;
+  padding-left: 0%;
+  padding-right: 0%;
+}
+
+.user-container {
+  @extend .table-row-container;
+  padding-left: 0%;
+  padding-right: 0%;
+}
+
+.user-data-row {
+  @extend .table-row;
+}
+
+.user-data-cell {
+  @extend .table-cell;
+  flex-basis: 25%;
+  word-break: break-all;
+}

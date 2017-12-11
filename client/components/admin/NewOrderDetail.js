@@ -8,7 +8,7 @@ import {
   createShipment,
   setLoader,
   removeLoader,
-  setGrowler
+  setGrowler,
 } from '../../actions';
 
 import {
@@ -16,7 +16,7 @@ import {
   shipmentActions,
   labelState,
   makeShippingLabel,
-  fireShipmentCreate
+  fireShipmentCreate,
 } from '../shipping/shippingFunctions';
 
 import WelcomeKitPrint from '../prints/WelcomeKitPrint.js';
@@ -26,7 +26,7 @@ const mapStateToProps = store => {
   return {
     tailors: store.tailorList,
     currentUser: store.currentUser,
-    userRoles: store.userRoles
+    userRoles: store.userRoles,
   };
 };
 
@@ -45,21 +45,24 @@ class NewOrderDetail extends Component {
     updateOrder: PropTypes.func.isRequired, // mapDispatchToProps
     setLoader: PropTypes.func.isRequired, // mapDispatchToProps
     removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
-    setGrowler: PropTypes.func.isRequired // mapDispatchToProps
+    setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   constructor(props) {
     super();
     this.state = {
       loadingLabel: false,
-      notes: ''
+      notes: '',
+      provider_id: '',
     };
   }
 
   refreshNewOrdersList(props) {
     const { setLoader, getNewOrders, removeLoader } = this.props;
     setLoader();
-    getNewOrders().then(() => removeLoader());
+    getNewOrders()
+      .then(() => removeLoader())
+      .catch(() => removeLoader());
   }
 
   componentDidMount() {
@@ -104,7 +107,6 @@ class NewOrderDetail extends Component {
     this.props.setLoader();
     fireShipmentCreate(orders, action, type)
       .then(res => {
-        this.props.removeLoader();
         this.setState({ loadingLabel: false });
         this.props.removeLoader();
         this.props.selectOrder(orders[0]);
@@ -112,9 +114,9 @@ class NewOrderDetail extends Component {
       .catch(err => console.log('err', err));
   };
 
-  makeShippingLabel(action) {
+  makeShippingLabel = action => {
     return this.postShipment([this.props.order], action, 'mail_shipment');
-  }
+  };
 
   renderFulfillButton() {
     return this.renderButton(
@@ -156,9 +158,11 @@ class NewOrderDetail extends Component {
       case 'in_progress':
         printPrompt = 'Creating Label';
       case 'label_created':
-        this.refreshNewOrdersList();
         printPrompt = 'Print Label';
-        onClick = () => window.print();
+        onClick = () => {
+          this.refreshNewOrdersList();
+          window.print();
+        };
         // NOTE: we need to make sure that orderComplete gets the correct shipment.
         shipmentDiv = <WelcomeKitPrint />;
         break;
@@ -218,8 +222,8 @@ class NewOrderDetail extends Component {
       order: {
         requester_notes: this.state.notes,
         id: this.props.order.id,
-        store_id: this.props.order.store_id
-      }
+        store_id: this.props.order.store_id,
+      },
     };
 
     const kind = 'success';
@@ -275,17 +279,9 @@ class NewOrderDetail extends Component {
   render() {
     const { order } = this.props;
     if (order.customer) {
-      const {
-        id,
-        weight,
-        created_at,
-        total,
-        provider_notes,
-        items,
-        provider_id
-      } = order;
+      const { id, weight, created_at, total, provider_notes, items } = order;
+      const { provider_id } = this.state;
 
-      const tailorId = provider_id ? provider_id : '';
       const orderDate = moment(created_at).format('MM-DD-YYYY');
 
       const selectTailor = (
@@ -293,7 +289,7 @@ class NewOrderDetail extends Component {
           <p>Alterations:</p>
 
           {this.renderGarments(order.items)}
-          <SelectTailor onChange={this.updateState} provider_id={tailorId} />
+          <SelectTailor onChange={this.updateState} tailorId={provider_id} />
           <button className="button short-button" onClick={this.handleSubmit}>
             Change Tailor
           </button>

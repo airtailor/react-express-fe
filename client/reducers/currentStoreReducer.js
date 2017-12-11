@@ -1,4 +1,4 @@
-import {SET_CURRENT_STORE} from '../utils/constants';
+import { SET_CURRENT_STORE } from '../utils/constants';
 import isEmpty from 'lodash/isEmpty';
 
 const initialState = {};
@@ -24,7 +24,7 @@ const formatAddressForStore = store => {
 };
 
 const formatValidAddressIntoStore = store => {
-  const {id, phone, type, name, address} = store;
+  const { id, phone, type, name, address } = store;
   const {
     number = '',
     street = '',
@@ -53,7 +53,7 @@ const formatValidAddressIntoStore = store => {
 };
 
 const storeHasOldAddress = store => {
-  const {street1, city, state, zip} = store;
+  const { street1, city, state, zip } = store;
   if (street1 && city && state && zip) {
     return true;
   } else {
@@ -70,7 +70,7 @@ const removeOldAddressFieldsFromStore = store => {
 };
 
 const updateNewFieldsForStore = store => {
-  const {street1, street2, state, zip} = store;
+  const { street1, street2, state, zip } = store;
 
   return {
     ...store,
@@ -83,7 +83,7 @@ const updateNewFieldsForStore = store => {
 
 const storeHasAddress = store => {
   if (!isEmpty(store.address)) {
-    const {street, city, zip_code, state_province} = store.address;
+    const { street, city, zip_code, state_province } = store.address;
 
     if (street && city && zip_code && state_province) {
       return true;

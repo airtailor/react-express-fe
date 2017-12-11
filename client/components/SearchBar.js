@@ -1,9 +1,20 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {searchOrders} from '../actions';
-import {Redirect} from 'react-router-dom';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { searchOrders } from '../actions';
+import { Redirect } from 'react-router-dom';
 import SearchImg from '../images/search.png';
+import PropTypes from 'prop-types';
+
+const mapStateToProps = store => {
+  return {
+    searchResults: store.searchResults,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ searchOrders }, dispatch);
+};
 
 class SearchBar extends Component {
   constructor() {
@@ -12,31 +23,33 @@ class SearchBar extends Component {
       value: '',
       redirect: false,
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.resetRedirectState = this.resetRedirectState.bind(this);
   }
 
-  handleChange(e) {
-    const {value} = e.target;
-    this.setState({value});
-  }
+  static propTypes = {
+    searchResults: PropTypes.array.isRequired, // mapStateToProps
+    searchOrders: PropTypes.func.isRequired, // mapDispatchToProps
+  };
 
-  handleSubmit(e) {
+  handleChange = e => {
+    const { value } = e.target;
+    this.setState({ value });
+  };
+
+  handleSubmit = e => {
     e.preventDefault();
     this.props
       .searchOrders(this.state.value)
       .then(res => {
-        this.setState({redirect: true, value: ''});
+        this.setState({ redirect: true, value: '' });
       })
       .then(err => console.log('err', err));
-  }
+  };
 
-  resetRedirectState() {
+  resetRedirectState = () => {
     setTimeout(() => {
-      this.setState({redirect: false});
+      this.setState({ redirect: false });
     }, 1000);
-  }
+  };
 
   renderRedirect(state) {
     if (state.redirect) {
@@ -61,15 +74,5 @@ class SearchBar extends Component {
     );
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    searchResults: store.searchResults,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({searchOrders}, dispatch);
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

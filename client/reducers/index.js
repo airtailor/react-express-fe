@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import currentUserReducer from './currentUserReducer';
 import currentStoreReducer from './currentStoreReducer';
 import storeOrdersReducer from './storeOrdersReducer';
@@ -20,8 +20,13 @@ import archivedOrdersReducer from './archivedOrdersReducer';
 import loaderReducer from './loaderReducer';
 import userRoleReducer from './userRoleReducer';
 import currentCustomerReducer from './currentCustomerReducer';
+import storeListReducer from './storeListReducer';
 import cartCustomerReducer from '../components/orders/new/reducers/cartCustomerReducer';
 import currentReportReducer from '../components/reports/orders/ducks/currentReportReducer';
+import editStoreFormReducer from '../components/stores/edit/ducks/editStoreFormReducer';
+import usersListReducer from '../components/users/list/ducks/usersListReducer';
+import retailerListReducer from '../components/admin/retailers/ducks/retailerListReducer';
+import editUserReducer from '../components/users/edit/ducks/editUserReducer';
 
 const rootReducer = combineReducers({
   currentUser: currentUserReducer,
@@ -30,6 +35,7 @@ const rootReducer = combineReducers({
   currentOrder: currentOrderReducer,
   itemTypes: itemTypesReducer,
   tailorList: tailorListReducer,
+  retailerList: retailerListReducer,
   companyList: companyListReducer,
   measurements: measurementsReducer,
   newOrders: newOrdersReducer,
@@ -47,6 +53,10 @@ const rootReducer = combineReducers({
   currentCustomer: currentCustomerReducer,
   cartCustomer: cartCustomerReducer,
   currentReport: currentReportReducer,
+  editStore: editStoreFormReducer,
+  usersList: usersListReducer,
+  storeList: storeListReducer,
+  editUser: editUserReducer,
 });
 
 export default rootReducer;

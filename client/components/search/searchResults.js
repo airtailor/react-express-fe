@@ -1,8 +1,16 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import moment from 'moment';
-import {Redirect, Link} from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import SectionHeader from '../SectionHeader';
+
+const mapStateToProps = store => {
+  return {
+    currentUser: store.currentUser,
+    currentStore: store.currentStore,
+    searchResults: store.searchResults,
+  };
+};
 
 class SearchResults extends Component {
   formatDueDate(dueDate, late) {
@@ -16,24 +24,24 @@ class SearchResults extends Component {
 
   getOrderStatus(order) {
     if (!order.due_date) {
-      return {status: 'In Transit', color: 'green'};
+      return { status: 'In Transit', color: 'green' };
     } else if (order.late) {
       let dueTime = this.formatDueDate(order.due_date, true);
-      return {status: dueTime, color: 'red'};
+      return { status: dueTime, color: 'red' };
     } else {
       let dueTime = this.formatDueDate(order.due_date, false);
-      return {status: dueTime, color: 'orange'};
+      return { status: dueTime, color: 'orange' };
     }
   }
 
   renderOrderRows() {
-    const {searchResults} = this.props;
+    const { searchResults } = this.props;
     if (searchResults) {
       return searchResults.map((order, i) => {
         const orderStatus = this.getOrderStatus(order);
-        const {id, customer, alterations_count} = order;
-        const {first_name, last_name} = customer;
-        const {color, status} = orderStatus;
+        const { id, customer, alterations_count } = order;
+        const { first_name, last_name } = customer;
+        const { color, status } = orderStatus;
         const route = `/orders/${id}`;
         return (
           <div key={id}>
@@ -82,13 +90,5 @@ class SearchResults extends Component {
     );
   }
 }
-
-const mapStateToProps = store => {
-  return {
-    currentUser: store.currentUser,
-    currentStore: store.currentStore,
-    searchResults: store.searchResults,
-  };
-};
 
 export default connect(mapStateToProps)(SearchResults);
