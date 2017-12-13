@@ -5,8 +5,8 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 
 // force https
-app.configure('production', => {
-  app.use((req, res, next) => {
+app.configure('production', function(){
+  app.use((req, res, next) function(){
     if (req.header 'x-forwarded-proto' !== 'https')
       res.redirect(`https://${req.header('host')}${req.url}`)
     else
