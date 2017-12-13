@@ -6,6 +6,7 @@ import AvailableRoutes from './routes/';
 import SignIn from './components/SignIn';
 import Growler from './components/growler';
 import Loader from './components/loader';
+import Intercom from 'react-intercom';
 
 const mapStateToProps = store => {
   return {
@@ -20,6 +21,12 @@ const Router = props => {
   const { admin, retailer, tailor } = props.userRoles;
   const storeName = props.currentStore.name;
 
+  const user = {
+    user_id: props.currentUser.user.id,
+    email: props.currentUser.user.email,
+    name: props.currentUser.user.email,
+  };
+
   if (loggedIn) {
     return (
       <BrowserRouter>
@@ -32,12 +39,17 @@ const Router = props => {
             admin={admin}
             tailor={tailor}
           />
+
           <AvailableRoutes
             retailer={retailer}
             loggedIn={loggedIn}
             admin={admin}
             tailor={tailor}
           />
+
+          <div className="add">
+            <Intercom appID="j5szofcq" {...user} />
+          </div>
         </div>
       </BrowserRouter>
     );
@@ -47,6 +59,10 @@ const Router = props => {
         <div>
           <Growler />
           <SignIn />
+
+          <div className="add">
+            <Intercom appID="j5szofcq" {...user} />
+          </div>
         </div>
       </BrowserRouter>
     );

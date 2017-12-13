@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import NavigationLink from './NavigationLink';
 import SearchBar from '../SearchBar';
-import Intercom from 'react-intercom';
 import {
   editStoreImage,
   logoutImage,
@@ -169,13 +168,8 @@ class NavigationLinks extends Component {
 
   retailerNavbar() {
     const { currentUser, toggleNavState, navState, store } = this.props;
-    const user = {
-      user_id: currentUser.user.id,
-      email: currentUser.user.email,
-      name: currentUser.user.email,
-    };
-
     const editStoreRoute = `/stores/${store.id}/edit`;
+
     return (
       <div>
         <SearchBar />
@@ -228,9 +222,6 @@ class NavigationLinks extends Component {
           </li>
         </ul>
         {this.closeMenu(this.props)}
-        <div className="add">
-          <Intercom appID="j5szofcq" {...user} />
-        </div>
       </div>
     );
   }
