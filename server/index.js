@@ -6,7 +6,7 @@ const app = express();
 
 // force https
 app.configure('production', function(){
-  app.use((req, res, next) function(){
+  app.use((req, res, next), function(){
     if (req.header 'x-forwarded-proto' !== 'https')
       res.redirect(`https://${req.header('host')}${req.url}`)
     else
