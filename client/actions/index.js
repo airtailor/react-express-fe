@@ -161,6 +161,7 @@ export function getCurrentOrder(store_id, order_id) {
         return Axios.get(url)
           .then(res => {
             dispatch(setCurrentOrder(res.data.body));
+            return res.data.body;
           })
           .catch(err => {
             console.log('error', err);

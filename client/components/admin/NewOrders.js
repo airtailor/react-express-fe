@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getNewOrders, getCurrentOrder, setCurrentOrder } from '../../actions';
+
+import { 
+  getNewOrders, 
+  getCurrentOrder, 
+  setCurrentOrder, 
+  getCurrentCustomer 
+} from '../../actions';
+
 import { bindActionCreators } from 'redux';
 import { RenderNewOrderList } from '../../utils/newOrderLists';
 import NewOrderDetail from './NewOrderDetail';
@@ -15,12 +22,13 @@ const mapStateToProps = store => {
     newOrders: store.newOrders,
     currentOrder: store.currentOrder,
     userRoles: store.userRoles,
+    currentCustomer: store.currentCustomer,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { getNewOrders, getCurrentOrder, setCurrentOrder },
+    { getNewOrders, getCurrentOrder, setCurrentOrder, getCurrentCustomer },
     dispatch
   );
 };
@@ -28,6 +36,7 @@ const mapDispatchToProps = dispatch => {
 class NewOrders extends Component {
   static propTypes = {
     currentUser: PropTypes.object.isRequired, // mapStateToProps
+    currentCustomer: PropTypes.object.isRequired, // mapStateToProps
     currentStore: PropTypes.object.isRequired, // mapStateToProps
     newOrders: PropTypes.object.isRequired, // mapStateToProps
     currentOrder: PropTypes.object.isRequired, // mapStateToProps
@@ -35,11 +44,15 @@ class NewOrders extends Component {
     getNewOrders: PropTypes.func.isRequired, // mapDispatchToProps
     getCurrentOrder: PropTypes.func.isRequired, // mapDispatchToProps
     setCurrentOrder: PropTypes.func.isRequired, // mapDispatchToProps
+    getCurrentCustomer: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   selectOrderDetail = order => {
     this.props
       .getCurrentOrder(order.provider_id, order.id)
+      .then(res => {
+        this.props.getCurrentCustomer(res.customer_id)
+      })
       .catch(err => console.log('err', err));
   };
 
@@ -58,6 +71,34 @@ class NewOrders extends Component {
     );
   }
 
+  renderOrderDetails(){
+    const {
+      currentCustomer: {
+        id: customerId
+      }, 
+      currentOrder: {
+        customer_id: orderCustId
+      }
+    } = this.props;
+
+    if (customerId === orderCustId){
+      return (
+        <div>
+          <div className="new-order detail-container">
+            <NewOrderDetail
+              order={this.props.currentOrder}
+              selectOrder={this.selectOrderDetail}
+              getNewOrders={this.props.getNewOrders}
+            />
+          </div>
+          <div className="new-order customer-container">
+            <NewOrderCustomerDetail />
+          </div>
+        </div>
+      );
+    }
+  }
+
   render() {
     return (
       <div className="new-order-page">
@@ -67,16 +108,7 @@ class NewOrders extends Component {
             {this.renderNewOrders(this.props.newOrders)}
           </div>
           <div className="detail-and-customer">
-            <div className="new-order detail-container">
-              <NewOrderDetail
-                order={this.props.currentOrder}
-                selectOrder={this.selectOrderDetail}
-                getNewOrders={this.props.getNewOrders}
-              />
-            </div>
-            <div className="new-order customer-container">
-              <NewOrderCustomerDetail order={this.props.currentOrder} />
-            </div>
+            { this.renderOrderDetails() }
           </div>
         </div>
       </div>

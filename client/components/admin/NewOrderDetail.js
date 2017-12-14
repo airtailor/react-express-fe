@@ -27,12 +27,13 @@ const mapStateToProps = store => {
     tailors: store.tailorList,
     currentUser: store.currentUser,
     userRoles: store.userRoles,
+    currentCustomer: store.currentCustomer,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { updateOrder, setLoader, removeLoader, setGrowler },
+    { updateOrder, setLoader, removeLoader, setGrowler, },
     dispatch
   );
 };
@@ -41,11 +42,13 @@ class NewOrderDetail extends Component {
   static propTypes = {
     tailors: PropTypes.array.isRequired, // mapStateToProps
     currentUser: PropTypes.object.isRequired, // mapStateToProps
+    currentCustomer: PropTypes.object.isRequired, // mapStateToProps
     userRoles: PropTypes.object.isRequired, // mapStateToProps
     updateOrder: PropTypes.func.isRequired, // mapDispatchToProps
     setLoader: PropTypes.func.isRequired, // mapDispatchToProps
     removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
     setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
+    order: PropTypes.object.isRequired, // parentComponent
   };
 
   constructor(props) {
@@ -277,43 +280,39 @@ class NewOrderDetail extends Component {
   }
 
   render() {
-    const { order } = this.props;
-    if (order.customer) {
-      const { id, weight, created_at, total, provider_notes, items } = order;
-      const { provider_id } = this.state;
+    const { order, currentCustomer } = this.props;
+    const { id, weight, created_at, total, provider_notes, items } = order;
+    const { provider_id } = this.state;
 
-      const orderDate = moment(created_at).format('MM-DD-YYYY');
+    const orderDate = moment(created_at).format('MM-DD-YYYY');
 
-      const selectTailor = (
-        <div>
-          <p>Alterations:</p>
+    const selectTailor = (
+      <div>
+        <p>Alterations:</p>
 
-          {this.renderGarments(order.items)}
-          <SelectTailor onChange={this.updateState} tailorId={provider_id} />
-          <button className="button short-button" onClick={this.handleSubmit}>
-            Change Tailor
-          </button>
-        </div>
-      );
+        {this.renderGarments(order.items)}
+        <SelectTailor onChange={this.updateState} tailorId={provider_id} />
+        <button className="button short-button" onClick={this.handleSubmit}>
+          Change Tailor
+        </button>
+      </div>
+    );
 
-      const display =
-        order.type === 'TailorOrder' ? selectTailor : this.welcomeKit(order);
+    const display =
+      order.type === 'TailorOrder' ? selectTailor : this.welcomeKit(order);
 
-      return (
-        <div className="order-details">
-          <h3>Order Details:</h3>
-          <p>Order ID: {id}</p>
-          <p>Order Weight: {weight}</p>
-          <p>Order Date: {orderDate}</p>
-          <p>Total Charges: ${total}</p>
-          <p>Order Notes:</p>
-          {this.renderNotes()}
-          {display}
-        </div>
-      );
-    } else {
-      return <div />;
-    }
+    return (
+      <div className="order-details">
+        <h3>Order Details:</h3>
+        <p>Order ID: {id}</p>
+        <p>Order Weight: {weight}</p>
+        <p>Order Date: {orderDate}</p>
+        <p>Total Charges: ${total}</p>
+        <p>Order Notes:</p>
+        {this.renderNotes()}
+        {display}
+      </div>
+    );
   }
 }
 
