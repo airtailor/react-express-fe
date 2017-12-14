@@ -4,19 +4,21 @@ import { connect } from "react-redux";
 
 class NewOrderCustomerDetail extends Component {
   render() {
-    if (this.props.order.customer) {
+    const {order, order: { customer } } = this.props;
+    if (customer) {
       const {
         id,
         first_name,
         last_name,
         email,
         phone,
-        street,
-        street_two,
-        city,
-        state_province,
-        zip_code
-      } = this.props.order.customer;
+        address: {
+          city = customer.city,
+          state_province = customer.state,
+          zip_code = customer.zip,
+        }
+      } = customer;
+
       const customerEditLink = `/customers/${id}/edit`;
       return (
         <div>
@@ -26,9 +28,9 @@ class NewOrderCustomerDetail extends Component {
           </p>
           <p>Email: {email}</p>
           <p>Phone: {phone}</p>
-          {/*<p>
-            Address: {street} {street_two} {city}, {state_province} {zip_code}
-          </p>*/}
+          <p>
+            Address: {city}, {state_province} {zip_code}
+          </p>
           <Link to={customerEditLink}>
             <button className="button short-button"> Edit Customer</button>
           </Link>
@@ -40,10 +42,3 @@ class NewOrderCustomerDetail extends Component {
   }
 }
 export default NewOrderCustomerDetail;
-// const mapStateToProps = (store) => {
-//   return {
-//     order: store.currentOrder
-//   }
-// }
-//
-// export default connect(mapStateToProps)(NewOrderCustomerDetail);
