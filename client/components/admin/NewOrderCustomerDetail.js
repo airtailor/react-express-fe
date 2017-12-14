@@ -6,7 +6,6 @@ class NewOrderCustomerDetail extends Component {
   render() {
     const {order, order: { customer } } = this.props;
     if (customer) {
-      console.log(customer.address);
       const {
         id,
         first_name,
