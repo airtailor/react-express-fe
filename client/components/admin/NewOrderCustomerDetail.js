@@ -1,25 +1,44 @@
 import React, { Component } from "react";
+import { bindActionCreators } from 'redux';
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import PropTypes from 'prop-types';
+import isEmpty from 'lodash/isEmpty';
+
+const mapStateToProps = store => {
+  return {
+    currentCustomer: store.currentCustomer,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    { }, dispatch
+  );
+};
 
 class NewOrderCustomerDetail extends Component {
+  static propTypes = {
+    currentCustomer: PropTypes.object.isRequired, // mapStateToProps
+  };
+
   render() {
-    const {order, order: { customer } } = this.props;
-    if (customer) {
+    const { currentCustomer: customer } = this.props;
+    if (!isEmpty(customer)) {
+
       const {
         id,
         first_name,
         last_name,
         email,
         phone,
-        address: {
-          city = customer.city,
-          state_province = customer.state,
-          zip_code = customer.zip,
-        }
+        city,
+        state_province ,
+        zip_code,
       } = customer;
 
       const customerEditLink = `/customers/${id}/edit`;
+
       return (
         <div>
           <h3>Customer Details:</h3>
@@ -41,4 +60,4 @@ class NewOrderCustomerDetail extends Component {
     }
   }
 }
-export default NewOrderCustomerDetail;
+export default connect(mapStateToProps, mapDispatchToProps)(NewOrderCustomerDetail);
