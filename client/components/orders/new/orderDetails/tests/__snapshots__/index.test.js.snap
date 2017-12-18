@@ -14,23 +14,7 @@ ShallowWrapper {
     <h2>
       ORDER DETAILS
     </h2>
-    <CustomerInfo
-      customerInfo={
-        Object {
-          "agrees_to_terms": true,
-          "city": "",
-          "email": "",
-          "first_name": "",
-          "last_name": "",
-          "phone": "",
-          "state_province": "",
-          "street": "",
-          "street_two": "",
-          "zip_code": "",
-        }
-      }
-      updateCustomerInfo={[Function]}
-    />
+    <Connect(CustomerInfo) />
     <h3>
       Shipping
     </h3>
@@ -63,23 +47,7 @@ ShallowWrapper {
       <h2>
         ORDER DETAILS
       </h2>
-      <CustomerInfo
-        customerInfo={
-          Object {
-            "agrees_to_terms": true,
-            "city": "",
-            "email": "",
-            "first_name": "",
-            "last_name": "",
-            "phone": "",
-            "state_province": "",
-            "street": "",
-            "street_two": "",
-            "zip_code": "",
-          }
-        }
-        updateCustomerInfo={[Function]}
-      />
+      <Connect(CustomerInfo) />
       <h3>
         Shipping
       </h3>
@@ -112,26 +80,28 @@ ShallowWrapper {
     "_element": <OrderDetails
       cart={
         Object {
-          "customerInfo": Object {
-            "agrees_to_terms": true,
-            "city": "",
-            "email": "",
-            "first_name": "",
-            "last_name": "",
-            "phone": "",
-            "state_province": "",
-            "street": "",
-            "street_two": "",
-            "zip_code": "",
-          },
           "garments": Array [],
           "notes": "",
           "shipToStore": true,
           "storeInfo": Object {},
         }
       }
+      cartCustomer={
+        Object {
+          "agrees_to_terms": true,
+          "city": "",
+          "email": "",
+          "first_name": "",
+          "last_name": "",
+          "phone": "",
+          "state_province": "",
+          "street": "",
+          "street_two": "",
+          "zip_code": "",
+        }
+      }
       renderStageOne={[Function]}
-      updateCartCustomerInfo={[Function]}
+      updateCartCustomer={[Function]}
       updateCartShipTo={[Function]}
     />,
     "_forcedUpdate": false,
@@ -139,30 +109,29 @@ ShallowWrapper {
       "context": Object {},
       "props": Object {
         "cart": Object {
-          "customerInfo": Object {
-            "agrees_to_terms": true,
-            "city": "",
-            "email": "",
-            "first_name": "",
-            "last_name": "",
-            "phone": "",
-            "state_province": "",
-            "street": "",
-            "street_two": "",
-            "zip_code": "",
-          },
           "garments": Array [],
           "notes": "",
           "shipToStore": true,
           "storeInfo": Object {},
         },
+        "cartCustomer": Object {
+          "agrees_to_terms": true,
+          "city": "",
+          "email": "",
+          "first_name": "",
+          "last_name": "",
+          "phone": "",
+          "state_province": "",
+          "street": "",
+          "street_two": "",
+          "zip_code": "",
+        },
         "renderStageOne": [Function],
-        "updateCartCustomerInfo": [Function],
+        "updateCartCustomer": [Function],
         "updateCartShipTo": [Function],
       },
       "refs": Object {},
       "state": Object {},
-      "updateCustomerInfo": [Function],
       "updater": Updater {
         "_renderer": [Circular],
       },
@@ -174,23 +143,7 @@ ShallowWrapper {
       <h2>
         ORDER DETAILS
       </h2>
-      <CustomerInfo
-        customerInfo={
-          Object {
-            "agrees_to_terms": true,
-            "city": "",
-            "email": "",
-            "first_name": "",
-            "last_name": "",
-            "phone": "",
-            "state_province": "",
-            "street": "",
-            "street_two": "",
-            "zip_code": "",
-          }
-        }
-        updateCustomerInfo={[Function]}
-      />
+      <Connect(CustomerInfo) />
       <h3>
         Shipping
       </h3>
@@ -227,26 +180,28 @@ ShallowWrapper {
   "unrendered": <OrderDetails
     cart={
       Object {
-        "customerInfo": Object {
-          "agrees_to_terms": true,
-          "city": "",
-          "email": "",
-          "first_name": "",
-          "last_name": "",
-          "phone": "",
-          "state_province": "",
-          "street": "",
-          "street_two": "",
-          "zip_code": "",
-        },
         "garments": Array [],
         "notes": "",
         "shipToStore": true,
         "storeInfo": Object {},
       }
     }
+    cartCustomer={
+      Object {
+        "agrees_to_terms": true,
+        "city": "",
+        "email": "",
+        "first_name": "",
+        "last_name": "",
+        "phone": "",
+        "state_province": "",
+        "street": "",
+        "street_two": "",
+        "zip_code": "",
+      }
+    }
     renderStageOne={[Function]}
-    updateCartCustomerInfo={[Function]}
+    updateCartCustomer={[Function]}
     updateCartShipTo={[Function]}
   />,
 }

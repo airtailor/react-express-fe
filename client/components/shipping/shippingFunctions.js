@@ -36,12 +36,26 @@ export const messengerAllowed = (action, roles) => {
 
 export const getShipmentForRole = (roles, order) => {
   const { shipments } = order;
-
   if (roles.admin && order.type === 'WelcomeKit') {
     return shipments.find(s => {
+      const { 
+        source: { 
+          address_type: sourceAddressType
+        },
+        destination: {
+          address_type: destinationAddressType,
+          first_name,
+          last_name
+        }
+      } = s;
+
+      // return shipment if both
+      // 1. the source is a retailers address
+      // 2. the destination is either a customer or a customer's address
+
       return (
-        s.source.address_type === 'retailer' &&
-        s.destination.address_type === 'customer'
+        sourceAddressType === 'retailer' &&
+        (destinationAddressType === 'customer' || (first_name && last_name))
       );
     });
   } else if (roles.tailor || roles.admin) {
