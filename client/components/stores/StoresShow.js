@@ -225,16 +225,6 @@ class StoresShow extends Component {
       ]).then(() => {
         const { state, props } = this;
         const selectedOrders = this.state.selectedOrders;
-
-        // => Question
-        // what is the difference - state.printSet and state.selctedOrderPrints?
-
-        //const printSet = this.props.openOrders.filter(o => {
-        //  return [...this.state.selectedOrders].find(so => so.id == o.id);
-        //});
-
-        //this.setState({ selectedOrders: new Set(), printSet: printSet });
-        // this.setState({ selectedOrders: new Set(), printSet: printSet });
         this.printBulkShippingLabel();
       });
     }
