@@ -18,6 +18,7 @@ class OrderComplete extends Component {
     currentOrder: PropTypes.object.isRequired, // mapStateToProps
     userRoles: PropTypes.object.isRequired, // mapStateToProps
   };
+
   renderShippingLabelImage(shippingLabel) {
     return (
       <img
@@ -107,6 +108,23 @@ class OrderComplete extends Component {
     const { shipping_label: shippingLabel } = labelShipment;
 
     const ordersContent = this.renderBulkShippingOrderContent(orders);
+
+    const cssPagedMedia = (function() {
+      const style = document.createElement('style');
+      document.head.appendChild(style);
+      return function (rule) {
+        style.innerHTML = rule;
+      };
+    }());
+
+    cssPagedMedia.size = function () {
+      cssPagedMedia('@page { size: 5.5in 8.5in; ');
+    }
+
+    if (roles.retailer) {
+      cssPagedMedia.size();
+    }
+
     const label = this.renderShippingLabelImage(shippingLabel);
     if (!isEmpty(shipmentSet)) {
       return (
