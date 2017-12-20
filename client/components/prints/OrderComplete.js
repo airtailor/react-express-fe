@@ -17,7 +17,7 @@ class OrderComplete extends Component {
   static propTypes = {
     currentOrder: PropTypes.object.isRequired, // mapStateToProps
     userRoles: PropTypes.object.isRequired, // mapStateToProps
-    shipmentSet: PropTypes.array, // parentComponent - really a Set
+    shipmentSet: PropTypes.array, // parentComponent 
   };
 
   renderShippingLabelImage(shippingLabel) {
@@ -75,17 +75,6 @@ class OrderComplete extends Component {
       </div>
     );
   }
-
-  // renderBulkShippingLabels(shipmentSet) {
-  //   if (!isEmpty(shipmentSet)) {
-  //     return shipmentSet.map(shipment => {
-  //       return shipment.orders.map(o => {
-  //         const render = this.renderShippingLabel;
-  //         return render(o, shipment);
-  //       });
-  //     });
-  //   }
-  // }
 
   renderBulkShippingOrderContent(orders) {
     const label = this.renderShippingLabelImage;
