@@ -19,6 +19,15 @@ export const fireShipmentCreate = (orders, action, type) => {
   });
 };
 
+// this function is being used to wait until after a shipping_label 
+// is fully loaded before calling window.print()
+// HOW TO TEST???
+export const imageLoader = (image, callback) => {
+    const ImageLoader = new Image();
+    ImageLoader.onload = () => callback();
+    ImageLoader.src = image;
+}
+
 const messengerTime = (now) => {
   const startTime = now.clone().startOf('day').hour(12);
   const endTime = now.clone().startOf('day').hour(17);
