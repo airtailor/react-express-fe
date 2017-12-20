@@ -19,6 +19,7 @@ import {
   shipmentActions,
   labelState,
   messengerAllowed,
+  messengerAvailable,
 } from '../shipping/shippingFunctions';
 
 import SectionHeader from '../SectionHeader';
@@ -226,7 +227,8 @@ class StoresShow extends Component {
     if (!isEmpty(orders)) {
       const order = orders[0];
       const action = shipmentActions(order, roles);
-      return this.postShipment(orders, action, 'messenger_shipment').then(() =>
+      return this.postShipment(orders, action, 'messenger_shipment')
+        .then(() =>
         this.setState({ selectedOrders: new Set() })
       );
     }
@@ -287,19 +289,22 @@ class StoresShow extends Component {
     const orders = this.state.selectedOrders;
     let bool = disabled || this.state.sendingMessenger;
     const onClick = this.sendMessenger;
-    return (
-      <div>
-        {this.renderButton(
-          'Send Messenger',
-          {
-            disabled: bool,
-            className: 'messenger-button',
-            clickArgs: orders,
-          },
-          onClick
-        )}
-      </div>
-    );
+    const now = moment();
+    if (messengerAvailable(now)) {
+      return (
+        <div>
+          {this.renderButton(
+            'Send Messenger',
+            {
+              disabled: bool,
+              className: 'messenger-button',
+              clickArgs: orders,
+            },
+            onClick
+          )}
+        </div>
+      );
+    }
   };
 
   renderLabelsButton = disabled => {
