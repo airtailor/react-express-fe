@@ -222,8 +222,8 @@ class StoresShow extends Component {
       const action = shipmentActions(order, roles);
       return Promise.all([
         this.postShipment(orders, action, 'mail_shipment'),
-      ]).then(() => this.printBulkShippingLabel());
-      );
+      ])
+        .then(() => this.printBulkShippingLabel());
     }
   };
 
