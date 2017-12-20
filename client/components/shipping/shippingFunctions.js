@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import {
   SHIP_RETAILER_TO_TAILOR,
   SHIP_TAILOR_TO_RETAILER,
@@ -18,6 +20,13 @@ export const fireShipmentCreate = (orders, action, type) => {
     },
   });
 };
+
+export const messengerAvailable = (now) => {
+  const startTime = moment().startOf('day').hour(12);
+  const endTime = moment().startOf('day').hour(17);
+  const avail = now.isBetween(startTime, endTime);
+  return avail;
+}
 
 export const messengerAllowed = (action, roles) => {
   const { admin, retailer } = roles;
