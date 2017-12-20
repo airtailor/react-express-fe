@@ -207,7 +207,7 @@ class StoresShow extends Component {
 
         setTimeout(() => {
           this.setState({ 
-            selectedOrders: new Set, 
+            selectedOrders: new Set(), 
             selectedOrderShipments: [] 
           });
         }, 1000);
