@@ -17,6 +17,7 @@ class OrderComplete extends Component {
   static propTypes = {
     currentOrder: PropTypes.object.isRequired, // mapStateToProps
     userRoles: PropTypes.object.isRequired, // mapStateToProps
+    shipmentSet: PropTypes.array, // parentComponent - really a Set
   };
 
   renderShippingLabelImage(shippingLabel) {
@@ -170,7 +171,7 @@ class OrderComplete extends Component {
     const { currentOrder: order, shipmentSet } = this.props;
     if (shipmentSet || order) {
       let labelFunction, labelObj;
-      if (shipmentSet) {
+      if (shipmentSet && shipmentSet.length > 0) {
         labelFunction = this.renderBulkShippingLabels;
         labelObj = shipmentSet;
       } else if (order && !isEmpty(order.shipments)) {

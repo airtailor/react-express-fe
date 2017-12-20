@@ -20,6 +20,7 @@ import {
   labelState,
   messengerAllowed,
   messengerAvailable,
+  imageLoader,
 } from '../shipping/shippingFunctions';
 
 import SectionHeader from '../SectionHeader';
@@ -64,6 +65,7 @@ class StoresShow extends Component {
     this.state = {
       showOrderState: 'new_orders',
       selectedOrders: new Set(),
+      selectedOrderShipments: [],
     };
   }
 
@@ -93,7 +95,7 @@ class StoresShow extends Component {
 
   postShipment(orders, action, type) {
     this.props.setLoader();
-    // NOTE: we'll need to update this once we're returning >1 shipment per post.
+    // NOTE: we'll need to update this once we're returning > 1 shipment per post.
     // OrderComplete is set up for arrays, but the API is returning objects right now.
     return fireShipmentCreate(orders, action, type)
       .then(res => {
@@ -198,10 +200,19 @@ class StoresShow extends Component {
   }
 
   printBulkShippingLabel() {
-    setTimeout(() => {
-      return window.print();
-      this.setState({ printSet: [] });
-    }, 1000);
+    const { shipping_label } = this.state.selectedOrderShipments[0];
+
+    const print = () => {
+      window.print();
+
+        setTimeout(() => {
+          this.setState({ 
+            selectedOrders: new Set, 
+            selectedOrderShipments: [] 
+          });
+        }, 1000);
+    }
+    imageLoader(shipping_label, print);
   }
 
   makeLabels = ([...orders]) => {
@@ -212,11 +223,18 @@ class StoresShow extends Component {
       return Promise.all([
         this.postShipment(orders, action, 'mail_shipment'),
       ]).then(() => {
-        const printSet = this.props.openOrders.filter(o => {
-          return [...this.state.selectedOrders].find(so => so.id == o.id);
-        });
+        const { state, props } = this;
+        const selectedOrders = this.state.selectedOrders;
 
-        this.setState({ selectedOrders: new Set(), printSet: printSet });
+        // => Question
+        // what is the difference - state.printSet and state.selctedOrderPrints?
+
+        //const printSet = this.props.openOrders.filter(o => {
+        //  return [...this.state.selectedOrders].find(so => so.id == o.id);
+        //});
+
+        //this.setState({ selectedOrders: new Set(), printSet: printSet });
+        // this.setState({ selectedOrders: new Set(), printSet: printSet });
         this.printBulkShippingLabel();
       });
     }
