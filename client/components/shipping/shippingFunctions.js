@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import {
   SHIP_RETAILER_TO_TAILOR,
   SHIP_TAILOR_TO_RETAILER,
@@ -21,11 +19,19 @@ export const fireShipmentCreate = (orders, action, type) => {
   });
 };
 
-export const messengerAvailable = (now) => {
-  const startTime = moment().startOf('day').hour(12);
-  const endTime = moment().startOf('day').hour(17);
+const messengerTime = (now) => {
+  const startTime = now.clone().startOf('day').hour(12);
+  const endTime = now.clone().startOf('day').hour(17);
   const avail = now.isBetween(startTime, endTime);
   return avail;
+}
+
+const isNotSunday = (now) => {
+  return now.day() != 0;
+}
+
+export const messengerAvailable = (now) => {
+  return isNotSunday(now) && messengerTime(now);
 }
 
 export const messengerAllowed = (action, roles) => {
