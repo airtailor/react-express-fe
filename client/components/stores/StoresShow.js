@@ -222,11 +222,8 @@ class StoresShow extends Component {
       const action = shipmentActions(order, roles);
       return Promise.all([
         this.postShipment(orders, action, 'mail_shipment'),
-      ]).then(() => {
-        const { state, props } = this;
-        const selectedOrders = this.state.selectedOrders;
-        this.printBulkShippingLabel();
-      });
+      ]).then(() => this.printBulkShippingLabel());
+      );
     }
   };
 
