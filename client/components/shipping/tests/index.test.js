@@ -34,21 +34,43 @@ describe('getShipmentForRole', () => {
 });
 
 describe('messengerAvailable', () => {
-  it('returns true if the currentTime is between 12pm and 5pm', () => {
-    const at10am= moment().startOf('day').hour(10);
+  it('returns false if the current time is 10 am', () => {
+    const at10am = moment().isoWeekday(1).startOf('day').hour(10);
     const availAt10am = messengerAvailable(at10am);
     expect(availAt10am).toBeFalsy();
+  });
 
-    const at12pm= moment().startOf('day').hour(12).minute(1);
-    const availAt12pm= messengerAvailable(at12pm);
+  it('returns true if the current time is 1 pm', () => {
+    const at12pm = moment().weekday(1).hour(13);
+    const availAt12pm = messengerAvailable(at12pm);
     expect(availAt12pm).toBeTruthy();
+  });
 
-    const at3pm= moment().startOf('day').hour(15);
-    const availAt3pm= messengerAvailable(at3pm);
+  it('returns true if the current time is 3pm', () => {
+    const at3pm = moment().weekday(1).hour(15);
+    const availAt3pm = messengerAvailable(at3pm);
     expect(availAt3pm).toBeTruthy();
+  });
 
-    const at6pm= moment().startOf('day').hour(18);
-    const availAt6pm= messengerAvailable(at6pm);
+  it('returns false if the currentTime is 6pm', () => {
+    const at6pm = moment().isoWeekday(1).startOf('day').hour(18);
+    const availAt6pm = messengerAvailable(at6pm);
     expect(availAt6pm).toBeFalsy();
   });
+
+  it('returns true if it is Monday', () => {
+    const monday = messengerAvailable(moment().isoWeekday(1).hour(15));
+    expect(monday).toBeTruthy();
+  });
+
+  it('returns true if it is Wednesday', () => {
+    const wednesday = messengerAvailable(moment().isoWeekday(3).hour(15));
+    expect(wednesday).toBeTruthy();
+  });
+
+  it('returns false if it is Sunday', () => {
+    const sunday = messengerAvailable(moment().isoWeekday(7).hour(15));
+    expect(sunday).toBeFalsy();
+  });
+
 });
