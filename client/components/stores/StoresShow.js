@@ -495,7 +495,7 @@ class StoresShow extends Component {
           <div className="order-data-cell">
             {first_name} {last_name}
           </div>
-          {tailorDiv}
+          {/*tailorDiv*/}
           <div className="order-data-cell">{alterations_count}</div>
         </Link>
         <div className="order-data-break-row" />
