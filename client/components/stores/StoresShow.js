@@ -175,8 +175,6 @@ class StoresShow extends Component {
         }
       case 'ready_orders':
         return orders.filter(order => order.fulfilled);
-      case 'late_orders':
-        return orders.filter(order => order.late);
       default:
         return orders;
     }
@@ -464,19 +462,13 @@ class StoresShow extends Component {
 
   renderOrderRowWithSelect(order) {
     const { userRoles: roles } = this.props;
-    const { id, customer, tailor, alterations_count } = order;
+    const { id, customer, alterations_count } = order;
     const { first_name, last_name } = customer;
     const { color, status } = this.getOrderStatus(order);
     const route = `/orders/${id}`;
     const orderIsToggled = this.state.selectedOrders.has(order);
     const orderToggle = () => this.toggleOrderSelect(order);
 
-    let tailorDiv;
-    if (tailor) {
-      tailorDiv = <div className="order-data-cell">{tailor.name}</div>;
-    } else {
-      tailorDiv = <div className="order-data-cell">None</div>;
-    }
     const orderSelect = (
       <Checkbox
         checked={orderIsToggled}
@@ -497,7 +489,6 @@ class StoresShow extends Component {
           <div className="order-data-cell">
             {first_name} {last_name}
           </div>
-          {tailorDiv}
           <div className="order-data-cell">{alterations_count}</div>
         </Link>
         <div className="order-data-break-row" />
@@ -518,19 +509,12 @@ class StoresShow extends Component {
         status: 'ready_orders',
         text: 'Finished',
       },
-      { className: 'order-state-tab', status: 'late_orders', text: 'Late' },
     ];
 
     const tabs = allTabs.map((tab, i) => {
-      if (tab.status == this.state.showOrderState) {
+      if (tab.status === this.state.showOrderState) {
         tab.className = tab.className.concat(' selected');
       }
-      if (tab.status == 'late_orders') {
-        if (this.countOrdersByStatus(tab.status) > 0) {
-          tab.className = tab.className.concat(' late-orders');
-        }
-      }
-
       return (
         <div
           key={i}
@@ -583,7 +567,6 @@ class StoresShow extends Component {
             {orderHeader('Order', true, false)}
             {orderHeader('Status', true, false)}
             {orderHeader('Customer', true, false)}
-            {orderHeader('Tailor', true, false)}
             {orderHeader('Quantity', true, false)}
           </div>
         </div>
