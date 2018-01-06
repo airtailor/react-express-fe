@@ -574,7 +574,6 @@ class StoresShow extends Component {
             {orderHeader('Order', true, false)}
             {orderHeader('Status', true, false)}
             {orderHeader('Customer', true, false)}
-            {orderHeader('Tailor', true, false)}
             {orderHeader('Quantity', true, false)}
           </div>
         </div>
