@@ -31,8 +31,7 @@ export const imageLoader = (image, callback) => {
 const messengerTime = (now) => {
   const startTime = now.clone().startOf('day').hour(12);
   const endTime = now.clone().startOf('day').hour(17);
-  //const avail = now.isBetween(startTime, endTime);
-  const avail = true;
+  const avail = now.isBetween(startTime, endTime);
   return avail;
 }
 

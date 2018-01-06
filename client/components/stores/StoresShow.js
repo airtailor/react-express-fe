@@ -286,9 +286,13 @@ class StoresShow extends Component {
       const order = orders[0];
       const action = shipmentActions(order, roles);
       return this.postShipment(orders, action, 'messenger_shipment')
-        .then(() =>
-        this.setState({ selectedOrders: new Set() })
-      );
+        .then(() => {
+          const kind = "success";
+          const message = "Messenger has been requested!";
+
+          this.props.setGrowler({kind, message});
+          this.setState({ selectedOrders: new Set() })
+        });
     }
   };
 
