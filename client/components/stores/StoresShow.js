@@ -157,10 +157,21 @@ class StoresShow extends Component {
         if (roles.tailor) {
           return orders.filter(order => order.arrived && !order.fulfilled);
         } else {
-          return orders.filter(
-            order =>
-              !isEmpty(order.shipments) && order.tailor && !order.fulfilled
-          );
+          return orders.filter(order => {
+            if (isEmpty(order.shipments)) {
+              return false;
+            }
+
+            const { tailor, fulfilled, shipments } = order;
+            const { status, delivery_type } = shipments[shipments.length -1];
+
+            const mailShipmentExists = delivery_type === 'mail_shipment';
+            const messengerShipmentDelivered = status === 'delivered';
+
+            return (mailShipmentExists || messengerShipmentDelivered) && 
+              tailor && 
+              !fulfilled;
+          });
         }
       case 'ready_orders':
         return orders.filter(order => order.fulfilled);
