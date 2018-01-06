@@ -462,19 +462,13 @@ class StoresShow extends Component {
 
   renderOrderRowWithSelect(order) {
     const { userRoles: roles } = this.props;
-    const { id, customer, tailor, alterations_count } = order;
+    const { id, customer, alterations_count } = order;
     const { first_name, last_name } = customer;
     const { color, status } = this.getOrderStatus(order);
     const route = `/orders/${id}`;
     const orderIsToggled = this.state.selectedOrders.has(order);
     const orderToggle = () => this.toggleOrderSelect(order);
 
-    let tailorDiv;
-    if (tailor) {
-      tailorDiv = <div className="order-data-cell">{tailor.name}</div>;
-    } else {
-      tailorDiv = <div className="order-data-cell">None</div>;
-    }
     const orderSelect = (
       <Checkbox
         checked={orderIsToggled}
@@ -495,7 +489,6 @@ class StoresShow extends Component {
           <div className="order-data-cell">
             {first_name} {last_name}
           </div>
-          {/*tailorDiv*/}
           <div className="order-data-cell">{alterations_count}</div>
         </Link>
         <div className="order-data-break-row" />
