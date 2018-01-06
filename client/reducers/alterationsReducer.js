@@ -111,7 +111,7 @@ export default function() {
         title: 'Shirt Side Seams Taken In',
         price: 25.0,
         howToPin: shirtSideSeamsTakenIn,
-        type: 'sleevesTakenIn',
+        type: 'shirtSideSeemsTakenIn',
       },
       {
         id: 12,
