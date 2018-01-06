@@ -518,7 +518,6 @@ class StoresShow extends Component {
         status: 'ready_orders',
         text: 'Finished',
       },
-      { className: 'order-state-tab', status: 'late_orders', text: 'Late' },
     ];
 
     const tabs = allTabs.map((tab, i) => {
