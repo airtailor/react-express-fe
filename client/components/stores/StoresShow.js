@@ -138,16 +138,40 @@ class StoresShow extends Component {
             order => !isEmpty(order.shipments) && order.tailor
           );
         } else {
-          return orders.filter(order => isEmpty(order.shipments));
+          return orders.filter(order => {
+            const { shipments } = order;
+            
+            const noShipments = isEmpty(shipments);
+            const lastShipment = shipments[shipments.length - 1];
+            
+            const messengerNotDeliveredYet = (
+              shipments.length > 0 &&
+              lastShipment.delivery_type === 'messenger_shipment' && 
+              lastShipment.status != 'delivered'
+            );
+
+            return noShipments || messengerNotDeliveredYet;
+          });
         }
       case 'in_progress_orders':
         if (roles.tailor) {
           return orders.filter(order => order.arrived && !order.fulfilled);
         } else {
-          return orders.filter(
-            order =>
-              !isEmpty(order.shipments) && order.tailor && !order.fulfilled
-          );
+          return orders.filter(order => {
+            if (isEmpty(order.shipments)) {
+              return false;
+            }
+
+            const { tailor, fulfilled, shipments } = order;
+            const { status, delivery_type } = shipments[shipments.length -1];
+
+            const mailShipmentExists = delivery_type === 'mail_shipment';
+            const messengerShipmentDelivered = status === 'delivered';
+
+            return (mailShipmentExists || messengerShipmentDelivered) && 
+              tailor && 
+              !fulfilled;
+          });
         }
       case 'ready_orders':
         return orders.filter(order => order.fulfilled);
@@ -160,6 +184,14 @@ class StoresShow extends Component {
 
   countOrdersByStatus(status) {
     return this.sortOrdersByStatus(status).length;
+  }
+
+  messengerDeliveryCompleted(order){
+    let delivered = false;
+    if (order.shipments.last.status === "delivered") {
+      delivered = true;
+    }
+    return delivered;
   }
 
   getOrderStatus(order) {
@@ -179,8 +211,29 @@ class StoresShow extends Component {
       status = 'Needs Shipping Details';
       color = 'gold';
     } else if (!isEmpty(order.shipments) && !order.arrived) {
-      status = 'In Transit';
-      color = 'green';
+      const lastShipment = order.shipments[order.shipments.length -1];
+      const { delivery_type } = lastShipment;
+
+      if (delivery_type === 'mail_shipment') {
+        status = 'In Transit';
+        color = 'green';
+      } else if (delivery_type === 'messenger_shipment') {
+        const shipmentStatus = lastShipment.status;
+
+        if (shipmentStatus === 'pending') {
+          status = 'Contacting';
+        } else if (shipmentStatus === 'pickup') {
+          status = 'Picking Up';
+        } else if (
+          shipmentStatus === 'pickup_complete' || 
+          shipmentStatus === 'dropoff') {
+          status = 'Dropping Off';
+        } else if (shipmentStatus === 'delivered') {
+          status = 'Delivered';
+        }
+
+        color = 'green';
+      }
     } else if (order.late) {
       let dueTime = this.formatStatusString(order.due_date, true);
       status = dueTime;
@@ -233,9 +286,13 @@ class StoresShow extends Component {
       const order = orders[0];
       const action = shipmentActions(order, roles);
       return this.postShipment(orders, action, 'messenger_shipment')
-        .then(() =>
-        this.setState({ selectedOrders: new Set() })
-      );
+        .then(() => {
+          const kind = "success";
+          const message = "Messenger has been requested!";
+
+          this.props.setGrowler({kind, message});
+          this.setState({ selectedOrders: new Set() })
+        });
     }
   };
 
