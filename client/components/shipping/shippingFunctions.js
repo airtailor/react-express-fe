@@ -23,15 +23,16 @@ export const fireShipmentCreate = (orders, action, type) => {
 // is fully loaded before calling window.print()
 // HOW TO TEST???
 export const imageLoader = (image, callback) => {
-    const ImageLoader = new Image();
-    ImageLoader.onload = () => callback();
-    ImageLoader.src = image;
+  const ImageLoader = new Image();
+  ImageLoader.onload = () => callback();
+  ImageLoader.src = image;
 }
 
 const messengerTime = (now) => {
   const startTime = now.clone().startOf('day').hour(12);
   const endTime = now.clone().startOf('day').hour(17);
-  const avail = now.isBetween(startTime, endTime);
+  //const avail = now.isBetween(startTime, endTime);
+  const avail = true;
   return avail;
 }
 
