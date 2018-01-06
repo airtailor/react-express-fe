@@ -42,14 +42,6 @@ export default function() {
         type: 'hem',
       },
       {
-        id: 3,
-        garmentId: 1,
-        title: 'Shorten Pant Length - Blind Stitch Hem',
-        price: 15.5,
-        howToPin: takeUpPantHemImage,
-        type: 'hem',
-      },
-      {
         id: 4,
         garmentId: 1,
         title: 'Shorten Pant Length - Cuffed Hem',
@@ -111,7 +103,7 @@ export default function() {
         title: 'Shirt Side Seams Taken In',
         price: 25.0,
         howToPin: shirtSideSeamsTakenIn,
-        type: 'sleevesTakenIn',
+        type: 'shirtSideSeemsTakenIn',
       },
       {
         id: 12,
