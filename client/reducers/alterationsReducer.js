@@ -41,14 +41,6 @@ export default function() {
         howToPin: takeUpPantHemImage,
         type: 'hem',
       },
-      //{
-      //  id: 3,
-      //  garmentId: 1,
-      //  title: 'Shorten Pant Length - Blind Stitch Hem',
-      //  price: 15.5,
-      //  howToPin: takeUpPantHemImage,
-      //  type: 'hem',
-      //},
       {
         id: 4,
         garmentId: 1,
