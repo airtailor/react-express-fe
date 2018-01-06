@@ -175,8 +175,6 @@ class StoresShow extends Component {
         }
       case 'ready_orders':
         return orders.filter(order => order.fulfilled);
-      case 'late_orders':
-        return orders.filter(order => order.late);
       default:
         return orders;
     }
@@ -521,15 +519,9 @@ class StoresShow extends Component {
     ];
 
     const tabs = allTabs.map((tab, i) => {
-      if (tab.status == this.state.showOrderState) {
+      if (tab.status === this.state.showOrderState) {
         tab.className = tab.className.concat(' selected');
       }
-      if (tab.status == 'late_orders') {
-        if (this.countOrdersByStatus(tab.status) > 0) {
-          tab.className = tab.className.concat(' late-orders');
-        }
-      }
-
       return (
         <div
           key={i}
