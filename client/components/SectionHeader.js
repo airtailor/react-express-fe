@@ -1,29 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
-
-// const CustomerLink = props => {
-//   const {linkTo, linkText, userRoles} = this.props;
-//   const roles = userRoles;
-//
-//   if (linkTo && linkText) {
-//     if (roles.retailer) {
-//       return (
-//         <Link className="link" to={props.linkTo}>
-//           {props.linkText}
-//         </Link>
-//       );
-//     } else {
-//       return <h3 className="fake-link">{props.linkText}</h3>;
-//     }
-//   }
-// };
+import { resetCart } from '../actions';
 
 const CartRibbon = props => {
   const { rotate, userRoles, includeLink = true } = props;
   let link = props.link;
+  let onClick;
+
   if (!link) {
     link = '/orders/new';
+    onClick = () => console.log('');
+  } else {
+    onClick = () => props.resetCart();
   }
 
   if (props.userRoles.tailor || !includeLink) {
@@ -32,7 +22,11 @@ const CartRibbon = props => {
 
   return (
     <Link className="cart-ribbon" to={link}>
-      <h1 className={`cart-ribbon-sign ${rotate}`}>+</h1>
+      <h1 
+        className={`cart-ribbon-sign ${rotate}`}
+        onClick={onClick}>
+        +
+      </h1>
       <div className="cart-ribbon-triangle" />
     </Link>
   );
@@ -42,7 +36,6 @@ const SectionHeader = props => {
   return (
     <div className="section-header">
       <h2>{props.text}</h2>
-      {/*CustomerLink(props)*/}
       {CartRibbon(props)}
     </div>
   );
@@ -55,4 +48,12 @@ const mapStateToProps = store => {
   };
 };
 
-export default connect(mapStateToProps)(SectionHeader);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      resetCart,
+    },
+    dispatch
+  );
+};
+export default connect(mapStateToProps, mapDispatchToProps)(SectionHeader);
