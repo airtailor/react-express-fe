@@ -15,11 +15,14 @@ label span {
   width: 25px;
   height: 25px;
   transform-origin: center;
+  -webkit-transform-origin: center;
   border: 2px solid $primary-blue;
   border-radius: 50%;
   vertical-align: -6px;
   margin-right: 10px;
   transition: background-color 150ms 200ms,
+    transform 350ms cubic-bezier(0.78, -1.22, 0.17, 1.89);
+  -webkit-transition: background-color 150ms 200ms,
     transform 350ms cubic-bezier(0.78, -1.22, 0.17, 1.89);
 }
 label span:before {
@@ -30,10 +33,13 @@ label span:before {
   background: $primary-blue;
   position: absolute;
   transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
   top: 13px;
   left: 9px;
   transition: width 50ms ease 50ms;
+  -webkit-transition: width 50ms ease 50ms;
   transform-origin: 0% 0%;
+  -webkit-transform-origin: 0% 0%;
 }
 label span:after {
   content: '';
@@ -43,18 +49,23 @@ label span:after {
   background: $primary-blue;
   position: absolute;
   transform: rotate(305deg);
+  -webkit-transform: rotate(305deg);
   top: 16px;
   left: 10px;
   transition: width 50ms ease;
+  -webkit-transition: width 50ms ease;
   transform-origin: 0% 0%;
+  -webkit-transform-origin: 0% 0%;
 }
 label:hover span:before {
   width: 5px;
   transition: width 100ms ease;
+  -webkit-transition: width 100ms ease;
 }
 label:hover span:after {
   width: 10px;
   transition: width 150ms ease 100ms;
+  -webkit-transition: width 150ms ease 100ms;
 }
 
 input[type='checkbox'] {
@@ -63,30 +74,36 @@ input[type='checkbox'] {
 input[type='checkbox']:checked + label span {
   // background-color: $primary-blue;
   transform: scale(1.08);
+  -webkit-transform: scale(1.08);
 }
 input[type='checkbox']:checked + label span:after {
   width: 10px;
   background: $primary-blue;
   transition: width 150ms ease 100ms;
+  -webkit-transition: width 150ms ease 100ms;
 }
 input[type='checkbox']:checked + label span:before {
   width: 5px;
   background: $primary-blue;
   transition: width 150ms ease 100ms;
+  -webkit-transition: width 150ms ease 100ms;
 }
 input[type='checkbox']:checked + label:hover span {
   // background-color: $primary-blue;
   transform: scale(1.16);
+  -webkit-transform: scale(1.16);
 }
 input[type='checkbox']:checked + label:hover span:after {
   width: 10px;
   background: $primary-blue;
   transition: width 150ms ease 100ms;
+  -webkit-transition: width 150ms ease 100ms;
 }
 input[type='checkbox']:checked + label:hover span:before {
   width: 5px;
   background: $primary-blue;
   transition: width 150ms ease 100ms;
+  -webkit-transition: width 150ms ease 100ms;
 }
 
 // html {
