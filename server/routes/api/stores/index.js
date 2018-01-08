@@ -208,7 +208,6 @@ router.get('/', (req, res) => {
       }
     });
 });
-);
 
 router.put(`/:store_id/orders/alert_customers`, (req, res) => {
   const headers = getHeaders(req);
