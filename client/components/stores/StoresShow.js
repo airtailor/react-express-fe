@@ -131,6 +131,7 @@ class StoresShow extends Component {
 
   sortOrdersByStatus(status) {
     const { openOrders: orders, userRoles: roles } = this.props;
+
     switch (status) {
       case 'new_orders':
         if (roles.tailor) {
@@ -143,6 +144,7 @@ class StoresShow extends Component {
             
             const noShipments = isEmpty(shipments);
             const lastShipment = shipments[shipments.length - 1];
+            const notFulfilled = !order.fulfilled;
             
             const messengerNotDeliveredYet = (
               shipments.length > 0 &&
@@ -150,7 +152,7 @@ class StoresShow extends Component {
               lastShipment.status != 'delivered'
             );
 
-            return noShipments || messengerNotDeliveredYet;
+            return notFulfilled && (noShipments || messengerNotDeliveredYet);
           });
         }
       case 'in_progress_orders':
