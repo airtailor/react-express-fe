@@ -168,32 +168,10 @@ router.post('/', (req, res) => {
     });
 });
 
-router.get('/:store_id/orders_and_messages_count', (req, res) => {
+router.get('/:store_id/orders_count', (req, res) => {
   const headers = getHeaders(req);
   const { store_id } = req.params;
-  const url = `${apiUrl}/api/stores/${store_id}/orders_and_messages_count`;
-
-  Axios.get(url, {
-    headers,
-  })
-    .then(response => {
-      res.json({ headers: response.headers, body: response.data });
-    })
-    .catch(err => {
-      if (err instanceof Error) {
-        console.log('@@@@@@@@@@@@@', err.response.status);
-        res.json(err.response.status);
-      } else {
-        console.log('error: ', err);
-        res.json(err);
-      }
-    });
-});
-
-router.get('/:store_id/conversations', (req, res) => {
-  const headers = getHeaders(req);
-  const { store_id } = req.params;
-  const url = `${apiUrl}/api/stores/${store_id}/conversations`;
+  const url = `${apiUrl}/api/stores/${store_id}/orders_count`;
 
   Axios.get(url, {
     headers,
@@ -230,76 +208,6 @@ router.get('/', (req, res) => {
       }
     });
 });
-
-router.get('/:store_id/conversations/:conversation_id', (req, res) => {
-  const headers = getHeaders(req);
-  const { store_id, conversation_id } = req.params;
-  const url = `${apiUrl}/api/stores/${store_id}/conversations/${conversation_id}`;
-
-  Axios.get(url, {
-    headers,
-  })
-    .then(response => {
-      res.json({ headers: response.headers, body: response.data });
-    })
-    .catch(err => {
-      if (err instanceof Error) {
-        console.log('@@@@@@@@@@@@@', err.response.status);
-        res.json(err.response.status);
-      } else {
-        console.log('error: ', err);
-        res.json(err);
-      }
-    });
-});
-
-router.post(
-  '/:store_id/conversations/:conversation_id/messages',
-  (req, res) => {
-    const { store_id, conversation_id } = req.params;
-    const headers = getHeaders(req);
-    const { message } = req.body;
-    Axios.post(
-      `${apiUrl}/api/stores/${store_id}/conversations/${conversation_id}/messages`,
-      { headers, message }
-    )
-      .then(response => {
-        res.json({ headers: response.headers, body: response.data });
-      })
-      .catch(err => {
-        if (err instanceof Error) {
-          console.log('@@@@@@@@@@@@@', err);
-          res.json({ status: err.response.status, error: err });
-        } else {
-          console.log('error: ', err);
-          res.json(err);
-        }
-      });
-  }
-);
-
-router.put(
-  '/:store_id/conversations/:conversation_id/messages/:message_id',
-  (req, res) => {
-    const { store_id, conversation_id, message_id } = req.params;
-    const headers = getHeaders(req);
-    const { message } = req.body;
-    const url = `${apiUrl}/api/stores/${store_id}/conversations/${conversation_id}/messages/${message_id}`;
-
-    Axios.put(url, { headers, message })
-      .then(response => {
-        res.json({ headers: response.headers, body: response.data });
-      })
-      .catch(err => {
-        if (err instanceof Error) {
-          console.log('@@@@@@@@@@@@@', err);
-          res.json({ status: err.response.status, error: err });
-        } else {
-          console.log('error: ', err);
-          res.json(err);
-        }
-      });
-  }
 );
 
 router.put(`/:store_id/orders/alert_customers`, (req, res) => {
