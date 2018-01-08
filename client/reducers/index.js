@@ -8,8 +8,6 @@ import tailorListReducer from './tailorListReducer';
 import companyListReducer from './companyListReducer';
 import measurementsReducer from './measurementsReducer';
 import newOrdersReducer from './newOrdersReducer';
-import conversationsReducer from './conversationsReducer';
-import messagesReducer from './messagesReducer';
 import garmentsReducer from './garmentsReducer';
 import alterationsReducer from './alterationsReducer';
 import cartReducer from './cartReducer';
@@ -39,8 +37,6 @@ const rootReducer = combineReducers({
   companyList: companyListReducer,
   measurements: measurementsReducer,
   newOrders: newOrdersReducer,
-  conversations: conversationsReducer,
-  messages: messagesReducer,
   garments: garmentsReducer,
   alterations: alterationsReducer,
   cart: cartReducer,

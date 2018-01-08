@@ -6,7 +6,6 @@ import SearchBar from '../SearchBar';
 import {
   editStoreImage,
   logoutImage,
-  messageImage,
   homeImage,
   ordersImage,
   archivedImage,
@@ -43,13 +42,6 @@ class NavigationLinks extends Component {
             route={`/admin/orders/archived`}
             text="Archive"
             image={archivedImage}
-          />
-
-          <NavigationLink
-            cssClass="conversations-link"
-            route="/conversations"
-            text="Conversations"
-            image={messageImage}
           />
 
           <NavigationLink
@@ -117,13 +109,6 @@ class NavigationLinks extends Component {
             route={`/stores/${store.id}/orders/archived`}
             text="Archive"
             image={archivedImage}
-          />
-
-          <NavigationLink
-            cssClass="messages-link"
-            route="/messages"
-            text="Messages"
-            image={messageImage}
           />
 
           <NavigationLink
@@ -196,13 +181,6 @@ class NavigationLinks extends Component {
             route={`/stores/${store.id}/orders/archived`}
             text="Archive"
             image={archivedImage}
-          />
-
-          <NavigationLink
-            cssClass="messages-link"
-            route="/messages"
-            text="Messages"
-            image={messageImage}
           />
 
           <NavigationLink

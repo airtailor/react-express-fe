@@ -18,8 +18,6 @@ import {
   SET_CUSTOMER_MEASUREMENTS,
   SET_CURRENT_PRINT,
   SET_NEW_ORDERS,
-  SET_MESSAGES,
-  SET_CONVERSATIONS,
   ADD_GARMENT_TO_CART,
   REMOVE_GARMENT_FROM_CART,
   UPDATE_CART_CUSTOMER,
@@ -380,87 +378,13 @@ export function getNewOrders() {
   };
 }
 
-export function getOrderAndMessagesCount(store_id) {
+export function getOrderCount(store_id) {
   return validateToken()
     .then(setTokens)
     .then(() => {
-      const url = `${expressApi}/stores/${store_id}/orders_and_messages_count`;
+      const url = `${expressApi}/stores/${store_id}/orders_count`;
       return Axios.get(url);
     });
-}
-
-export function getConversations(store_id) {
-  const url = `${expressApi}/stores/${store_id}/conversations`;
-  return dispatch => {
-    return validateToken(dispatch)
-      .then(setTokens)
-      .then(() => {
-        return Axios.get(url)
-          .then(res => {
-            dispatch(setConversations(res.data.body));
-            return res.data.body;
-          })
-          .catch(err => {
-            debugger;
-          });
-      });
-  };
-}
-
-export function getMessages(store_id, conversation_id) {
-  const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}`;
-  return dispatch => {
-    return validateToken(dispatch)
-      .then(setTokens)
-      .then(() => {
-        return Axios.get(url)
-          .then(res => {
-            dispatch(setMessages(res.data.body.messages));
-            return res.data.body;
-          })
-          .catch(err => {
-            debugger;
-          });
-      });
-  };
-}
-
-export function createMessage(message) {
-  const { store_id, conversation_id } = message;
-  const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}/messages`;
-  return dispatch => {
-    return validateToken(dispatch)
-      .then(setTokens)
-      .then(() => {
-        return Axios.post(url, { message })
-          .then(res => {
-            dispatch(setMessages(res.data.body.messages));
-            return res;
-          })
-          .catch(err => {
-            debugger;
-          });
-      });
-  };
-}
-
-export function updateMessage(message) {
-  const { store_id, conversation_id, id } = message;
-  const url = `${expressApi}/stores/${store_id}/conversations/${conversation_id}/messages/${id}`;
-  return dispatch => {
-    return validateToken(dispatch)
-      .then(setTokens)
-      .then(() => {
-        return Axios.put(url, { message })
-          .then(res => {
-            dispatch(setMessages(res.data.body.messages));
-            return res;
-          })
-          .catch(err => {
-            debugger;
-          });
-      });
-  };
 }
 
 export function findOrCreateCustomer(customerInfo) {
@@ -510,17 +434,6 @@ export function submitOrder(props) {
   const { cart, currentStore, cartCustomer: { id: customer_id } } = props;
 
   return dispatch => {
-    // find or create new customer flow
-    // return findOrCreateCustomer(removeFalseyValuesFromObject(cartCustomer))
-    // .then(res => {
-    //   if (res.data.body.errors) {
-    //     return {
-    //       errors: true,
-    //       message: res.data.body.errors.customer[0],
-    //     };
-    //   } else {
-    //     const customer_id = res.data.body.id;
-
     const requester_id = currentStore.id;
     const weight = getOrderWeight(cart);
     const total = getOrderTotal(cart);
@@ -692,8 +605,8 @@ export function getStoreList() {
 function setStoreList(stores) {
   return {
     type: SET_STORE_LIST,
-    stores
-  }
+    stores,
+  };
 }
 
 function setCurrentCustomer(customer) {
@@ -823,20 +736,6 @@ export function addGarmentToCart(garment) {
   return {
     type: ADD_GARMENT_TO_CART,
     garment,
-  };
-}
-
-export function setMessages(messages) {
-  return {
-    type: SET_MESSAGES,
-    messages,
-  };
-}
-
-export function setConversations(conversations) {
-  return {
-    type: SET_CONVERSATIONS,
-    conversations,
   };
 }
 
