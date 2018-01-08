@@ -51,7 +51,8 @@ h1 {
 .content {
   // margin-left: 175px;
   flex: 1 0 25%;
-  overflow: auto;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .hoverable {
@@ -117,7 +118,7 @@ h1 {
   display: inline;
 }
 
-input[type="submit"]:disabled {
+input[type='submit']:disabled {
   cursor: not-allowed;
 }
 
