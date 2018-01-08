@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 
-import { getCurrentStore, getOrderAndMessagesCount } from '../actions';
+import { getCurrentStore, getOrderCount } from '../actions';
 
 import SectionHeader from './SectionHeader';
 import OrderCard from './OrderCard';
 import OrderCardIcon from './OrderCardIcon';
-import { ordersImage, messageImage, exclamationImage } from '../images';
+import { ordersImage, exclamationImage } from '../images';
 
 const mapStateToProps = store => {
   return {
@@ -30,7 +30,6 @@ class Home extends Component {
     this.state = {
       active_orders_count: 0,
       late_orders_count: 0,
-      unread_messages_count: 0,
     };
   }
 
@@ -47,7 +46,7 @@ class Home extends Component {
       getCurrentStore,
     } = this.props;
 
-    getOrderAndMessagesCount(storeId).then(res => {
+    getOrderCount(storeId).then(res => {
       this.setState(res.data.body);
     });
 
@@ -57,11 +56,7 @@ class Home extends Component {
   }
 
   retailerHome(currentStore) {
-    const {
-      active_orders_count,
-      late_orders_count,
-      unread_messages_count,
-    } = this.state;
+    const { active_orders_count, late_orders_count } = this.state;
 
     return (
       <div className="store-boxes">
@@ -71,25 +66,13 @@ class Home extends Component {
           type="Current"
           call="VIEW >"
           styleClass="current-orders"
-        />
-
-        <OrderCard
-          icon={<OrderCardIcon url={messageImage} alt="messages" />}
-          count={unread_messages_count}
-          type="Unread"
-          call="READ >"
-          styleClass="unread-messages"
         />
       </div>
     );
   }
 
   adminHome(currentStore) {
-    const {
-      active_orders_count,
-      late_orders_count,
-      unread_messages_count,
-    } = this.state;
+    const { active_orders_count, late_orders_count } = this.state;
     return (
       <div className="store-boxes">
         <OrderCard
@@ -106,25 +89,13 @@ class Home extends Component {
           type="Current"
           call="VIEW >"
           styleClass="current-orders"
-        />
-
-        <OrderCard
-          icon={<OrderCardIcon url={messageImage} alt="messages" />}
-          count={unread_messages_count}
-          type="Unread"
-          call="READ >"
-          styleClass="unread-messages-admin"
         />
       </div>
     );
   }
 
   tailorHome(currentStore) {
-    const {
-      active_orders_count,
-      late_orders_count,
-      unread_messages_count,
-    } = this.state;
+    const { active_orders_count, late_orders_count } = this.state;
     return (
       <div className="store-boxes">
         <OrderCard
@@ -141,14 +112,6 @@ class Home extends Component {
           type="Current"
           call="VIEW >"
           styleClass="current-orders"
-        />
-
-        <OrderCard
-          icon={<OrderCardIcon url={messageImage} alt="messages" />}
-          count={unread_messages_count}
-          type="Unread"
-          call="READ >"
-          styleClass="unread-messages"
         />
       </div>
     );
