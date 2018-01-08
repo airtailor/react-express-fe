@@ -3,6 +3,7 @@ import {
   UPDATE_CART_CUSTOMER,
   RESET_CART,
   SET_CART_CUSTOMER,
+  RESET_CART_CUSTOMER,
 } from '../../../../utils/constants';
 
 const cartCustomerReducer = (state = initialState, action) => {
@@ -16,6 +17,9 @@ const cartCustomerReducer = (state = initialState, action) => {
         ...state,
         [action.customer.field]: action.customer.value,
       };
+      break;
+    case RESET_CART_CUSTOMER:
+      return initialState;
       break;
     case RESET_CART:
       return initialState;

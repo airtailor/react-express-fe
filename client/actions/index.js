@@ -42,6 +42,7 @@ import {
   SET_CURRENT_CUSTOMER,
   UPDATE_CURRENT_CUSTOMER,
   SET_CART_CUSTOMER,
+  RESET_CART_CUSTOMER,
   SET_STORE_LIST,
 } from '../utils/constants';
 
@@ -715,6 +716,12 @@ export function updateCartCustomer(field, value) {
   return {
     type: UPDATE_CART_CUSTOMER,
     customer: { field, value },
+  };
+}
+
+export function resetCartCustomer() {
+  return {
+    type: RESET_CART_CUSTOMER,
   };
 }
 

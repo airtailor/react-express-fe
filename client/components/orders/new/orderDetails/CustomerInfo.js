@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
-import { updateCartCustomer } from '../../../../actions';
+import { updateCartCustomer, resetCartCustomer } from '../../../../actions';
 import { formatPhone } from '../../../../utils/format';
 import FindCustomerByPhone from './FindCustomerByPhone';
 
@@ -19,6 +19,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       updateCartCustomer,
+      resetCartCustomer,
     },
     dispatch
   );
@@ -35,6 +36,7 @@ class CustomerInfo extends Component {
   static propTypes = {
     cartCustomer: PropTypes.object.isRequired, // mapStateToProps
     updateCartCustomer: PropTypes.func.isRequired, // mapDispatchToProps
+    resetCartCustomer: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   firstName(first_name) {
@@ -86,6 +88,22 @@ class CustomerInfo extends Component {
     );
   }
 
+  resetCartCustomerAndUpdateCustomerExists = () => {
+    console.log('should be clearing customer')
+    this.props.resetCartCustomer();
+    this.updateCustomerExists(null);
+  }
+
+  clearCustomerFromCartButton = () => {
+    return (
+      <input 
+        type="submit"
+        className="short-button" 
+        value="Clear Customer" 
+        onClick={() => this.resetCartCustomerAndUpdateCustomerExists()} />
+    );
+  }
+
   updateCustomerExists = value => {
     this.setState({ customerExists: value });
   };
@@ -107,13 +125,17 @@ class CustomerInfo extends Component {
         <div>
           {customerExists || id ? '' : <h4>Create Customer:</h4>}
           <div>
-            {this.phone(phone)}
-            {this.email(email)}
+            { this.phone(phone) }
+            { this.email(email) }
           </div>
 
           <div>
-            {this.firstName(first_name)}
-            {this.lastName(last_name)}
+            { this.firstName(first_name) }
+            { this.lastName(last_name) }
+          </div>
+
+          <div>
+            { this.clearCustomerFromCartButton() }
           </div>
         </div>
       );
