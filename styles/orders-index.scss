@@ -21,17 +21,17 @@
 .order-state-tab.selected {
   background: white;
   -webkit-clip-path: polygon(20% 0, 0 100%, 100% 100%, 80% 0);
-  clip-path: polygon(20% 0, 0 100%, 100% 100%, 80% 0);
+  -webkit-clip-path: polygon(20% 0, 0 100%, 100% 100%, 80% 0);
 }
 
 .order-state-tab.selected:nth-child(1) {
   -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%, 80% 0);
-  clip-path: polygon(0 0, 0 100%, 100% 100%, 80% 0);
+  -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%, 80% 0);
 }
 
 .order-state-tab.selected:last-child {
   -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%, 80% 0);
-  clip-path: polygon(20% 0, 0 100%, 100% 100%, 100% 0);
+  -webkit-clip-path: polygon(20% 0, 0 100%, 100% 100%, 100% 0);
 }
 
 .order-state-tab h3 {
