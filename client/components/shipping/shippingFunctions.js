@@ -28,6 +28,21 @@ export const imageLoader = (image, callback) => {
   ImageLoader.src = image;
 }
 
+export const waitingForPostmatesUpdate = orders => {
+  const ordersNeedUpdates =  orders.filter(order => {
+    if (order.shipments.length > 0) {
+      const lastShipment = order.shipments[order.shipments.length -1]
+      const messengerShipment = lastShipment.delivery_type === "messenger_shipment";
+      const delivered = lastShipment.status === "delivered";
+
+      return  messengerShipment && !delivered; 
+    } 
+    return false;
+  });
+
+  return ordersNeedUpdates.length > 0;
+}
+
 const messengerTime = (now) => {
   const startTime = now.clone().startOf('day').hour(12);
   const endTime = now.clone().startOf('day').hour(17);

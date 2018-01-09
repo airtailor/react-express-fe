@@ -21,6 +21,7 @@ import {
   messengerAllowed,
   messengerAvailable,
   imageLoader,
+  waitingForPostmatesUpdate,
 } from '../shipping/shippingFunctions';
 
 import SectionHeader from '../SectionHeader';
@@ -81,11 +82,12 @@ class StoresShow extends Component {
   }
 
   timer = () => {
-    this.refreshStoreOrders();
+    if (waitingForPostmatesUpdate(this.props.openOrders)) {
+      this.refreshStoreOrders();
+    }
   }
 
   refreshStoreOrders() {
-    console.log('hi');
     this.props.setLoader();
 
     const {
