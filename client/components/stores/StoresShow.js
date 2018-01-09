@@ -71,9 +71,21 @@ class StoresShow extends Component {
 
   componentDidMount() {
     this.refreshStoreOrders();
+    if (this.props.userRoles.retailer || this.props.userRoles.admin) {
+      this.newInterval = setInterval(this.timer, 10000); 
+    }
+  }
+
+  componentWillUnmount(){
+    clearInterval(this.newInterval);
+  }
+
+  timer = () => {
+    this.refreshStoreOrders();
   }
 
   refreshStoreOrders() {
+    console.log('hi');
     this.props.setLoader();
 
     const {

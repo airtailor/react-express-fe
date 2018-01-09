@@ -89,7 +89,6 @@ class CustomerInfo extends Component {
   }
 
   resetCartCustomerAndUpdateCustomerExists = () => {
-    console.log('should be clearing customer')
     this.props.resetCartCustomer();
     this.updateCustomerExists(null);
   }
