@@ -28,6 +28,8 @@ class SearchResults extends Component {
     } else if (order.late) {
       let dueTime = this.formatDueDate(order.due_date, true);
       return { status: dueTime, color: 'red' };
+    } else if (order.fulfilled) {
+      return { status: 'Fulfilled', color: 'green' }
     } else {
       let dueTime = this.formatDueDate(order.due_date, false);
       return { status: dueTime, color: 'orange' };
