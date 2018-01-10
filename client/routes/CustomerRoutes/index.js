@@ -16,6 +16,7 @@ class CustomerRoutes extends Component {
     return (
       <div>
         <Route
+          exact
           path="/customers/:customer_id/edit"
           render={props =>
             admin || tailor ? (

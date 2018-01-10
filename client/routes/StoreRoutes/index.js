@@ -24,6 +24,7 @@ class StoreRoutes extends Component {
               loggedIn ? <StoresEdit {...props} /> : <Redirect to="/sign_in" />}
           />
           <Route
+            exact
             path="/stores/new"
             render={props =>
               admin ? <StoresNew {...props} /> : <Redirect to="/sign_in" />}

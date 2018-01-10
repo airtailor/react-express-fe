@@ -13,6 +13,7 @@ class AuthRoutes extends Component {
     return (
       <div>
         <Route
+          exact
           path="/sign_in"
           render={props => (loggedIn ? <Redirect to="/" /> : <SignIn />)}
         />

@@ -2,9 +2,11 @@ import React from 'react';
 
 const TermsOfService = props => {
   return (
-    <div style={{textAlign: "justify", margin: "20px 20px 0 20px"}}>
-      <p style={{textAlign: "center", fontWeight: "bold"}}> Terms of Service</p>
-      <p style={{fontFamily: "sans-serif"}}>
+    <div style={{ textAlign: 'justify', margin: '20px 20px 0 20px' }}>
+      <p style={{ textAlign: 'center', fontWeight: 'bold' }}>
+        Terms of Service
+      </p>
+      <p style={{ fontFamily: 'sans-serif', fontWeight: 'bold' }}>
         The Air Tailor Platform provides easy-to-use software to our Retail
         Partners, referred to herein as the "Partners", allowing their store
         associates to order clothing alterations from the Air Tailor Tailors.
@@ -14,8 +16,14 @@ const TermsOfService = props => {
       </p>
 
       <ol>
-        <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-          <span style={{textDecoration: "underline"}}>Services</span>
+        <li
+          style={{
+            fontFamily: 'sans-serif',
+            fontSize: '16px',
+            lineHeight: '18px',
+          }}
+        >
+          <span style={{ textDecoration: 'underline' }}>Services</span>
           . Air Tailor agrees to provide the following Technology Services
           (defined below) and Management Services (defined below) to Partners.
           Together, the Technology Services and Management Services are referred
@@ -24,8 +32,17 @@ const TermsOfService = props => {
         <br />
 
         <ol type="a">
-          <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-            <span style={{textDecoration: "underline"}}>Technology Services</span>
+          <li
+            style={{
+              fontFamily: 'sans-serif',
+              weight: 400,
+              fontSize: '16px',
+              lineHeight: '18px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>
+              Technology Services
+            </span>
             . Air Tailor will provide Partners with its alteration and tailor
             management software via a web client ("Air Tailor Platform") in
             order to permit Partners to place garment tailoring orders to third
@@ -36,8 +53,17 @@ const TermsOfService = props => {
           </li>
           <br />
 
-          <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-            <span style={{textDecoration: "underline"}}>Management Services</span>
+          <li
+            style={{
+              fontFamily: 'sans-serif',
+              weight: 400,
+              fontSize: '16px',
+              lineHeight: '18px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>
+              Management Services
+            </span>
             . Air Tailor will provide its Air Tailor Platform to facilitate all
             back-end ordering, fulfillment, shipping/delivery, payment and
             related services between Partners and Tailors (collectively,
@@ -52,8 +78,15 @@ const TermsOfService = props => {
           </li>
           <br />
 
-          <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-            <span style={{textDecoration: "underline"}}>Tailors</span>
+          <li
+            style={{
+              fontFamily: 'sans-serif',
+              weight: 400,
+              fontSize: '16px',
+              lineHeight: '18px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>Tailors</span>
             . In the course of providing the Services contemplated herein, Air
             Tailor shall manage and facilitate all services that are performed
             by the Tailors including managing Tailoring orders, tracking and
@@ -67,8 +100,15 @@ const TermsOfService = props => {
           </li>
           <br />
 
-          <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-            <span style={{textDecoration: "underline"}}>Partner’s Users</span>
+          <li
+            style={{
+              fontFamily: 'sans-serif',
+              weight: 400,
+              fontSize: '16px',
+              lineHeight: '18px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>Partner’s Users</span>
             . Partners may permit employees and sales associates at its store
             locations ("Users") to access and use the Services. Partners shall
             safeguard all access to the Services and all credentials provided by
@@ -79,12 +119,19 @@ const TermsOfService = props => {
           </li>
         </ol>
         <br />
-        <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-          <span style={{textDecoration: "underline"}}>Fees</span>. All applicable
-          costs shall be paid in full within thirty (30) days after the date of
-          the corresponding invoice and are non-refundable once paid. Partners
-          shall be responsible for all sales, use, or other taxes and other
-          governmental charges on all alterations ordered as well as
+        <li
+          style={{
+            fontFamily: 'sans-serif',
+            weight: 400,
+            fontSize: '16px',
+            lineHeight: '18px',
+          }}
+        >
+          <span style={{ textDecoration: 'underline' }}>Fees</span>. All
+          applicable costs shall be paid in full within thirty (30) days after
+          the date of the corresponding invoice and are non-refundable once
+          paid. Partners shall be responsible for all sales, use, or other taxes
+          and other governmental charges on all alterations ordered as well as
           shipping/messenger costs from the store to the Tailor. Air Tailor will
           be responsible for all shipping and messenger/delivery costs back to
           the retail customer from the Tailor. Air Tailor may suspend the
@@ -92,12 +139,26 @@ const TermsOfService = props => {
           payments become thirty (30) or more days past due.
         </li>
         <br />
-        <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-          <span style={{textDecoration: "underline"}}>Ownership</span>.
+        <li
+          style={{
+            fontFamily: 'sans-serif',
+            weight: 400,
+            fontSize: '16px',
+            lineHeight: '18px',
+          }}
+        >
+          <span style={{ textDecoration: 'underline' }}>Ownership</span>.
         </li>
         <ol type="a">
-          <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-            <span style={{textDecoration: "underline"}}>Trademarks</span>. Air
+          <li
+            style={{
+              fontFamily: 'sans-serif',
+              weight: 400,
+              fontSize: '16px',
+              lineHeight: '18px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>Trademarks</span>. Air
             Tailor grants Partners a limited, revocable, non-exclusive,
             non-transferable, non-sublicensable license to access and use Air
             Tailor’s names, logos, designs, and other trademarks ("Marks")
@@ -111,8 +172,15 @@ const TermsOfService = props => {
             Marks which do not meet the standards required by the Partner.
           </li>
           <br />
-          <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-            <span style={{textDecoration: "underline"}}>
+          <li
+            style={{
+              fontFamily: 'sans-serif',
+              weight: 400,
+              fontSize: '16px',
+              lineHeight: '18px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>
               Air Tailor Ownership
             </span>. Air Tailor shall retain all right, title and interest in
             and to the Services, the Air Tailor Alterations Portal, and the Air
@@ -137,8 +205,15 @@ const TermsOfService = props => {
             into the Services any Feedback so provided.
           </li>
           <br />
-          <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-            <span style={{textDecoration: "underline"}}>Restrictions</span>.
+          <li
+            style={{
+              fontFamily: 'sans-serif',
+              weight: 400,
+              fontSize: '16px',
+              lineHeight: '18px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>Restrictions</span>.
             Partners shall not (or permit any third party to) directly or
             indirectly (i) use any of the Air Tailor IP or Air Tailor
             Confidential Information to create any service, software,
@@ -170,46 +245,76 @@ const TermsOfService = props => {
             demonstrate irreparable harm or post a bond.
           </li>
           <br />
-          <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-            <span style={{textDecoration: "underline"}}>Partner Ownership</span>.
-            Partners shall retain all right, title, ownership and interest in
-            and to (i) the Partner’s websites; (ii) all materials or products
-            that are the subject of any Tailoring Orders; and (ii) all content,
-            trademarks, copyrights, patents, or other intellectual and/or
-            proprietary property of the Partner contained therein (collectively,
-            "Partner Content"). Partners grants Air Tailor a non-exclusive,
-            limited, royalty-free, non-transferable license to use, host,
-            distribute, reproduce, perform, display, modify and create
-            derivative works of Partner Content to the extent necessary to
-            perform Services for Partner.
+          <li
+            style={{
+              fontFamily: 'sans-serif',
+              weight: 400,
+              fontSize: '16px',
+              lineHeight: '18px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>
+              Partner Ownership
+            </span>. Partners shall retain all right, title, ownership and
+            interest in and to (i) the Partner’s websites; (ii) all materials or
+            products that are the subject of any Tailoring Orders; and (ii) all
+            content, trademarks, copyrights, patents, or other intellectual
+            and/or proprietary property of the Partner contained therein
+            (collectively, "Partner Content"). Partners grants Air Tailor a
+            non-exclusive, limited, royalty-free, non-transferable license to
+            use, host, distribute, reproduce, perform, display, modify and
+            create derivative works of Partner Content to the extent necessary
+            to perform Services for Partner.
           </li>
         </ol>
         <br />
-        <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-          <span style={{textDecoration: "underline"}}>
+        <li
+          style={{
+            fontFamily: 'sans-serif',
+            weight: 400,
+            fontSize: '16px',
+            lineHeight: '18px',
+          }}
+        >
+          <span style={{ textDecoration: 'underline' }}>
             Representations, Warranties, and Indemnity
           </span>.
         </li>
         <ol type="a">
-          <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-            <span style={{textDecoration: "underline"}}>Partners</span>. Partners
-            represent and warrant that they shall provide all information,
-            materials, access and cooperation necessary for Air Tailor to
-            provide the Services and shall procure all connectivity, equipment
-            and software as needed to access the Services or Air Tailor
-            Platform; (ii) the Partner Content, and Air Tailor’s use of Partner
-            Content as contemplated herein, will not violate the intellectual
-            property, privacy or publicity or other rights of any third party;
-            (iii) Partners shall comply with all applicable federal, state, and
-            local laws, rules and regulations; and (iv) Partners have the right
-            to provide Data to Air Tailor for the purposes contemplated herein
-            and that its collection, provision and use of the Data is compliant
-            with all applicable laws and self-regulatory principles concerning
-            privacy and data security and with Partner’s privacy policies.
+          <li
+            style={{
+              fontFamily: 'sans-serif',
+              weight: 400,
+              fontSize: '16px',
+              lineHeight: '18px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>Partners</span>.
+            Partners represent and warrant that they shall provide all
+            information, materials, access and cooperation necessary for Air
+            Tailor to provide the Services and shall procure all connectivity,
+            equipment and software as needed to access the Services or Air
+            Tailor Platform; (ii) the Partner Content, and Air Tailor’s use of
+            Partner Content as contemplated herein, will not violate the
+            intellectual property, privacy or publicity or other rights of any
+            third party; (iii) Partners shall comply with all applicable
+            federal, state, and local laws, rules and regulations; and (iv)
+            Partners have the right to provide Data to Air Tailor for the
+            purposes contemplated herein and that its collection, provision and
+            use of the Data is compliant with all applicable laws and
+            self-regulatory principles concerning privacy and data security and
+            with Partner’s privacy policies.
           </li>
           <br />
-          <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-            <span style={{textDecoration: "underline"}}>Air Tailor</span>. Air
+          <li
+            style={{
+              fontFamily: 'sans-serif',
+              weight: 400,
+              fontSize: '16px',
+              lineHeight: '18px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>Air Tailor</span>. Air
             Tailor represents and warrants that (i) the Air Tailor IP, including
             but not limited to the Air Tailor Alterations Portal and Air Tailor
             Platform, shall not to Air Tailor’s knowledge at the time of
@@ -224,11 +329,18 @@ const TermsOfService = props => {
             laws, rules and regulations.
           </li>
           <br />
-          <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-            <span style={{textDecoration: "underline"}}>Disclaimers</span>. Except
-            as set forth herein in this agreement, Air Tailor does not warrant
-            that the services will meet Partner’s requirements or result in any
-            outcome, or that their operation will be uninterrupted or
+          <li
+            style={{
+              fontFamily: 'sans-serif',
+              weight: 400,
+              fontSize: '16px',
+              lineHeight: '18px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>Disclaimers</span>.
+            Except as set forth herein in this agreement, Air Tailor does not
+            warrant that the services will meet Partner’s requirements or result
+            in any outcome, or that their operation will be uninterrupted or
             error-free. Air Tailor hereby disclaims all other warranties,
             whether express or implied, oral or written, including without
             limitation, all implied warranties or title, merchantability,
@@ -237,8 +349,15 @@ const TermsOfService = props => {
             third party platforms, software or intellectual property.
           </li>
           <br />
-          <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-            <span style={{textDecoration: "underline"}}>Indemnity</span>. Each
+          <li
+            style={{
+              fontFamily: 'sans-serif',
+              weight: 400,
+              fontSize: '16px',
+              lineHeight: '18px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>Indemnity</span>. Each
             Party shall defend, indemnify and hold harmless the other Party and
             its affiliates, employees, representatives, successors and assigns
             from and against any and all losses, costs, damages, liabilities
@@ -255,8 +374,15 @@ const TermsOfService = props => {
             settlement.
           </li>
           <br />
-          <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-            <span style={{textDecoration: "underline"}}>
+          <li
+            style={{
+              fontFamily: 'sans-serif',
+              weight: 400,
+              fontSize: '16px',
+              lineHeight: '18px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>
               Limitation on Liability
             </span>. In no event shall either party be liable for any indirect,
             punitive, incidental, reliance, special, exemplary or consequential
@@ -267,9 +393,16 @@ const TermsOfService = props => {
           </li>
         </ol>
         <br />
-        <li style={{fontFamily: "sans-serif", weight: 400, fontSize: "16px", lineHeight: "18px"}}>
-          <span style={{textDecoration: "underline"}}>Miscellaneous</span>. The
-          Agreement shall be governed by the laws of the State of New York,
+        <li
+          style={{
+            fontFamily: 'sans-serif',
+            weight: 400,
+            fontSize: '16px',
+            lineHeight: '18px',
+          }}
+        >
+          <span style={{ textDecoration: 'underline' }}>Miscellaneous</span>.
+          The Agreement shall be governed by the laws of the State of New York,
           without regard to conflict of law principles. Any dispute arising out
           of or in connection with this agreement shall be brought in the
           federal or state courts of New York County, New York. In the event

@@ -9,13 +9,13 @@ class TermsOfServicePage extends Component {
     console.log('terms of service page');
 
     return (
-      <div style={{width: "90%", margin: "50px auto", height: "500px", textAlign: "center"}}>
+      <div style={{width: "80%", margin: "50px auto", height: "800px", textAlign: "center"}}>
         <LogoMessage
           className="sign-in-logo"
           text="Hi! Here's our Terms of Service"
         />
 
-        <div style={{overflow: "scroll", height: "90%"}}>
+        <div style={{overflow: "scroll", marginBottom: "100px"}}>
           <TermsOfService />
         </div>
       </div>

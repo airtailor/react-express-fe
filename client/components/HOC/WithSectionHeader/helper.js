@@ -8,7 +8,9 @@ export const getSectionHeaderText = props => {
     return 'Stores / New';
   } else if (path === '/users/:user_id/edit') {
     return 'Edit User';
-  } else if (path === '/orders/new' || '/terms_of_service') {
+  } else if (path === '/orders/new') {
     return 'Agree To Terms';
+  } else if (path === '/site/terms_of_service') {
+    return '';
   }
 };

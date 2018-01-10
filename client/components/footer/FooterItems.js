@@ -3,7 +3,6 @@ import FooterItem from './FooterItem';
 
 const renderFooterItemList = (list) => {
   return list.map((item, i) => {
-    console.log('hji"');
     const { text, link } = item;
     return <FooterItem
              key={i}
@@ -14,7 +13,7 @@ const renderFooterItemList = (list) => {
 
 const FooterItems = () => {
   const list = [
-    { text: 'Terms of Service', link: '/terms_of_service' },
+    { text: 'Terms of Service', link: '/site/terms_of_service' },
   ];
 
   return (

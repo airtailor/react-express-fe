@@ -16,20 +16,20 @@ const CartRibbon = props => {
     onClick = () => props.resetCart();
   }
 
-  if (props.userRoles.tailor || !includeLink) {
+  if (props.userRoles.tailor || props.userRoles.retailer){
+    return (
+      <Link className="cart-ribbon" to={link}>
+        <h1 
+          className={`cart-ribbon-sign ${rotate}`}
+          onClick={onClick}>
+          +
+        </h1>
+        <div className="cart-ribbon-triangle" />
+      </Link>
+    );
+  } else if (props.userRoles.tailor || !includeLink) {
     return <div />;
   }
-
-  return (
-    <Link className="cart-ribbon" to={link}>
-      <h1 
-        className={`cart-ribbon-sign ${rotate}`}
-        onClick={onClick}>
-        +
-      </h1>
-      <div className="cart-ribbon-triangle" />
-    </Link>
-  );
 };
 
 const SectionHeader = props => {

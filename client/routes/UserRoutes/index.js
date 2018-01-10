@@ -17,6 +17,7 @@ class UserRoutes extends Component {
     return (
       <div>
         <Route
+          exact
           path="/users/new"
           render={props =>
             loggedIn && admin ? (
@@ -26,6 +27,7 @@ class UserRoutes extends Component {
             )}
         />
         <Route
+          exact
           path="/users/:user_id/edit"
           render={props =>
             loggedIn && admin ? (
@@ -35,6 +37,7 @@ class UserRoutes extends Component {
             )}
         />
         <Route
+          exact
           path="/users/list"
           render={props =>
             loggedIn && admin ? (
