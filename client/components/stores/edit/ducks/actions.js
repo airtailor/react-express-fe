@@ -31,7 +31,15 @@ export const getEditStore = id => {
 export function updateStore(data) {
   const {
     store,
-    store: { id, street, unit: street_two, city, state_province, zip_code },
+    store: {
+      id,
+      street,
+      unit: street_two,
+      city,
+      state_province,
+      zip_code,
+      agrees_to_terms,
+    },
   } = data;
 
   const url = `${expressApi}/stores/${id}`;
