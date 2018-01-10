@@ -8,6 +8,7 @@ import SelectAlterations from './SelectAlterations';
 import Cart from './Cart';
 import Checkout from './Checkout';
 import OrderDetails from './orderDetails';
+import AgreeToTerms from '../../terms/AgreeToTerms.js';
 import PropTypes from 'prop-types';
 
 const mapStateToProps = store => {
@@ -171,6 +172,10 @@ class OrdersNew extends Component {
   }
 
   render() {
+    if (!this.props.currentStore.agrees_to_terms){
+      return <AgreeToTerms {...this.props} />;
+    }
+
     let headerText;
     switch (this.state.stage) {
       case 1:

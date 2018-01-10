@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Route, Redirect} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Home from '../../components/Home';
+import TermsOfServicePage from '../../components/terms/TermsOfServicePage';
 
 class SiteRoutes extends Component {
   static propTypes = {
@@ -12,12 +13,20 @@ class SiteRoutes extends Component {
     const {loggedIn} = this.props;
     return (
       <div>
-        <Route
-          exact
-          path="/"
-          render={props =>
-            loggedIn ? <Home {...props} /> : <Redirect to="/sign_in" />}
-        />
+        <switch>
+          <Route
+            exact
+            path="/terms_of_service"
+            render={() => <TermsOfServicePage />}
+          />
+
+          <Route
+            exact
+            path="/"
+            render={props =>
+              loggedIn ? <Home {...props} /> : <Redirect to="/sign_in" />}
+          />
+        </switch>
       </div>
     );
   }

@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {userSignIn, setGrowler} from '../actions/';
 import LogoMessage from './LogoMessage';
+import Footer from './Footer';
 
 class SignIn extends Component {
   constructor() {
@@ -103,6 +104,7 @@ class SignIn extends Component {
               Forgot your password?
             </a>
           </form>
+          <Footer />
         </div>
       );
     }
