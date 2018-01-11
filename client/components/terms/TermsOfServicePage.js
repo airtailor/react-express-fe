@@ -6,8 +6,6 @@ import LogoMessage from '../LogoMessage';
 
 class TermsOfServicePage extends Component {
   render(){
-    console.log('terms of service page');
-
     return (
       <div style={{width: "80%", margin: "50px auto", height: "800px", textAlign: "center"}}>
         <LogoMessage
