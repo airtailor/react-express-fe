@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
+import { Link } from 'react-router-dom';
 
 import {
   getEditStore,
@@ -207,6 +208,11 @@ class StoresEdit extends Component {
           <hr />
           <br />
           <EditPassword match={this.props.match} />
+        </div>
+        <div style={{textAlign: "center", paddingBottom: "20px"}}>
+          <Link to="/site/terms_of_service">
+            Terms of Service
+          </Link>
         </div>
       </div>
     );

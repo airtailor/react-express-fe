@@ -7,13 +7,13 @@ import LogoMessage from '../LogoMessage';
 class TermsOfServicePage extends Component {
   render(){
     return (
-      <div style={{width: "80%", margin: "50px auto", height: "800px", textAlign: "center"}}>
+      <div style={{width: "80%", margin: "50px auto", height: "800px", textAlign: "center", paddingBottom: "100px"}}>
         <LogoMessage
           className="sign-in-logo"
           text="Hi! Here's our Terms of Service"
         />
 
-        <div style={{overflow: "scroll", marginBottom: "100px"}}>
+        <div style={{overflow: "scroll", paddingBottom: "500px"}}>
           <TermsOfService />
         </div>
       </div>
