@@ -24,7 +24,7 @@ const formatAddressForStore = store => {
 };
 
 const formatValidAddressIntoStore = store => {
-  const { id, phone, type, name, address } = store;
+  const { id, phone, type, name, agrees_to_terms, address } = store;
   const {
     number = '',
     street = '',
@@ -42,6 +42,7 @@ const formatValidAddressIntoStore = store => {
   return {
     id,
     name,
+    agrees_to_terms,
     phone,
     number: '',
     street: newStreet,

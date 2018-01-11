@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {userSignIn, setGrowler} from '../actions/';
 import LogoMessage from './LogoMessage';
-import Footer from './footer';
+import Footer from './Footer';
 
 class SignIn extends Component {
   constructor() {
@@ -63,6 +63,7 @@ class SignIn extends Component {
   }
 
   render() {
+    console.log('hope this works');
     const {buttonDisabled, email, password} = this.state;
     if (this.props.authenticated) {
       return <h1>Hi {this.props.currentUser.email}</h1>;

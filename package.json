@@ -14,7 +14,7 @@
   "scripts": {
     "clean": "cd public && rimraf index.html bundle.* manifest.* vendor.*",
     "build": "NODE_ENV=production npm run clean && webpack",
-    "build-dev": "npm run clean && webpack",
+    "build-dev": "npm run clean && webpack --watch",
     "serve": "webpack-dev-server",
     "start": "node server/index.js",
     "reset": "npm run build && npm start",

@@ -58,7 +58,12 @@ const Router = props => {
       <BrowserRouter>
         <div>
           <Growler />
-          <SignIn />
+          <AvailableRoutes
+            retailer={false}
+            loggedIn={false}
+            admin={false}
+            tailor={false}
+          />
 
           <div className="add">
             <Intercom appID="j5szofcq" {...user} />
