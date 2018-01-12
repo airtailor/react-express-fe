@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {ValidateEmail, ValidatePassword} from '../utils/validations';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {userSignIn, setGrowler} from '../actions/';
-import LogoMessage from './LogoMessage';
-import Footer from './footer';
+import React, { Component } from 'react';
+import { ValidateEmail, ValidatePassword } from '../../utils/validations';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { userSignIn, setGrowler } from '../../actions';
+import LogoMessage from './../LogoMessage';
+import Footer from '../footer';
 
 class SignIn extends Component {
   constructor() {
@@ -18,52 +18,56 @@ class SignIn extends Component {
         text: '',
         valid: false,
       },
-      buttonDisabled: true,
-      errors: '',
     };
+  }
+
+  handleInvalidCredentials() {
+    const kind = 'warning';
+    const message = 'Email/password combination is incorrect. Try again!';
+    this.props.setGrowler({ kind, message });
   }
 
   signIn(e) {
     e.preventDefault();
+    const {
+      email: { text: emailText, valid: emailValid },
+      password: { text: passwordText, valid: passwordValid },
+    } = this.state;
+
+    if (!emailValid || !passwordValid) {
+      this.handleInvalidCredentials();
+      return;
+    }
+
     this.props
-      .userSignIn(this.state.email.text, this.state.password.text)
+      .userSignIn(emailText, passwordText)
       .then(res => {
-        if (res.success) {
-          // do nothing
-        } else if (res.errors) {
-          const kind = 'warning';
-          const message = 'Email/password combination is incorrect. Try again!';
-          this.props.setGrowler({kind, message});
+        if (res.errors) {
+          this.handleInvalidCredentials();
         }
       })
       .catch(err => console.log('err', err));
   }
 
   updateInputText(input) {
-    this.setState({[input.name]: {text: input.value}}, () => {
+    this.setState({ [input.name]: { text: input.value } }, () => {
       this.validateInputs(this.state);
     });
   }
 
   validateInputs(state) {
-    const {email, password} = state;
+    const { email, password } = state;
     if (ValidateEmail(email.text) && ValidatePassword(password.text)) {
       this.setState({
-        email: {text: email.text, valid: true},
-        password: {text: password.text, valid: true},
+        email: { text: email.text, valid: true },
+        password: { text: password.text, valid: true },
       });
-      this.updateButtonStatus(false);
     } else {
-      this.updateButtonStatus(true);
     }
   }
 
-  updateButtonStatus(bool) {
-    this.setState({buttonDisabled: bool});
-  }
-
   render() {
-    const {buttonDisabled, email, password} = this.state;
+    const { email, password } = this.state;
     if (this.props.authenticated) {
       return <h1>Hi {this.props.currentUser.email}</h1>;
     } else {
@@ -91,12 +95,7 @@ class SignIn extends Component {
               placeholder="Password"
               type="password"
             />
-            <input
-              disabled={buttonDisabled}
-              type="submit"
-              value="Log In"
-              className="signin-button"
-            />
+            <input type="submit" value="Log In" className="signin-button" />
             <a
               className="forgot-password link"
               href="mailto:brian@airtailor.com?&subject=Forgot%20Password"
@@ -119,7 +118,7 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({userSignIn, setGrowler}, dispatch);
+  return bindActionCreators({ userSignIn, setGrowler }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

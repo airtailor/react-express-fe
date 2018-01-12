@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NavigationBar from './components/navigation/NavigationBar';
 import AvailableRoutes from './routes/';
-import SignIn from './components/SignIn';
+import SignIn from './components/auth/SignIn';
 import Growler from './components/growler';
 import Loader from './components/loader';
 import Intercom from 'react-intercom';
