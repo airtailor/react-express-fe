@@ -482,12 +482,22 @@ class StoresShow extends Component {
 
   renderOrderRowWithSelect(order) {
     const { userRoles: roles } = this.props;
-    const { id, customer, alterations_count } = order;
+    const { id, customer, alterations_count, created_at } = order;
     const { first_name, last_name } = customer;
     const { color, status } = this.getOrderStatus(order);
     const route = `/orders/${id}`;
     const orderIsToggled = this.state.selectedOrders.has(order);
     const orderToggle = () => this.toggleOrderSelect(order);
+
+    const momentDate = moment(created_at);
+    const isToday = momentDate.isSame(new Date(), 'day');
+    const yesterday = moment(new Date()).add(-1, 'days');
+    const wasYest = momentDate.isSame(yesterday, 'day');
+    const createdDateFormat = isToday
+      ? '[Today,] h:mma'
+      : wasYest ? '[Yesterday,] h:mma' : 'MMM Do, h:mma';
+
+    const createdDate = moment(created_at).format(createdDateFormat);
 
     const orderSelect = (
       <Checkbox
@@ -503,13 +513,13 @@ class StoresShow extends Component {
         <div className="order-select-cell">{orderSelect}</div>
         <Link to={route} className="order-row-link">
           <div className="order-data-cell">#{id}</div>
-          <div style={{ color }} className="order-data-cell">
-            {status}
-          </div>
+          <div className="order-data-cell">{createdDate}</div>
           <div className="order-data-cell">
             {first_name} {last_name}
           </div>
-          <div className="order-data-cell">{alterations_count}</div>
+          <div className="order-data-cell" style={{ color }}>
+            {status}
+          </div>
         </Link>
         <div className="order-data-break-row" />
       </div>
@@ -585,9 +595,9 @@ class StoresShow extends Component {
           {orderHeader('Select:', false, true)}
           <div className="order-data-headers-container">
             {orderHeader('Order', true, false)}
-            {orderHeader('Status', true, false)}
+            {orderHeader('Date', true, false)}
             {orderHeader('Customer', true, false)}
-            {orderHeader('Quantity', true, false)}
+            {orderHeader('Status', true, false)}
           </div>
         </div>
       </div>
