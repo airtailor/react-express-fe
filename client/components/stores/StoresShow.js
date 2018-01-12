@@ -73,11 +73,11 @@ class StoresShow extends Component {
   componentDidMount() {
     this.refreshStoreOrders();
     if (this.props.userRoles.retailer || this.props.userRoles.admin) {
-      this.newInterval = setInterval(this.timer, 10000); 
+      this.newInterval = setInterval(this.timer, 10000);
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearInterval(this.newInterval);
   }
 
@@ -85,7 +85,7 @@ class StoresShow extends Component {
     if (waitingForPostmatesUpdate(this.props.openOrders)) {
       this.refreshStoreOrders();
     }
-  }
+  };
 
   refreshStoreOrders() {
     this.props.setLoader();
@@ -155,16 +155,15 @@ class StoresShow extends Component {
         } else {
           return orders.filter(order => {
             const { shipments } = order;
-            
+
             const noShipments = isEmpty(shipments);
             const lastShipment = shipments[shipments.length - 1];
             const notFulfilled = !order.fulfilled;
-            
-            const messengerNotDeliveredYet = (
+
+            const messengerNotDeliveredYet =
               shipments.length > 0 &&
-              lastShipment.delivery_type === 'messenger_shipment' && 
-              lastShipment.status != 'delivered'
-            );
+              lastShipment.delivery_type === 'messenger_shipment' &&
+              lastShipment.status != 'delivered';
 
             return notFulfilled && (noShipments || messengerNotDeliveredYet);
           });
@@ -179,14 +178,16 @@ class StoresShow extends Component {
             }
 
             const { tailor, fulfilled, shipments } = order;
-            const { status, delivery_type } = shipments[shipments.length -1];
+            const { status, delivery_type } = shipments[shipments.length - 1];
 
             const mailShipmentExists = delivery_type === 'mail_shipment';
             const messengerShipmentDelivered = status === 'delivered';
 
-            return (mailShipmentExists || messengerShipmentDelivered) && 
-              tailor && 
-              !fulfilled;
+            return (
+              (mailShipmentExists || messengerShipmentDelivered) &&
+              tailor &&
+              !fulfilled
+            );
           });
         }
       case 'ready_orders':
@@ -200,9 +201,9 @@ class StoresShow extends Component {
     return this.sortOrdersByStatus(status).length;
   }
 
-  messengerDeliveryCompleted(order){
+  messengerDeliveryCompleted(order) {
     let delivered = false;
-    if (order.shipments.last.status === "delivered") {
+    if (order.shipments.last.status === 'delivered') {
       delivered = true;
     }
     return delivered;
@@ -225,7 +226,7 @@ class StoresShow extends Component {
       status = 'Needs Shipping Details';
       color = 'gold';
     } else if (!isEmpty(order.shipments) && !order.arrived) {
-      const lastShipment = order.shipments[order.shipments.length -1];
+      const lastShipment = order.shipments[order.shipments.length - 1];
       const { delivery_type } = lastShipment;
 
       if (delivery_type === 'mail_shipment') {
@@ -239,8 +240,9 @@ class StoresShow extends Component {
         } else if (shipmentStatus === 'pickup') {
           status = 'Picking Up';
         } else if (
-          shipmentStatus === 'pickup_complete' || 
-          shipmentStatus === 'dropoff') {
+          shipmentStatus === 'pickup_complete' ||
+          shipmentStatus === 'dropoff'
+        ) {
           status = 'Dropping Off';
         } else if (shipmentStatus === 'delivered') {
           status = 'Delivered';
@@ -272,13 +274,13 @@ class StoresShow extends Component {
     const print = () => {
       window.print();
 
-        setTimeout(() => {
-          this.setState({ 
-            selectedOrders: new Set(), 
-            selectedOrderShipments: [] 
-          });
-        }, 1000);
-    }
+      setTimeout(() => {
+        this.setState({
+          selectedOrders: new Set(),
+          selectedOrderShipments: [],
+        });
+      }, 1000);
+    };
     imageLoader(shipping_label, print);
   }
 
@@ -289,8 +291,7 @@ class StoresShow extends Component {
       const action = shipmentActions(order, roles);
       return Promise.all([
         this.postShipment(orders, action, 'mail_shipment'),
-      ])
-        .then(() => this.printBulkShippingLabel());
+      ]).then(() => this.printBulkShippingLabel());
     }
   };
 
@@ -299,14 +300,17 @@ class StoresShow extends Component {
     if (!isEmpty(orders)) {
       const order = orders[0];
       const action = shipmentActions(order, roles);
-      return this.postShipment(orders, action, 'messenger_shipment')
-        .then(() => {
-          const kind = "success";
-          const message = "Messenger has been requested!";
+      return this.postShipment(
+        orders,
+        action,
+        'messenger_shipment'
+      ).then(() => {
+        const kind = 'success';
+        const message = 'Messenger has been requested!';
 
-          this.props.setGrowler({kind, message});
-          this.setState({ selectedOrders: new Set() })
-        });
+        this.props.setGrowler({ kind, message });
+        this.setState({ selectedOrders: new Set() });
+      });
     }
   };
 
@@ -514,16 +518,16 @@ class StoresShow extends Component {
 
   renderStateTabs = () => {
     const allTabs = [
-      { className: 'order-state-tab', status: 'new_orders', text: 'New' },
+      { className: 'order-state-tab', status: 'new_orders', text: 'Pending' },
       {
         className: 'order-state-tab',
         status: 'in_progress_orders',
-        text: 'Current',
+        text: 'In Process',
       },
       {
         className: 'order-state-tab',
         status: 'ready_orders',
-        text: 'Finished',
+        text: 'Complete',
       },
     ];
 
