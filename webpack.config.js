@@ -44,25 +44,12 @@ const config = {
       {
         test: /\.(jpg|png|svg)$/,
         loader: 'url-loader',
-        options: {
-          // limit: 10000,
-        },
       },
     ],
-    // rules: [{
-    //  test: /\.scss$/,
-    //  use: [{
-    //      loader: "style-loader" // creates style nodes from JS strings
-    //    }, {
-    //      loader: "css-loader" // translates CSS into CommonJS
-    //    }, {
-    //      loader: "sass-loader" // compiles Sass to CSS
-    //  }]
-    // }]
   },
   plugins: [
     new ExtractTextPlugin('style.css'),
-    //new UglifyJSPlugin(),
+    new UglifyJSPlugin(),
     new webpack.optimize.CommonsChunkPlugin({ names: ['vendor', 'manifest'] }),
     new HtmlWebpackPlugin({
       template: 'client/index.html',
