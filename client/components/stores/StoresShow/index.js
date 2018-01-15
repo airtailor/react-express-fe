@@ -12,7 +12,7 @@ import {
   removeLoader,
   alertCustomersPickup,
   setGrowler,
-} from '../../actions';
+} from '../../../actions';
 import {
   fireShipmentCreate,
   shipmentTypes,
@@ -22,11 +22,12 @@ import {
   messengerAvailable,
   imageLoader,
   waitingForPostmatesUpdate,
-} from '../shipping/shippingFunctions';
+} from '../../shipping/shippingFunctions';
 
-import SectionHeader from '../SectionHeader';
-import OrderComplete from '../prints/OrderComplete';
-import Checkbox from '../Checkbox';
+import SectionHeader from '../../SectionHeader';
+import OrderComplete from '../../prints/OrderComplete';
+import Checkbox from '../../Checkbox';
+import StatusCard from './StatusCard';
 
 const mapStateToProps = store => {
   return {
@@ -220,50 +221,72 @@ class StoresShow extends Component {
       ship_to_store,
     } = order;
 
+    const { retailer, admin, tailor } = this.props.userRoles;
+
     let status, color;
 
     if (isEmpty(order.shipments)) {
-      status = 'Needs Shipping Details';
-      color = 'gold';
+      status = 'Needs Transit';
+      color = 'red';
     } else if (!isEmpty(order.shipments) && !order.arrived) {
       const lastShipment = order.shipments[order.shipments.length - 1];
       const { delivery_type } = lastShipment;
 
       if (delivery_type === 'mail_shipment') {
         status = 'In Transit';
-        color = 'green';
+        color = 'gold';
       } else if (delivery_type === 'messenger_shipment') {
         const shipmentStatus = lastShipment.status;
 
         if (shipmentStatus === 'pending') {
           status = 'Contacting';
+          color = 'red';
         } else if (shipmentStatus === 'pickup') {
           status = 'Picking Up';
+          color = 'goldenrod';
         } else if (
           shipmentStatus === 'pickup_complete' ||
           shipmentStatus === 'dropoff'
         ) {
           status = 'Dropping Off';
+          color = 'gold';
         } else if (shipmentStatus === 'delivered') {
           status = 'Delivered';
+          color = 'green';
         }
-
-        color = 'green';
       }
-    } else if (order.late) {
-      let dueTime = this.formatStatusString(order.due_date, true);
-      status = dueTime;
-      color = 'red';
+    } else if (order.late && !order.fulfilled) {
+      if (admin || tailor) {
+        const dueTime = this.formatStatusString(order.due_date, true);
+        status = dueTime;
+        color = 'red';
+      } else if (retailer) {
+        status = 'In Process';
+        color = 'gold';
+      }
     } else if (
       order.fulfilled &&
       !order.customer_alerted &&
       order.ship_to_store
     ) {
-      status = 'Ready for Customer';
-      color: 'green';
+      status = 'In Transit';
+      color = 'gold';
     } else if (order.arrived && !order.fulfilled) {
-      status = this.formatStatusString(order.due_date, false);
-      color = 'orange';
+      if (admin || tailor) {
+        status = this.formatStatusString(order.due_date, false);
+        const statusNum = status.split('')[0];
+
+        if (statusNum > 3) {
+          color = 'green';
+        } else if (statusNum > 0) {
+          color = 'gold';
+        } else if (statusNum < 1) {
+          color = 'red';
+        }
+      } else if (retailer) {
+        status = 'In Process';
+        color = 'gold';
+      }
     }
     return { status, color };
   }
@@ -517,9 +540,7 @@ class StoresShow extends Component {
           <div className="order-data-cell">
             {first_name} {last_name}
           </div>
-          <div className="order-data-cell" style={{ color }}>
-            {status}
-          </div>
+          <StatusCard color={color} text={status} />
         </Link>
         <div className="order-data-break-row" />
       </div>
