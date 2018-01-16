@@ -226,6 +226,23 @@ export function alertCustomersPickup(orders, store_id) {
     .catch(err => console.log('err index.js line 155', err));
 }
 
+export function customerReceived(data, store_id) {
+  const url = `${expressApi}/stores/${store_id}/orders/customer_pickup`;
+
+  return validateToken()
+    .then(setTokens)
+    .then(() => {
+      return Axios.put(url, data)
+        .then(res => {
+          return res.data;
+        })
+        .catch(err => {
+          debugger;
+        });
+    })
+    .catch(err => console.log('err index.js line 155', err));
+}
+
 export function updateCustomer(customer) {
   const {
     id,

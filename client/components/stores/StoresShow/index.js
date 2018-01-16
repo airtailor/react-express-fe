@@ -11,6 +11,7 @@ import {
   setLoader,
   removeLoader,
   alertCustomersPickup,
+  customerReceived,
   setGrowler,
 } from '../../../actions';
 import {
@@ -411,6 +412,47 @@ class StoresShow extends Component {
     }
   };
 
+  markCustomerReceived = orders => {
+    const {
+      currentStore: { id: store_id },
+      setLoader,
+      removeLoader,
+      setGrowler,
+    } = this.props;
+
+    const orderIds = [...orders].map(order => order.id);
+
+    setLoader();
+    customerReceived(orderIds, store_id)
+      .then(res => {
+        removeLoader();
+        const kind = 'success';
+        const message =
+          'Order has been marked as Completed! You can now view it in the Archive.';
+        setGrowler({ kind, message });
+        this.refreshStoreOrders();
+      })
+      .catch(err => console.log('err'));
+  };
+
+  renderCustomerReceivedButton = disabled => {
+    const orders = this.state.selectedOrders;
+    const onClick = this.markCustomerReceived;
+    return (
+      <div>
+        {this.renderButton(
+          'Customer Received',
+          {
+            disabled: disabled,
+            className: 'messenger-button',
+            clickArgs: orders,
+          },
+          onClick
+        )}
+      </div>
+    );
+  };
+
   renderLabelsButton = disabled => {
     const { userRoles: roles } = this.props;
     const orders = [...this.state.selectedOrders];
@@ -467,12 +509,18 @@ class StoresShow extends Component {
         showOrderState === 'ready_orders' && selectedOrders.size > 0
       );
 
+      const pickupFunction = this.renderCustomerReceivedButton;
+      const pickupBool = !(
+        showOrderState === 'ready_orders' && selectedOrders.size > 0
+      );
+
       return (
         <div>
           <div className="shipping-button-container">
             {labelFunction(labelBool)}
             {messengerFunction(messengerBool)}
             {alertFunction(alertBool)}
+            {pickupFunction(pickupBool)}
           </div>
         </div>
       );
@@ -571,7 +619,11 @@ class StoresShow extends Component {
 
   renderStateTabs = () => {
     const allTabs = [
-      { className: 'order-state-tab', status: 'new_orders', text: 'Pending' },
+      {
+        className: 'order-state-tab',
+        status: 'new_orders',
+        text: 'New Orders',
+      },
       {
         className: 'order-state-tab',
         status: 'in_progress_orders',
@@ -580,7 +632,7 @@ class StoresShow extends Component {
       {
         className: 'order-state-tab',
         status: 'ready_orders',
-        text: 'Complete',
+        text: 'In-Store Pickup',
       },
     ];
 
