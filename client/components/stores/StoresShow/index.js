@@ -259,11 +259,10 @@ class StoresShow extends Component {
       if (admin || tailor) {
         const dueTime = this.formatStatusString(order.due_date, true);
         status = dueTime;
-        color = 'red';
       } else if (retailer) {
-        status = 'In Process';
-        color = 'gold';
+        status = 'Delayed';
       }
+      color = 'red';
     } else if (
       order.fulfilled &&
       !order.customer_alerted &&
@@ -271,21 +270,23 @@ class StoresShow extends Component {
     ) {
       status = 'In Transit';
       color = 'gold';
+    } else if (
+      order.fulfilled &&
+      order.customer_alerted &&
+      order.ship_to_store
+    ) {
+      status = 'Notified';
+      color = 'red';
     } else if (order.arrived && !order.fulfilled) {
-      if (admin || tailor) {
-        status = this.formatStatusString(order.due_date, false);
-        const statusNum = status.split('')[0];
+      status = this.formatStatusString(order.due_date, false);
+      const statusNum = status.split('')[0];
 
-        if (statusNum > 3) {
-          color = 'green';
-        } else if (statusNum > 0) {
-          color = 'gold';
-        } else if (statusNum < 1) {
-          color = 'red';
-        }
-      } else if (retailer) {
-        status = 'In Process';
+      if (statusNum > 3) {
+        color = 'green';
+      } else if (statusNum > 0) {
         color = 'gold';
+      } else if (statusNum < 1) {
+        color = 'red';
       }
     }
     return { status, color };
@@ -505,22 +506,43 @@ class StoresShow extends Component {
 
   renderOrderRowWithSelect(order) {
     const { userRoles: roles } = this.props;
-    const { id, customer, alterations_count, created_at } = order;
+    const { showOrderState } = this.state;
+    const {
+      id,
+      customer,
+      alterations_count,
+      created_at,
+      arrival_date,
+      fulfilled_date,
+    } = order;
+
     const { first_name, last_name } = customer;
     const { color, status } = this.getOrderStatus(order);
     const route = `/orders/${id}`;
     const orderIsToggled = this.state.selectedOrders.has(order);
     const orderToggle = () => this.toggleOrderSelect(order);
 
-    const momentDate = moment(created_at);
+    let displayDate;
+    if (showOrderState === 'new_orders') {
+      displayDate = created_at;
+    } else if (showOrderState === 'in_progress_orders') {
+      displayDate = arrival_date;
+    } else if (showOrderState === 'ready_orders') {
+      displayDate = fulfilled_date;
+    }
+
+    const momentDate = moment(displayDate);
     const isToday = momentDate.isSame(new Date(), 'day');
     const yesterday = moment(new Date()).add(-1, 'days');
     const wasYest = momentDate.isSame(yesterday, 'day');
-    const createdDateFormat = isToday
+    const dateTextFormat = isToday
       ? '[Today,] h:mma'
       : wasYest ? '[Yesterday,] h:mma' : 'MMM Do, h:mma';
 
-    const createdDate = moment(created_at).format(createdDateFormat);
+    let dateText = momentDate.format(dateTextFormat);
+    if (dateText === 'Invalid date' && !arrival_date) {
+      dateText = 'Pending';
+    }
 
     const orderSelect = (
       <Checkbox
@@ -536,7 +558,7 @@ class StoresShow extends Component {
         <div className="order-select-cell">{orderSelect}</div>
         <Link to={route} className="order-row-link">
           <div className="order-data-cell">#{id}</div>
-          <div className="order-data-cell">{createdDate}</div>
+          <div className="order-data-cell">{dateText}</div>
           <div className="order-data-cell">
             {first_name} {last_name}
           </div>
@@ -610,13 +632,24 @@ class StoresShow extends Component {
 
   renderRetailerHeaders = () => {
     const orderHeader = this.renderHeaderCell;
+    const { showOrderState } = this.state;
+
+    let dateText;
+    if (showOrderState === 'new_orders') {
+      dateText = 'Created';
+    } else if (showOrderState === 'in_progress_orders') {
+      dateText = 'Checked In';
+    } else if (showOrderState === 'ready_orders') {
+      dateText = 'Fulfilled';
+    }
+
     return (
       <div className="order-headers-container">
         <div className="order-headers-row">
           {orderHeader('Select:', false, true)}
           <div className="order-data-headers-container">
             {orderHeader('Order', true, false)}
-            {orderHeader('Date', true, false)}
+            {orderHeader(dateText, true, false)}
             {orderHeader('Customer', true, false)}
             {orderHeader('Status', true, false)}
           </div>
