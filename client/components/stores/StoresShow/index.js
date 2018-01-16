@@ -389,7 +389,11 @@ class StoresShow extends Component {
     );
   }
 
-  renderMessengerButton = disabled => {
+  renderMessengerButton = (disabled, show) => {
+    if (!show) {
+      return;
+    }
+
     const { userRoles: roles } = this.props;
     const orders = this.state.selectedOrders;
     let bool = disabled || this.state.sendingMessenger;
@@ -435,13 +439,17 @@ class StoresShow extends Component {
       .catch(err => console.log('err'));
   };
 
-  renderCustomerReceivedButton = disabled => {
+  renderCustomerReceivedButton = (disabled, show) => {
+    if (!show) {
+      return;
+    }
+
     const orders = this.state.selectedOrders;
     const onClick = this.markCustomerReceived;
     return (
       <div>
         {this.renderButton(
-          'Customer Received',
+          'CUSTOMER RECEIVED',
           {
             disabled: disabled,
             className: 'messenger-button',
@@ -453,7 +461,11 @@ class StoresShow extends Component {
     );
   };
 
-  renderLabelsButton = disabled => {
+  renderLabelsButton = (disabled, show) => {
+    if (!show) {
+      return;
+    }
+
     const { userRoles: roles } = this.props;
     const orders = [...this.state.selectedOrders];
     let bool = disabled || this.state.loadingLabel;
@@ -475,25 +487,30 @@ class StoresShow extends Component {
     );
   };
 
-  renderAlertButton = disabled => {
+  renderAlertButton = (disabled, show) => {
+    if (!show) {
+      return;
+    }
+
     const orders = this.state.selectedOrders;
     const onClick = () => this.alertCustomers();
     return this.renderButton(
-      'Alert Customers',
+      'NOTIFY CUSTOMER',
       {
         disabled: disabled,
-        className: 'print-label-button',
+        className: 'messenger-button',
         clickArgs: orders,
       },
       onClick
     );
   };
 
-  renderShippingControls = () => {
+  renderMgmtControls = () => {
     const { showOrderState, selectedOrders } = this.state;
     const { userRoles: roles } = this.props;
 
     if (roles.admin || roles.retailer) {
+      const shippingShow = showOrderState === 'new_orders';
       const labelFunction = this.renderLabelsButton;
       const labelBool = !(
         showOrderState === 'new_orders' && selectedOrders.size > 0
@@ -504,6 +521,7 @@ class StoresShow extends Component {
         showOrderState === 'new_orders' && selectedOrders.size > 0
       );
 
+      const customerAlertPickupShow = showOrderState === 'ready_orders';
       const alertFunction = this.renderAlertButton;
       const alertBool = !(
         showOrderState === 'ready_orders' && selectedOrders.size > 0
@@ -517,10 +535,10 @@ class StoresShow extends Component {
       return (
         <div>
           <div className="shipping-button-container">
-            {labelFunction(labelBool)}
-            {messengerFunction(messengerBool)}
-            {alertFunction(alertBool)}
-            {pickupFunction(pickupBool)}
+            {labelFunction(labelBool, shippingShow)}
+            {messengerFunction(messengerBool, shippingShow)}
+            {alertFunction(alertBool, customerAlertPickupShow)}
+            {pickupFunction(pickupBool, customerAlertPickupShow)}
           </div>
         </div>
       );
@@ -775,7 +793,7 @@ class StoresShow extends Component {
       const orderStateTabs = this.renderStateTabs;
       const orderRows = this.renderRetailerRows;
       const orderHeaders = this.renderRetailerHeaders;
-      const shippingControls = this.renderShippingControls;
+      const mgmtControls = this.renderMgmtControls;
 
       return (
         <div>
@@ -785,7 +803,7 @@ class StoresShow extends Component {
             <div>{orderHeaders()}</div>
             <div className="order-header-break-row" />
             <div>{orderRows()}</div>
-            <div>{shippingControls()}</div>
+            <div>{mgmtControls()}</div>
           </div>
         </div>
       );
