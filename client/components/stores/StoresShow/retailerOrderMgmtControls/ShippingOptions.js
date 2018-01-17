@@ -21,11 +21,6 @@ class ShippingOptions extends Component {
     const { selected } = this.state;
     const selectButtonDisabled = selected ? false : true;
 
-    // width: 380px;
-    //     border: 3px solid #000333;
-    //     border-radius: 8px;
-    //     padding: 30px;
-    //     margin-top: 50px;
     return (
       <div
         style={{
