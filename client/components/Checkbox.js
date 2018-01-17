@@ -1,10 +1,10 @@
 import React from 'react';
 
 const Checkbox = props => {
-  const {onChange, checked, fieldName, text, name} = props;
+  const { onChange, checked, fieldName, text, name, labelClass } = props;
   if (!fieldName) {
     return (
-      <div style={{display: 'inline'}}>
+      <div style={{ display: 'inline' }}>
         <input
           type="checkbox"
           id={`${name}-check`}
@@ -13,7 +13,10 @@ const Checkbox = props => {
           onChange={onChange}
         />
 
-        <label htmlFor={`${name}-check`} className="checkbox-label">
+        <label
+          htmlFor={`${name}-check`}
+          className={`checkbox-label ${labelClass}`}
+        >
           <span />
           {text}
         </label>
@@ -22,7 +25,7 @@ const Checkbox = props => {
   }
 
   return (
-    <div style={{display: 'inline'}}>
+    <div style={{ display: 'inline' }}>
       <input
         type="checkbox"
         id={`${name}-check`}

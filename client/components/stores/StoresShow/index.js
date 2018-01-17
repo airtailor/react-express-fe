@@ -30,6 +30,8 @@ import OrderComplete from '../../prints/OrderComplete';
 import Checkbox from '../../Checkbox';
 import StatusCard from './StatusCard';
 
+import SendOrder from './retailerOrderMgmtControls/SendOrder';
+
 const mapStateToProps = store => {
   return {
     currentUser: store.currentUser,
@@ -506,45 +508,46 @@ class StoresShow extends Component {
   };
 
   renderMgmtControls = () => {
-    const { showOrderState, selectedOrders } = this.state;
-    const { userRoles: roles } = this.props;
-
-    if (roles.admin || roles.retailer) {
-      const shippingShow = showOrderState === 'new_orders';
-      const labelFunction = this.renderLabelsButton;
-      const labelBool = !(
-        showOrderState === 'new_orders' && selectedOrders.size > 0
-      );
-
-      const messengerFunction = this.renderMessengerButton;
-      const messengerBool = !(
-        showOrderState === 'new_orders' && selectedOrders.size > 0
-      );
-
-      const customerAlertPickupShow = showOrderState === 'ready_orders';
-      const alertFunction = this.renderAlertButton;
-      const alertBool = !(
-        showOrderState === 'ready_orders' && selectedOrders.size > 0
-      );
-
-      const pickupFunction = this.renderCustomerReceivedButton;
-      const pickupBool = !(
-        showOrderState === 'ready_orders' && selectedOrders.size > 0
-      );
-
-      return (
-        <div>
-          <div className="shipping-button-container">
-            {labelFunction(labelBool, shippingShow)}
-            {messengerFunction(messengerBool, shippingShow)}
-            {alertFunction(alertBool, customerAlertPickupShow)}
-            {pickupFunction(pickupBool, customerAlertPickupShow)}
-          </div>
-        </div>
-      );
-    } else {
-      return <div />;
-    }
+    return <SendOrder selectedOrders={this.state.selectedOrders} />;
+    // const { showOrderState, selectedOrders } = this.state;
+    // const { userRoles: roles } = this.props;
+    //
+    // if (roles.admin || roles.retailer) {
+    //   const shippingShow = showOrderState === 'new_orders';
+    //   const labelFunction = this.renderLabelsButton;
+    //   const labelBool = !(
+    //     showOrderState === 'new_orders' && selectedOrders.size > 0
+    //   );
+    //
+    //   const messengerFunction = this.renderMessengerButton;
+    //   const messengerBool = !(
+    //     showOrderState === 'new_orders' && selectedOrders.size > 0
+    //   );
+    //
+    //   const customerAlertPickupShow = showOrderState === 'ready_orders';
+    //   const alertFunction = this.renderAlertButton;
+    //   const alertBool = !(
+    //     showOrderState === 'ready_orders' && selectedOrders.size > 0
+    //   );
+    //
+    //   const pickupFunction = this.renderCustomerReceivedButton;
+    //   const pickupBool = !(
+    //     showOrderState === 'ready_orders' && selectedOrders.size > 0
+    //   );
+    //
+    //   return (
+    //     <div>
+    //       <div className="shipping-button-container">
+    //         {labelFunction(labelBool, shippingShow)}
+    //         {messengerFunction(messengerBool, shippingShow)}
+    //         {alertFunction(alertBool, customerAlertPickupShow)}
+    //         {pickupFunction(pickupBool, customerAlertPickupShow)}
+    //       </div>
+    //     </div>
+    //   );
+    // } else {
+    //   return <div />;
+    // }
   };
 
   renderOrderRow(order) {
