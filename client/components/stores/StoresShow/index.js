@@ -25,6 +25,7 @@ import Checkbox from '../../Checkbox';
 import StatusCard from './StatusCard';
 
 import SendOrder from './retailerOrderMgmtControls/SendOrder';
+import CustomerOptions from './retailerOrderMgmtControls/CustomerOptions';
 
 const mapStateToProps = store => {
   return {
@@ -290,7 +291,7 @@ class StoresShow extends Component {
     this.setState({ selectedOrders: new Set() });
   };
 
-  alertCustomers() {
+  alertCustomers = () => {
     const { userRoles: roles, currentStore: { id: store_id } } = this.props;
     const orders = this.state.selectedOrders;
     this.props.setLoader();
@@ -305,7 +306,7 @@ class StoresShow extends Component {
         this.setState({ selectedOrders: new Set() });
       }
     });
-  }
+  };
 
   toggleOrderSelect = order => {
     if (!this.state.selectedOrders.has(order)) {
@@ -340,7 +341,8 @@ class StoresShow extends Component {
     );
   }
 
-  markCustomerReceived = orders => {
+  markCustomerReceived = () => {
+    const orders = this.state.selectedOrders;
     const {
       currentStore: { id: store_id },
       setLoader,
@@ -419,7 +421,13 @@ class StoresShow extends Component {
           />
         );
       } else if (showOrderState === 'ready_orders') {
-        return <h1> ALERT & CUSTOMER PICKUP BUTTONS HERE </h1>;
+        return (
+          <CustomerOptions
+            selectedOrders={[...this.state.selectedOrders]}
+            alertCustomers={this.alertCustomers}
+            markCustomerReceived={this.markCustomerReceived}
+          />
+        );
       }
     }
     // const { showOrderState, selectedOrders } = this.state;
