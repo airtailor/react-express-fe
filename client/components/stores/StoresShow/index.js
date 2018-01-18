@@ -91,7 +91,7 @@ class StoresShow extends Component {
     }
   };
 
-  refreshStoreOrders() {
+  refreshStoreOrders = () => {
     this.props.setLoader();
 
     const {
@@ -109,7 +109,7 @@ class StoresShow extends Component {
         this.props.removeLoader();
       })
       .catch(err => console.log(err));
-  }
+  };
 
   postShipment(orders, action, type) {
     this.props.setLoader();
@@ -295,21 +295,33 @@ class StoresShow extends Component {
     return { status, color };
   }
 
-  printBulkShippingLabel() {
-    const { shipping_label } = this.state.selectedOrderShipments[0];
+  handleBulkMailRes = res => {
+    const { errors } = res.data.body;
+    if (isEmpty(errors)) {
+      this.setState({ selectedOrderShipments: res.data.body }, () => {
+        const { shipping_label } = this.state.selectedOrderShipments[0];
 
-    const print = () => {
-      window.print();
+        const print = () => {
+          window.print();
 
-      setTimeout(() => {
-        this.setState({
-          selectedOrders: new Set(),
-          selectedOrderShipments: [],
+          setTimeout(() => {
+            this.setState({
+              selectedOrders: new Set(),
+              selectedOrderShipments: [],
+            });
+          }, 1000);
+        };
+        imageLoader(shipping_label, print);
+      });
+    } else {
+      Object.keys(errors).map(key => {
+        this.props.setGrowler({
+          kind: 'warning',
+          message: errors[key][0].message,
         });
-      }, 1000);
-    };
-    imageLoader(shipping_label, print);
-  }
+      });
+    }
+  };
 
   makeLabels = ([...orders]) => {
     const { userRoles: roles } = this.props;
@@ -391,32 +403,32 @@ class StoresShow extends Component {
     );
   }
 
-  renderMessengerButton = (disabled, show) => {
-    if (!show) {
-      return;
-    }
-
-    const { userRoles: roles } = this.props;
-    const orders = this.state.selectedOrders;
-    let bool = disabled || this.state.sendingMessenger;
-    const onClick = this.sendMessenger;
-    const now = moment();
-    if (messengerAvailable(now)) {
-      return (
-        <div>
-          {this.renderButton(
-            'Send Messenger',
-            {
-              disabled: bool,
-              className: 'messenger-button',
-              clickArgs: orders,
-            },
-            onClick
-          )}
-        </div>
-      );
-    }
-  };
+  // renderMessengerButton = (disabled, show) => {
+  //   if (!show) {
+  //     return;
+  //   }
+  //
+  //   const { userRoles: roles } = this.props;
+  //   const orders = this.state.selectedOrders;
+  //   let bool = disabled || this.state.sendingMessenger;
+  //   const onClick = this.sendMessenger;
+  //   const now = moment();
+  //   if (messengerAvailable(now)) {
+  //     return (
+  //       <div>
+  //         {this.renderButton(
+  //           'Send Messenger',
+  //           {
+  //             disabled: bool,
+  //             className: 'messenger-button',
+  //             clickArgs: orders,
+  //           },
+  //           onClick
+  //         )}
+  //       </div>
+  //     );
+  //   }
+  // };
 
   markCustomerReceived = orders => {
     const {
@@ -463,31 +475,31 @@ class StoresShow extends Component {
     );
   };
 
-  renderLabelsButton = (disabled, show) => {
-    if (!show) {
-      return;
-    }
-
-    const { userRoles: roles } = this.props;
-    const orders = [...this.state.selectedOrders];
-    let bool = disabled || this.state.loadingLabel;
-    const onClick = this.makeLabels;
-
-    return (
-      <div>
-        {this.renderButton(
-          'Create Labels',
-          {
-            disabled: bool,
-            className: 'print-label-button',
-            clickArgs: orders,
-          },
-          onClick
-        )}
-        <OrderComplete shipmentSet={this.state.selectedOrderShipments} />
-      </div>
-    );
-  };
+  // renderLabelsButton = (disabled, show) => {
+  //   if (!show) {
+  //     return;
+  //   }
+  //
+  //   const { userRoles: roles } = this.props;
+  //   const orders = [...this.state.selectedOrders];
+  //   let bool = disabled || this.state.loadingLabel;
+  //   const onClick = this.makeLabels;
+  //
+  //   return (
+  //     <div>
+  //       {this.renderButton(
+  //         'Create Labels',
+  //         {
+  //           disabled: bool,
+  //           className: 'print-label-button',
+  //           clickArgs: orders,
+  //         },
+  //         onClick
+  //       )}
+  //       <OrderComplete shipmentSet={this.state.selectedOrderShipments} />
+  //     </div>
+  //   );
+  // };
 
   renderAlertButton = (disabled, show) => {
     if (!show) {
@@ -508,7 +520,24 @@ class StoresShow extends Component {
   };
 
   renderMgmtControls = () => {
-    return <SendOrder selectedOrders={this.state.selectedOrders} />;
+    const { showOrderState, selectedOrders } = this.state;
+    const { userRoles, userRoles: { retailer, admin } } = this.props;
+
+    if (admin || retailer) {
+      if (showOrderState === 'new_orders') {
+        return (
+          <SendOrder
+            selectedOrders={[...this.state.selectedOrders]}
+            selectedOrderShipments={[...this.state.selectedOrderShipments]}
+            handleBulkMailRes={this.handleBulkMailRes}
+            handleMessengerRes={this.handleMessengerRes}
+            refreshStoreOrders={this.refreshStoreOrders}
+          />
+        );
+      } else if (showOrderState === 'ready_orders') {
+        return <h1> ALERT & CUSTOMER PICKUP BUTTONS HERE </h1>;
+      }
+    }
     // const { showOrderState, selectedOrders } = this.state;
     // const { userRoles: roles } = this.props;
     //

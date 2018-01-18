@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import moment from 'moment';
+
 import Checkbox from '../../../Checkbox';
 import Button from '../../../Button';
+
+import { messengerAvailable } from '../../../shipping/shippingFunctions';
 
 class ShippingOptions extends Component {
   constructor() {
@@ -10,12 +14,35 @@ class ShippingOptions extends Component {
     };
   }
 
-  updateSelected(e) {
-    const { name } = e.target;
+  updateSelected(name) {
     const { selected } = this.state;
     const newValue = name === selected ? null : name;
     this.setState({ selected: newValue });
   }
+
+  clearSelection() {
+    this.setState({ selected: null });
+    this.props.hideShow();
+  }
+
+  renderMessengerOption = () => {
+    const now = moment();
+
+    if (messengerAvailable(now)) {
+      return (
+        <div className="shipping-option">
+          <hr style={{ float: 'right', width: '85%', marginTop: '20px' }} />
+          <Checkbox
+            name="messenge_shipmentr"
+            checked={this.state.selected === 'messenger_shipment'}
+            onChange={e => this.updateSelected(e.target.name)}
+            text="Call Postmates Messenger (est. $13)"
+            labelClass={'shipping-option-label'}
+          />
+        </div>
+      );
+    }
+  };
 
   render() {
     const { selected } = this.state;
@@ -33,23 +60,15 @@ class ShippingOptions extends Component {
       >
         <div className="shipping-option">
           <Checkbox
-            name="mail"
-            checked={this.state.selected === 'mail'}
-            onChange={e => this.updateSelected(e)}
+            name="mail_shipment"
+            checked={selected === 'mail_shipment'}
+            onChange={e => this.updateSelected(e.target.name)}
             text="Print USPS Shipping Label (est. $6)"
             labelClass={'shipping-option-label'}
           />
         </div>
-        <div className="shipping-option">
-          <hr style={{ float: 'right', width: '85%', marginTop: '20px' }} />
-          <Checkbox
-            name="messenger"
-            checked={this.state.selected === 'messenger'}
-            onChange={e => this.updateSelected(e)}
-            text="Call Postmates Messenger (est. $13)"
-            labelClass={'shipping-option-label'}
-          />
-        </div>
+
+        {this.renderMessengerOption()}
         <br />
 
         <div

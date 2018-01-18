@@ -1,10 +1,39 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import Button from '../../../Button';
 import ShippingOptions from './ShippingOptions';
+import OrderComplete from '../../../prints/OrderComplete';
+
+import { shipmentActions } from '../../../shipping/shippingFunctions';
+import {
+  createShipment,
+  setLoader,
+  removeLoader,
+  setGrowler,
+} from '../../../../actions';
+
+const mapStateToProps = store => {
+  return {
+    userRoles: store.userRoles,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      setLoader,
+      removeLoader,
+      setGrowler,
+    },
+    dispatch
+  );
+};
 
 class SendOrder extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       showOptions: false,
     };
@@ -16,13 +45,42 @@ class SendOrder extends Component {
   };
 
   handleSubmit = selection => {
-    console.log('HANDLE SUBMIT!!!!!', selection, this.props.selectedOrders);
+    const { selectedOrders } = this.props;
+    const { setLoader, removeLoader, userRoles, setGrowler } = this.props;
+    const order_ids = [...selectedOrders].map(order => order.id);
+
+    setLoader();
+    const shipment_action = shipmentActions([...selectedOrders][0], userRoles);
+
+    createShipment({
+      shipment: { delivery_type: selection, order_ids, shipment_action },
+    }).then(res => {
+      removeLoader();
+      selection === 'mail_shipment'
+        ? this.props.handleBulkMailRes(res)
+        : this.props.handleMessengerRes(res);
+    });
   };
+
+  noSelectedOrders = selectedOrders => {
+    return selectedOrders.length === 0;
+  };
+
+  componentWillReceiveProps(nextProps) {
+    const noSelectedOrders = this.noSelectedOrders(nextProps.selectedOrders);
+    const showOptionsVisible = this.state.showOptions;
+
+    if (noSelectedOrders && showOptionsVisible) {
+      this.hideShow();
+      this.props.refreshStoreOrders();
+    }
+  }
 
   render() {
     const { showOptions } = this.state;
-    const { selectedOrders } = this.props;
-    const disabled = selectedOrders.size === 0;
+    const { selectedOrders, selectedOrderShipments } = this.props;
+    const disabled = this.noSelectedOrders(selectedOrders);
+    console.log('selctedOrders', selectedOrders);
 
     if (showOptions) {
       return (
@@ -31,6 +89,7 @@ class SendOrder extends Component {
             handleSubmit={this.handleSubmit}
             hideShow={this.hideShow}
           />
+          <OrderComplete shipmentSet={selectedOrderShipments} />
         </div>
       );
     } else {
@@ -48,4 +107,4 @@ class SendOrder extends Component {
   }
 }
 
-export default SendOrder;
+export default connect(mapStateToProps, mapDispatchToProps)(SendOrder);
