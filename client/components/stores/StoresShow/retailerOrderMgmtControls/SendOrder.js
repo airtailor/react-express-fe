@@ -74,6 +74,7 @@ class SendOrder extends Component {
     const { showOptions } = this.state;
     const { selectedOrders, selectedOrderShipments } = this.props;
     const disabled = this.noSelectedOrders(selectedOrders);
+
     if (showOptions) {
       return (
         <div className="shipping-option-container">
