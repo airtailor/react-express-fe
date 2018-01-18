@@ -7,12 +7,7 @@ import ShippingOptions from './ShippingOptions';
 import OrderComplete from '../../../prints/OrderComplete';
 
 import { shipmentActions } from '../../../shipping/shippingFunctions';
-import {
-  createShipment,
-  setLoader,
-  removeLoader,
-  setGrowler,
-} from '../../../../actions';
+import { createShipment, setLoader, removeLoader } from '../../../../actions';
 
 const mapStateToProps = store => {
   return {
@@ -25,7 +20,6 @@ const mapDispatchToProps = dispatch => {
     {
       setLoader,
       removeLoader,
-      setGrowler,
     },
     dispatch
   );
@@ -46,7 +40,7 @@ class SendOrder extends Component {
 
   handleSubmit = selection => {
     const { selectedOrders } = this.props;
-    const { setLoader, removeLoader, userRoles, setGrowler } = this.props;
+    const { setLoader, removeLoader, userRoles } = this.props;
     const order_ids = [...selectedOrders].map(order => order.id);
 
     setLoader();

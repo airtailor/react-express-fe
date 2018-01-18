@@ -14,19 +14,13 @@ import {
   customerReceived,
   setGrowler,
 } from '../../../actions';
+
 import {
-  fireShipmentCreate,
-  shipmentTypes,
-  shipmentActions,
-  labelState,
-  messengerAllowed,
-  messengerAvailable,
   imageLoader,
   waitingForPostmatesUpdate,
 } from '../../shipping/shippingFunctions';
 
 import SectionHeader from '../../SectionHeader';
-import OrderComplete from '../../prints/OrderComplete';
 import Checkbox from '../../Checkbox';
 import StatusCard from './StatusCard';
 
@@ -111,33 +105,6 @@ class StoresShow extends Component {
       .catch(err => console.log(err));
   };
 
-  postShipment(orders, action, type) {
-    this.props.setLoader();
-    // NOTE: we'll need to update this once we're returning > 1 shipment per post.
-    // OrderComplete is set up for arrays, but the API is returning objects right now.
-    return fireShipmentCreate(orders, action, type)
-      .then(res => {
-        this.props.removeLoader();
-        this.setState({ loadingLabel: false });
-
-        const errors = res.data.body.errors;
-        if (isEmpty(errors)) {
-          this.setState({ selectedOrderShipments: res.data.body });
-        } else {
-          Object.keys(errors).map(key => {
-            this.props.setGrowler({
-              kind: 'warning',
-              message: errors[key][0].message,
-            });
-          });
-        }
-      })
-      .then(() => {
-        return this.refreshStoreOrders();
-      })
-      .catch(err => console.log('err', err));
-  }
-
   formatStatusString(dueDate, late) {
     const todaysDate = moment(new Date());
     const momentDueDate = moment(dueDate);
@@ -203,14 +170,6 @@ class StoresShow extends Component {
 
   countOrdersByStatus(status) {
     return this.sortOrdersByStatus(status).length;
-  }
-
-  messengerDeliveryCompleted(order) {
-    let delivered = false;
-    if (order.shipments.last.status === 'delivered') {
-      delivered = true;
-    }
-    return delivered;
   }
 
   getOrderStatus(order) {
@@ -331,36 +290,6 @@ class StoresShow extends Component {
     this.setState({ selectedOrders: new Set() });
   };
 
-  makeLabels = ([...orders]) => {
-    const { userRoles: roles } = this.props;
-    if (!isEmpty(orders)) {
-      const order = [...orders][0];
-      const action = shipmentActions(order, roles);
-      return Promise.all([
-        this.postShipment(orders, action, 'mail_shipment'),
-      ]).then(() => this.printBulkShippingLabel());
-    }
-  };
-
-  // sendMessenger = ([...orders]) => {
-  //   const { userRoles: roles } = this.props;
-  //   if (!isEmpty(orders)) {
-  //     const order = orders[0];
-  //     const action = shipmentActions(order, roles);
-  //     return this.postShipment(
-  //       orders,
-  //       action,
-  //       'messenger_shipment'
-  //     ).then(() => {
-  //       const kind = 'success';
-  //       const message = 'Messenger has been requested!';
-  //
-  //       this.props.setGrowler({ kind, message });
-  //       this.setState({ selectedOrders: new Set() });
-  //     });
-  //   }
-  // };
-
   alertCustomers() {
     const { userRoles: roles, currentStore: { id: store_id } } = this.props;
     const orders = this.state.selectedOrders;
@@ -410,33 +339,6 @@ class StoresShow extends Component {
       </div>
     );
   }
-
-  // renderMessengerButton = (disabled, show) => {
-  //   if (!show) {
-  //     return;
-  //   }
-  //
-  //   const { userRoles: roles } = this.props;
-  //   const orders = this.state.selectedOrders;
-  //   let bool = disabled || this.state.sendingMessenger;
-  //   const onClick = this.sendMessenger;
-  //   const now = moment();
-  //   if (messengerAvailable(now)) {
-  //     return (
-  //       <div>
-  //         {this.renderButton(
-  //           'Send Messenger',
-  //           {
-  //             disabled: bool,
-  //             className: 'messenger-button',
-  //             clickArgs: orders,
-  //           },
-  //           onClick
-  //         )}
-  //       </div>
-  //     );
-  //   }
-  // };
 
   markCustomerReceived = orders => {
     const {
