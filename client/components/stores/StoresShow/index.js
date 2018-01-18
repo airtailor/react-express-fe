@@ -324,23 +324,6 @@ class StoresShow extends Component {
     this.setState({ showOrderState: state, selectedOrders: new Set() });
   };
 
-  renderButton(text, params, callback = () => console.log('')) {
-    const className = params.className;
-    const clickArgs = params.clickArgs || undefined;
-    const disabled = params.disabled;
-    return (
-      <div>
-        <input
-          type="submit"
-          onClick={() => callback(clickArgs)}
-          disabled={disabled}
-          className={className}
-          value={text}
-        />
-      </div>
-    );
-  }
-
   markCustomerReceived = () => {
     const orders = this.state.selectedOrders;
     const {
@@ -363,46 +346,6 @@ class StoresShow extends Component {
         this.refreshStoreOrders();
       })
       .catch(err => console.log('err'));
-  };
-
-  renderCustomerReceivedButton = (disabled, show) => {
-    if (!show) {
-      return;
-    }
-
-    const orders = this.state.selectedOrders;
-    const onClick = this.markCustomerReceived;
-    return (
-      <div>
-        {this.renderButton(
-          'CUSTOMER RECEIVED',
-          {
-            disabled: disabled,
-            className: 'messenger-button',
-            clickArgs: orders,
-          },
-          onClick
-        )}
-      </div>
-    );
-  };
-
-  renderAlertButton = (disabled, show) => {
-    if (!show) {
-      return;
-    }
-
-    const orders = this.state.selectedOrders;
-    const onClick = () => this.alertCustomers();
-    return this.renderButton(
-      'NOTIFY CUSTOMER',
-      {
-        disabled: disabled,
-        className: 'messenger-button',
-        clickArgs: orders,
-      },
-      onClick
-    );
   };
 
   renderMgmtControls = () => {
@@ -430,45 +373,6 @@ class StoresShow extends Component {
         );
       }
     }
-    // const { showOrderState, selectedOrders } = this.state;
-    // const { userRoles: roles } = this.props;
-    //
-    // if (roles.admin || roles.retailer) {
-    //   const shippingShow = showOrderState === 'new_orders';
-    //   const labelFunction = this.renderLabelsButton;
-    //   const labelBool = !(
-    //     showOrderState === 'new_orders' && selectedOrders.size > 0
-    //   );
-    //
-    //   const messengerFunction = this.renderMessengerButton;
-    //   const messengerBool = !(
-    //     showOrderState === 'new_orders' && selectedOrders.size > 0
-    //   );
-    //
-    //   const customerAlertPickupShow = showOrderState === 'ready_orders';
-    //   const alertFunction = this.renderAlertButton;
-    //   const alertBool = !(
-    //     showOrderState === 'ready_orders' && selectedOrders.size > 0
-    //   );
-    //
-    //   const pickupFunction = this.renderCustomerReceivedButton;
-    //   const pickupBool = !(
-    //     showOrderState === 'ready_orders' && selectedOrders.size > 0
-    //   );
-    //
-    //   return (
-    //     <div>
-    //       <div className="shipping-button-container">
-    //         {labelFunction(labelBool, shippingShow)}
-    //         {messengerFunction(messengerBool, shippingShow)}
-    //         {alertFunction(alertBool, customerAlertPickupShow)}
-    //         {pickupFunction(pickupBool, customerAlertPickupShow)}
-    //       </div>
-    //     </div>
-    //   );
-    // } else {
-    //   return <div />;
-    // }
   };
 
   renderOrderRow(order) {

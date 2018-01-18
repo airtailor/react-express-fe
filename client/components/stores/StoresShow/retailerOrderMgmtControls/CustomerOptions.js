@@ -19,7 +19,6 @@ class CustomerOptions extends Component {
   };
 
   render() {
-    console.log('customerPickupDisabled', this.customerPickupDisabled());
     return (
       <div
         className="flex-container"
