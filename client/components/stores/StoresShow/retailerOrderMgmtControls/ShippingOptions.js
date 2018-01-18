@@ -33,7 +33,7 @@ class ShippingOptions extends Component {
         <div className="shipping-option">
           <hr style={{ float: 'right', width: '85%', marginTop: '20px' }} />
           <Checkbox
-            name="messenge_shipmentr"
+            name="messenger_shipment"
             checked={this.state.selected === 'messenger_shipment'}
             onChange={e => this.updateSelected(e.target.name)}
             text="Call Postmates Messenger (est. $13)"

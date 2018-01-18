@@ -323,6 +323,14 @@ class StoresShow extends Component {
     }
   };
 
+  handleMessengerRes = res => {
+    const kind = 'success';
+    const message = 'Messenger has been requested!';
+
+    this.props.setGrowler({ kind, message });
+    this.setState({ selectedOrders: new Set() });
+  };
+
   makeLabels = ([...orders]) => {
     const { userRoles: roles } = this.props;
     if (!isEmpty(orders)) {
@@ -334,24 +342,24 @@ class StoresShow extends Component {
     }
   };
 
-  sendMessenger = ([...orders]) => {
-    const { userRoles: roles } = this.props;
-    if (!isEmpty(orders)) {
-      const order = orders[0];
-      const action = shipmentActions(order, roles);
-      return this.postShipment(
-        orders,
-        action,
-        'messenger_shipment'
-      ).then(() => {
-        const kind = 'success';
-        const message = 'Messenger has been requested!';
-
-        this.props.setGrowler({ kind, message });
-        this.setState({ selectedOrders: new Set() });
-      });
-    }
-  };
+  // sendMessenger = ([...orders]) => {
+  //   const { userRoles: roles } = this.props;
+  //   if (!isEmpty(orders)) {
+  //     const order = orders[0];
+  //     const action = shipmentActions(order, roles);
+  //     return this.postShipment(
+  //       orders,
+  //       action,
+  //       'messenger_shipment'
+  //     ).then(() => {
+  //       const kind = 'success';
+  //       const message = 'Messenger has been requested!';
+  //
+  //       this.props.setGrowler({ kind, message });
+  //       this.setState({ selectedOrders: new Set() });
+  //     });
+  //   }
+  // };
 
   alertCustomers() {
     const { userRoles: roles, currentStore: { id: store_id } } = this.props;
@@ -474,32 +482,6 @@ class StoresShow extends Component {
       </div>
     );
   };
-
-  // renderLabelsButton = (disabled, show) => {
-  //   if (!show) {
-  //     return;
-  //   }
-  //
-  //   const { userRoles: roles } = this.props;
-  //   const orders = [...this.state.selectedOrders];
-  //   let bool = disabled || this.state.loadingLabel;
-  //   const onClick = this.makeLabels;
-  //
-  //   return (
-  //     <div>
-  //       {this.renderButton(
-  //         'Create Labels',
-  //         {
-  //           disabled: bool,
-  //           className: 'print-label-button',
-  //           clickArgs: orders,
-  //         },
-  //         onClick
-  //       )}
-  //       <OrderComplete shipmentSet={this.state.selectedOrderShipments} />
-  //     </div>
-  //   );
-  // };
 
   renderAlertButton = (disabled, show) => {
     if (!show) {
