@@ -18,6 +18,8 @@ class RetailerOrderList extends Component {
       handleBulkMailRes,
       handleMessengerRes,
       refreshStoreOrders,
+      markCustomerReceived,
+      alertCustomers,
     } = this.props;
 
     if (showOrderState === 'new_orders') {
@@ -33,9 +35,9 @@ class RetailerOrderList extends Component {
     } else if (showOrderState === 'ready_orders') {
       return (
         <CustomerOptions
-          selectedOrders={[...this.state.selectedOrders]}
-          alertCustomers={this.alertCustomers}
-          markCustomerReceived={this.markCustomerReceived}
+          selectedOrders={[...selectedOrders]}
+          alertCustomers={alertCustomers}
+          markCustomerReceived={markCustomerReceived}
         />
       );
     }
@@ -49,9 +51,10 @@ class RetailerOrderList extends Component {
       userRoles,
       loadingOrders,
       selectedOrders,
+      setOrderTabState,
+      toggleOrderSelect,
+      sortOrdersByStatus,
     } = this.props;
-
-    console.log(showOrderState);
 
     return (
       <div>
@@ -62,6 +65,7 @@ class RetailerOrderList extends Component {
               userRoles={userRoles}
               openOrders={openOrders}
               showOrderState={showOrderState}
+              setOrderTabState={setOrderTabState}
             />
           </div>
           <div>
@@ -75,6 +79,8 @@ class RetailerOrderList extends Component {
               userRoles={userRoles}
               loadingOrders={loadingOrders}
               selectedOrders={selectedOrders}
+              toggleOrderSelect={toggleOrderSelect}
+              sortOrdersByStatus={sortOrdersByStatus}
             />
           </div>
           <div>{this.mgmtControls()}</div>

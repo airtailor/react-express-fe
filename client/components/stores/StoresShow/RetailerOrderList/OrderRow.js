@@ -104,6 +104,7 @@ class OrderRow extends Component {
       order,
       showOrderState,
       selectedOrders,
+      toggleOrderSelect,
     } = this.props;
 
     const {
@@ -119,7 +120,7 @@ class OrderRow extends Component {
     const { color, status } = this.getOrderStatus(order);
     const route = `/orders/${id}`;
     const orderIsToggled = selectedOrders.has(order);
-    const orderToggle = () => this.toggleOrderSelect(order);
+    const orderToggle = () => toggleOrderSelect(order);
 
     let displayDate;
     if (showOrderState === 'new_orders') {

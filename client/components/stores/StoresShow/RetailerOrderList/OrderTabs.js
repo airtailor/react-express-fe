@@ -80,7 +80,6 @@ class OrderTabs extends Component {
     ];
 
     const tabs = allTabs.map((tab, i) => {
-      console.log(this.props);
       if (tab.status === this.props.showOrderState) {
         tab.className = tab.className.concat(' selected');
       }
@@ -89,7 +88,7 @@ class OrderTabs extends Component {
         <div
           key={i}
           className={tab.className}
-          onClick={() => this.setOrderTabState(tab.status)}
+          onClick={() => this.props.setOrderTabState(tab.status)}
         >
           <h3>
             {tab.text} ({this.countOrdersByStatus(tab.status)})

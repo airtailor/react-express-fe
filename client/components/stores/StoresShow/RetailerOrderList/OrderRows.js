@@ -4,64 +4,6 @@ import isEmpty from 'lodash/isEmpty';
 import OrderRow from './OrderRow';
 
 class OrderRows extends Component {
-  sortOrdersByStatus() {
-    const {
-      openOrders: orders,
-      userRoles: roles,
-      showOrderState: status,
-    } = this.props;
-
-    switch (status) {
-      case 'new_orders':
-        if (roles.tailor) {
-          return orders.filter(
-            order => !isEmpty(order.shipments) && order.tailor
-          );
-        } else {
-          return orders.filter(order => {
-            const { shipments } = order;
-
-            const noShipments = isEmpty(shipments);
-            const lastShipment = shipments[shipments.length - 1];
-            const notFulfilled = !order.fulfilled;
-
-            const messengerNotDeliveredYet =
-              shipments.length > 0 &&
-              lastShipment.delivery_type === 'messenger_shipment' &&
-              lastShipment.status != 'delivered';
-
-            return notFulfilled && (noShipments || messengerNotDeliveredYet);
-          });
-        }
-      case 'in_progress_orders':
-        if (roles.tailor) {
-          return orders.filter(order => order.arrived && !order.fulfilled);
-        } else {
-          return orders.filter(order => {
-            if (isEmpty(order.shipments)) {
-              return false;
-            }
-
-            const { tailor, fulfilled, shipments } = order;
-            const { status, delivery_type } = shipments[shipments.length - 1];
-
-            const mailShipmentExists = delivery_type === 'mail_shipment';
-            const messengerShipmentDelivered = status === 'delivered';
-
-            return (
-              (mailShipmentExists || messengerShipmentDelivered) &&
-              tailor &&
-              !fulfilled
-            );
-          });
-        }
-      case 'ready_orders':
-        return orders.filter(order => order.fulfilled);
-      default:
-        return orders;
-    }
-  }
-
   render() {
     const {
       openOrders,
@@ -69,10 +11,12 @@ class OrderRows extends Component {
       userRoles,
       loadingOrders,
       selectedOrders,
+      toggleOrderSelect,
+      sortOrdersByStatus,
     } = this.props;
 
     if (!isEmpty(openOrders)) {
-      const sortedOrders = this.sortOrdersByStatus(showOrderState);
+      const sortedOrders = sortOrdersByStatus(showOrderState);
       if (!isEmpty(sortedOrders)) {
         return (
           <div className="order-data-container">
@@ -82,6 +26,8 @@ class OrderRows extends Component {
                 order={order}
                 userRoles={userRoles}
                 selectedOrders={selectedOrders}
+                toggleOrderSelect={toggleOrderSelect}
+                showOrderState={showOrderState}
               />
             ))}
           </div>
@@ -100,6 +46,7 @@ class OrderRows extends Component {
         </div>
       );
     }
+    return <div />;
   }
 }
 

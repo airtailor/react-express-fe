@@ -118,64 +118,6 @@ class StoresShow extends Component {
     return status;
   }
 
-  // sortOrdersByStatus(status) {
-  //   const { openOrders: orders, userRoles: roles } = this.props;
-  //
-  //   switch (status) {
-  //     case 'new_orders':
-  //       if (roles.tailor) {
-  //         return orders.filter(
-  //           order => !isEmpty(order.shipments) && order.tailor
-  //         );
-  //       } else {
-  //         return orders.filter(order => {
-  //           const { shipments } = order;
-  //
-  //           const noShipments = isEmpty(shipments);
-  //           const lastShipment = shipments[shipments.length - 1];
-  //           const notFulfilled = !order.fulfilled;
-  //
-  //           const messengerNotDeliveredYet =
-  //             shipments.length > 0 &&
-  //             lastShipment.delivery_type === 'messenger_shipment' &&
-  //             lastShipment.status != 'delivered';
-  //
-  //           return notFulfilled && (noShipments || messengerNotDeliveredYet);
-  //         });
-  //       }
-  //     case 'in_progress_orders':
-  //       if (roles.tailor) {
-  //         return orders.filter(order => order.arrived && !order.fulfilled);
-  //       } else {
-  //         return orders.filter(order => {
-  //           if (isEmpty(order.shipments)) {
-  //             return false;
-  //           }
-  //
-  //           const { tailor, fulfilled, shipments } = order;
-  //           const { status, delivery_type } = shipments[shipments.length - 1];
-  //
-  //           const mailShipmentExists = delivery_type === 'mail_shipment';
-  //           const messengerShipmentDelivered = status === 'delivered';
-  //
-  //           return (
-  //             (mailShipmentExists || messengerShipmentDelivered) &&
-  //             tailor &&
-  //             !fulfilled
-  //           );
-  //         });
-  //       }
-  //     case 'ready_orders':
-  //       return orders.filter(order => order.fulfilled);
-  //     default:
-  //       return orders;
-  //   }
-  // }
-
-  // countOrdersByStatus(status) {
-  //   return this.sortOrdersByStatus(status).length;
-  // }
-
   getOrderStatus(order) {
     const {
       shipments,
@@ -347,36 +289,64 @@ class StoresShow extends Component {
           'Order has been marked as Completed! You can now view it in the Archive.';
         setGrowler({ kind, message });
         this.refreshStoreOrders();
+        this.setState({ selectedOrders: new Set() });
       })
       .catch(err => console.log('err'));
   };
 
-  // renderMgmtControls = () => {
-  //   const { showOrderState, selectedOrders } = this.state;
-  //   const { userRoles, userRoles: { retailer, admin } } = this.props;
-  //
-  //   if (admin || retailer) {
-  //     if (showOrderState === 'new_orders') {
-  //       return (
-  //         <SendOrder
-  //           selectedOrders={[...this.state.selectedOrders]}
-  //           selectedOrderShipments={[...this.state.selectedOrderShipments]}
-  //           handleBulkMailRes={this.handleBulkMailRes}
-  //           handleMessengerRes={this.handleMessengerRes}
-  //           refreshStoreOrders={this.refreshStoreOrders}
-  //         />
-  //       );
-  //     } else if (showOrderState === 'ready_orders') {
-  //       return (
-  //         <CustomerOptions
-  //           selectedOrders={[...this.state.selectedOrders]}
-  //           alertCustomers={this.alertCustomers}
-  //           markCustomerReceived={this.markCustomerReceived}
-  //         />
-  //       );
-  //     }
-  //   }
-  // };
+  sortOrdersByStatus = status => {
+    const { openOrders: orders, userRoles: roles } = this.props;
+
+    switch (status) {
+      case 'new_orders':
+        if (roles.tailor) {
+          return orders.filter(
+            order => !isEmpty(order.shipments) && order.tailor
+          );
+        } else {
+          return orders.filter(order => {
+            const { shipments } = order;
+
+            const noShipments = isEmpty(shipments);
+            const lastShipment = shipments[shipments.length - 1];
+            const notFulfilled = !order.fulfilled;
+
+            const messengerNotDeliveredYet =
+              shipments.length > 0 &&
+              lastShipment.delivery_type === 'messenger_shipment' &&
+              lastShipment.status != 'delivered';
+
+            return notFulfilled && (noShipments || messengerNotDeliveredYet);
+          });
+        }
+      case 'in_progress_orders':
+        if (roles.tailor) {
+          return orders.filter(order => order.arrived && !order.fulfilled);
+        } else {
+          return orders.filter(order => {
+            if (isEmpty(order.shipments)) {
+              return false;
+            }
+
+            const { tailor, fulfilled, shipments } = order;
+            const { status, delivery_type } = shipments[shipments.length - 1];
+
+            const mailShipmentExists = delivery_type === 'mail_shipment';
+            const messengerShipmentDelivered = status === 'delivered';
+
+            return (
+              (mailShipmentExists || messengerShipmentDelivered) &&
+              tailor &&
+              !fulfilled
+            );
+          });
+        }
+      case 'ready_orders':
+        return orders.filter(order => order.fulfilled);
+      default:
+        return orders;
+    }
+  };
 
   renderOrderRow(order) {
     const orderStatus = this.getOrderStatus(order);
@@ -400,111 +370,6 @@ class StoresShow extends Component {
       </div>
     );
   }
-
-  // renderOrderRowWithSelect(order) {
-  //   const { userRoles: roles } = this.props;
-  //   const { showOrderState } = this.state;
-  //   const {
-  //     id,
-  //     customer,
-  //     alterations_count,
-  //     created_at,
-  //     arrival_date,
-  //     fulfilled_date,
-  //   } = order;
-  //
-  //   const { first_name, last_name } = customer;
-  //   const { color, status } = this.getOrderStatus(order);
-  //   const route = `/orders/${id}`;
-  //   const orderIsToggled = this.state.selectedOrders.has(order);
-  //   const orderToggle = () => this.toggleOrderSelect(order);
-  //
-  //   let displayDate;
-  //   if (showOrderState === 'new_orders') {
-  //     displayDate = created_at;
-  //   } else if (showOrderState === 'in_progress_orders') {
-  //     displayDate = arrival_date;
-  //   } else if (showOrderState === 'ready_orders') {
-  //     displayDate = fulfilled_date;
-  //   }
-  //
-  //   const momentDate = moment(displayDate);
-  //   const isToday = momentDate.isSame(new Date(), 'day');
-  //   const yesterday = moment(new Date()).add(-1, 'days');
-  //   const wasYest = momentDate.isSame(yesterday, 'day');
-  //   const dateTextFormat = isToday
-  //     ? '[Today,] h:mma'
-  //     : wasYest ? '[Yesterday,] h:mma' : 'MMM Do, h:mma';
-  //
-  //   let dateText = momentDate.format(dateTextFormat);
-  //   if (dateText === 'Invalid date' && !arrival_date) {
-  //     dateText = 'Pending';
-  //   }
-  //
-  //   const orderSelect = (
-  //     <Checkbox
-  //       checked={orderIsToggled}
-  //       type="checkbox"
-  //       name={id}
-  //       onChange={orderToggle}
-  //     />
-  //   );
-  //
-  //   return (
-  //     <div className="order-row" key={id}>
-  //       <div className="order-select-cell">{orderSelect}</div>
-  //       <Link to={route} className="order-row-link">
-  //         <div className="order-data-cell">#{id}</div>
-  //         <div className="order-data-cell">{dateText}</div>
-  //         <div className="order-data-cell">
-  //           {first_name} {last_name}
-  //         </div>
-  //         <StatusCard color={color} text={status} />
-  //       </Link>
-  //       <div className="order-data-break-row" />
-  //     </div>
-  //   );
-  // }
-
-  // renderStateTabs = () => {
-  //   const allTabs = [
-  //     {
-  //       className: 'order-state-tab',
-  //       status: 'new_orders',
-  //       text: 'New Orders',
-  //     },
-  //     {
-  //       className: 'order-state-tab',
-  //       status: 'in_progress_orders',
-  //       text: 'In Process',
-  //     },
-  //     {
-  //       className: 'order-state-tab',
-  //       status: 'ready_orders',
-  //       text: 'In-Store Pickup',
-  //     },
-  //   ];
-  //
-  //   const tabs = allTabs.map((tab, i) => {
-  //     if (tab.status === this.state.showOrderState) {
-  //       tab.className = tab.className.concat(' selected');
-  //     }
-  //     return (
-  //       <div
-  //         key={i}
-  //         className={tab.className}
-  //         onClick={() => this.setOrderTabState(tab.status)}
-  //       >
-  //         <h3>
-  //           {tab.text} ({this.countOrdersByStatus(tab.status)})
-  //         </h3>
-  //       </div>
-  //     );
-  //   });
-  //
-  //   return <div className="order-state-row">{tabs}</div>;
-  // };
-
   renderHeaderCell(text, withSelect, isSelect) {
     if (isSelect) {
       return <h3 className="order-select-header-cell">{text}</h3>;
@@ -530,61 +395,6 @@ class StoresShow extends Component {
       </div>
     );
   };
-
-  // renderRetailerHeaders = () => {
-  //   const orderHeader = this.renderHeaderCell;
-  //   const { showOrderState } = this.state;
-  //
-  //   let dateText;
-  //   if (showOrderState === 'new_orders') {
-  //     dateText = 'Created';
-  //   } else if (showOrderState === 'in_progress_orders') {
-  //     dateText = 'Checked In';
-  //   } else if (showOrderState === 'ready_orders') {
-  //     dateText = 'Fulfilled';
-  //   }
-  //
-  //   return (
-  //     <div className="order-headers-container">
-  //       <div className="order-headers-row">
-  //         {orderHeader('Select:', false, true)}
-  //         <div className="order-data-headers-container">
-  //           {orderHeader('Order', true, false)}
-  //           {orderHeader(dateText, true, false)}
-  //           {orderHeader('Customer', true, false)}
-  //           {orderHeader('Status', true, false)}
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
-  // renderRetailerRows = () => {
-  //   const { openOrders } = this.props;
-  //   if (!isEmpty(openOrders)) {
-  //     const status = this.state.showOrderState;
-  //     const sortedOrders = this.sortOrdersByStatus(status);
-  //     if (!isEmpty(sortedOrders)) {
-  //       return (
-  //         <div className="order-data-container">
-  //           {sortedOrders.map(order => this.renderOrderRowWithSelect(order))}
-  //         </div>
-  //       );
-  //     } else {
-  //       return (
-  //         <div className="table-row">
-  //           <div className="no-orders">No orders found!</div>
-  //         </div>
-  //       );
-  //     }
-  //   } else if (this.state.loadingOrders) {
-  //     return (
-  //       <div className="table-row">
-  //         <div className="loading-orders">Loading Orders...</div>
-  //       </div>
-  //     );
-  //   }
-  // };
 
   renderTailorRows = () => {
     const { openOrders } = this.props;
@@ -645,25 +455,13 @@ class StoresShow extends Component {
           handleBulkMailRes={this.handleBulkMailRes}
           handleMessengerRes={this.handleMessengerRes}
           refreshStoreOrders={this.refreshStoreOrders}
+          setOrderTabState={this.setOrderTabState}
+          markCustomerReceived={this.markCustomerReceived}
+          alertCustomers={this.alertCustomers}
+          toggleOrderSelect={this.toggleOrderSelect}
+          sortOrdersByStatus={this.sortOrdersByStatus}
         />
       );
-      // const orderStateTabs = this.renderStateTabs;
-      // const orderRows = this.renderRetailerRows;
-      // const orderHeaders = this.renderRetailerHeaders;
-      // const mgmtControls = this.renderMgmtControls;
-      //
-      // return (
-      //   <div>
-      //     <SectionHeader text={headerText} />
-      //     <div className="orders">
-      //       <div className="order-state-container">{orderStateTabs()}</div>
-      //       <div>{orderHeaders()}</div>
-      //       <div className="order-header-break-row" />
-      //       <div>{orderRows()}</div>
-      //       <div>{mgmtControls()}</div>
-      //     </div>
-      //   </div>
-      // );
     } else if (tailor) {
       const orderRows = this.renderTailorRows;
       const orderHeaders = this.renderTailorHeaders;
