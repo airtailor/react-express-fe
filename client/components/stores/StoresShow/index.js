@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import moment from 'moment';
 import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
@@ -20,14 +19,8 @@ import {
   waitingForPostmatesUpdate,
 } from '../../shipping/shippingFunctions';
 
-import SectionHeader from '../../SectionHeader';
-import Checkbox from '../../Checkbox';
-import StatusCard from './StatusCard';
-
 import RetailerOrderList from './RetailerOrderList/';
-
-import SendOrder from './retailerOrderMgmtControls/SendOrder';
-import CustomerOptions from './retailerOrderMgmtControls/CustomerOptions';
+import TailorOrderList from './TailorOrderList/';
 
 const mapStateToProps = store => {
   return {
@@ -108,97 +101,6 @@ class StoresShow extends Component {
       })
       .catch(err => console.log(err));
   };
-
-  formatStatusString(dueDate, late) {
-    const todaysDate = moment(new Date());
-    const momentDueDate = moment(dueDate);
-    const diff = Math.abs(momentDueDate.diff(todaysDate, 'days'));
-    const additionalString = late ? ' days late' : ' days to go';
-    const status = (diff + additionalString).toUpperCase();
-    return status;
-  }
-
-  getOrderStatus(order) {
-    const {
-      shipments,
-      arrived,
-      late,
-      due_date,
-      fulfilled,
-      customer_alerted,
-      ship_to_store,
-    } = order;
-
-    const { retailer, admin, tailor } = this.props.userRoles;
-
-    let status, color;
-
-    if (isEmpty(order.shipments)) {
-      status = 'Needs Transit';
-      color = 'red';
-    } else if (!isEmpty(order.shipments) && !order.arrived) {
-      const lastShipment = order.shipments[order.shipments.length - 1];
-      const { delivery_type } = lastShipment;
-
-      if (delivery_type === 'mail_shipment') {
-        status = 'In Transit';
-        color = 'gold';
-      } else if (delivery_type === 'messenger_shipment') {
-        const shipmentStatus = lastShipment.status;
-
-        if (shipmentStatus === 'pending') {
-          status = 'Contacting';
-          color = 'red';
-        } else if (shipmentStatus === 'pickup') {
-          status = 'Picking Up';
-          color = 'goldenrod';
-        } else if (
-          shipmentStatus === 'pickup_complete' ||
-          shipmentStatus === 'dropoff'
-        ) {
-          status = 'Dropping Off';
-          color = 'gold';
-        } else if (shipmentStatus === 'delivered') {
-          status = 'Delivered';
-          color = 'green';
-        }
-      }
-    } else if (order.late && !order.fulfilled) {
-      if (admin || tailor) {
-        const dueTime = this.formatStatusString(order.due_date, true);
-        status = dueTime;
-      } else if (retailer) {
-        status = 'Delayed';
-      }
-      color = 'red';
-    } else if (
-      order.fulfilled &&
-      !order.customer_alerted &&
-      order.ship_to_store
-    ) {
-      status = 'In Transit';
-      color = 'gold';
-    } else if (
-      order.fulfilled &&
-      order.customer_alerted &&
-      order.ship_to_store
-    ) {
-      status = 'Notified';
-      color = 'red';
-    } else if (order.arrived && !order.fulfilled) {
-      status = this.formatStatusString(order.due_date, false);
-      const statusNum = status.split('')[0];
-
-      if (statusNum > 3) {
-        color = 'green';
-      } else if (statusNum > 0) {
-        color = 'gold';
-      } else if (statusNum < 1) {
-        color = 'red';
-      }
-    }
-    return { status, color };
-  }
 
   handleBulkMailRes = res => {
     const { errors } = res.data.body;
@@ -348,80 +250,6 @@ class StoresShow extends Component {
     }
   };
 
-  renderOrderRow(order) {
-    const orderStatus = this.getOrderStatus(order);
-    const { id, customer, alterations_count } = order;
-    const { first_name, last_name } = customer;
-    const { color, status } = orderStatus;
-    const route = `/orders/${id}`;
-    return (
-      <div className="order-row" key={id}>
-        <Link to={route} className="order-row-link-no-select">
-          <div className="order-cell-no-select">#{id}</div>
-          <div style={{ color }} className="order-cell-no-select">
-            {status}
-          </div>
-          <div className="order-cell-no-select">
-            {first_name} {last_name}
-          </div>
-          <div className="order-cell-no-select">{alterations_count}</div>
-        </Link>
-        <div className="order-data-break-row" />
-      </div>
-    );
-  }
-  renderHeaderCell(text, withSelect, isSelect) {
-    if (isSelect) {
-      return <h3 className="order-select-header-cell">{text}</h3>;
-    } else if (withSelect) {
-      return <h3 className="order-data-header-cell">{text}</h3>;
-    } else {
-      return <h3 className="order-header-cell-no-select">{text}</h3>;
-    }
-  }
-
-  renderTailorHeaders = () => {
-    const orderHeader = this.renderHeaderCell;
-    return (
-      <div className="order-headers-container">
-        <div className="order-headers-row-no-select">
-          <div className="order-headers-container-no-select">
-            {orderHeader('Id', false)}
-            {orderHeader('Status', false)}
-            {orderHeader('Customer', false)}
-            {orderHeader('Quantity', false)}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  renderTailorRows = () => {
-    const { openOrders } = this.props;
-    if (!isEmpty(openOrders)) {
-      const ordersWithShipments = this.sortOrdersByStatus('new_orders');
-      if (!isEmpty(ordersWithShipments)) {
-        return (
-          <div className="order-data-container">
-            {ordersWithShipments.map(order => this.renderOrderRow(order))}
-          </div>
-        );
-      } else {
-        return (
-          <div className="table-row">
-            <div className="no-orders">No orders found!</div>
-          </div>
-        );
-      }
-    } else if (this.state.loadingOrders) {
-      return (
-        <div className="table-row">
-          <div className="loading-orders">Loading Orders...</div>
-        </div>
-      );
-    }
-  };
-
   render() {
     if (!this.props.currentStore) {
       return <Redirect to="/" />;
@@ -463,17 +291,14 @@ class StoresShow extends Component {
         />
       );
     } else if (tailor) {
-      const orderRows = this.renderTailorRows;
-      const orderHeaders = this.renderTailorHeaders;
       return (
-        <div>
-          <SectionHeader text={headerText} />
-          <div className="orders">
-            <div>{orderHeaders()}</div>
-            <div className="order-header-break-row" />
-            <div>{orderRows()}</div>
-          </div>
-        </div>
+        <TailorOrderList
+          headerText={headerText}
+          openOrders={openOrders}
+          loadingOrders={loadingOrders}
+          userRoles={userRoles}
+          sortOrdersByStatus={this.sortOrdersByStatus}
+        />
       );
     }
   }
