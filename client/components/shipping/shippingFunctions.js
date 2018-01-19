@@ -54,8 +54,7 @@ const messengerTime = now => {
     .startOf('day')
     .hour(17);
   const avail = now.isBetween(startTime, endTime);
-  return true;
-  //return avail;
+  return avail;
 };
 
 const isNotSunday = now => {
