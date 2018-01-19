@@ -8,6 +8,10 @@
   position: relative;
 }
 
+.shipping-option-label {
+  margin-top: 10px;
+}
+
 label span {
   display: inline-block;
   position: relative;
@@ -105,13 +109,6 @@ input[type='checkbox']:checked + label span:before {
 //  transition: width 150ms ease 100ms;
 //  -webkit-transition: width 150ms ease 100ms;
 //}
-
-
-
-
-
-
-
 
 // html {
 //   height: 100%; // for styling only

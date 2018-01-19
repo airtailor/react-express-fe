@@ -1,0 +1,29 @@
+.status-card {
+  font-weight: bold;
+  border: 3px solid $primary-blue;
+  color: $primary-blue;
+  border-radius: 10px;
+  text-transform: uppercase;
+  @extend .order-data-cell;
+  box-sizing: border-box;
+}
+
+.status-card.green {
+  color: green;
+  border-color: green;
+}
+
+.status-card.gold {
+  color: gold;
+  border-color: gold;
+}
+
+.status-card.goldenrod {
+  color: goldenrod;
+  border-color: goldenrod;
+}
+
+.status-card.red {
+  color: $primary-red;
+  border-color: $primary-red;
+}

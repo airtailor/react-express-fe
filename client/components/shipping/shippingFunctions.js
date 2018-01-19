@@ -19,44 +19,51 @@ export const fireShipmentCreate = (orders, action, type) => {
   });
 };
 
-// this function is being used to wait until after a shipping_label 
+// this function is being used to wait until after a shipping_label
 // is fully loaded before calling window.print()
 // HOW TO TEST???
 export const imageLoader = (image, callback) => {
   const ImageLoader = new Image();
   ImageLoader.onload = () => callback();
   ImageLoader.src = image;
-}
+};
 
 export const waitingForPostmatesUpdate = orders => {
-  const ordersNeedUpdates =  orders.filter(order => {
+  const ordersNeedUpdates = orders.filter(order => {
     if (order.shipments.length > 0) {
-      const lastShipment = order.shipments[order.shipments.length -1]
-      const messengerShipment = lastShipment.delivery_type === "messenger_shipment";
-      const delivered = lastShipment.status === "delivered";
+      const lastShipment = order.shipments[order.shipments.length - 1];
+      const messengerShipment =
+        lastShipment.delivery_type === 'messenger_shipment';
+      const delivered = lastShipment.status === 'delivered';
 
-      return  messengerShipment && !delivered; 
-    } 
+      return messengerShipment && !delivered;
+    }
     return false;
   });
 
   return ordersNeedUpdates.length > 0;
-}
+};
 
-const messengerTime = (now) => {
-  const startTime = now.clone().startOf('day').hour(12);
-  const endTime = now.clone().startOf('day').hour(17);
+const messengerTime = now => {
+  const startTime = now
+    .clone()
+    .startOf('day')
+    .hour(12);
+  const endTime = now
+    .clone()
+    .startOf('day')
+    .hour(17);
   const avail = now.isBetween(startTime, endTime);
   return avail;
-}
+};
 
-const isNotSunday = (now) => {
+const isNotSunday = now => {
   return now.day() != 0;
-}
+};
 
-export const messengerAvailable = (now) => {
+export const messengerAvailable = now => {
   return isNotSunday(now) && messengerTime(now);
-}
+};
 
 export const messengerAllowed = (action, roles) => {
   const { admin, retailer } = roles;
@@ -77,15 +84,13 @@ export const getShipmentForRole = (roles, order) => {
   const { shipments } = order;
   if (roles.admin && order.type === 'WelcomeKit') {
     return shipments.find(s => {
-      const { 
-        source: { 
-          address_type: sourceAddressType
-        },
+      const {
+        source: { address_type: sourceAddressType },
         destination: {
           address_type: destinationAddressType,
           first_name,
-          last_name
-        }
+          last_name,
+        },
       } = s;
 
       // return shipment if both

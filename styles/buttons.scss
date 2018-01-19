@@ -36,6 +36,11 @@
   width: 150px;
 }
 
+.send-order-button {
+  @extend .short-button;
+  background-color: $primary-red;
+}
+
 .tiny-button {
   @extend .button;
   background-color: $primary-blue;
@@ -59,11 +64,11 @@
   background-color: $primary-red;
 }
 
-.shipping-button-container {
+.shipping-option-container {
   @extend .flex-container;
   justify-content: center;
 }
 
-.shipping-button-container:first-child {
+.shipping-option-container:first-child {
   margin-top: 10px;
 }

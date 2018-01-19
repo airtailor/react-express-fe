@@ -231,4 +231,26 @@ router.put(`/:store_id/orders/alert_customers`, (req, res) => {
     });
 });
 
+router.put(`/:store_id/orders/customer_pickup`, (req, res) => {
+  const headers = getHeaders(req);
+  const { store_id } = req.params;
+
+  Axios.put(`${apiUrl}/api/stores/${store_id}/orders/customer_pickup`, {
+    orders: req.body,
+    headers,
+  })
+    .then(response => {
+      res.json({ headers: response.headers, body: response.data });
+    })
+    .catch(err => {
+      if (err instanceof Error) {
+        console.log('@@@@@@@@@@@@@', err.response.status);
+        res.json(err.response.status);
+      } else {
+        console.log('error: ', err);
+        res.json(err);
+      }
+    });
+});
+
 module.exports = router;
