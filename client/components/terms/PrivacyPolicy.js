@@ -115,74 +115,77 @@ const PrivacyPolicy = props => {
         <br />
         When you use our Services, we may collect the following information
         about you:
-        <ol type="a">
-          <li
-            style={{
-              fontFamily: 'arial',
-              fontSize: '14px',
-              lineHeight: '1.5',
-            }}
-          >
-            Transaction Information: We collect transaction details related to
-            your use of our Services. This includes the type of Service
-            requested, fees, the date and time the service was provided, and
-            ratings feedback.
-          </li>
-          <li
-            style={{
-              fontFamily: 'arial',
-              fontSize: '14px',
-              lineHeight: '1.5',
-            }}
-          >
-            Financial Information: We do not currently collect financial
-            information, such as your payment method (valid credit card number,
-            type, expiration date or other financial information); that
-            information is collected and stored by our third party payment
-            processing company (the “Payment Processor”), and use and storage of
-            that information is governed by the Payment Processor’s applicable
-            terms of service and privacy policy. Presently, we use Stripe as our
-            Payment Processor, and their privacy policy is found
-            <a href="http://stripe.com/us/privacy/">here</a>.
-          </li>
-          <li
-            style={{
-              fontFamily: 'arial',
-              fontSize: '14px',
-              lineHeight: '1.5',
-            }}
-          >
-            Location Information: Where you consent to such use through the
-            permission system on your mobile operating system, we may collect
-            precise location data about your location. We use this location
-            information, for example, to determine if the user is on site in a
-            customer location. We may also approximate your current location
-            using your IP address. Where you have allowed the App to access
-            location services through your mobile operating system’s permission
-            system, we may also collect the location of your device when the App
-            is running in the foreground or background.
-          </li>
-          <li
-            style={{
-              fontFamily: 'arial',
-              fontSize: '14px',
-              lineHeight: '1.5',
-            }}
-          >
-            Cookies and Similar Technologies: We and our service providers may
-            use technologies like “cookies,” pixels, and local storage (like on
-            your browser or device, which is similar to a cookie but holds more
-            information) and identifiers (including identifiers supplied by your
-            browser or device or by app platform companies) on our website, in
-            our emails, and within our apps to provide you with a range of
-            products and services. You can control cookies through your browser
-            settings and other tools. Please be aware that limiting the ability
-            of websites to set cookies, however, may worsen your overall user
-            experience, and in some cases the Services will not work properly
-            without the use of cookies, local storage and similar technologies.
-          </li>
-        </ol>
       </p>
+      <ol type="a">
+        <li
+          style={{
+            fontFamily: 'arial',
+            fontSize: '14px',
+            lineHeight: '1.5',
+          }}
+        >
+          Transaction Information: We collect transaction details related to
+          your use of our Services. This includes the type of Service requested,
+          fees, the date and time the service was provided, and ratings
+          feedback.
+        </li>
+        <li
+          style={{
+            fontFamily: 'arial',
+            fontSize: '14px',
+            lineHeight: '1.5',
+          }}
+        >
+          Financial Information: We do not currently collect financial
+          information, such as your payment method (valid credit card number,
+          type, expiration date or other financial information); that
+          information is collected and stored by our third party payment
+          processing company (the “Payment Processor”), and use and storage of
+          that information is governed by the Payment Processor’s applicable
+          terms of service and privacy policy. Presently, we use Stripe as our
+          Payment Processor, and their privacy policy is found
+          <a target="blank" href="http://stripe.com/us/privacy/">
+            {' '}
+            here
+          </a>.
+        </li>
+        <li
+          style={{
+            fontFamily: 'arial',
+            fontSize: '14px',
+            lineHeight: '1.5',
+          }}
+        >
+          Location Information: Where you consent to such use through the
+          permission system on your mobile operating system, we may collect
+          precise location data about your location. We use this location
+          information, for example, to determine if the user is on site in a
+          customer location. We may also approximate your current location using
+          your IP address. Where you have allowed the App to access location
+          services through your mobile operating system’s permission system, we
+          may also collect the location of your device when the App is running
+          in the foreground or background.
+        </li>
+        <li
+          style={{
+            fontFamily: 'arial',
+            fontSize: '14px',
+            lineHeight: '1.5',
+          }}
+        >
+          Cookies and Similar Technologies: We and our service providers may use
+          technologies like “cookies,” pixels, and local storage (like on your
+          browser or device, which is similar to a cookie but holds more
+          information) and identifiers (including identifiers supplied by your
+          browser or device or by app platform companies) on our website, in our
+          emails, and within our apps to provide you with a range of products
+          and services. You can control cookies through your browser settings
+          and other tools. Please be aware that limiting the ability of websites
+          to set cookies, however, may worsen your overall user experience, and
+          in some cases the Services will not work properly without the use of
+          cookies, local storage and similar technologies.
+        </li>
+      </ol>
 
       <p>
         3. Information We Receive from Third Parties

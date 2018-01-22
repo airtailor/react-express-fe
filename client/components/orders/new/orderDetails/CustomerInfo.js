@@ -8,6 +8,8 @@ import { formatPhone } from '../../../../utils/format';
 import FindCustomerByPhone from './FindCustomerByPhone';
 
 import FormField from '../../../FormField';
+import Checkbox from '../../../Checkbox';
+import AcceptPrivacyPolicyModal from '../modals/AcceptPrivacyPolicyModal';
 
 const mapStateToProps = store => {
   return {
@@ -91,17 +93,29 @@ class CustomerInfo extends Component {
   resetCartCustomerAndUpdateCustomerExists = () => {
     this.props.resetCartCustomer();
     this.updateCustomerExists(null);
-  }
+  };
 
   clearCustomerFromCartButton = () => {
     return (
-      <input 
+      <input
         type="submit"
-        className="short-button" 
-        value="Clear Customer" 
-        onClick={() => this.resetCartCustomerAndUpdateCustomerExists()} />
+        className="short-button"
+        value="Clear Customer"
+        onClick={() => this.resetCartCustomerAndUpdateCustomerExists()}
+      />
     );
-  }
+  };
+
+  privacyPolicy = agrees => {
+    return (
+      <Checkbox
+        fieldName={'agrees_to_01_10_2018'}
+        text={'Customer Agrees to Privacy Policy'}
+        checked={agrees}
+        onChange={this.props.updateCartCustomer}
+      />
+    );
+  };
 
   updateCustomerExists = value => {
     this.setState({ customerExists: value });
@@ -109,7 +123,14 @@ class CustomerInfo extends Component {
 
   render() {
     const {
-      cartCustomer: { first_name, last_name, phone, email, id },
+      cartCustomer: {
+        first_name,
+        last_name,
+        phone,
+        email,
+        id,
+        agrees_to_01_10_2018,
+      },
       updateCartCustomer,
     } = this.props;
 
@@ -124,18 +145,19 @@ class CustomerInfo extends Component {
         <div>
           {customerExists || id ? '' : <h4>Create Customer:</h4>}
           <div>
-            { this.phone(phone) }
-            { this.email(email) }
+            {this.phone(phone)}
+            {this.email(email)}
           </div>
 
           <div>
-            { this.firstName(first_name) }
-            { this.lastName(last_name) }
+            {this.firstName(first_name)}
+            {this.lastName(last_name)}
+            {this.privacyPolicy(agrees_to_01_10_2018)}
+            <br />
+            <AcceptPrivacyPolicyModal />
           </div>
 
-          <div>
-            { this.clearCustomerFromCartButton() }
-          </div>
+          <div>{this.clearCustomerFromCartButton()}</div>
         </div>
       );
     }
