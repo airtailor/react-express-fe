@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import TermsOfService from './TermsOfService';
+import PrivacyPolicy from './PrivacyPolicy';
 import WithSectionHeader from '../HOC/WithSectionHeader';
 import LogoMessage from '../LogoMessage';
 
-class TermsOfServicePage extends Component {
+class PrivacyPolicyPage extends Component {
   render() {
     return (
       <div
@@ -17,14 +17,14 @@ class TermsOfServicePage extends Component {
       >
         <LogoMessage
           className="sign-in-logo"
-          text="Hi! Here's our Terms of Service"
+          text="Hi! Here's our Privacy Policy"
         />
 
         <div style={{ overflow: 'scroll', paddingBottom: '500px' }}>
-          <TermsOfService />
+          <PrivacyPolicy />
         </div>
       </div>
     );
   }
 }
-export default WithSectionHeader(TermsOfServicePage);
+export default WithSectionHeader(PrivacyPolicyPage);
