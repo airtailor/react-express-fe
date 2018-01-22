@@ -20,11 +20,16 @@ const wipeLocalData = () => {
   delete localStorage.AirTailorToken;
   delete localStorage.CurrentUser;
   delete localStorage.CurrentStore;
+  delete localStorage.state;
 };
 
 const store = createStore(rootReducer, persistedState, applyMiddleware(thunk));
+
 store.subscribe(() => {
-  saveState({ cart: store.getState().cart });
+  saveState({
+    cart: store.getState().cart,
+    cartCustomer: store.getState().cartCustomer,
+  });
 });
 
 const { AirTailorTokens, CurrentUser, CurrentStore } = localStorage;
