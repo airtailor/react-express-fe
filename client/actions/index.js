@@ -81,6 +81,9 @@ export const userSignIn = (email, password) => {
           const dataRes = res.data.body.data;
           const { id, email, store_id, valid_roles, uid } = dataRes;
           setTokens(res);
+
+          dispatch(resetCart());
+          dispatch(resetCartCustomer());
           dispatch(setUserRole(valid_roles));
           setLocalStorageUser(dataRes);
 
@@ -122,8 +125,15 @@ export function signOutCurrentUser() {
     delete localStorage.AirTailorTokens;
     delete localStorage.CurrentUser;
     delete localStorage.CurrentStore;
+
     setAuthToken({});
-    dispatch(setCurrentUser({}), setCurrentStore({}), setUserRole({}));
+    dispatch(
+      setCurrentUser({}),
+      setCurrentStore({}),
+      setUserRole({}),
+      resetCartCustomer(),
+      resetCart()
+    );
     window.location = '/';
 
     return Axios.post(url)
