@@ -7,11 +7,14 @@ import Router from './Router';
 import MainPrint from './components/prints/MainPrint';
 import rootReducer from './reducers';
 import setAuthToken from './utils/setAuthToken';
+import { loadState, saveState } from './utils/setLocalStorage';
 import { setCurrentUser, setCurrentStore, setUserRole } from './actions/';
 
 // uncomment below to toggle on/off redux logger
 // import logger from 'redux-logger';
 //const store = createStore(rootReducer, applyMiddleware(thunk, logger));
+
+const persistedState = loadState();
 
 const wipeLocalData = () => {
   delete localStorage.AirTailorToken;
@@ -19,7 +22,11 @@ const wipeLocalData = () => {
   delete localStorage.CurrentStore;
 };
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, persistedState, applyMiddleware(thunk));
+store.subscribe(() => {
+  saveState(store.getState());
+});
+
 const { AirTailorTokens, CurrentUser, CurrentStore } = localStorage;
 
 if (AirTailorTokens && CurrentUser && CurrentStore) {
