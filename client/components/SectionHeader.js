@@ -9,7 +9,7 @@ const CartRibbon = props => {
   let link = props.link;
   let onClick;
 
-  if (!link) {
+  if (!rotate || rotate.length === 0) {
     link = '/orders/new';
     onClick = () => console.log('');
   } else {
