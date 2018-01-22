@@ -22,6 +22,8 @@ import SectionHeader from './../../SectionHeader';
 import EditPassword from '../../users/edit/EditPassword';
 import SelectTailor from '../../orders/orderForms/SelectTailor';
 
+import Footer from '../../footer/';
+
 const mapStateToProps = store => {
   return {
     store: store.editStore,
@@ -209,11 +211,7 @@ class StoresEdit extends Component {
           <br />
           <EditPassword match={this.props.match} />
         </div>
-        <div style={{textAlign: "center", paddingBottom: "20px"}}>
-          <Link to="/site/terms_of_service">
-            Terms of Service
-          </Link>
-        </div>
+        <Footer />
       </div>
     );
   }
