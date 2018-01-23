@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {isEmpty} from 'lodash';
+import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 import './loader.scss';
 
 const Loader = props => {

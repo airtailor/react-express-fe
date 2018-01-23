@@ -15,6 +15,7 @@ import {
   removeLoader,
   setGrowler,
 } from '../../actions';
+
 import SelectTailor from './orderForms/SelectTailor';
 import SectionHeader from '../SectionHeader';
 import Checkbox from '../Checkbox';
