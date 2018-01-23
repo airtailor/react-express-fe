@@ -49,7 +49,7 @@ const config = {
   },
   plugins: [
     new ExtractTextPlugin('style.css'),
-    //UglifyJSPlugin(),
+    new UglifyJSPlugin(),
     new webpack.optimize.CommonsChunkPlugin({ names: ['vendor', 'manifest'] }),
     new HtmlWebpackPlugin({
       template: 'client/index.html',
