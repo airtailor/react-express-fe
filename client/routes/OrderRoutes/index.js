@@ -1,14 +1,29 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import WithDynamicImport from '../../components/HOC/WithDynamicImport/';
 
-import StoresShow from '../../components/stores/StoresShow/';
-import OrdersShow from '../../components/orders/show/OrdersShow';
-import OrdersEdit from '../../components/orders/OrdersEdit';
-import ArchivedOrders from '../../components/orders/ArchivedOrders';
-import OrdersNew from '../../components/orders/new/OrdersNew';
-import SearchResults from '../../components/search/searchResults';
-import OrderConfirmation from '../../components/orders/new/OrderConfirmation';
+const StoresShow = WithDynamicImport(() =>
+  import('../../components/stores/StoresShow/')
+);
+const OrdersShow = WithDynamicImport(() =>
+  import('../../components/orders/show/OrdersShow')
+);
+const OrdersEdit = WithDynamicImport(() =>
+  import('../../components/orders/OrdersEdit')
+);
+const ArchivedOrders = WithDynamicImport(() =>
+  import('../../components/orders/ArchivedOrders')
+);
+const OrdersNew = WithDynamicImport(() =>
+  import('../../components/orders/new/OrdersNew')
+);
+const SearchResults = WithDynamicImport(() =>
+  import('../../components/search/searchResults')
+);
+const OrderConfirmation = WithDynamicImport(() =>
+  import('../../components/orders/new/OrderConfirmation')
+);
 
 import AdminOrderRoutes from './AdminOrderRoutes';
 import StoreOrdersRoutes from './StoreOrdersRoutes';

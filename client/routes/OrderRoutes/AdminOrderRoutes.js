@@ -1,8 +1,14 @@
-import React, {Component} from 'react';
-import {Route, Redirect, Switch} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import ArchivedOrders from '../../components/orders/ArchivedOrders';
-import NewOrders from '../../components/admin/NewOrders';
+import WithDynamicImport from '../../components/HOC/WithDynamicImport/';
+
+const ArchivedOrders = WithDynamicImport(() =>
+  import('../../components/orders/ArchivedOrders')
+);
+const NewOrders = WithDynamicImport(() =>
+  import('../../components/admin/NewOrders')
+);
 
 class AdminOrderRoutes extends Component {
   static propTypes = {
@@ -10,7 +16,7 @@ class AdminOrderRoutes extends Component {
   };
 
   render() {
-    const {admin} = this.props;
+    const { admin } = this.props;
     return (
       <div>
         <Switch>
