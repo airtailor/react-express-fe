@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import WithDynamicImport from '../../components/HOC/WithDynamicImport/';
 
-import StoresEdit from '../../components/stores/edit/';
-import StoresNew from '../../components/stores/StoresNew';
-import Home from '../../components/Home.js';
+const StoresEdit = WithDynamicImport(() =>
+  import('../../components/stores/edit/')
+);
+const StoresNew = WithDynamicImport(() =>
+  import('../../components/stores/StoresNew')
+);
+const Home = WithDynamicImport(() => import('../../components/Home.js'));
 
 class StoreRoutes extends Component {
   static propTypes = {
