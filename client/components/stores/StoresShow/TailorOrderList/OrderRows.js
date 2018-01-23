@@ -11,6 +11,7 @@ class OrderRows extends Component {
       loadingOrders,
       userRoles,
     } = this.props;
+
     if (!isEmpty(openOrders)) {
       const ordersWithShipments = sortOrdersByStatus('new_orders');
       if (!isEmpty(ordersWithShipments)) {
@@ -34,7 +35,10 @@ class OrderRows extends Component {
           <div className="loading-orders">Loading Orders...</div>
         </div>
       );
+    } else {
+      return <div className="table-row" />;
     }
+    return <div />;
   }
 }
 
