@@ -6,11 +6,9 @@ import WithDynamicImport from '../../components/HOC/WithDynamicImport/';
 const TermsOfServicePage = WithDynamicImport(() =>
   import('../../components/terms/TermsOfServicePage')
 );
-
 const PrivacyPolicyPage = WithDynamicImport(() =>
   import('../../components/terms/PrivacyPolicyPage')
 );
-
 const Home = WithDynamicImport(() => import('../../components/Home'));
 
 const SiteRoutes = props => {

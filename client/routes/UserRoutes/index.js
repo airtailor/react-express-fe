@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import WithDynamicImport from '../../components/HOC/WithDynamicImport/';
 
-import UsersNew from '../../components/users/UsersNew';
-import UsersEdit from '../../components/users/edit';
-import UsersList from '../../components/users/list/';
+const UsersNew = WithDynamicImport(() =>
+  import('../../components/users/UsersNew')
+);
+const UsersEdit = WithDynamicImport(() =>
+  import('../../components/users/edit')
+);
+const UsersList = WithDynamicImport(() =>
+  import('../../components/users/list/')
+);
 
 class UserRoutes extends Component {
   static propTypes = {
