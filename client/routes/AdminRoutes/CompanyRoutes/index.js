@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import CompaniesNew from '../../../components/admin/companies/CompaniesNew';
+import WithDynamicImport from '../../../components/HOC/WithDynamicImport/';
+
+const CompaniesNew = WithDynamicImport(() =>
+  import('../../../components/admin/companies/CompaniesNew')
+);
 
 class CompanyRoutes extends Component {
   static propTypes = {

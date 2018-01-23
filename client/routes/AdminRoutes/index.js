@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import TailorIndex from '../../components/admin/tailors/TailorIndex';
-import RetailerIndex from '../../components/admin/retailers/index';
-import Dashboard from '../../components/admin/index';
+import WithDynamicImport from '../../components/HOC/WithDynamicImport/';
+
 import ReportRoutes from './ReportRoutes';
 import CompanyRoutes from './CompanyRoutes';
+
+const TailorIndex = WithDynamicImport(() =>
+  import('../../components/admin/tailors/TailorIndex')
+);
+const RetailerIndex = WithDynamicImport(() =>
+  import('../../components/admin/retailers/index')
+);
+const Dashboard = WithDynamicImport(() =>
+  import('../../components/admin/index')
+);
 
 class AdminRoutes extends Component {
   static propTypes = {

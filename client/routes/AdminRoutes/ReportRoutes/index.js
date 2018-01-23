@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import OrderReports from '../../../components/reports/orders';
-import ReportsIndex from '../../../components/reports';
+import WithDynamicImport from '../../../components/HOC/WithDynamicImport/';
+
+const OrderReports = WithDynamicImport(() =>
+  import('../../../components/reports/orders')
+);
+const ReportsIndex = WithDynamicImport(() =>
+  import('../../../components/reports')
+);
 
 class ReportRoutes extends Component {
   static propTypes = {
