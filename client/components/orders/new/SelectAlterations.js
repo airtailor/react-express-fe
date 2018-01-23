@@ -1,9 +1,9 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import HowToPinModal from './modals/HowToPinModal';
 
 const renderAlterations = props => {
-  const {garment, alterations} = props;
+  const { garment, alterations } = props;
   const altsForGarment = alterations.filter(
     alt => alt.garmentId === garment.id
   );
@@ -43,7 +43,11 @@ const renderAlterations = props => {
         </div>
         <div className="price-how-to-pin-container">
           <h3 className="alt-price-info">${alt.price.toFixed(2)}</h3>
-          <HowToPinModal image={alt.howToPin} />
+          <HowToPinModal
+            image={alt.howToPin}
+            title={alt.title}
+            instructions={alt.instructions}
+          />
         </div>
       </div>
     );

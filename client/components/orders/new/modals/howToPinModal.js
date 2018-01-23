@@ -8,7 +8,7 @@ class HowToPinModal extends Component {
   constructor() {
     super();
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
     };
   }
 
@@ -43,6 +43,9 @@ class HowToPinModal extends Component {
               className="short-button"
               onClick={this.closeModal}
             />
+
+            <h1 className="how-to-pin">{this.props.title}</h1>
+            <p className="how-to-pin">{this.props.instructions}</p>
 
             <img
               className="how-to-pin-image"
