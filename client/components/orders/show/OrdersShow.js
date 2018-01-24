@@ -274,6 +274,11 @@ class OrdersShow extends Component {
   }
 
   renderOrderNotes(field) {
+    // retailer should not see tailor notes
+    if (this.props.userRoles.retailer && field === 'provider_notes') {
+      return <div />;
+    }
+
     const notes = this.props.currentOrder[field] || 'Not Provided';
     const title = field === 'provider_notes' ? 'Tailor Notes:' : 'Order Notes:';
     return (
