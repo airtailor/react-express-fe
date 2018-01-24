@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import { Link } from 'react-router-dom';
 
+import { formatPhone } from '../../../utils/format';
+
 import {
   getEditStore,
   // updateEditStore is an action that will update the editStoreFormReducer
@@ -129,6 +131,8 @@ class StoresEdit extends Component {
       default_tailor_id,
     } = this.props.store;
 
+    const displayPhone = formatPhone(phone);
+
     const { admin } = this.props.userRoles;
 
     const tailorId = default_tailor_id ? default_tailor_id : '';
@@ -144,7 +148,7 @@ class StoresEdit extends Component {
           />
 
           <FormField
-            value={phone}
+            value={displayPhone}
             fieldName={'phone'}
             title={'Phone'}
             onChange={this.updateState}
