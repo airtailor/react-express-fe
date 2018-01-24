@@ -166,7 +166,7 @@ class StoresEdit extends Component {
           <FormField
             value={unit}
             fieldName={'unit'}
-            title={'Unit'}
+            title={'Unit, Suite, Etc. (optional)'}
             onChange={this.updateState}
           />
 

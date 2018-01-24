@@ -92,13 +92,12 @@ class EditPassword extends Component {
       const { password, passwordConfirmation, submitDisabled } = this.state;
       return (
         <div>
-          <h3>Edit Password</h3>
           <form onSubmit={this.handleSubmit}>
             <FormField
               value={password}
               type="password"
               fieldName="password"
-              title="Reset Password"
+              title="New Password"
               onChange={this.updateState}
             />
 
