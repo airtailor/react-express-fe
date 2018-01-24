@@ -139,14 +139,14 @@ class StoresEdit extends Component {
           <FormField
             value={name}
             fieldName={'name'}
-            title={'Name:'}
+            title={'Name'}
             onChange={this.updateState}
           />
 
           <FormField
             value={phone}
             fieldName={'phone'}
-            title={'Phone:'}
+            title={'Phone'}
             onChange={this.updateState}
           />
 
@@ -155,35 +155,35 @@ class StoresEdit extends Component {
           <FormField
             value={street}
             fieldName={'street'}
-            title={'Street:'}
+            title={'Street'}
             onChange={this.updateState}
           />
 
           <FormField
             value={unit}
             fieldName={'unit'}
-            title={'Unit:'}
+            title={'Unit'}
             onChange={this.updateState}
           />
 
           <FormField
             value={city}
             fieldName={'city'}
-            title={'City:'}
+            title={'City'}
             onChange={this.updateState}
           />
 
           <FormField
             value={state_province}
             fieldName={'state_province'}
-            title={'State:'}
+            title={'State'}
             onChange={this.updateState}
           />
 
           <FormField
             value={zip_code}
             fieldName={'zip_code'}
-            title={'Zip:'}
+            title={'Zip'}
             onChange={this.updateState}
           />
           <input className="short-button" type="submit" value="Update Store" />

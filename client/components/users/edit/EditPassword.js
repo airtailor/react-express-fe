@@ -98,14 +98,14 @@ class EditPassword extends Component {
               value={password}
               type="password"
               fieldName="password"
-              title="Reset Password:"
+              title="Reset Password"
               onChange={this.updateState}
             />
 
             <FormField
               value={passwordConfirmation}
               fieldName="passwordConfirmation"
-              title="Password Confirmation:"
+              title="Password Confirmation"
               type="password"
               onChange={this.updateState}
             />
