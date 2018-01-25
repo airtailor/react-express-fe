@@ -9,6 +9,7 @@ import FindCustomerByPhone from './FindCustomerByPhone';
 
 import FormField from '../../../FormField';
 import Checkbox from '../../../Checkbox';
+import ClearButton from '../../../ClearButton';
 import AcceptPrivacyPolicyModal from '../modals/AcceptPrivacyPolicyModal';
 
 const mapStateToProps = store => {
@@ -95,17 +96,6 @@ class CustomerInfo extends Component {
     this.updateCustomerExists(null);
   };
 
-  clearCustomerFromCartButton = () => {
-    return (
-      <input
-        type="submit"
-        className="short-button"
-        value="Clear Customer"
-        onClick={() => this.resetCartCustomerAndUpdateCustomerExists()}
-      />
-    );
-  };
-
   privacyPolicy = agrees => {
     return (
       <Checkbox
@@ -148,16 +138,21 @@ class CustomerInfo extends Component {
             {this.phone(phone)}
             {this.email(email)}
           </div>
-
           <div>
             {this.firstName(first_name)}
             {this.lastName(last_name)}
-            {this.privacyPolicy(agrees_to_01_10_2018)}
-            <br />
-            <AcceptPrivacyPolicyModal />
-          </div>
+            <ClearButton
+              onClick={() => this.resetCartCustomerAndUpdateCustomerExists()}
+            />
+            <hr className="cart-line" />
 
-          <div>{this.clearCustomerFromCartButton()}</div>
+            {this.privacyPolicy(agrees_to_01_10_2018)}
+            <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
+              <AcceptPrivacyPolicyModal />
+            </div>
+
+            <hr className="cart-line" />
+          </div>
         </div>
       );
     }

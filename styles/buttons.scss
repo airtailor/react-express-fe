@@ -72,3 +72,17 @@
 .shipping-option-container:first-child {
   margin-top: 10px;
 }
+
+.clear-button:hover {
+  cursor: pointer;
+}
+
+.clear-image {
+  max-width: 12px;
+}
+
+.clear-text {
+  padding-left: 5px;
+  font-family: Raleway;
+  text-decoration: underline;
+}

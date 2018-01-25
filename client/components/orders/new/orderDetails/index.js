@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
-import {updateCartCustomer, updateCartShipTo} from '../../../../actions';
+import { updateCartCustomer, updateCartShipTo } from '../../../../actions';
 import Zippopotam from '../../../../lib/zippopotam';
-import {ValidateZip} from '../../../../utils/validations';
-import {redirectToStageOneIfNoAlterations} from '../../ordersHelper';
+import { ValidateZip } from '../../../../utils/validations';
+import { redirectToStageOneIfNoAlterations } from '../../ordersHelper';
 
 import FormField from '../../../FormField';
 import Checkbox from '../../../Checkbox';
@@ -38,7 +38,7 @@ export class OrderDetails extends Component {
   };
 
   renderCustomerAddress(shipToStore, customer) {
-    const {updateCartCustomer} = this.props;
+    const { updateCartCustomer } = this.props;
     if (shipToStore) {
       // do nothing
     } else {
@@ -105,7 +105,7 @@ export class OrderDetails extends Component {
   }
 
   renderShipTo(cart, customer) {
-    const {shipToStore} = cart;
+    const { shipToStore } = cart;
     return (
       <div>
         <br />
@@ -135,15 +135,14 @@ export class OrderDetails extends Component {
   }
 
   render() {
-    const {cart, cartCustomer} = this.props;
+    const { cart, cartCustomer } = this.props;
     return (
       <div className="order-details">
         {redirectToStageOneIfNoAlterations(this.props)}
 
-        <h2>ORDER DETAILS</h2>
         <CustomerInfo />
 
-        <h3>Shipping</h3>
+        <label className="form-label">Delivery Upon Completion</label>
         {this.renderShipTo(cart, cartCustomer)}
       </div>
     );

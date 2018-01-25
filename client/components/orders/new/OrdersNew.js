@@ -16,7 +16,7 @@ const mapStateToProps = store => {
     currentUser: store.currentUser,
     currentStore: store.currentStore,
     cart: store.cart,
-    garments: store.garments.garments
+    garments: store.garments.garments,
   };
 };
 
@@ -31,7 +31,7 @@ class OrdersNew extends Component {
     cart: PropTypes.object.isRequired, // mapStateToProps
     garments: PropTypes.array.isRequired, // mapStateToProps
     addGarmentToCart: PropTypes.func.isRequired, // mapDispatchToProps
-    setGarment: PropTypes.func.isRequired // mapDispatchToProps
+    setGarment: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   constructor() {
@@ -40,7 +40,7 @@ class OrdersNew extends Component {
       stage: 1,
       selectedGarment: null,
       selectedAlterations: [],
-      selectedGarmentIndex: null
+      selectedGarmentIndex: null,
     };
   }
 
@@ -53,7 +53,7 @@ class OrdersNew extends Component {
       selectedGarment: null,
       selectedAlterations: [],
       stage: 1,
-      selectedGarmentIndex: null
+      selectedGarmentIndex: null,
     }); //, notes: ''});
   };
 
@@ -68,7 +68,7 @@ class OrdersNew extends Component {
       selectedGarment,
       selectedAlterations: alterations,
       selectedGarmentIndex: index,
-      stage: 2
+      stage: 2,
     });
   };
 
@@ -118,7 +118,7 @@ class OrdersNew extends Component {
     const {
       selectedGarment,
       selectedGarmentIndex,
-      selectedAlterations
+      selectedAlterations,
     } = this.state;
     const garmentForCart = this.state.selectedGarment;
     garmentForCart.alterations = selectedAlterations;
@@ -127,7 +127,7 @@ class OrdersNew extends Component {
       stage: 1,
       selectedGarmentIndex: null,
       selectedGarment: null,
-      selectedAlterations: []
+      selectedAlterations: [],
     });
   };
 
@@ -172,7 +172,7 @@ class OrdersNew extends Component {
   }
 
   render() {
-    if (!this.props.currentStore.agrees_to_terms){
+    if (!this.props.currentStore.agrees_to_terms) {
       return <AgreeToTerms {...this.props} />;
     }
 
@@ -185,7 +185,7 @@ class OrdersNew extends Component {
         headerText = 'Select Alterations';
         break;
       case 3:
-        headerText = 'Order Details';
+        headerText = 'Enter Customer Details';
         break;
       case 4:
         headerText = 'Order Review';

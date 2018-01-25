@@ -29,6 +29,8 @@ class AcceptPrivacyPolicyModal extends Component {
             paddingLeft: '40px',
             lineHeight: '40px',
             textDecoration: 'underline',
+            fontSize: '13px',
+            fontFamily: 'Alegreya',
           }}
           to="#"
           onClick={this.openModal}

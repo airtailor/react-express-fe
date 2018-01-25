@@ -8,3 +8,9 @@ export const eyeImage = 'https://i.imgur.com/LA3D9sC.png';
 export const archivedImage = 'https://i.imgur.com/02s7Y1c.png';
 export const infoImage = 'https://i.imgur.com/RcRyJzA.png';
 export const tailorsImage = 'https://i.imgur.com/49m15Gl.png';
+
+export const clearImage =
+  'https://s3.us-east-2.amazonaws.com/airtailor-images/clear.png';
+
+export const notesImage =
+  'https://s3.us-east-2.amazonaws.com/airtailor-images/Notes.png';

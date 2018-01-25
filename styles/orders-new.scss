@@ -85,11 +85,12 @@
 }
 
 .order-details {
+  margin-top: 80px;
   max-width: 325px;
 }
 
 .order-details-input {
-  width: 264px;
+  width: 225px;
 }
 
 .customer-agrees-prompt {
@@ -109,6 +110,10 @@
   border-radius: 5px;
   border: 1px solid #000033;
   padding-left: 10px;
+  padding-top: 10px;
+  font-family: $sans-serif;
+  font-size: 15px;
+  color: $primary-blue;
 }
 
 .disabled-alt {

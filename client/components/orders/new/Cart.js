@@ -53,7 +53,10 @@ class Cart extends Component {
       return garment.alterations.map((alt, index) => {
         return (
           <p key={index} className="cart-alteration">
-            {alt.title} - ${alt.price.toFixed(2)}
+            <span>{alt.title}</span>{' '}
+            <span style={{ float: 'right', paddingRight: '25px' }}>
+              ${alt.price.toFixed(2)}
+            </span>
           </p>
         );
       });
@@ -70,7 +73,7 @@ class Cart extends Component {
       return garmentList.map((garment, index) => {
         return (
           <div key={index} style={{ marginLeft: '15px' }}>
-            <h3>
+            <h3 style={{ paddingRight: '15px' }}>
               <span
                 className="cart-item cart-item-title"
                 onClick={() => {
@@ -84,7 +87,25 @@ class Cart extends Component {
                 onClick={() => removeGarmentFromCart(index)}
                 className="remove-from-cart-button"
               >
-                X
+                DELETE
+              </span>
+              <span
+                style={{
+                  paddingRight: '10px',
+                  float: 'right',
+                  fontSize: '8px',
+                  lineHeight: 2.8,
+                }}
+              >
+                {' | '}
+              </span>
+              <span
+                onClick={() => {
+                  renderSelectAlterations(index, garment, garment.alterations);
+                }}
+                className="cart-item edit-cart-item-button"
+              >
+                EDIT
               </span>
             </h3>
             <span
@@ -95,7 +116,6 @@ class Cart extends Component {
             >
               {this.renderGarmentAlterations(garment)}
             </span>
-            <hr className="alteration-hr" />
           </div>
         );
       });
@@ -220,17 +240,6 @@ class Cart extends Component {
     }
   }
 
-  customerAgreesPrompt(stage) {
-    if (stage === 3) {
-      return (
-        <p className="customer-agrees-prompt">
-          By submitting this form, customer agrees to receive production status
-          updates via text
-        </p>
-      );
-    }
-  }
-
   renderOrderNotes(props) {
     return (
       <div style={{ marginLeft: '15px' }}>
@@ -241,6 +250,7 @@ class Cart extends Component {
           onChange={e => this.props.updateCartNotes(e.target.value)}
           cols={36}
           rows={10}
+          placeholder="Is this a special order or customer? Enter any important notes about the overall order here to help us serve you best!"
         />
       </div>
     );
@@ -259,11 +269,24 @@ class Cart extends Component {
           <div className="cart-items">{this.renderCartItems(this.props)}</div>
 
           {this.renderOrderNotes(this.props)}
-          {this.customerAgreesPrompt(stage)}
 
+          <hr className="cart-line" />
           <div style={{ marginLeft: '15px' }}>
-            <h3>Total: ${getTotal(cart.garments)}</h3>
+            <h3>
+              <span className="form-label">Total: </span>
+              <span
+                style={{
+                  float: 'right',
+                  paddingRight: '15px',
+                  fontFamily: 'Raleway',
+                  fontWeight: 400,
+                }}
+              >
+                ${getTotal(cart.garments)}
+              </span>
+            </h3>
           </div>
+          <hr className="cart-line" />
 
           {this.renderNextButton(this.props)}
         </div>
