@@ -11,11 +11,15 @@ import {
   setCartCustomer,
   setGrowler,
 } from '../../../actions';
+
 import {
   ValidateEmail,
   ValidatePhone,
   ValidateZip,
 } from '../../../utils/validations';
+import Button from '../../Button';
+import ArrowButton from '../../ArrowButton';
+import OrderNotesBasketButton from '../../OrderNotesBasketButton';
 import { getTotal } from './utils';
 
 import { basketImage } from '../../../images';
@@ -46,9 +50,15 @@ class Cart extends Component {
     stage: PropTypes.number.isRequired, // Parent Component
   };
 
+  constructor() {
+    super();
+    this.state = {
+      showNotes: false,
+    };
+  }
+
   renderGarmentAlterations(garment) {
     // this garment is being injected from the menu, not the Cart
-    //console.log('cart js 10', garment);
     if (garment.alterations.length > 0) {
       return garment.alterations.map((alt, index) => {
         return (
@@ -65,10 +75,16 @@ class Cart extends Component {
     }
   }
 
+  confirmRemoveFromCart = index => {
+    if (confirm('Are you sure you want to delete this garment?')) {
+      this.props.removeGarmentFromCart(index);
+    }
+  };
+
   renderCartItems(props) {
     const { garments } = props.cart;
     const garmentList = garments;
-    const { removeGarmentFromCart, renderSelectAlterations } = props;
+    const { renderSelectAlterations } = props;
     if (garmentList.length > 0) {
       return garmentList.map((garment, index) => {
         return (
@@ -84,7 +100,7 @@ class Cart extends Component {
               </span>
               <span
                 className="cart-item"
-                onClick={() => removeGarmentFromCart(index)}
+                onClick={() => this.confirmRemoveFromCart(index)}
                 className="remove-from-cart-button"
               >
                 DELETE
@@ -179,18 +195,6 @@ class Cart extends Component {
     });
   };
 
-  createNextButton(onClick, text, disabled = false) {
-    return (
-      <input
-        onClick={() => onClick()}
-        disabled={disabled}
-        className="short-button"
-        type="submit"
-        value={text}
-      />
-    );
-  }
-
   renderNextButton(props) {
     const {
       cart: { garments },
@@ -199,41 +203,55 @@ class Cart extends Component {
       stage,
     } = this.props;
 
+    const checkoutButton = (
+      <Button
+        onClick={this.checkForValidCustomer}
+        text="CHECKOUT"
+        className="big-button"
+      />
+    );
+
+    const adddMoreItems = (
+      <ArrowButton onClick={renderStageOne} text="Add more items" />
+    );
+
+    const editOrderDetails = (
+      <ArrowButton onClick={renderOrderDetails} text="Edit Order Details" />
+    );
+
     if (garments.length > 0) {
       if (stage === 4) {
         return <div />;
       } else if (this.readyToCheckout() && stage !== 3) {
         return (
-          <div className="cart-buttons-container">
-            {this.createNextButton(renderOrderDetails, 'Edit Order Details')}
-
-            {this.createNextButton(this.checkForValidCustomer, 'Checkout')}
+          <div className="vert-cart-buttons-container">
+            {checkoutButton}
+            {editOrderDetails}
           </div>
         );
       } else if (this.readyToCheckout(this.props) && stage === 3) {
         return (
-          <div className="cart-buttons-container">
-            {this.createNextButton(renderStageOne, 'Add More Items')}
-
-            {this.createNextButton(this.checkForValidCustomer, 'Checkout')}
+          <div className="vert-cart-buttons-container">
+            {checkoutButton}
+            {adddMoreItems}
           </div>
         );
       } else if (!this.readyToCheckout(props) && props.stage === 3) {
         return (
-          <div className="cart-buttons-container">
-            {this.createNextButton(renderStageOne, 'Add More Items')}
-
-            {this.createNextButton(
-              this.checkForValidCustomer,
-              'Checkout',
-              true
-            )}
+          <div className="vert-cart-buttons-container">
+            <Button
+              onClick={this.checkForValidCustomer}
+              text="CHECKOUT"
+              disabled={true}
+              className="big-button"
+            />
+            {adddMoreItems}
           </div>
         );
       } else if (props.stage === 2 || props.stage === 1) {
         return (
           <div className="cart-buttons-container">
-            {this.createNextButton(renderOrderDetails, 'Add Order Details')}
+            <Button onClick={renderOrderDetails} text="Add Order Details" />
           </div>
         );
       }
@@ -241,24 +259,29 @@ class Cart extends Component {
   }
 
   renderOrderNotes(props) {
+    const { showNotes } = this.state;
     return (
       <div style={{ marginLeft: '15px' }}>
-        <h3>Order Notes</h3>
-        <textarea
-          className="order-details-notes-textarea"
-          value={this.props.cart.notes}
-          onChange={e => this.props.updateCartNotes(e.target.value)}
-          cols={36}
-          rows={10}
-          placeholder="Is this a special order or customer? Enter any important notes about the overall order here to help us serve you best!"
+        <OrderNotesBasketButton
+          onClick={() => this.setState({ showNotes: !showNotes })}
         />
+
+        {showNotes ? (
+          <textarea
+            className="order-details-notes-textarea"
+            value={this.props.cart.notes}
+            onChange={e => this.props.updateCartNotes(e.target.value)}
+            cols={36}
+            rows={10}
+            placeholder="Is this a special order or customer? Enter any important notes about the overall order here to help us serve you best!"
+          />
+        ) : null}
       </div>
     );
   }
 
   render() {
     const { cart, stage } = this.props;
-
     if (cart.garments.length > 0) {
       return (
         <div className="cart-container">
@@ -267,8 +290,6 @@ class Cart extends Component {
           </h2>
           <hr className="cart-line" />
           <div className="cart-items">{this.renderCartItems(this.props)}</div>
-
-          {this.renderOrderNotes(this.props)}
 
           <hr className="cart-line" />
           <div style={{ marginLeft: '15px' }}>
@@ -287,6 +308,8 @@ class Cart extends Component {
             </h3>
           </div>
           <hr className="cart-line" />
+
+          {this.renderOrderNotes(this.props)}
 
           {this.renderNextButton(this.props)}
         </div>

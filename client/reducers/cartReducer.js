@@ -7,7 +7,7 @@ import {
   UPDATE_GARMENT_IN_CART,
 } from '../utils/constants';
 
-import {updateObjectInArray, removeItem} from '../utils/reducerHelpers';
+import { updateObjectInArray, removeItem } from '../utils/reducerHelpers';
 
 const initialState = {
   garments: [],
