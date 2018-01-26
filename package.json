@@ -12,7 +12,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "clean": "cd public && rimraf index.html bundle.* manifest.* vendor.*",
+    "clean":
+      "cd public && rimraf index.html bundle.* manifest.* vendor.* *.*.js",
     "build": "NODE_ENV=production npm run clean && webpack",
     "build-dev": "npm run clean && webpack --watch",
     "serve": "webpack-dev-server",
