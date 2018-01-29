@@ -179,16 +179,16 @@ class OrdersNew extends Component {
     let headerText;
     switch (this.state.stage) {
       case 1:
-        headerText = 'New Garment';
+        headerText = 'Select New Garment';
         break;
       case 2:
-        headerText = 'Select Alterations';
+        headerText = `Select ${this.state.selectedGarment.title} Alterations`;
         break;
       case 3:
         headerText = 'Enter Customer Details';
         break;
       case 4:
-        headerText = 'Order Review';
+        headerText = 'Review and Submit';
         break;
     }
     return (

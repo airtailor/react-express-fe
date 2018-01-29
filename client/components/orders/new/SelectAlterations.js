@@ -82,9 +82,6 @@ const renderAddToCart = props => {
 const SelectAlterations = props => {
   return (
     <div className="alteration-select">
-      <h2 className="full-width">
-        Select {props.garment.title.toLowerCase()} alterations:
-      </h2>
       <br />
       {renderAlterations(props)}
       <br />
