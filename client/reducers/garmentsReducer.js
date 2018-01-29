@@ -13,7 +13,7 @@ export default function() {
         title: 'Shirt',
         image:
           'https://s3.us-east-2.amazonaws.com/airtailor-images/garments/shirt.png',
-        weight: 230,
+        weight: 225,
       },
       {
         id: 3,
