@@ -14,6 +14,10 @@ import { setCurrentUser, setCurrentStore, setUserRole } from './actions/';
 // import logger from 'redux-logger';
 //const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 
+if (module.hot) {
+  module.hot.accept();
+}
+
 const persistedState = loadState();
 
 const wipeLocalData = () => {

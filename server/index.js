@@ -22,7 +22,13 @@ if (process.env.NODE_ENV !== 'production') {
     })
   );
 
-  app.use(require('webpack-hot-middleware')(compiler));
+  app.use(
+    require('webpack-hot-middleware')(compiler, {
+      cache: true,
+      quiet: true,
+      heartbeat: 200,
+    })
+  );
 } else {
   app.use(express.static('public'));
 }
