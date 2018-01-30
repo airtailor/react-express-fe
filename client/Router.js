@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NavigationBar from './components/navigation/NavigationBar';
@@ -16,62 +16,88 @@ const mapStateToProps = store => {
   };
 };
 
-const Router = props => {
-  const loggedIn = props.currentUser.isAuthenticated;
-  const { admin, retailer, tailor } = props.userRoles;
-  const storeName = props.currentStore.name;
-
-  const user = {
-    user_id: props.currentUser.user.id,
-    email: props.currentUser.user.email,
-    name: props.currentUser.user.email,
-  };
-
-  if (loggedIn) {
-    return (
-      <BrowserRouter>
-        <div className="container">
-          <Growler />
-          <Loader />
-          <NavigationBar
-            retailer={retailer}
-            loggedIn={loggedIn}
-            admin={admin}
-            tailor={tailor}
-          />
-
-          <AvailableRoutes
-            retailer={retailer}
-            loggedIn={loggedIn}
-            admin={admin}
-            tailor={tailor}
-          />
-
-          <div className="add">
-            <Intercom appID="j5szofcq" {...user} />
-          </div>
-        </div>
-      </BrowserRouter>
-    );
-  } else {
-    return (
-      <BrowserRouter>
-        <div>
-          <Growler />
-          <AvailableRoutes
-            retailer={false}
-            loggedIn={false}
-            admin={false}
-            tailor={false}
-          />
-
-          <div className="add">
-            <Intercom appID="j5szofcq" {...user} />
-          </div>
-        </div>
-      </BrowserRouter>
-    );
+class Router extends Component {
+  constructor() {
+    super();
+    this.state = {
+      pageLoaded: false,
+    };
   }
-};
+
+  componentDidMount() {
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        this.setState({ pageLoaded: true });
+      }, 2000);
+    });
+  }
+
+  renderIntercom(user) {
+    if (this.state.pageLoaded) {
+      return (
+        <div className="add">
+          <Intercom appID="j5szofcq" {...user} />
+        </div>
+      );
+    }
+  }
+
+  render() {
+    const {
+      currentUser: { isAuthenticated: loggedIn },
+      currentUser,
+      userRoles: { admin, retailer, tailor },
+      currentStore: { name: storeName },
+    } = this.props;
+
+    const user = {
+      user_id: currentUser.user.id,
+      email: currentUser.user.email,
+      name: currentUser.user.email,
+    };
+
+    if (loggedIn) {
+      return (
+        <BrowserRouter>
+          <div className="container">
+            <Growler />
+            <Loader />
+            <NavigationBar
+              retailer={retailer}
+              loggedIn={loggedIn}
+              admin={admin}
+              tailor={tailor}
+            />
+
+            <AvailableRoutes
+              retailer={retailer}
+              loggedIn={loggedIn}
+              admin={admin}
+              tailor={tailor}
+            />
+
+            {this.renderIntercom(user)}
+          </div>
+        </BrowserRouter>
+      );
+    } else {
+      return (
+        <BrowserRouter>
+          <div>
+            <Growler />
+            <AvailableRoutes
+              retailer={false}
+              loggedIn={false}
+              admin={false}
+              tailor={false}
+            />
+
+            {this.renderIntercom(user)}
+          </div>
+        </BrowserRouter>
+      );
+    }
+  }
+}
 
 export default connect(mapStateToProps)(Router);
