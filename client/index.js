@@ -14,11 +14,6 @@ import { setCurrentUser, setCurrentStore, setUserRole } from './actions/';
 // import logger from 'redux-logger';
 //const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 
-// adds hot reloading for all react components
-if (module.hot) {
-  module.hot.accept();
-}
-
 const persistedState = loadState();
 
 const wipeLocalData = () => {
@@ -29,6 +24,17 @@ const wipeLocalData = () => {
 };
 
 const store = createStore(rootReducer, persistedState, applyMiddleware(thunk));
+
+// webpack hot reloading for react // not sure how to make this work for BOTH
+// react components and reducers. seems like we need to pick one or the other.
+if (module.hot) {
+  module.hot.accept();
+
+  module.hot.accept('./reducers', () => {
+    const nextRootReducer = require('./reducers/index').default;
+    store.replaceReducer(nextRootReducer);
+  });
+}
 
 store.subscribe(() => {
   saveState({

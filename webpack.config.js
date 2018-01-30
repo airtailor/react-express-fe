@@ -57,12 +57,7 @@ const config = {
     new HtmlWebpackPlugin({
       template: 'client/index.html',
     }),
-    // new webpack.DefinePlugin({
-    //   'process.env.NODE_ENV': JSON.stringify('production'),
-    // }),
-    // new UglifyJSPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    // new webpack.NoEmitOnErrorsPlugin(),
   ],
 };
 
