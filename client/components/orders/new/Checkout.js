@@ -1,18 +1,10 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {Link, Redirect} from 'react-router-dom';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import {
-  submitOrder,
-  setGrowler,
-  setLoader,
-  removeLoader,
-} from '../../../actions';
-import {formatPhone} from '../../../utils/format';
-import {redirectToStageOneIfNoAlterations} from '../ordersHelper';
-import {getTotal} from './utils';
+import { formatPhone } from '../../../utils/format';
+import { redirectToStageOneIfNoAlterations } from '../ordersHelper';
 
 const mapStateToProps = store => {
   return {
@@ -22,42 +14,19 @@ const mapStateToProps = store => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      submitOrder,
-      setGrowler,
-      setLoader,
-      removeLoader,
-    },
-    dispatch
-  );
-};
-
 class Checkout extends Component {
-  constructor() {
-    super();
-    this.state = {
-      orderCompleted: false,
-    };
-  }
-
   static propTypes = {
     cartCustomer: PropTypes.object.isRequired, // mapStateToProps
     currentStore: PropTypes.object.isRequired, // mapStateToProps
     cart: PropTypes.object.isRequired, // mapStateToProps
-    submitOrder: PropTypes.func.isRequired, // mapDispatchToProps
-    setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
-    setLoader: PropTypes.func.isRequired, // mapDispatchToProps
-    removeLoader: PropTypes.func.isRequired, // mapDispatchToProps
     renderOrderDetails: PropTypes.func.isRequired, // Parent Component
     renderStageOne: PropTypes.func.isRequired, // Parent Component
   };
 
   renderCustomerInfo() {
     const {
-      cartCustomer: {first_name, last_name, phone, email},
-      cart: {shipToStore},
+      cartCustomer: { first_name, last_name, phone, email },
+      cart: { shipToStore },
     } = this.props;
 
     return (
@@ -68,92 +37,6 @@ class Checkout extends Component {
         </p>
         <p>{formatPhone(phone)}</p>
         <p>{email}</p>
-      </div>
-    );
-  }
-
-  renderGarmentAlterations(garment) {
-    return garment.alterations.map((alt, index) => {
-      return (
-        <p key={index} className="cart-alteration">
-          {alt.title}
-        </p>
-      );
-    });
-  }
-
-  renderGarments(garments) {
-    return garments.map((garment, index) => {
-      return (
-        <div key={index}>
-          <h3>
-            {garment.title} #{index + 1}
-          </h3>
-          {this.renderGarmentAlterations(garment)}
-          <hr />
-        </div>
-      );
-    });
-  }
-
-  renderOrderInfo() {
-    const {garments, notes} = this.props.cart;
-    return (
-      <div>
-        <h2>Order Info:</h2>
-        {this.renderGarments(garments)}
-        <h3>Order Notes:</h3>
-        <p style={{paddingLeft: '15px'}}>{notes || 'Not Provided'}</p>
-      </div>
-    );
-  }
-
-  submitOrder() {
-    const {
-      setLoader,
-      submitOrder,
-      setGrowler,
-      renderOrderDetails,
-      removeLoader,
-      cartCustomer: {id: customer_id},
-      cart,
-    } = this.props;
-
-    setLoader();
-
-    submitOrder({...this.props})
-      .then(res => {
-        if (res.errors) {
-          const kind = 'warning';
-          const message = res.message;
-          setGrowler({message, kind});
-          renderOrderDetails();
-        } else {
-          this.setState({orderCompleted: true});
-        }
-      })
-      .catch(err => {
-        debugger;
-      })
-      .then(() => removeLoader());
-  }
-
-  renderButtons() {
-    return (
-      <div>
-        <input
-          onClick={() => this.props.renderStageOne()}
-          type="submit"
-          className="short-button"
-          value="Make Changes"
-        />
-
-        <input
-          onClick={() => this.submitOrder()}
-          type="submit"
-          className="short-button"
-          value="Submit"
-        />
       </div>
     );
   }
@@ -222,7 +105,7 @@ class Checkout extends Component {
   }
 
   renderShippingInfo() {
-    const {cart: {shipToStore}} = this.props;
+    const { cart: { shipToStore } } = this.props;
     if (shipToStore) {
       return this.renderShipToStore();
     } else if (!shipToStore) {
@@ -230,32 +113,19 @@ class Checkout extends Component {
     }
   }
 
-  renderOrderCompleteRedirect() {
-    if (this.state.orderCompleted) {
-      return <Redirect to="/orders/new/order-confirmation" />;
-    }
-  }
-
   render() {
-    const {cart: {garments}} = this.props;
+    const { cart: { garments } } = this.props;
     return (
       <div>
         <div className="checkout-container">
           {redirectToStageOneIfNoAlterations(this.props)}
           {this.renderCustomerInfo()}
           <br />
-          {this.renderOrderInfo()}
-          <br />
           {this.renderShippingInfo()}
-          <br />
-          <h2>Total: ${getTotal(garments)}</h2>
-          <br />
-          {this.renderButtons()}
-          {this.renderOrderCompleteRedirect()}
         </div>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
+export default connect(mapStateToProps)(Checkout);

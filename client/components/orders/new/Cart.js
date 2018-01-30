@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
@@ -10,6 +10,9 @@ import {
   createOrValidateCustomer,
   setCartCustomer,
   setGrowler,
+  submitOrder,
+  setLoader,
+  removeLoader,
 } from '../../../actions';
 
 import {
@@ -28,12 +31,21 @@ const mapStateToProps = store => {
   return {
     cart: store.cart,
     cartCustomer: store.cartCustomer,
+    currentStore: store.currentStore,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { removeGarmentFromCart, updateCartNotes, setCartCustomer, setGrowler },
+    {
+      removeGarmentFromCart,
+      updateCartNotes,
+      setCartCustomer,
+      setGrowler,
+      submitOrder,
+      setLoader,
+      removeLoader,
+    },
     dispatch
   );
 };
@@ -41,6 +53,7 @@ const mapDispatchToProps = dispatch => {
 class Cart extends Component {
   static propTypes = {
     cart: PropTypes.object.isRequired, // mapStateToProps
+    currentStore: PropTypes.object.isRequired, // mapStateToProps
     cartCustomer: PropTypes.object.isRequired, // mapStateToProps
     removeGarmentFromCart: PropTypes.func.isRequired, // mapDispatchToProps
     updateCartNotes: PropTypes.func.isRequired, // mapDispatchToProps
@@ -54,7 +67,14 @@ class Cart extends Component {
     super();
     this.state = {
       showNotes: false,
+      orderCompleted: false,
     };
+  }
+
+  renderOrderCompleteRedirect() {
+    if (this.state.orderCompleted) {
+      return <Redirect to="/orders/new/order-confirmation" />;
+    }
   }
 
   renderGarmentAlterations(garment) {
@@ -195,6 +215,51 @@ class Cart extends Component {
     });
   };
 
+  submitOrder() {
+    const {
+      setLoader,
+      submitOrder,
+      setGrowler,
+      renderOrderDetails,
+      removeLoader,
+    } = this.props;
+
+    setLoader();
+
+    submitOrder({ ...this.props })
+      .then(res => {
+        if (res.errors) {
+          const kind = 'warning';
+          const message = res.message;
+          setGrowler({ message, kind });
+          renderOrderDetails();
+        } else {
+          this.setState({ orderCompleted: true });
+        }
+      })
+      .catch(err => {
+        debugger;
+      })
+      .then(() => removeLoader());
+  }
+
+  renderSubmitButtons = () => {
+    return (
+      <div className="vert-cart-buttons-container">
+        <Button
+          onClick={() => this.submitOrder()}
+          className="submit-order-button"
+          text="SUBMIT ORDER"
+        />
+
+        <ArrowButton
+          onClick={this.props.renderOrderDetails}
+          text="Edit customer details"
+        />
+      </div>
+    );
+  };
+
   renderNextButton(props) {
     const {
       cart: { garments },
@@ -221,7 +286,7 @@ class Cart extends Component {
 
     if (garments.length > 0) {
       if (stage === 4) {
-        return <div />;
+        return this.renderSubmitButtons();
       } else if (this.readyToCheckout() && stage !== 3) {
         return (
           <div className="vert-cart-buttons-container">
@@ -312,6 +377,8 @@ class Cart extends Component {
           {this.renderOrderNotes(this.props)}
 
           {this.renderNextButton(this.props)}
+
+          {this.renderOrderCompleteRedirect()}
         </div>
       );
     } else {

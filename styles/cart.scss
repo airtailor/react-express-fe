@@ -95,3 +95,8 @@
   color: $primary-red;
   font-weight: bold;
 }
+
+.submit-order-button {
+  @extend .big-button;
+  background-color: $primary-red !important;
+}
