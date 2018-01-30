@@ -26,7 +26,10 @@ const VENDOR_LIBS = [
 const config = {
   devtool: 'inline-source-map',
   entry: {
-    bundle: ['./client/index.js', 'webpack-hot-middleware/client'],
+    bundle: [
+      './client/index.js',
+      'webpack-hot-middleware/client?path=http://localhost:8080/__webpack_hmr',
+    ],
     vendor: VENDOR_LIBS,
   },
   output: {
@@ -74,7 +77,5 @@ if (process.env.NODE_ENV === 'production') {
     config.plugins.push(plugin);
   });
 }
-
-console.log('#############################', config.plugins);
 
 module.exports = config;
