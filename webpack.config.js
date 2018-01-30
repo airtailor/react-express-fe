@@ -6,7 +6,6 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const VENDOR_LIBS = [
   'axios',
-
   'lodash',
   'moment',
   'node-fetch',
@@ -26,10 +25,7 @@ const VENDOR_LIBS = [
 const config = {
   devtool: 'inline-source-map',
   entry: {
-    bundle: [
-      './client/index.js',
-      'webpack-hot-middleware/client?path=http://localhost:8080/__webpack_hmr',
-    ],
+    bundle: ['./client/index.js'],
     vendor: VENDOR_LIBS,
   },
   output: {
@@ -76,6 +72,10 @@ if (process.env.NODE_ENV === 'production') {
   prodPlugins.forEach(function(plugin) {
     config.plugins.push(plugin);
   });
+} else {
+  config.entry.bundle.push(
+    'webpack-hot-middleware/client?path=http://localhost:8080/__webpack_hmr'
+  );
 }
 
 module.exports = config;
