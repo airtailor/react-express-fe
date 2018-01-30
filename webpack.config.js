@@ -22,12 +22,12 @@ const VENDOR_LIBS = [
 const config = {
   devtool: 'source-map',
   entry: {
-    bundle: './client/index.js',
+    bundle: ['./client/index.js', 'webpack-hot-middleware/client'],
     vendor: VENDOR_LIBS,
   },
   output: {
     path: path.resolve('public'),
-    filename: '[name].[chunkhash].js',
+    filename: '[name].[hash].js',
   },
   module: {
     loaders: [
@@ -57,6 +57,9 @@ const config = {
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     new UglifyJSPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    // Use NoErrorsPlugin for webpack 1.x
+    new webpack.NoEmitOnErrorsPlugin(),
   ],
 };
 

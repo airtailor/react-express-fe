@@ -12,8 +12,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "clean":
-      "cd public && rimraf index.html bundle.* manifest.* vendor.* *.*.js",
+    "clean": "cd public && rimraf index.html bundle.* manifest.* vendor.* *.*.js",
     "build": "NODE_ENV=production npm run clean && webpack",
     "build-dev": "npm run clean && webpack --watch",
     "serve": "webpack-dev-server",
@@ -50,7 +49,8 @@
     "url-loader": "^0.5.9",
     "webpack": "^2.2.0-rc.3",
     "webpack-dev-middleware": "^1.12.0",
-    "webpack-dev-server": " 2.4.5"
+    "webpack-dev-server": " 2.4.5",
+    "webpack-hot-middleware": "^2.21.0"
   },
   "dependencies": {
     "axios": "^0.16.1",

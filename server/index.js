@@ -13,7 +13,16 @@ if (process.env.NODE_ENV !== 'production') {
   const webpackMiddleware = require('webpack-dev-middleware');
   const webpack = require('webpack');
   const webpackConfig = require('../webpack.config.js');
-  app.use(webpackMiddleware(webpack(webpackConfig)));
+  const compiler = webpack(webpackConfig);
+
+  app.use(
+    webpackMiddleware(compiler, {
+      noInfo: true,
+      publicPath: webpackConfig.output.publicPath,
+    })
+  );
+
+  app.use(require('webpack-hot-middleware')(compiler));
 } else {
   app.use(express.static('public'));
 }
