@@ -14,6 +14,7 @@ import { setCurrentUser, setCurrentStore, setUserRole } from './actions/';
 // import logger from 'redux-logger';
 //const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 
+// adds hot reloading for all react components
 if (module.hot) {
   module.hot.accept();
 }

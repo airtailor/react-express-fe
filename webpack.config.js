@@ -66,4 +66,18 @@ const config = {
   ],
 };
 
+if (process.env.NODE_ENV === 'production') {
+  const prodPlugins = [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
+    new UglifyJSPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+  ];
+
+  prodPlugins.forEach(function(plugin) {
+    config.plugins.push(plugin);
+  });
+}
+
 module.exports = config;
