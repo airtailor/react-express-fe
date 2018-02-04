@@ -118,7 +118,7 @@ class OrderConfirmation extends Component {
       first_name,
       last_name,
       street,
-      unit,
+      street_two,
       city,
       state_province,
       zip_code,
@@ -130,7 +130,7 @@ class OrderConfirmation extends Component {
           {first_name} {last_name}
         </p>
         <p>{street}</p>
-        {unit ? <p>{unit}</p> : ''}
+        {street_two ? <p>{street_two}</p> : ''}
         <p>
           {city}, {state_province} {zip_code}
         </p>
@@ -139,13 +139,13 @@ class OrderConfirmation extends Component {
   }
 
   renderShipToStore(store) {
-    const { name, street, unit, city, state_province, zip_code } = store;
+    const { name, street, street_two, city, state_province, zip_code } = store;
     return (
       <div>
         <h2>Ship To Store:</h2>
         <p>{name}</p>
         <p>{street}</p>
-        {unit ? <p>{unit}</p> : ''}
+        {street_two ? <p>{street_two}</p> : ''}
         <p>
           {city}, {state_province} {zip_code}
         </p>

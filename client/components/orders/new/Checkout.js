@@ -46,15 +46,15 @@ class Checkout extends Component {
       first_name,
       last_name,
       street,
-      unit,
+      street_two,
       city,
       state_province,
       zip_code,
     } = this.props.cartCustomer;
 
     let address_two;
-    if (unit) {
-      address_two = unit.length > 0 ? <p>{unit}</p> : '';
+    if (street_two) {
+      address_two = street_two.length > 0 ? <p>{street_two}</p> : '';
     } else {
       address_two = '';
     }

@@ -255,14 +255,7 @@ export function customerReceived(data, store_id) {
 }
 
 export function updateCustomer(customer) {
-  const {
-    id,
-    street,
-    unit: street_two,
-    city,
-    state_province,
-    zip_code,
-  } = customer;
+  const { id, street, street_two, city, state_province, zip_code } = customer;
   customer.address = { street, street_two, city, state_province, zip_code };
 
   const url = `${expressApi}/customers/${id}`;
@@ -435,7 +428,7 @@ function createOrder(order) {
 }
 
 export function createOrValidateCustomer(customer) {
-  const { street, unit: street_two, city, state_province, zip_code } = customer;
+  const { street, street_two, city, state_province, zip_code } = customer;
   customer.address = { street, street_two, city, state_province, zip_code };
   const url = `${expressApi}/customers/create_or_validate_customer`;
   return validateToken()

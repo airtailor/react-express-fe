@@ -169,7 +169,7 @@ class Cart extends Component {
       phone,
       email,
       street,
-      unit,
+      street_two,
       city,
       state_province,
       zip_code,

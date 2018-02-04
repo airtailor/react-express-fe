@@ -124,7 +124,7 @@ class StoresEdit extends Component {
       name,
       phone,
       street,
-      unit,
+      street_two,
       city,
       state_province,
       zip_code,
@@ -164,8 +164,8 @@ class StoresEdit extends Component {
           />
 
           <FormField
-            value={unit}
-            fieldName={'unit'}
+            value={street_two}
+            fieldName={'street_two'}
             title={'Unit, Suite, Etc. (optional)'}
             onChange={this.updateState}
           />

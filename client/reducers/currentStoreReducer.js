@@ -26,27 +26,20 @@ const formatAddressForStore = store => {
 const formatValidAddressIntoStore = store => {
   const { id, phone, type, name, agrees_to_terms, address } = store;
   const {
-    number = '',
     street = '',
     street_two = '',
-    unit = '',
-    floor = '',
     city = '',
     state_province = '',
     zip_code = '',
   } = address;
-
-  const newStreet = `${number} ${street}`.replace(/null/g, '').trim();
-  const newUnit = `${street_two} ${unit} ${floor}`.replace(/null/g, '').trim();
 
   return {
     id,
     name,
     agrees_to_terms,
     phone,
-    number: '',
-    street: newStreet,
-    unit: newUnit,
+    street,
+    street_two,
     city,
     state_province,
     zip_code,
@@ -76,7 +69,7 @@ const updateNewFieldsForStore = store => {
   return {
     ...store,
     street: street1,
-    unit: street2,
+    street_two: street2,
     state_province: state,
     zip_code: zip,
   };

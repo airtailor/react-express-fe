@@ -69,9 +69,9 @@ export class OrderDetails extends Component {
           />
 
           <FormField
-            value={customer.unit}
-            fieldName={'unit'}
-            title={'Address 2'}
+            value={customer.street_two}
+            fieldName={'street_two'}
+            title={'UNIT, SUITE, ETC. (OPTIONAL)'}
             className="order-details-input"
             onChange={updateCartCustomer}
           />

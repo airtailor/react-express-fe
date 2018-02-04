@@ -22,18 +22,12 @@ const formatValidAddressIntoCustomer = customer => {
   } = customer;
 
   const {
-    number = '',
     street = '',
     street_two = '',
-    unit = '',
-    floor = '',
     city = '',
     state_province = '',
     zip_code = '',
   } = addresses[0];
-
-  const newStreet = `${number} ${street}`.replace(/null/g, '').trim();
-  const newUnit = `${street_two} ${unit} ${floor}`.replace(/null/g, '').trim();
 
   return {
     id,
@@ -41,8 +35,8 @@ const formatValidAddressIntoCustomer = customer => {
     last_name,
     phone,
     email,
-    street: newStreet,
-    unit: newUnit,
+    street,
+    street_two,
     city,
     state_province,
     zip_code,
@@ -80,7 +74,7 @@ const updateNewFieldsForCustomer = customer => {
   return {
     ...customer,
     street: street1,
-    unit: street2,
+    street_two: street2,
     state_province: state,
     zip_code: zip,
   };
@@ -101,7 +95,7 @@ export const initialState = {
   phone: '',
   email: '',
   street: '',
-  unit: '',
+  street_two: '',
   city: '',
   state_province: '',
   zip_code: '',
