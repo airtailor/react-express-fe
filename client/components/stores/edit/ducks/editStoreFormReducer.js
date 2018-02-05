@@ -42,7 +42,7 @@ const formatValidAddressIntoStore = store => {
     name,
     phone,
     street,
-    steet_two,
+    street_two,
     city,
     state_province,
     zip_code,

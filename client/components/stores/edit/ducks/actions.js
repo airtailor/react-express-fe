@@ -34,7 +34,7 @@ export function updateStore(data) {
     store: {
       id,
       street,
-      treet_two,
+      street_two,
       city,
       state_province,
       zip_code,
