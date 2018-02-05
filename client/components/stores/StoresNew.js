@@ -16,10 +16,12 @@ import FormSelect from '../FormSelect';
 import PropTypes from 'prop-types';
 import WithSectionHeader from '../HOC/WithSectionHeader';
 import isEmpty from 'lodash/isEmpty';
+import SelectTailor from '../orders/orderForms/SelectTailor';
 
 const mapStateToProps = store => {
   return {
     companies: store.companyList,
+    userRoles: store.userRoles,
   };
 };
 
@@ -63,6 +65,7 @@ class StoresNew extends Component {
         state_province: '',
         zip_code: '',
       },
+      default_tailor_id: 0,
     };
   }
 
@@ -72,6 +75,19 @@ class StoresNew extends Component {
       .getCompanies()
       .then(() => this.props.removeLoader())
       .catch(err => console.log(err));
+  }
+
+  renderTailorSelect(tailorId, admin) {
+    if (admin) {
+      return (
+        <SelectTailor
+          onChange={this.updateStoreState}
+          fieldName="default_tailor_id"
+          headerText="Set Default Tailor"
+          tailorId={tailorId}
+        />
+      );
+    }
   }
 
   updateStoreState = (field, value) => {
@@ -88,12 +104,22 @@ class StoresNew extends Component {
     return isEmpty(Object.keys(obj).filter(k => k == ''));
   }
 
+  retailerMissingDefaultTailor() {
+    const { type, default_tailor_id } = this.state;
+    if (type === 'retailer' && default_tailor_id < 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   emptyParamsPresent = () => {
     const store = this.state;
     const { address } = store;
     const missingStoreParams = !this.hasAllParams(store);
     const missingAddressParams = !this.hasAllParams(address);
-    return missingStoreParams && missingAddressParams;
+    const missingDefaultTailor = !this.retailerMissingDefaultTailor();
+    return missingStoreParams && missingAddressParams && missingDefaultTailor;
   };
 
   handleSubmit = e => {
@@ -133,14 +159,17 @@ class StoresNew extends Component {
   };
 
   render() {
-    const { companies } = this.props;
+    const { companies, userRoles: { admin } } = this.props;
     const {
       company_id,
       type,
       name,
       phone,
       address: { street, street_two, city, state_province, zip_code },
+      default_tailor_id,
     } = this.state;
+
+    const tailorId = default_tailor_id ? default_tailor_id : '';
 
     const updateStoreState = this.updateStoreState;
     const updateAddressState = this.updateAddressState;
@@ -216,6 +245,8 @@ class StoresNew extends Component {
               title={'Store Type:'}
               onChange={updateStoreState}
             />
+
+            {this.renderTailorSelect(tailorId, admin)}
 
             <input
               type="submit"

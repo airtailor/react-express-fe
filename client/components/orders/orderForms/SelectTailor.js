@@ -51,7 +51,7 @@ class SelectTailor extends Component {
         <FormSelect
           value={tailorId}
           options={tailors}
-          fieldName={'provider_id'}
+          fieldName={fieldName}
           title={title}
           onChange={onChange}
         />
