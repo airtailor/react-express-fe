@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const VENDOR_LIBS = [
   'axios',
@@ -67,6 +68,13 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new UglifyJSPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new CompressionPlugin({
+      asset: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: /\.js$|\.scss$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.8,
+    }),
   ];
 
   prodPlugins.forEach(function(plugin) {

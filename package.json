@@ -12,8 +12,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "clean":
-      "cd public && rimraf index.html bundle.* manifest.* vendor.* *.*.js",
+    "clean": "cd public && rimraf index.html bundle.* manifest.* vendor.* *.*.js",
     "build": "npm run clean && NODE_ENV=production webpack",
     "build-dev": "npm run clean && webpack --watch",
     "serve": "webpack-dev-server",
@@ -31,6 +30,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "compression-webpack-plugin": "^1.1.6",
     "css-loader": "^0.28.0",
     "enzyme": "^2.9.1",
     "enzyme-to-json": "^1.6.0",
