@@ -72,7 +72,7 @@ if (process.env.NODE_ENV === 'production') {
       asset: '[path].gz[query]',
       algorithm: 'gzip',
       test: /\.js$|\.scss$|\.html$/,
-      deleteOriginalAssets: true,
+      //deleteOriginalAssets: true,
     }),
   ];
 
