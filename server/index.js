@@ -9,14 +9,6 @@ const app = express();
 // enable ssl redirect
 app.use(sslRedirect());
 
-// determine if files should be compressed
-const shouldCompress = (req, res) => {
-  if (req.headers['x-no-compression']) {
-    return false;
-  }
-  return compression.filter(req, res);
-};
-
 // build webpack in development, use minified files in production
 if (process.env.NODE_ENV !== 'production') {
   const webpackMiddleware = require('webpack-dev-middleware');
@@ -40,11 +32,7 @@ if (process.env.NODE_ENV !== 'production') {
   );
 } else {
   app.use(express.static('public'));
-  app.use(
-    compression({
-      filter: shouldCompress, // set predicate to determine whether to compress
-    })
-  );
+  app.use(compression());
 }
 
 app.use(bodyParser.json({ limit: '1000mb' }));
