@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const VENDOR_LIBS = [
   'axios',
@@ -23,7 +24,7 @@ const VENDOR_LIBS = [
 ];
 
 const config = {
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   entry: {
     bundle: ['./client/index.js'],
     vendor: VENDOR_LIBS,
@@ -67,6 +68,7 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new UglifyJSPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new CompressionPlugin(),
   ];
 
   prodPlugins.forEach(function(plugin) {
