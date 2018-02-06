@@ -76,6 +76,7 @@ if (process.env.NODE_ENV === 'production') {
       test: /\.js$|\.scss$|\.html$/,
       threshold: 10240,
       minRatio: Number.MAX_SAFE_INTEGER,
+      deleteOriginalAssets: true,
     }),
     new ChangeExtensionPlugin({
       extensions: ['js', 'css'],
