@@ -74,6 +74,7 @@ if (process.env.NODE_ENV === 'production') {
       test: /\.js$|\.scss$|\.html$/,
       threshold: 10240,
       minRatio: 0.8,
+      deleteOriginalAssets: true,
     }),
   ];
 
