@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const sslRedirect = require('heroku-ssl-redirect');
-const gzipStatic = require('connect-gzip-static');
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -33,11 +32,6 @@ if (process.env.NODE_ENV !== 'production') {
 } else {
   app.use(express.static('public'));
 }
-
-// handle gzip files
-const oneDay = 86400000;
-connect().use(gzipStatic(__dirname + '/public'));
-connect().use(gzipStatic(__dirname + '/public', { maxAge: oneDay }));
 
 app.use(bodyParser.json({ limit: '1000mb' }));
 app.use(require('./routes'));
