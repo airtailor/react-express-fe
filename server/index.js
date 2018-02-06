@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const sslRedirect = require('heroku-ssl-redirect');
-//const compression = require('compression');
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -32,7 +31,30 @@ if (process.env.NODE_ENV !== 'production') {
   );
 } else {
   app.use(express.static('public'));
-  //app.use(compression());
+  app.use((req, res, next) => {
+    var originalPath = req.path;
+    if (!originalPath.endsWith('.js')) {
+      next();
+      return;
+    }
+    try {
+      const stats = fs.statSync(path.join('public', `${req.path}.gz`));
+      res.append('Content-Encoding', 'gzip');
+      res.setHeader('Vary', 'Accept-Encoding');
+      res.setHeader('Cache-Control', 'public, max-age=512000');
+      req.url = `${req.url}.gz`;
+
+      var type = mime.lookup(path.join('public', originalPath));
+      if (typeof type != 'undefined') {
+        var charset = mime.charsets.lookup(type);
+        res.setHeader(
+          'Content-Type',
+          type + (charset ? '; charset=' + charset : '')
+        );
+      }
+    } catch (e) {}
+    next();
+  });
 }
 
 app.use(bodyParser.json({ limit: '1000mb' }));
