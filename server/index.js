@@ -31,8 +31,8 @@ if (process.env.NODE_ENV !== 'production') {
     })
   );
 } else {
-  app.use(compression());
   app.use(express.static('public'));
+  app.use(compression());
 }
 
 app.use(bodyParser.json({ limit: '1000mb' }));
