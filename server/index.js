@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const sslRedirect = require('heroku-ssl-redirect');
-const compression = require('compression');
+//const compression = require('compression');
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -32,7 +32,7 @@ if (process.env.NODE_ENV !== 'production') {
   );
 } else {
   app.use(express.static('public'));
-  app.use(compression());
+  //app.use(compression());
 }
 
 app.use(bodyParser.json({ limit: '1000mb' }));
