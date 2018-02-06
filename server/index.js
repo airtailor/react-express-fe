@@ -30,8 +30,7 @@ if (process.env.NODE_ENV !== 'production') {
     })
   );
 } else {
-  //app.use(express.static('public'));
-  app.use('/public', express.static(path.join(__dirname, 'public')));
+  app.use(express.static('public'));
 }
 
 app.use(bodyParser.json({ limit: '1000mb' }));
