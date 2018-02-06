@@ -4,6 +4,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const ChangeExtensionPlugin = require('change-extension-plugin');
 
 const VENDOR_LIBS = [
   'axios',
@@ -75,6 +76,10 @@ if (process.env.NODE_ENV === 'production') {
       test: /\.js$|\.scss$|\.html$/,
       threshold: 10240,
       minRatio: Number.MAX_SAFE_INTEGER,
+    }),
+    new ChangeExtensionPlugin({
+      extensions: ['js', 'css'],
+      compressionMethod: 'gz',
     }),
   ];
 

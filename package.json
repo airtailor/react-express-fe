@@ -12,8 +12,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "clean":
-      "cd public && rimraf index.html bundle.* manifest.* vendor.* *.*.js *.*.js.gz",
+    "clean": "cd public && rimraf index.html bundle.* manifest.* vendor.* *.*.js *.*.js.gz",
     "build": "npm run clean && NODE_ENV=production webpack",
     "build-dev": "npm run clean && webpack --watch",
     "serve": "webpack-dev-server",
@@ -58,9 +57,10 @@
     "axios": "^0.16.1",
     "babel-cli": "^6.24.1",
     "body-parser": "^1.17.2",
+    "change-extension-plugin": "^1.1.2",
     "express": "^4.15.2",
     "heroku-ssl-redirect": "0.0.4",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.5",
     "moment": "^2.18.1",
     "node-fetch": "^1.7.3",
     "nodemon": "^1.11.0",
