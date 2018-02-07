@@ -63,6 +63,7 @@ class FindCustomerByPhone extends Component {
             onClick={() => this.searchForCustomerByPhone(phone)}
           />
           <br />
+          <br />
         </div>
       );
     }
