@@ -365,7 +365,7 @@ class Cart extends Component {
                   float: 'right',
                   paddingRight: '15px',
                   fontFamily: 'Raleway',
-                  fontWeight: 400,
+                  fontWeight: 600,
                 }}
               >
                 ${getTotal(cart.garments)}
