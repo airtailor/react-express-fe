@@ -142,9 +142,7 @@ export class OrderDetails extends Component {
 
         <CustomerInfo />
 
-        <label style={{ marginTop: '10px' }} className="form-label">
-          Delivery Upon Completion
-        </label>
+        <label className="form-label">Delivery Upon Completion</label>
         {this.renderShipTo(cart, cartCustomer)}
       </div>
     );
