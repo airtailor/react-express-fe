@@ -52,7 +52,7 @@ class NavigationBar extends Component {
   };
 
   getNavActive(window) {
-    return window.innerWidth > 980;
+    return window.innerWidth > 1024;
   }
 
   handleResize = () => {
