@@ -7,7 +7,7 @@ const OrdersIndex = WithDynamicImport(() =>
   import('../../components/orders/index/')
 );
 const OrdersShow = WithDynamicImport(() =>
-  import('../../components/orders/show')
+  import('../../components/orders/show/')
 );
 const OrdersEdit = WithDynamicImport(() =>
   import('../../components/orders/OrdersEdit')

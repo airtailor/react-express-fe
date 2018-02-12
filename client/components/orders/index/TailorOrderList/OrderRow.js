@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { getOrderStatus } from '../../OrderHelpers';
 
 class OrderRow extends Component {
   render() {
