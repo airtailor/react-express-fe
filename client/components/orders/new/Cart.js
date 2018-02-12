@@ -102,11 +102,9 @@ class Cart extends Component {
   };
 
   renderCartItems(props) {
-    const { garments } = props.cart;
-    const garmentList = garments;
-    const { renderSelectAlterations } = props;
-    if (garmentList.length > 0) {
-      return garmentList.map((garment, index) => {
+    const { cart: { garments }, renderSelectAlterations } = props;
+    if (garments.length > 0) {
+      return garments.map((garment, index) => {
         return (
           <div key={index} style={{ marginLeft: '15px' }}>
             <h3 style={{ paddingRight: '15px' }}>
@@ -144,6 +142,7 @@ class Cart extends Component {
                 EDIT
               </span>
             </h3>
+
             <span
               className="cart-item"
               onClick={() => {
@@ -373,11 +372,8 @@ class Cart extends Component {
             </h3>
           </div>
           <hr className="cart-line" />
-
           {this.renderOrderNotes(this.props)}
-
           {this.renderNextButton(this.props)}
-
           {this.renderOrderCompleteRedirect()}
         </div>
       );

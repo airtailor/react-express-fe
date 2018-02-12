@@ -3,11 +3,11 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import WithDynamicImport from '../../components/HOC/WithDynamicImport/';
 
-const StoresShow = WithDynamicImport(() =>
-  import('../../components/stores/StoresShow/')
+const OrdersIndex = WithDynamicImport(() =>
+  import('../../components/orders/index/')
 );
 const OrdersShow = WithDynamicImport(() =>
-  import('../../components/orders/show/OrdersShow')
+  import('../../components/orders/show')
 );
 const OrdersEdit = WithDynamicImport(() =>
   import('../../components/orders/OrdersEdit')
@@ -43,7 +43,7 @@ class OrderRoutes extends Component {
           exact
           path="/orders"
           render={props =>
-            loggedIn ? <StoresShow {...props} /> : <Redirect to="/sign_in" />}
+            loggedIn ? <OrdersIndex {...props} /> : <Redirect to="/sign_in" />}
         />
 
         <Switch>

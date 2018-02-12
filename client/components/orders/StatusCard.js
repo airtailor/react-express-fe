@@ -8,8 +8,12 @@ class StatusCard extends Component {
   };
 
   render() {
-    const { color, text } = this.props;
-    return <div className={`${color} status-card order-data-cell`}>{text}</div>;
+    const { color, text, className } = this.props;
+    return (
+      <div className={`${color} status-card order-data-cell ${className}`}>
+        {text}
+      </div>
+    );
   }
 }
 

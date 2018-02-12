@@ -101,8 +101,6 @@ h1 {
   width: 80%;
   padding: 25px;
   overflow: scroll;
-  /*box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);*/
-  /*box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);*/
 }
 
 .pos-rel {
@@ -160,4 +158,19 @@ input[type='submit']:disabled {
 
 .red {
   color: $primary-red;
+}
+
+.back-button {
+  text-align: left !important;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.title {
+  font-family: $sans-serif;
+  color: $primary-blue;
+}
+
+.sans-serif {
+  font-family: $sans-serif;
 }

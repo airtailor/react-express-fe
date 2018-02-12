@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { isEmpty, uniqBy } from 'lodash';
+import { isEmpty } from 'lodash';
 
 import {
   getCurrentOrder,
@@ -21,21 +21,14 @@ import {
   fireShipmentCreate,
 } from '../../shipping/shippingFunctions';
 
-import {
-  tieImage,
-  shirtImage,
-  suitImage,
-  skirtImage,
-  dressImage,
-  pantsImage,
-  coatImage,
-} from '../../../images/garments';
-
-import suppliesImage from '../../../images/supplies.png';
 import logoImage from '../../../images/logo.png';
 import Measurements from './measurements/Measurements';
 import SectionHeader from '../../SectionHeader';
 import OrderComplete from '../../prints/OrderComplete';
+import ArrowButton from '../../ArrowButton';
+import RenderGarments from './RenderGarments';
+import RenderOrderNotes from './RenderOrderNotes';
+import RenderOrderDetails from './RenderOrderDetails';
 
 const mapStateToProps = store => {
   return {
@@ -111,63 +104,6 @@ class OrdersShow extends Component {
 
   componentDidMount() {
     this.refreshCurrentOrder();
-  }
-
-  getUniqueItemTypes(items) {
-    return uniqBy(
-      items.map(i => {
-        return { type: i.item_type.name, items: [] };
-      }),
-      'type'
-    );
-  }
-
-  sortItemsByType() {
-    const { items } = this.props.currentOrder;
-
-    if (isEmpty(items)) return [];
-
-    const sortedItems = new Set(this.getUniqueItemTypes(items));
-
-    for (var item of items) {
-      const itemType = item.item_type.name;
-      const sortedItemsIterator = sortedItems.values();
-      let sortingItem = true;
-
-      while (sortingItem) {
-        let currentIter = sortedItemsIterator.next();
-        let currentValue = currentIter.value;
-
-        if (currentIter.done) {
-          sortingItem = false;
-        } else if (currentValue.type === itemType) {
-          currentValue.items.push(item);
-        }
-      }
-    }
-
-    return [...sortedItems];
-  }
-
-  getImageForItemType(name) {
-    switch (name) {
-      case 'Pants':
-        return pantsImage;
-      case 'Shirt':
-        return shirtImage;
-      case 'Dress':
-        return dressImage;
-      case 'Suit Jacket':
-        return suitImage;
-      case 'SuitJacket':
-        return suitImage;
-      case 'Necktie':
-        return tieImage;
-      case 'Skirt':
-        return skirtImage;
-      default:
-        return suppliesImage;
-    }
   }
 
   updateNotes(notes) {
@@ -271,22 +207,6 @@ class OrdersShow extends Component {
       path: `/customers/${id}/edit`,
       enabled: true,
     });
-  }
-
-  renderOrderNotes(field) {
-    // retailer should not see tailor notes
-    if (this.props.userRoles.retailer && field === 'provider_notes') {
-      return <div />;
-    }
-
-    const notes = this.props.currentOrder[field] || 'Not Provided';
-    const title = field === 'provider_notes' ? 'Tailor Notes:' : 'Order Notes:';
-    return (
-      <div>
-        <h3>{title}</h3>
-        <p className="notes">{notes}</p>
-      </div>
-    );
   }
 
   renderAlteration(alteration, index) {
@@ -403,28 +323,18 @@ class OrdersShow extends Component {
     );
   }
 
-  renderItemCaption(item, itemType, index) {
-    const alterations = item.alterations.map(this.renderAlteration);
-    const itemCaption = `${itemType.type} #${index + 1}`;
-    const image = this.getImageForItemType(itemType.type);
-
-    return (
-      <div className="card" key={index}>
-        <div className="type-heading">
-          <img className="item-type-image" src={image} alt={itemType.name} />
-          <h3>{itemCaption}</h3>
-          <ul>{alterations}</ul>
-        </div>
-      </div>
-    );
-  }
-
-  renderList() {
-    return this.sortItemsByType().map((itemType, index) => {
-      return itemType.items.map((item, index) => {
-        return this.renderItemCaption(item, itemType, index);
+  renderGarmentAlterations(garment) {
+    if (garment.alterations.length > 0) {
+      return garment.alterations.map((alt, index) => {
+        return (
+          <p key={index} className="cart-alteration">
+            <span>{alt.name}</span>
+          </p>
+        );
       });
-    });
+    } else {
+      return <div />;
+    }
   }
 
   renderNotesForm = () => {
@@ -556,28 +466,67 @@ class OrdersShow extends Component {
         {fulfillButton()}
         {completedButton()}
         {labelButton()}
-        {/*messengerButton()*/}
       </div>
     );
   }
 
-  renderOrderDetails() {
-    const { userRoles: { admin, retailer, tailor, customer } } = this.props;
+  orderTotal(total) {
+    return (
+      <div>
+        <hr className="order-show-line" />
+        <div style={{ marginLeft: '15px' }}>
+          <h3>
+            <span className="form-label">Total </span>
+            <span
+              style={{
+                float: 'right',
+                paddingRight: '15px',
+                fontFamily: 'Raleway',
+                fontWeight: 600,
+              }}
+            >
+              ${total}
+            </span>
+          </h3>
+        </div>
+        <hr className="order-show-line" />
+      </div>
+    );
+  }
 
-    const renderList = this.renderList();
-    const requesterNotes = this.renderOrderNotes('requester_notes');
-    const providerNotes = this.renderOrderNotes('provider_notes');
+  renderOrder() {
+    const {
+      currentOrder: { total },
+      userRoles: { admin, retailer, tailor, customer },
+    } = this.props;
+
     const customerLink =
       tailor || admin
         ? this.renderEnabledCustLink()
         : this.renderDisabledCustLink();
 
     return (
-      <div>
-        {renderList}
-        {customerLink}
-        {requesterNotes}
-        {providerNotes}
+      <div
+        className="flex-container"
+        style={{ justifyContent: 'space-between', maxWidth: '1200px' }}
+      >
+        <div
+          style={{
+            width: '52%',
+            borderRight: '1px solid gray',
+            paddingRight: '3%',
+          }}
+        >
+          <h1 className="title">ORDER #{this.props.currentOrder.id} </h1>
+          <RenderGarments {...this.props} />
+          {this.orderTotal(total)}
+          <RenderOrderNotes {...this.props} />
+
+          {customerLink}
+        </div>
+        <div style={{ float: 'right', width: '40%' }}>
+          <RenderOrderDetails {...this.props} />
+        </div>
       </div>
     );
   }
@@ -591,6 +540,7 @@ class OrdersShow extends Component {
         customer: { first_name: firstName, last_name: lastName },
       },
     } = this.props;
+
     const orderNotes = requesterNotes || 'Not Provided';
     const tailorNotes = providerNotes || 'Not Provided';
     const printableContent = this.renderList();
@@ -650,11 +600,17 @@ class OrdersShow extends Component {
     } else {
       const editButton = this.renderEditOrderButton();
       const measurementsButton = this.renderDetailsOrMeasurementsButton();
-      const details = this.renderOrderDetails();
+      const details = this.renderOrder();
       const controls = this.renderOrderControls();
       // NOTE: here we should be rendering 1 of 2 main components
       mainContent = (
         <div>
+          <ArrowButton
+            className="order-show-back-button"
+            onClick={this.props.history.goBack}
+            text={'BACK'}
+          />
+
           {editButton}
           {measurementsButton}
           {details}
