@@ -3,6 +3,7 @@ import moment from 'moment';
 import OrderShowTitle from './OrderShowTitle';
 import { getOrderStatus } from '../OrderHelpers';
 import StatusCard from '../StatusCard';
+import DeliveryDetails from './DeliveryDetails';
 
 class RenderOrderDetails extends Component {
   formatOrderDate(order) {
@@ -40,6 +41,8 @@ class RenderOrderDetails extends Component {
           color={color}
           className="order-show-status-card"
         />
+
+        <DeliveryDetails order={this.props.currentOrder} />
       </div>
     );
   }

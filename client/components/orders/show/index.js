@@ -543,9 +543,6 @@ class OrdersShow extends Component {
 
     const orderNotes = requesterNotes || 'Not Provided';
     const tailorNotes = providerNotes || 'Not Provided';
-    //const printableContent = this.renderList();
-
-    //const printableContent = <RenderGarments {...this.props} />;
 
     return (
       <div>
@@ -558,7 +555,6 @@ class OrdersShow extends Component {
           </div>
           <h2>Alterations for Order #{orderId}</h2>
           <h4>Customer Name: {`${firstName} ${lastName}`}</h4>
-          {/*printableContent*/}
           <RenderGarments {...this.props} />
           <h3>
             Order Notes: <p style={{ display: 'inline' }}>{orderNotes}</p>
