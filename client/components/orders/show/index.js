@@ -22,7 +22,6 @@ import {
 } from '../../shipping/shippingFunctions';
 
 import logoImage from '../../../images/logo.png';
-import Measurements from './measurements/Measurements';
 import SectionHeader from '../../SectionHeader';
 import OrderComplete from '../../prints/OrderComplete';
 import ArrowButton from '../../ArrowButton';
@@ -73,7 +72,6 @@ class OrdersShow extends Component {
     this.state = {
       notes: '',
       displayNotesForm: false,
-      showMeasurements: false,
       loadingLabel: false,
       sendingMessenger: false,
     };
@@ -188,10 +186,6 @@ class OrdersShow extends Component {
   printShippingLabel() {
     return window.print();
   }
-
-  toggleMeasurementDetailButton = boolean => {
-    this.setState({ showMeasurements: !boolean });
-  };
 
   renderDisabledCustLink() {
     const { first_name, last_name } = this.props.currentOrder.customer;
@@ -497,8 +491,9 @@ class OrdersShow extends Component {
 
   renderOrder() {
     const {
-      currentOrder: { total },
-      userRoles: { admin, retailer, tailor, customer },
+      currentOrder: { total, customer },
+      currentOrder,
+      userRoles: { admin, retailer, tailor },
     } = this.props;
 
     const customerLink =
@@ -518,7 +513,7 @@ class OrdersShow extends Component {
             paddingRight: '3%',
           }}
         >
-          <h1 className="title">ORDER #{this.props.currentOrder.id} </h1>
+          <h1 className="title">ORDER #{currentOrder.id} </h1>
           <RenderGarments {...this.props} />
           {this.orderTotal(total)}
           <RenderOrderNotes {...this.props} />
@@ -529,6 +524,9 @@ class OrdersShow extends Component {
           <RenderOrderDetails {...this.props} />
           <hr className="order-show-line" style={{ margin: '20px 0px' }} />
           <CustomerDetails {...this.props} />
+          <Link to={`/customers/${customer.id}/measurements`}>
+            See Customer measurements
+          </Link>
         </div>
       </div>
     );
@@ -570,56 +568,25 @@ class OrdersShow extends Component {
     );
   };
 
-  renderDetailsOrMeasurementsButton() {
-    const { showMeasurements } = this.state;
-    const { userRoles: { tailor, admin } } = this.props;
-    const value = showMeasurements ? 'See Order Details' : 'See Measurements';
-    const toggleFunction = this.toggleMeasurementDetailButton;
-
-    if (tailor || admin) {
-      return (
-        <input
-          type="submit"
-          value={value}
-          className="short-button"
-          onClick={() => toggleFunction(showMeasurements)}
-        />
-      );
-    }
-  }
-
-  renderMeasurements() {
-    const { currentOrder: { customer } } = this.props;
-    return <Measurements customer={customer} />;
-  }
-
   setMainContent() {
     let mainContent;
+    const editButton = this.renderEditOrderButton();
+    const details = this.renderOrder();
+    const controls = this.renderOrderControls();
+    // NOTE: here we should be rendering 1 of 2 main components
+    mainContent = (
+      <div>
+        <ArrowButton
+          className="order-show-back-button"
+          onClick={this.props.history.goBack}
+          text={'BACK'}
+        />
 
-    if (this.state.showMeasurements) {
-      const measurements = this.renderMeasurements();
-      mainContent = <div>{measurements}</div>;
-    } else {
-      const editButton = this.renderEditOrderButton();
-      const measurementsButton = this.renderDetailsOrMeasurementsButton();
-      const details = this.renderOrder();
-      const controls = this.renderOrderControls();
-      // NOTE: here we should be rendering 1 of 2 main components
-      mainContent = (
-        <div>
-          <ArrowButton
-            className="order-show-back-button"
-            onClick={this.props.history.goBack}
-            text={'BACK'}
-          />
-
-          {editButton}
-          {measurementsButton}
-          {details}
-          {controls}
-        </div>
-      );
-    }
+        {editButton}
+        {details}
+        {controls}
+      </div>
+    );
 
     return mainContent;
   }
