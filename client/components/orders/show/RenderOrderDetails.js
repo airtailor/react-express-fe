@@ -27,11 +27,11 @@ class RenderOrderDetails extends Component {
       <div>
         <OrderShowTitle title="ORDER PLACED" />
 
-        <p className="order-show-date-time">
+        <p className="order-show-p-content">
           {this.formatOrderDate(this.props.currentOrder)}
         </p>
 
-        <p style={{ marginBottom: '25px' }} className="order-show-date-time">
+        <p style={{ marginBottom: '25px' }} className="order-show-p-content">
           {this.formatOrderTime(this.props.currentOrder)}
         </p>
 

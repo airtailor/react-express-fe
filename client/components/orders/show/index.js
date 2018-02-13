@@ -29,6 +29,7 @@ import ArrowButton from '../../ArrowButton';
 import RenderGarments from './RenderGarments';
 import RenderOrderNotes from './RenderOrderNotes';
 import RenderOrderDetails from './RenderOrderDetails';
+import CustomerDetails from './CustomerDetails';
 
 const mapStateToProps = store => {
   return {
@@ -526,6 +527,8 @@ class OrdersShow extends Component {
         </div>
         <div style={{ float: 'right', width: '40%' }}>
           <RenderOrderDetails {...this.props} />
+          <hr className="order-show-line" style={{ margin: '20px 0px' }} />
+          <CustomerDetails {...this.props} />
         </div>
       </div>
     );

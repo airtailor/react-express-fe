@@ -13,7 +13,7 @@ class DeliveryDetails extends Component {
     return (
       <div>
         <OrderShowTitle title={deliveryText} />
-        <div style={{ paddingLeft: '15px', fontSize: '14px' }}>
+        <div className="order-show-p-content">
           <p>{address.name || `${address.first_name} ${address.last_name}`}</p>
           <p>{address.street1}</p>
           <p>{address.street2}</p>
