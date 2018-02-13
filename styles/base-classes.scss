@@ -131,15 +131,11 @@ input[type='submit']:disabled {
 }
 
 .blue-link {
-  color: $primary-blue;
+  color: #4c97b3;
   font-family: $sans-serif;
   font-size: 16px;
   font-weight: normal;
   padding-bottom: 20px;
-  padding-left: 20px;
-}
-
-.blue-link a:hover {
   text-decoration: underline;
 }
 
