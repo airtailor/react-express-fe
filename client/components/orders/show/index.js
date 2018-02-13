@@ -24,7 +24,7 @@ import {
 import logoImage from '../../../images/logo.png';
 import SectionHeader from '../../SectionHeader';
 import OrderComplete from '../../prints/OrderComplete';
-import ArrowButton from '../../ArrowButton';
+import BackButton from '../../BackButton';
 import RenderGarments from './RenderGarments';
 import RenderOrderNotes from './RenderOrderNotes';
 import RenderOrderDetails from './RenderOrderDetails';
@@ -576,12 +576,7 @@ class OrdersShow extends Component {
     // NOTE: here we should be rendering 1 of 2 main components
     mainContent = (
       <div>
-        <ArrowButton
-          className="order-show-back-button"
-          onClick={this.props.history.goBack}
-          text={'BACK'}
-        />
-
+        <BackButton {...this.props} />
         {editButton}
         {details}
         {controls}

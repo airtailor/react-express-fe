@@ -1,16 +1,26 @@
 export const getSectionHeaderText = props => {
   const { match: { path } } = props;
-  if (path === '/admin/reports') {
-    return 'Air Tailor / Reports';
-  } else if (path === '/admin/reports/orders') {
-    return 'Air Tailor / Order Reports';
-  } else if (path === '/stores/new') {
-    return 'Stores / New';
-  } else if (path === '/users/:user_id/edit') {
-    return 'Edit User';
-  } else if (path === '/orders/new') {
-    return 'Agree To Terms';
-  } else if (path === '/site/terms_of_service') {
-    return '';
+  switch (path) {
+    case '/admin/reports':
+      return 'Air Tailor / Reports';
+      break;
+    case '/admin/reports/orders':
+      return 'Air Tailor / Order Reports';
+      break;
+    case '/stores/new':
+      return 'Stores / New';
+      break;
+    case '/users/:user_id/edit':
+      return 'Edit User';
+      break;
+    case '/orders/new':
+      return 'Agree To Terms';
+      break;
+    case '/site/terms_of_service':
+      return '';
+      break;
+    case '/customers/:customer_id/measurements':
+      return 'Customer Measurements';
+      break;
   }
 };

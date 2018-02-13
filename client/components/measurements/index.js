@@ -10,10 +10,13 @@ import {
 
 import InputMeasurement from './InputMeasurement';
 import { FrontImage, BackImage } from '../../images/measurements';
+import WithSectionHeader from '../HOC/WithSectionHeader';
+import BackButton from '../BackButton';
 
 const mapStateToProps = store => {
   return {
     measurements: store.measurements,
+    userRoles: store.userRoles,
   };
 };
 
@@ -26,6 +29,7 @@ const mapDispatchToProps = dispatch => {
 
 class Measurements extends Component {
   static propTypes = {
+    userRoles: PropTypes.object.isRequired,
     measurements: PropTypes.object.isRequired, // mapStateToProps
     getCustomerMeasurements: PropTypes.func.isRequired, // mapDispatchToProps
     createCustomerMeasurements: PropTypes.func.isRequired, // mapDispatchToProps
@@ -39,7 +43,6 @@ class Measurements extends Component {
   constructor(props) {
     super();
     this.state = {
-      showFront: true,
       editEnabled: false,
       measurements: props.measurements,
     };
@@ -63,25 +66,6 @@ class Measurements extends Component {
       })
       .catch(err => console.log('err', err));
   };
-
-  getImage(state) {
-    const { showFront } = this.state;
-    let alt, image;
-
-    if (showFront) {
-      alt = 'front';
-      image = FrontImage;
-    } else {
-      alt = 'back';
-      image = BackImage;
-    }
-
-    return <img className="measurements-image" src={image} alt={alt} />;
-  }
-
-  showFrontOrBack(boolean) {
-    this.setState({ showFront: boolean });
-  }
 
   enableEditButton(editEnabled) {
     if (!editEnabled) {
@@ -114,20 +98,15 @@ class Measurements extends Component {
   }
 
   renderButtons(editEnabled) {
+    const { userRoles: { tailor, retailer, admin } } = this.props;
+    if (!tailor || !admin) {
+      return <div />;
+    }
+
     return (
       <div className="measurement-buttons-container">
-        <input
-          className="tiny-button"
-          readOnly={true}
-          value="Front"
-          onClick={() => this.showFrontOrBack(true)}
-        />
-        <input
-          className="tiny-button"
-          readOnly={true}
-          value="Back"
-          onClick={() => this.showFrontOrBack(false)}
-        />
+        <input className="tiny-button" readOnly={true} value="Front" />
+        <input className="tiny-button" readOnly={true} value="Back" />
         {this.enableEditButton(editEnabled)}
       </div>
     );
@@ -148,9 +127,9 @@ class Measurements extends Component {
     const lastCharInt = last.isNaN() ? true : false;
   }
 
-  renderInputs(showFront, editEnabled, measurements) {
+  renderInputs(show, editEnabled, measurements) {
     if (!isEmpty(measurements)) {
-      if (showFront) {
+      if (show === 'front') {
         return (
           <form>
             <InputMeasurement
@@ -231,7 +210,7 @@ class Measurements extends Component {
             />
           </form>
         );
-      } else {
+      } else if (show === 'back') {
         return (
           <div>
             <InputMeasurement
@@ -274,20 +253,38 @@ class Measurements extends Component {
     }
   }
 
+  renderImages() {
+    const { editEnabled, measurements } = this.state;
+    return (
+      <div className="measurements-image-container">
+        <div className="input-measurements-container">
+          <img className="measurements-image" src={FrontImage} />
+          {this.renderInputs('front', editEnabled, measurements)}
+        </div>
+        <div className="input-measurements-container">
+          <img className="measurements-image" src={BackImage} />
+          {this.renderInputs('back', editEnabled, measurements)}
+        </div>
+      </div>
+    );
+  }
+
   render() {
-    const { showFront, editEnabled, measurements } = this.state;
+    const { editEnabled, measurements } = this.state;
     return (
       <div className="customer-measurements">
+        <BackButton {...this.props} />
         <div className="measurements-header">
-          <h3>Customer Measurements</h3>
+          <h1 className="sans-serif">CUSTOMER MEASUREMENTS</h1>
           {this.renderButtons(editEnabled)}
         </div>
 
-        {this.getImage(this.state)}
-        {this.renderInputs(showFront, editEnabled, measurements)}
+        {this.renderImages()}
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Measurements);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  WithSectionHeader(Measurements)
+);

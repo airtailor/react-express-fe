@@ -1,8 +1,13 @@
+.measurements-image-container {
+  @extend .flex-container;
+}
 
 .measurements-image {
   display: block;
   margin: 0;
-  width: 500px;
+  width: 350px;
+  height: 650px;
+  padding-top: 70px;
 }
 
 .measurement-buttons-container {
@@ -14,11 +19,16 @@
 
 .customer-measurements {
   position: relative;
+  margin-left: 50px;
+}
+
+.input-measurements-container {
+  position: relative;
 }
 
 .input-measurement {
-  width: 40px;
-  height: 25px;
+  width: 30px;
+  height: 20px;
   line-height: 25px;
   text-align: center;
   border: 3px solid pink;
@@ -26,83 +36,86 @@
   position: absolute;
 }
 
-.chest_bust {
-  top: 271px;
-  left: 178px;
-}
+// front measurements
 
-.upper_torso {
-  top: 350px;
-  left: 178px;
-}
-
-.elbow {
-  top: 277px;
-  left: 39px;
-}
-
-.sleeve_length {
-  top: 257px;
-  left: 40px;
-}
-
-
-.waist {
-  top: 430px;
-  left: 178px;
-}
-
-.shoulder_to_waist {
-  top: 205px;
-  left: 262px;
-}
-
-.hips {
-  top: 510px;
-  left: 350px;
-}
-
-.pant_length {
-  top: 580px;
-  left: 100px;
-}
-
-.thigh {
-  top: 665px;
-  left: 168px;
-}
-
-.knee {
-  top: 770px;
-  left: 168px;
+.ankle {
+  top: 670px;
+  left: 115px;
 }
 
 .calf {
-  top: 880px;
-  left: 168px;
+  top: 595px;
+  left: 115px;
 }
 
-.ankle {
-  top: 1000px;
-  left: 168px;
+.chest_bust {
+  top: 150px;
+  left: 115px;
 }
+
+.hips {
+  top: 325px;
+  left: 240px;
+}
+
+.knee {
+  top: 515px;
+  left: 115px;
+}
+
+.pant_length {
+  top: 385px;
+  left: 65px;
+}
+
+.sleeve_length {
+  top: 150px;
+  left: 22px;
+}
+
+.shoulder_to_waist {
+  top: 105px;
+  left: 180px;
+}
+
+.thigh {
+  top: 440px;
+  left: 115px;
+}
+
+.upper_torso {
+  top: 210px;
+  left: 115px;
+}
+
+.waist {
+  top: 268px;
+  left: 115px;
+}
+
+// back measurements
 
 .back_width {
-  top: 195px;
-  left: 225px;
+  top: 95px;
+  left: 155px;
 }
 
 .bicep {
-  top: 226px;
-  left: 66px;
+  top: 120px;
+  left: 35px;
+}
+
+.elbow {
+  top: 155px;
+  left: 19px;
 }
 
 .forearm {
-  top: 329px;
-  left: 16px;
+  top: 190px;
+  left: 4px;
 }
 
 .inseam {
-  top: 900px;
-  left: 226px;
+  top: 600px;
+  left: 155px;
 }
