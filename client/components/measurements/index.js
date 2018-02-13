@@ -12,6 +12,7 @@ import InputMeasurement from './InputMeasurement';
 import { FrontImage, BackImage } from '../../images/measurements';
 import WithSectionHeader from '../HOC/WithSectionHeader';
 import BackButton from '../BackButton';
+import { frontMeasurements, backMeasurements } from './helper';
 
 const mapStateToProps = store => {
   return {
@@ -57,7 +58,6 @@ class Measurements extends Component {
       getCustomerMeasurements,
       match: { params: { customer_id } },
     } = this.props;
-    console.log('customer_id', customer_id, this.props);
 
     const self = this;
     getCustomerMeasurements({ customer_id })
@@ -112,9 +112,9 @@ class Measurements extends Component {
     );
   }
 
-  toggleEditEnabled(editEnabled) {
+  toggleEditEnabled = editEnabled => {
     this.setState({ editEnabled: !editEnabled });
-  }
+  };
 
   updateMeasurement = (kind, value) => {
     let newState = this.state;
@@ -122,148 +122,47 @@ class Measurements extends Component {
     this.setState(newState);
   };
 
-  validateMeasurement(value) {
+  validateMeasurement = value => {
     const last = value[0];
     const lastCharInt = last.isNaN() ? true : false;
-  }
+  };
 
-  renderInputs(show, editEnabled, measurements) {
+  renderInputMeasurement = (meas, i) => {
+    const { editEnabled, measurements } = this.state;
+    return (
+      <InputMeasurement
+        key={i}
+        update={this.updateMeasurement}
+        disabled={editEnabled}
+        kind={meas}
+        value={measurements[meas]}
+      />
+    );
+  };
+
+  renderInputs = (show, measurements) => {
     if (!isEmpty(measurements)) {
       if (show === 'front') {
         return (
-          <form>
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="ankle"
-              value={measurements.ankle}
-            />
-
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="calf"
-              value={measurements.calf}
-            />
-
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="chest_bust"
-              value={measurements.chest_bust}
-            />
-
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="hips"
-              value={measurements.hips}
-            />
-
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="knee"
-              value={measurements.knee}
-            />
-
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="pant_length"
-              value={measurements.pant_length}
-            />
-
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="sleeve_length"
-              value={measurements.sleeve_length}
-            />
-
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="shoulder_to_waist"
-              value={measurements.shoulder_to_waist}
-            />
-
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="thigh"
-              value={measurements.thigh}
-            />
-
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="upper_torso"
-              value={measurements.upper_torso}
-            />
-
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="waist"
-              value={measurements.waist}
-            />
-          </form>
+          <form>{frontMeasurements.map(this.renderInputMeasurement)}</form>
         );
       } else if (show === 'back') {
-        return (
-          <div>
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="back_width"
-              value={measurements.back_width}
-            />
-
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="bicep"
-              value={measurements.bicep}
-            />
-
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="elbow"
-              value={measurements.elbow}
-            />
-
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="forearm"
-              value={measurements.forearm}
-            />
-
-            <InputMeasurement
-              update={this.updateMeasurement}
-              disabled={editEnabled}
-              kind="inseam"
-              value={measurements.inseam}
-            />
-          </div>
-        );
+        return <form>{backMeasurements.map(this.renderInputMeasurement)}</form>;
       }
     }
-  }
+  };
 
   renderImages() {
-    const { editEnabled, measurements } = this.state;
+    const { measurements } = this.state;
     return (
       <div className="measurements-image-container">
         <div className="input-measurements-container">
           <img className="measurements-image" src={FrontImage} />
-          {this.renderInputs('front', editEnabled, measurements)}
+          {this.renderInputs('front', measurements)}
         </div>
         <div className="input-measurements-container">
           <img className="measurements-image" src={BackImage} />
-          {this.renderInputs('back', editEnabled, measurements)}
+          {this.renderInputs('back', measurements)}
         </div>
       </div>
     );
