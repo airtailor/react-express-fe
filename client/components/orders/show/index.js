@@ -30,6 +30,7 @@ import RenderOrderNotes from './RenderOrderNotes';
 import RenderOrderDetails from './RenderOrderDetails';
 import CustomerDetails from './CustomerDetails';
 import CustomerMeasurementsLink from '../../CustomerMeasurementsLink';
+import AddNotesButton from '../../AddNotesButton';
 
 const mapStateToProps = store => {
   return {
@@ -121,7 +122,15 @@ class OrdersShow extends Component {
       order: { [key]: this.state.notes, id: orderId, store_id: storeId },
     };
 
-    this.props.updateOrder(data).catch(err => console.log(err));
+    this.props
+      .updateOrder(data)
+      .then(res => {
+        const kind = 'success';
+        const message = 'Notes Updated Successfully';
+        this.props.setGrowler({ kind, message });
+        this.setState({ displayNotesForm: false });
+      })
+      .catch(err => console.log(err));
   }
 
   checkOrderIn = () => {
@@ -300,29 +309,34 @@ class OrdersShow extends Component {
 
   renderNotesForm = () => {
     if (this.state.displayNotesForm) {
-      const { tailor: isTailor, admin: isAdmin } = this.props.userRoles;
+      const {
+        userRoles: { tailor: isTailor, admin: isAdmin },
+        currentOrder,
+      } = this.props;
+
       let prompt, party;
 
       if (isTailor) {
-        prompt = 'Add Tailor Notes?';
+        prompt = 'Update Tailor Notes';
         party = 'provider_notes';
       } else if (isAdmin) {
-        prompt = 'Add Admin Notes?';
+        prompt = 'Update Order Notes';
         party = 'requester_notes';
       }
-
-      const notesField = this.props.currentOrder[party];
 
       return (
         <form className="notes-form" onSubmit={e => this.submitNotes(e)}>
           <label>
-            <h3>{prompt}</h3>
+            <h3 className="sans-serif">{prompt}</h3>
             <br />
+
             <textarea
-              cols={43}
-              rows={10}
-              defaultValue={notesField}
+              className="order-details-notes-textarea"
+              defaultValue={currentOrder[party]}
               onChange={e => this.updateNotes(e.target.value)}
+              cols={36}
+              rows={10}
+              placeholder="Is this a special order or customer? Enter any important notes about the overall order here to help us serve you best!"
             />
           </label>
           <br />
@@ -336,14 +350,23 @@ class OrdersShow extends Component {
   };
 
   renderToggleNotesFormButton = () => {
+    const { displayNotesForm } = this.state;
+    const { userRoles: { tailor, admin }, currentOrder } = this.props;
+    let text = null;
+    if (displayNotesForm) {
+      text = 'Hide';
+    } else {
+      text = tailor ? 'Add Tailor Notes' : 'Add Order Notes';
+    }
+
     return (
       <div>
-        <button
-          className="pink-button"
-          onClick={() => this.showHideNotesForm()}
-        >
-          {this.state.displayNotesForm ? 'Hide' : 'Add Notes'}
-        </button>
+        <div style={{ marginLeft: '15px' }}>
+          <AddNotesButton
+            text={text}
+            onClick={() => this.showHideNotesForm()}
+          />
+        </div>
       </div>
     );
   };
@@ -455,6 +478,21 @@ class OrdersShow extends Component {
     );
   }
 
+  notes() {
+    const { userRoles: { admin, retailer, tailor } } = this.props;
+    if (retailer) {
+      return <RenderOrderNotes {...this.props} />;
+    } else if (tailor) {
+      return (
+        <div>
+          <RenderOrderNotes {...this.props} />
+          {this.renderToggleNotesFormButton()}
+          {this.renderNotesForm()}
+        </div>
+      );
+    }
+  }
+
   renderOrder() {
     const {
       currentOrder: { total, customer },
@@ -474,10 +512,11 @@ class OrdersShow extends Component {
             paddingRight: '3%',
           }}
         >
-          <h1 className="title">ORDER #{currentOrder.id} </h1>
+          <h1 className="title">ORDER #{currentOrder.id}</h1>
           <RenderGarments {...this.props} />
           {this.orderTotal(total)}
-          <RenderOrderNotes {...this.props} />
+
+          {this.notes()}
         </div>
         <div style={{ float: 'right', width: '40%' }}>
           <RenderOrderDetails {...this.props} />
@@ -527,16 +566,13 @@ class OrdersShow extends Component {
 
   setMainContent() {
     let mainContent;
-    const editButton = this.renderEditOrderButton();
-    const details = this.renderOrder();
-    const controls = this.renderOrderControls();
-    // NOTE: here we should be rendering 1 of 2 main components
+
     mainContent = (
       <div>
         <BackButton {...this.props} />
-        {editButton}
-        {details}
-        {controls}
+        {this.renderEditOrderButton()}
+        {this.renderOrder()}
+        {/*this.renderOrderControls()*/}
       </div>
     );
 

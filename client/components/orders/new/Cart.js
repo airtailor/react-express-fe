@@ -22,7 +22,7 @@ import {
 } from '../../../utils/validations';
 import Button from '../../Button';
 import ArrowButton from '../../ArrowButton';
-import OrderNotesBasketButton from '../../OrderNotesBasketButton';
+import AddNotesButton from '../../AddNotesButton';
 import { getTotal } from './utils';
 
 import { basketImage } from '../../../images';
@@ -326,7 +326,7 @@ class Cart extends Component {
     const { showNotes } = this.state;
     return (
       <div style={{ marginLeft: '15px' }}>
-        <OrderNotesBasketButton
+        <AddNotesButton
           onClick={() => this.setState({ showNotes: !showNotes })}
         />
 
