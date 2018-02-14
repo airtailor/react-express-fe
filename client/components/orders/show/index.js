@@ -482,7 +482,7 @@ class OrdersShow extends Component {
     const { userRoles: { admin, retailer, tailor } } = this.props;
     if (retailer) {
       return <RenderOrderNotes {...this.props} />;
-    } else if (tailor) {
+    } else if (tailor || admin) {
       return (
         <div>
           <RenderOrderNotes {...this.props} />
