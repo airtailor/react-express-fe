@@ -14,3 +14,6 @@ export const clearImage =
 
 export const notesImage =
   'https://s3.us-east-2.amazonaws.com/airtailor-images/Notes.png';
+
+export const measurementsImage =
+  'https://s3.us-east-2.amazonaws.com/airtailor-images/MeasureIcon.png';
