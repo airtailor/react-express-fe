@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 import {
   getCustomerMeasurements,
   createCustomerMeasurements,
@@ -183,6 +184,9 @@ class Measurements extends Component {
             {this.enableEditButton(editEnabled)}
           </h1>
         </div>
+        <Link to={`/customer/${this.props.match.params.customer_id}`}>
+          Customer
+        </Link>
 
         {this.renderImages()}
       </div>
