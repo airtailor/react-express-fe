@@ -194,6 +194,21 @@ class OrdersShow extends Component {
     );
   };
 
+  renderEditOrderButton() {
+    const { userRoles: { admin }, currentOrder: order } = this.props;
+    const orderEditPath = `/orders/${order.id}/edit`;
+
+    if (admin) {
+      return (
+        <div>
+          <Link to={orderEditPath}>
+            <input className="short-button" type="submit" value="Edit Order" />
+          </Link>
+        </div>
+      );
+    }
+  }
+
   renderPrintLabel = () => {
     const {
       currentOrder: order,
