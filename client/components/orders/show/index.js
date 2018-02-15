@@ -194,54 +194,6 @@ class OrdersShow extends Component {
     );
   };
 
-  printShippingLabel() {
-    return window.print();
-  }
-
-  renderAlteration(alteration, index) {
-    // original, blind stitch, and cuffed hems should be red
-    const hemAlts = [
-      'Shorten Pant Length - Original Hem',
-      'Shorten Pant Length - Blind Stitch Hem',
-      'Shorten Pant Length - Cuffed Hem',
-    ];
-
-    const className = hemAlts.includes(alteration.name) ? 'red' : '';
-    const splitAlt = alteration.name.split(' - ');
-    const alt = { name: splitAlt[0] + ' - ', specific: splitAlt[1] };
-
-    if (splitAlt[1]) {
-      return (
-        <li key={index}>
-          {alt.name}
-          <span className={className}>{alt.specific}</span>
-        </li>
-      );
-    } else {
-      return <li key={index}>{alteration.name}</li>;
-    }
-  }
-
-  // renderArrivedButton = () => {
-  //   return this.renderButton(
-  //     'Check Order In',
-  //     { disabled: false },
-  //     this.checkOrderIn
-  //   );
-  // };
-  //
-  // renderFulfillButton = () => {
-  //   return this.renderButton(
-  //     'Fulfill This Order',
-  //     { disabled: false },
-  //     this.fulfillOrder
-  //   );
-  // };
-
-  renderCompletedButton = () => {
-    return this.renderButton('Order Completed ✔️', { disabled: true });
-  };
-
   renderPrintLabel = () => {
     const {
       currentOrder: order,
@@ -283,37 +235,6 @@ class OrdersShow extends Component {
       );
     }
   };
-
-  renderButton(text, params, callback = () => {}) {
-    const className = params.className || 'pink-button';
-    const clickArgs = params.clickArgs || undefined;
-    const disabled = params.disabled;
-    return (
-      <div>
-        <button
-          onClick={() => callback(clickArgs)}
-          disabled={disabled}
-          className={className}
-        >
-          {text}
-        </button>
-      </div>
-    );
-  }
-
-  renderGarmentAlterations(garment) {
-    if (garment.alterations.length > 0) {
-      return garment.alterations.map((alt, index) => {
-        return (
-          <p key={index} className="cart-alteration">
-            <span>{alt.name}</span>
-          </p>
-        );
-      });
-    } else {
-      return <div />;
-    }
-  }
 
   renderNotesForm = () => {
     if (this.state.displayNotesForm) {
@@ -379,34 +300,6 @@ class OrdersShow extends Component {
     );
   };
 
-  renderEmptyDiv() {
-    return <div />;
-  }
-
-  renderEmptyButtonDivs(count) {
-    const output = [];
-    while (count > 0) {
-      output.push(this.renderEmptyDiv);
-      count--;
-    }
-    return output;
-  }
-
-  renderEditOrderButton() {
-    const { userRoles: { admin }, currentOrder: order } = this.props;
-    const orderEditPath = `/orders/${order.id}/edit`;
-
-    if (admin) {
-      return (
-        <div>
-          <Link to={orderEditPath}>
-            <input className="short-button" type="submit" value="Edit Order" />
-          </Link>
-        </div>
-      );
-    }
-  }
-
   renderOrderControls() {
     return (
       <div className="flex-container" style={{ justifyContent: 'center' }}>
@@ -415,59 +308,6 @@ class OrdersShow extends Component {
         {this.renderPrintLabel()}
       </div>
     );
-
-    // const { currentOrder: order, userRoles: roles } = this.props;
-    // const { admin, tailor, retailer, customer } = roles;
-    // const { arrived, fulfilled } = order;
-    // const action = shipmentActions(order, roles);
-    //
-    // // NOTE: This all needs to go into a higher-order interface component.
-    // // If a new button, is assigned, this will error out and help you realize it.
-    // let [
-    //   notesForm,
-    //   arrivedButton,
-    //   instructionButton,
-    //   fulfillButton,
-    //   labelButton,
-    //   messengerButton,
-    //   notesButton,
-    //   completedButton,
-    // ] = this.renderEmptyButtonDivs(8);
-    //
-    // if (tailor || admin) {
-    //   notesForm = this.renderNotesForm;
-    //   notesButton = this.renderToggleNotesFormButton;
-    //
-    //   if (!arrived && !fulfilled) {
-    //     arrivedButton = this.renderArrivedButton;
-    //   }
-    //
-    //   if (arrived && !fulfilled) {
-    //     instructionButton = this.renderPrintInstructions;
-    //     fulfillButton = this.renderFulfillButton;
-    //   }
-    //
-    //   if (arrived && fulfilled) {
-    //     labelButton = this.renderPrintLabel;
-    //     completedButton = this.renderCompletedButton;
-    //
-    //     if (messengerAllowed(action, roles)) {
-    //       messengerButton = this.renderSendMessenger;
-    //     }
-    //   }
-    // }
-    //
-    // return (
-    //   <div>
-    //     {notesButton()}
-    //     {notesForm()}
-    //     {arrivedButton()}
-    //     {instructionButton()}
-    //     {fulfillButton()}
-    //     {completedButton()}
-    //     {labelButton()}
-    //   </div>
-    // );
   }
 
   orderTotal(total) {
@@ -615,37 +455,22 @@ class OrdersShow extends Component {
     }
   };
 
-  setMainContent() {
-    let mainContent;
-
-    mainContent = (
-      <div>
-        <div className="order-show">
-          <BackButton {...this.props} />
-          {this.renderEditOrderButton()}
-          {this.renderOrder()}
-        </div>
-        {this.renderOrderControls()}
-      </div>
-    );
-
-    return mainContent;
-  }
-
   render() {
-    const { currentStore: store, currentOrder: order } = this.props;
-    let mainContent = <div />;
-    let headerText = '';
-
-    if (!isEmpty(order)) {
-      mainContent = this.setMainContent();
-      headerText = `Orders / ${store.name} / #${order.id}`;
+    const { currentStore: { name }, currentOrder: order } = this.props;
+    if (isEmpty(order)) {
+      return <div />;
     }
-
     return (
       <div>
-        <SectionHeader text={headerText} />
-        <div className="order-show">{mainContent}</div>
+        <SectionHeader text={`Orders / ${name} / #${order.id}`} />
+        <div className="order-show">
+          <div className="order-show">
+            <BackButton {...this.props} />
+            {this.renderEditOrderButton()}
+            {this.renderOrder()}
+          </div>
+          {this.renderOrderControls()}
+        </div>
       </div>
     );
   }
