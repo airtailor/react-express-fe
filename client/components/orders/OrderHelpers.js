@@ -56,8 +56,7 @@ export const getOrderStatus = (order, roles) => {
     color = 'red';
   } else if (
     order.fulfilled &&
-    !order.customer_alerted &&
-    order.ship_to_store
+    !order.customer_alerted //&& order.ship_to_store
   ) {
     status = 'In Transit';
     color = 'gold';

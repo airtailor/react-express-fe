@@ -31,6 +31,7 @@ import RenderOrderDetails from './RenderOrderDetails';
 import CustomerDetails from './CustomerDetails';
 import CustomerMeasurementsLink from '../../CustomerMeasurementsLink';
 import AddNotesButton from '../../AddNotesButton';
+import Button from '../../Button';
 
 const mapStateToProps = store => {
   return {
@@ -221,42 +222,47 @@ class OrdersShow extends Component {
     }
   }
 
-  renderArrivedButton = () => {
-    return this.renderButton(
-      'Check Order In',
-      { disabled: false },
-      this.checkOrderIn
-    );
-  };
-
-  renderFulfillButton = () => {
-    return this.renderButton(
-      'Fulfill This Order',
-      { disabled: false },
-      this.fulfillOrder
-    );
-  };
+  // renderArrivedButton = () => {
+  //   return this.renderButton(
+  //     'Check Order In',
+  //     { disabled: false },
+  //     this.checkOrderIn
+  //   );
+  // };
+  //
+  // renderFulfillButton = () => {
+  //   return this.renderButton(
+  //     'Fulfill This Order',
+  //     { disabled: false },
+  //     this.fulfillOrder
+  //   );
+  // };
 
   renderCompletedButton = () => {
     return this.renderButton('Order Completed ✔️', { disabled: true });
   };
 
   renderPrintLabel = () => {
-    const { currentOrder: order, userRoles: roles } = this.props;
+    const {
+      currentOrder: order,
+      currentOrder: { fulfilled },
+      userRoles: roles,
+      userRoles: { tailor },
+    } = this.props;
     const disabled = this.state.loadingLabel;
     const shipmentAction = shipmentActions(order, roles);
 
     let onClick, printPrompt, clickArgs, shipmentDiv;
     switch (labelState(roles, order, disabled)) {
       case 'needs_label':
-        printPrompt = 'Create Label';
+        printPrompt = 'CREATE LABEL';
         onClick = this.makeShippingLabel;
         clickArgs = shipmentAction;
         break;
       case 'in_progress':
-        printPrompt = 'Creating Label';
+        printPrompt = 'CREATING LABEL';
       case 'label_created':
-        printPrompt = 'Print Label';
+        printPrompt = 'PRINT LABEL';
         onClick = () => window.print();
         shipmentDiv = <OrderComplete />;
         break;
@@ -264,16 +270,18 @@ class OrdersShow extends Component {
         break;
     }
 
-    return (
-      <div>
-        {this.renderButton(
-          printPrompt,
-          { disabled: disabled, clickArgs: clickArgs },
-          onClick
-        )}
-        {shipmentDiv}
-      </div>
-    );
+    if (fulfilled && tailor) {
+      return (
+        <div>
+          <Button
+            className="order-show-control-button"
+            text={printPrompt}
+            onClick={() => onClick(clickArgs)}
+          />
+          {shipmentDiv}
+        </div>
+      );
+    }
   };
 
   renderButton(text, params, callback = () => {}) {
@@ -400,58 +408,66 @@ class OrdersShow extends Component {
   }
 
   renderOrderControls() {
-    const { currentOrder: order, userRoles: roles } = this.props;
-    const { admin, tailor, retailer, customer } = roles;
-    const { arrived, fulfilled } = order;
-    const action = shipmentActions(order, roles);
-
-    // NOTE: This all needs to go into a higher-order interface component.
-    // If a new button, is assigned, this will error out and help you realize it.
-    let [
-      notesForm,
-      arrivedButton,
-      instructionButton,
-      fulfillButton,
-      labelButton,
-      messengerButton,
-      notesButton,
-      completedButton,
-    ] = this.renderEmptyButtonDivs(8);
-
-    if (tailor || admin) {
-      notesForm = this.renderNotesForm;
-      notesButton = this.renderToggleNotesFormButton;
-
-      if (!arrived && !fulfilled) {
-        arrivedButton = this.renderArrivedButton;
-      }
-
-      if (arrived && !fulfilled) {
-        instructionButton = this.renderPrintInstructions;
-        fulfillButton = this.renderFulfillButton;
-      }
-
-      if (arrived && fulfilled) {
-        labelButton = this.renderPrintLabel;
-        completedButton = this.renderCompletedButton;
-
-        if (messengerAllowed(action, roles)) {
-          messengerButton = this.renderSendMessenger;
-        }
-      }
-    }
-
     return (
-      <div>
-        {notesButton()}
-        {notesForm()}
-        {arrivedButton()}
-        {instructionButton()}
-        {fulfillButton()}
-        {completedButton()}
-        {labelButton()}
+      <div className="flex-container" style={{ justifyContent: 'center' }}>
+        {this.renderCheckOrderIn()}
+        {this.renderFulfillOrder()}
+        {this.renderPrintLabel()}
       </div>
     );
+
+    // const { currentOrder: order, userRoles: roles } = this.props;
+    // const { admin, tailor, retailer, customer } = roles;
+    // const { arrived, fulfilled } = order;
+    // const action = shipmentActions(order, roles);
+    //
+    // // NOTE: This all needs to go into a higher-order interface component.
+    // // If a new button, is assigned, this will error out and help you realize it.
+    // let [
+    //   notesForm,
+    //   arrivedButton,
+    //   instructionButton,
+    //   fulfillButton,
+    //   labelButton,
+    //   messengerButton,
+    //   notesButton,
+    //   completedButton,
+    // ] = this.renderEmptyButtonDivs(8);
+    //
+    // if (tailor || admin) {
+    //   notesForm = this.renderNotesForm;
+    //   notesButton = this.renderToggleNotesFormButton;
+    //
+    //   if (!arrived && !fulfilled) {
+    //     arrivedButton = this.renderArrivedButton;
+    //   }
+    //
+    //   if (arrived && !fulfilled) {
+    //     instructionButton = this.renderPrintInstructions;
+    //     fulfillButton = this.renderFulfillButton;
+    //   }
+    //
+    //   if (arrived && fulfilled) {
+    //     labelButton = this.renderPrintLabel;
+    //     completedButton = this.renderCompletedButton;
+    //
+    //     if (messengerAllowed(action, roles)) {
+    //       messengerButton = this.renderSendMessenger;
+    //     }
+    //   }
+    // }
+    //
+    // return (
+    //   <div>
+    //     {notesButton()}
+    //     {notesForm()}
+    //     {arrivedButton()}
+    //     {instructionButton()}
+    //     {fulfillButton()}
+    //     {completedButton()}
+    //     {labelButton()}
+    //   </div>
+    // );
   }
 
   orderTotal(total) {
@@ -493,9 +509,38 @@ class OrdersShow extends Component {
     }
   }
 
+  renderCheckOrderIn() {
+    if (!this.props.currentOrder.arrived && !this.props.userRoles.retailer) {
+      return (
+        <Button
+          className="order-show-control-button"
+          text="CHECK IN ORDER"
+          onClick={this.checkOrderIn}
+        />
+      );
+    }
+  }
+
+  renderFulfillOrder() {
+    const {
+      currentOrder: { arrived, fulfilled },
+      userRoles: { retailer },
+    } = this.props;
+
+    if (arrived && !fulfilled && !retailer) {
+      return (
+        <Button
+          className="order-show-control-button"
+          text="FULFILL ORDER"
+          onClick={this.fulfillOrder}
+        />
+      );
+    }
+  }
+
   renderOrder() {
     const {
-      currentOrder: { total, customer },
+      currentOrder: { total, customer, arrived },
       currentOrder,
       userRoles: { admin, retailer, tailor },
     } = this.props;
@@ -513,9 +558,10 @@ class OrdersShow extends Component {
           }}
         >
           <h1 className="title">ORDER #{currentOrder.id}</h1>
+          {!retailer ? this.renderPrintInstructions() : ''}
+
           <RenderGarments {...this.props} />
           {this.orderTotal(total)}
-
           {this.notes()}
         </div>
         <div style={{ float: 'right', width: '40%' }}>
@@ -534,6 +580,7 @@ class OrdersShow extends Component {
         id: orderId,
         requester_notes: requesterNotes,
         provider_notes: providerNotes,
+        fulfilled,
         customer: { first_name: firstName, last_name: lastName },
       },
     } = this.props;
@@ -541,27 +588,31 @@ class OrdersShow extends Component {
     const orderNotes = requesterNotes || 'Not Provided';
     const tailorNotes = providerNotes || 'Not Provided';
 
-    return (
-      <div>
-        {this.renderButton('Print Instructions', { disabled: false }, () =>
-          window.print()
-        )}
-        <div className="print print-instructions">
-          <div>
-            <img src={logoImage} style={{ maxWidth: '100px' }} />
+    if (!fulfilled) {
+      return (
+        <div>
+          <Button
+            onClick={window.print}
+            text="PRINT INSTRUCTIONS"
+            className="print-instructions-button"
+          />
+          <div className="print print-instructions">
+            <div>
+              <img src={logoImage} style={{ maxWidth: '100px' }} />
+            </div>
+            <h2>Alterations for Order #{orderId}</h2>
+            <h4>Customer Name: {`${firstName} ${lastName}`}</h4>
+            <RenderGarments {...this.props} />
+            <h3>
+              Order Notes: <p style={{ display: 'inline' }}>{orderNotes}</p>
+            </h3>
+            <h3>
+              Taior Notes: <p style={{ display: 'inline' }}>{tailorNotes}</p>
+            </h3>
           </div>
-          <h2>Alterations for Order #{orderId}</h2>
-          <h4>Customer Name: {`${firstName} ${lastName}`}</h4>
-          <RenderGarments {...this.props} />
-          <h3>
-            Order Notes: <p style={{ display: 'inline' }}>{orderNotes}</p>
-          </h3>
-          <h3>
-            Taior Notes: <p style={{ display: 'inline' }}>{tailorNotes}</p>
-          </h3>
         </div>
-      </div>
-    );
+      );
+    }
   };
 
   setMainContent() {
@@ -569,10 +620,12 @@ class OrdersShow extends Component {
 
     mainContent = (
       <div>
-        <BackButton {...this.props} />
-        {this.renderEditOrderButton()}
-        {this.renderOrder()}
-        {/*this.renderOrderControls()*/}
+        <div className="order-show">
+          <BackButton {...this.props} />
+          {this.renderEditOrderButton()}
+          {this.renderOrder()}
+        </div>
+        {this.renderOrderControls()}
       </div>
     );
 

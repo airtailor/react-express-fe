@@ -7,7 +7,7 @@ class AddNotesButton extends Component {
     return (
       <p className="clear-button" onClick={this.props.onClick}>
         <img src={notesImage} className="notes-image" />
-        <span className="notes-button-text">{text}</span>
+        <span className="blue-link">{text}</span>
       </p>
     );
   }

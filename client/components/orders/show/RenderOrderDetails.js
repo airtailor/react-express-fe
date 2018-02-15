@@ -23,6 +23,7 @@ class RenderOrderDetails extends Component {
       this.props.currentOrder,
       this.props.userRoles
     );
+
     return (
       <div>
         <OrderShowTitle title="ORDER PLACED" />
