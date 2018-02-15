@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import {
   getCustomerMeasurements,
   createCustomerMeasurements,
+  setGrowler,
 } from '../../actions';
 
 import InputMeasurement from './InputMeasurement';
@@ -13,6 +15,7 @@ import { FrontImage, BackImage } from '../../images/measurements';
 import WithSectionHeader from '../HOC/WithSectionHeader';
 import BackButton from '../BackButton';
 import { frontMeasurements, backMeasurements } from './helper';
+import Button from '../Button';
 
 const mapStateToProps = store => {
   return {
@@ -23,7 +26,7 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { getCustomerMeasurements, createCustomerMeasurements },
+    { getCustomerMeasurements, createCustomerMeasurements, setGrowler },
     dispatch
   );
 };
@@ -67,50 +70,51 @@ class Measurements extends Component {
       .catch(err => console.log('err', err));
   };
 
-  enableEditButton(editEnabled) {
-    if (!editEnabled) {
-      return (
-        <input
-          className="tiny-button"
-          readOnly={true}
-          value="Edit"
-          onClick={() => this.toggleEditEnabled(editEnabled)}
-        />
-      );
-    } else {
-      return (
-        <input
-          className="tiny-button"
-          readOnly={true}
-          value="Submit"
-          onClick={() => this.submitNewMeasurements(this.state.measurements)}
-        />
-      );
+  enableEditButton = editEnabled => {
+    const {
+      userRoles: { retailer },
+      measurements: { created_at },
+    } = this.props;
+    if (retailer) {
+      return '';
     }
-  }
 
-  submitNewMeasurements(measurements) {
-    this.setState({ editEnabled: false });
-    this.props
-      .createCustomerMeasurements(this.state.measurements)
-      .then(res => this.resetCustomerMeasurements())
-      .catch(err => console.log('err', err));
-  }
+    let text, onClick;
 
-  renderButtons(editEnabled) {
-    const { userRoles: { tailor, retailer, admin } } = this.props;
-    if (!tailor || !admin) {
-      return <div />;
+    if (!editEnabled) {
+      text = 'EDIT';
+      onClick = () => this.toggleEditEnabled(editEnabled);
+    } else {
+      text = 'SUBMIT';
+      onClick = () => this.submitNewMeasurements();
     }
 
     return (
-      <div className="measurement-buttons-container">
-        <input className="tiny-button" readOnly={true} value="Front" />
-        <input className="tiny-button" readOnly={true} value="Back" />
-        {this.enableEditButton(editEnabled)}
+      <div style={{ display: 'inline', float: 'right', marginLeft: '55px' }}>
+        <Button
+          className="order-show-control-button measurements-edit-button"
+          text={text}
+          onClick={onClick}
+        />
+        <p style={{ color: 'grey', fontSize: '12px', fontStyle: 'italic' }}>
+          Last Updated {moment(created_at).format('MM-DD-YYYY')}
+        </p>
       </div>
     );
-  }
+  };
+
+  submitNewMeasurements = () => {
+    this.setState({ editEnabled: false });
+    this.props
+      .createCustomerMeasurements(this.state.measurements)
+      .then(res => {
+        const kind = 'success';
+        const message = 'Measurements Have Been Updated!';
+        this.props.setGrowler({ kind, message });
+        this.resetCustomerMeasurements();
+      })
+      .catch(err => console.log('err', err));
+  };
 
   toggleEditEnabled = editEnabled => {
     this.setState({ editEnabled: !editEnabled });
@@ -174,8 +178,10 @@ class Measurements extends Component {
       <div className="customer-measurements">
         <BackButton {...this.props} />
         <div className="measurements-header">
-          <h1 className="sans-serif">CUSTOMER MEASUREMENTS</h1>
-          {this.renderButtons(editEnabled)}
+          <h1 className="sans-serif">
+            CUSTOMER MEASUREMENTS
+            {this.enableEditButton(editEnabled)}
+          </h1>
         </div>
 
         {this.renderImages()}
