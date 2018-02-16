@@ -137,4 +137,25 @@ router.get(`/:id`, (req, res) => {
     });
 });
 
+router.get(`/:id/customer_orders`, (req, res) => {
+  const headers = getHeaders(req);
+  const { id } = req.params;
+
+  Axios.get(`${apiUrl}/api/customers/${id}/customer_orders`, {
+    headers,
+  })
+    .then(response => {
+      res.json({ headers: response.headers, body: response.data });
+    })
+    .catch(err => {
+      if (err instanceof Error) {
+        console.log('@@@@@@@@@@@@@', err.response.status);
+        res.json(err.response.status);
+      } else {
+        console.log('error: ', err);
+        res.json(err);
+      }
+    });
+});
+
 module.exports = router;

@@ -8,7 +8,11 @@ import WithSectionHeader from '../HOC/WithSectionHeader';
 import CustomerDetails from '../orders/show/CustomerDetails';
 import CustomerMeasurementsLink from '../CustomerMeasurementsLink';
 
-import { getCurrentCustomer, setGrowler } from '../../actions';
+import {
+  getCurrentCustomer,
+  setGrowler,
+  getCustomerOrders,
+} from '../../actions';
 
 const mapStateToProps = store => {
   return {
@@ -19,7 +23,10 @@ const mapStateToProps = store => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ setGrowler, getCurrentCustomer }, dispatch);
+  return bindActionCreators(
+    { setGrowler, getCurrentCustomer, getCustomerOrders },
+    dispatch
+  );
 };
 
 class CustomerShow extends Component {
@@ -29,11 +36,15 @@ class CustomerShow extends Component {
     currentStore: PropTypes.object.isRequired, // mapStateToProps
     setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
     getCurrentCustomer: PropTypes.func.isRequired, // mapDispatchToProps
+    getCustomerOrders: PropTypes.func.isRequired, // mapDispatchToProps
   };
 
   componentDidMount() {
     const customerId = this.props.match.params.customer_id;
     this.props.getCurrentCustomer(customerId);
+    this.props
+      .getCustomerOrders(customerId)
+      .then(res => console.log('comp did mount', res));
   }
 
   refreshCurrentCustomer = customer => {

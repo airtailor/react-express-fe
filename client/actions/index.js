@@ -622,6 +622,16 @@ export function getStoreList() {
   };
 }
 
+export function getCustomerOrders(id) {
+  const url = `${expressApi}/customers/${id}/customer_orders`;
+  return Axios.get(url)
+    .then(res => {
+      console.log('res', res);
+      return res.data.body;
+    })
+    .catch(err => console.log('err', err));
+}
+
 // actions
 
 function setStoreList(stores) {
