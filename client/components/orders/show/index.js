@@ -422,7 +422,7 @@ class OrdersShow extends Component {
         <div style={{ float: 'right', width: '40%' }}>
           <RenderOrderDetails {...this.props} />
           <hr className="order-show-line" style={{ margin: '20px 0px' }} />
-          <CustomerDetails {...this.props} />
+          <CustomerDetails customer={customer} />
           <CustomerMeasurementsLink customer={customer} />
         </div>
       </div>

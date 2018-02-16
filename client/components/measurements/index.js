@@ -9,6 +9,7 @@ import {
   getCustomerMeasurements,
   createCustomerMeasurements,
   setGrowler,
+  getCurrentCustomer,
 } from '../../actions';
 
 import InputMeasurement from './InputMeasurement';
@@ -22,20 +23,28 @@ const mapStateToProps = store => {
   return {
     measurements: store.measurements,
     userRoles: store.userRoles,
+    currentCustomer: store.currentCustomer,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { getCustomerMeasurements, createCustomerMeasurements, setGrowler },
+    {
+      getCustomerMeasurements,
+      createCustomerMeasurements,
+      setGrowler,
+      getCurrentCustomer,
+    },
     dispatch
   );
 };
 
 class Measurements extends Component {
   static propTypes = {
-    userRoles: PropTypes.object.isRequired,
+    userRoles: PropTypes.object.isRequired, // mapStateToProps
+    currentCustomer: PropTypes.object.isRequired, // mapStateToProps
     measurements: PropTypes.object.isRequired, // mapStateToProps
+    getCurrentCustomer: PropTypes.func.isRequired, // mapDispatchToProps
     getCustomerMeasurements: PropTypes.func.isRequired, // mapDispatchToProps
     createCustomerMeasurements: PropTypes.func.isRequired, // mapDispatchToProps
     match: PropTypes.shape({
@@ -55,6 +64,13 @@ class Measurements extends Component {
 
   componentDidMount() {
     this.resetCustomerMeasurements();
+
+    const {
+      getCustomerMeasurements,
+      match: { params: { customer_id } },
+    } = this.props;
+
+    this.props.getCurrentCustomer(customer_id);
   }
 
   resetCustomerMeasurements = () => {
@@ -175,6 +191,11 @@ class Measurements extends Component {
 
   render() {
     const { editEnabled, measurements } = this.state;
+    const {
+      match: { params: { customer_id } },
+      currentCustomer: { first_name, last_name },
+    } = this.props;
+
     return (
       <div className="customer-measurements">
         <BackButton {...this.props} />
@@ -182,11 +203,12 @@ class Measurements extends Component {
           <h1 className="sans-serif">
             CUSTOMER MEASUREMENTS
             {this.enableEditButton(editEnabled)}
+            <br />
+            <Link className="blue-link" to={`/customers/${customer_id}`}>
+              {first_name} {last_name}
+            </Link>
           </h1>
         </div>
-        <Link to={`/customer/${this.props.match.params.customer_id}`}>
-          Customer
-        </Link>
 
         {this.renderImages()}
       </div>

@@ -20,22 +20,20 @@ class CustomerRoutes extends Component {
   };
 
   render() {
-    console.log('customer routes');
     const { loggedIn, admin, tailor } = this.props;
+
     return (
       <div>
         <Switch>
           <Route
             exact
             path="/customers/:customer_id"
-            render={props => {
-              console.log('show');
+            render={props =>
               loggedIn ? (
                 <CustomerShow {...props} />
               ) : (
                 <Redirect to="/sign_in" />
-              );
-            }}
+              )}
           />
 
           <Route

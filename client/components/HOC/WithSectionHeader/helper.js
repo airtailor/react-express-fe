@@ -22,5 +22,8 @@ export const getSectionHeaderText = props => {
     case '/customers/:customer_id/measurements':
       return 'Customer Measurements';
       break;
+    default:
+      return '';
+      break;
   }
 };
