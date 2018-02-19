@@ -8,6 +8,7 @@ import WithSectionHeader from '../../HOC/WithSectionHeader';
 import CustomerDetails from '../../orders/show/CustomerDetails';
 import CustomerMeasurementsLink from '../../CustomerMeasurementsLink';
 import CustomerOrders from './CustomerOrders';
+import BackButton from '../../BackButton';
 
 import {
   getCurrentCustomer,
@@ -81,10 +82,9 @@ class CustomerShow extends Component {
       return <div />;
     }
 
-    console.log('customer orders', this.props.customerOrders);
-
     return (
-      <div className="order-show" style={{ paddingTop: '50px' }}>
+      <div className="customer-show" style={{ paddingTop: '50px' }}>
+        <BackButton {...this.props} />
         <div
           className="flex-container"
           style={{ justifyContent: 'space-between', maxWidth: '1200px' }}

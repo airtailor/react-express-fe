@@ -479,7 +479,7 @@ class OrdersShow extends Component {
       <div>
         <SectionHeader text={`Orders / ${name} / #${order.id}`} />
         <div className="order-show">
-          <div className="order-show">
+          <div> 
             <BackButton {...this.props} />
             {this.renderEditOrderButton()}
             {this.renderOrder()}
