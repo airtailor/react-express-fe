@@ -9,7 +9,7 @@ const CustomerEdit = WithDynamicImport(() =>
 );
 
 const CustomerShow = WithDynamicImport(() =>
-  import('../../components/customers/CustomerShow')
+  import('../../components/customers/customerShow/')
 );
 
 class CustomerRoutes extends Component {

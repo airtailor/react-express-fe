@@ -4,21 +4,23 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
-import WithSectionHeader from '../HOC/WithSectionHeader';
-import CustomerDetails from '../orders/show/CustomerDetails';
-import CustomerMeasurementsLink from '../CustomerMeasurementsLink';
+import WithSectionHeader from '../../HOC/WithSectionHeader';
+import CustomerDetails from '../../orders/show/CustomerDetails';
+import CustomerMeasurementsLink from '../../CustomerMeasurementsLink';
+import CustomerOrders from './CustomerOrders';
 
 import {
   getCurrentCustomer,
   setGrowler,
   getCustomerOrders,
-} from '../../actions';
+} from '../../../actions';
 
 const mapStateToProps = store => {
   return {
     currentCustomer: store.currentCustomer,
     currentStore: store.currentStore,
     userRoles: store.userRoles,
+    customerOrders: store.customerOrders,
   };
 };
 
@@ -32,6 +34,7 @@ const mapDispatchToProps = dispatch => {
 class CustomerShow extends Component {
   static propTypes = {
     currentCustomer: PropTypes.object.isRequired, // mapStateToProps
+    customerOrders: PropTypes.array.isRequired, // mapStateToProps
     userRoles: PropTypes.object.isRequired, // mapStateToProps
     currentStore: PropTypes.object.isRequired, // mapStateToProps
     setGrowler: PropTypes.func.isRequired, // mapDispatchToProps
@@ -44,7 +47,6 @@ class CustomerShow extends Component {
     this.props.getCurrentCustomer(customerId);
     this.props
       .getCustomerOrders(customerId)
-      .then(res => console.log('comp did mount', res));
   }
 
   refreshCurrentCustomer = customer => {
@@ -79,6 +81,8 @@ class CustomerShow extends Component {
       return <div />;
     }
 
+    console.log('customer orders', this.props.customerOrders);
+
     return (
       <div className="order-show" style={{ paddingTop: '50px' }}>
         <div
@@ -105,7 +109,8 @@ class CustomerShow extends Component {
             <CustomerMeasurementsLink customer={this.props.currentCustomer} />
           </div>
           <div style={{ float: 'right', width: '40%' }}>
-            <CustomerDetails customer={this.props.currentCustomer} />
+            <h2 className="sans-serif">ORDER HISTORY</h2>
+            <CustomerOrders customerOrders={this.props.customerOrders} />
           </div>
         </div>
       </div>
