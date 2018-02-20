@@ -34,7 +34,11 @@ class DeliveryDetails extends Component {
     if (ship_to_store) {
       return retailer.address || retailer;
     } else {
-      return customer.addresses[0] || customer;
+      if (customer.addresses){
+        return customer.addresses[0] || customer;
+      } else {
+        return customer;
+      }
     }
   }
 
