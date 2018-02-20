@@ -41,6 +41,8 @@ export const RESET_USER_ROLE = 'RESET_USER_ROLE';
 export const SET_CURRENT_CUSTOMER = 'SET_CURRENT_CUSTOMER';
 export const UPDATE_CURRENT_CUSTOMER = 'UPDATE_CURRENT_CUSTOMER';
 
+export const SET_CUSTOMER_ORDERS = 'SET_CUSTOMER_ORDERS';
+
 export const storeTypes = [
   { name: 'Tailor', id: 'Tailor' },
   { name: 'Retailer', id: 'Retailer' },

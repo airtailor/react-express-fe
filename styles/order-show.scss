@@ -1,5 +1,6 @@
 .order-show {
-  padding-left: 80px;
+  padding-left: 50px;
+  max-width: 1200px;
 }
 
 .item-type-image {
@@ -13,10 +14,19 @@
   justify-content: flex-start;
 }
 
+.notes-title {
+  color: $primary-blue;
+  font-family: $sans-serif;
+  font-weight: 600;
+  font-size: 10px;
+}
+
 .notes {
+  color: gray;
   padding: 20px;
   padding-top: 0;
   font-family: $sans-serif;
+  font-size: 15px;
 }
 
 .type-list {
@@ -27,4 +37,38 @@
 
 .notes-form > textarea {
   width: 355px;
+}
+
+.order-show-line {
+  color: $primary-blue;
+  background-color: $primary-blue;
+  margin: 20px auto;
+  width: 80%;
+}
+
+.order-show-back-button {
+  @extend .back-button;
+  color: #4c97b3;
+}
+
+.order-show-p-content {
+  padding-left: 15px;
+  font-size: 14px;
+  line-height: 0.5;
+}
+
+.order-show-title {
+  font-family: $sans-serif;
+  font-size: 10px;
+}
+
+.order-show-status-card {
+  width: 170px;
+  font-family: $sans-serif;
+}
+
+.order-show-control-button {
+  @extend .submit-order-button;
+  margin-top: 50px !important;
+  font-size: 15px !important;
 }

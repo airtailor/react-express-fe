@@ -1,0 +1,8 @@
+.customer-orders {
+  padding: 0;
+}
+
+.customer-show {
+  @extend .order-show;
+  padding-top: 0 !important;
+}

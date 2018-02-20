@@ -45,6 +45,7 @@ import {
   SET_CART_CUSTOMER,
   RESET_CART_CUSTOMER,
   SET_STORE_LIST,
+  SET_CUSTOMER_ORDERS,
 } from '../utils/constants';
 
 import { removeFalseyValuesFromObject } from '../utils/format';
@@ -622,7 +623,26 @@ export function getStoreList() {
   };
 }
 
+export function getCustomerOrders(id) {
+  const url = `${expressApi}/customers/${id}/customer_orders`;
+  return dispatch => {
+    return Axios.get(url)
+      .then(res => {
+        dispatch(setCustomerOrders(res.data.body));
+        return res.data.body;
+      })
+      .catch(err => console.log('err', err));
+  }
+}
+
 // actions
+
+function setCustomerOrders(orders) {
+  return {
+    type: SET_CUSTOMER_ORDERS,
+    orders,
+  }
+}
 
 function setStoreList(stores) {
   return {

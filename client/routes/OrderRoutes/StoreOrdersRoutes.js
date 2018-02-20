@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import WithDynamicImport from '../../components/HOC/WithDynamicImport/';
 
 const StoresShow = WithDynamicImport(() =>
-  import('../../components/stores/StoresShow/')
+  import('../../components/orders/index/')
 );
 const ArchivedOrders = WithDynamicImport(() =>
   import('../../components/orders/ArchivedOrders')
