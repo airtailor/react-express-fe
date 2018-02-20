@@ -6,7 +6,7 @@ const CustomerOrders = props => {
   return (
     <div>
       <ul className='customer-orders'>
-        { customerOrders.map((order, i) => <CustomerOrder order={order} i={i} />) }
+        { customerOrders.map((o, i) => <CustomerOrder order={o} key={i} i={i} />) }
       </ul>
     </div>
   )
