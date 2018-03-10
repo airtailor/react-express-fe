@@ -18,7 +18,7 @@ const formatValidAddressIntoCustomer = customer => {
     phone,
     email,
     addresses,
-    agrees_to_01_10_2018,
+    agrees_to_03_09_2018,
   } = customer;
 
   const {
@@ -40,7 +40,7 @@ const formatValidAddressIntoCustomer = customer => {
     city,
     state_province,
     zip_code,
-    agrees_to_01_10_2018,
+    agrees_to_03_09_2018,
   };
 };
 
@@ -99,5 +99,5 @@ export const initialState = {
   city: '',
   state_province: '',
   zip_code: '',
-  agrees_to_01_10_2018: false,
+  agrees_to_03_09_2018: false,
 };
