@@ -386,20 +386,27 @@ const PrivacyPolicy = props => {
       <p>
         V. MARKETING AND EMAIL COMMUNICATION
         <br />
-        By providing your email address to us, you expressly consent to receive
-        emails from us, where permitted by law. We may use email to communicate
-        with you, to send information that you have requested or to send
-        information about other products or services developed or provided by us
-        or our partners. If you do not want to receive commercial email or other
-        mail from us, you may unsubscribe using the unsubscribe link at the
-        bottom of an email you receive. Please note that if you do not want to
-        receive legal notices from us, such as notices regarding this Privacy
-        Policy, those legal notices will still govern your use of the Services,
-        and you are responsible for reviewing such legal notices for changes. We
-        may receive a confirmation when you open an email from Air Tailor if
-        your computer supports this type of program. Air Tailor uses this
-        confirmation to help us make emails more interesting and helpful and to
-        improve our service.
+        By providing your email address and phone number to us, you expressly
+        consent to receive emails and text messages from us, where permitted by
+        law. We may use email to communicate with you, to send information that
+        you have requested or to send information about other products or
+        services developed or provided by us or our partners. If you do not want
+        to receive commercial email or other mail from us, you may unsubscribe
+        using the unsubscribe link at the bottom of an email you receive. When
+        you consent to receive information from us via SMS/text messages, we
+        collect and use your contact information for the purposes of fulfilling
+        your request. You can unsubscribe from SMS/Text communications by
+        replying with 'STOP'. If you have any questions about unsubscribing from
+        our messages, please contact us as outlined below.
+        <br />
+        <br />
+        Please note that if you do not want to receive legal notices from us,
+        such as notices regarding this Privacy Policy, those legal notices will
+        still govern your use of the Services, and you are responsible for
+        reviewing such legal notices for changes. We may receive a confirmation
+        when you open an email from Air Tailor if your computer supports this
+        type of program. Air Tailor uses this confirmation to help us make
+        emails more interesting and helpful and to improve our service.
       </p>
 
       <p>
