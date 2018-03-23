@@ -153,7 +153,7 @@ class Home extends Component {
     return (
       <div>
         <SectionHeader
-          text={`Main / ${this.props.currentStore.name}`}
+          text={`Home / ${this.props.currentStore.name}`}
           showCart={!this.props.userRoles.tailor ? true : false}
           link={'/orders/new'}
           rotate={''}
