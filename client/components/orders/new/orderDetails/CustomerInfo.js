@@ -99,7 +99,7 @@ class CustomerInfo extends Component {
   privacyPolicy = agrees => {
     return (
       <Checkbox
-        fieldName={'agrees_to_03_09_2018'}
+        fieldName={'agrees_to_01_10_2018'}
         text={'Customer Agrees to Privacy Policy'}
         checked={agrees}
         onChange={this.props.updateCartCustomer}
@@ -119,7 +119,7 @@ class CustomerInfo extends Component {
         phone,
         email,
         id,
-        agrees_to_03_09_2018,
+        agrees_to_01_10_2018,
       },
       updateCartCustomer,
     } = this.props;
@@ -146,7 +146,7 @@ class CustomerInfo extends Component {
             />
             <hr className="cart-line" />
 
-            {this.privacyPolicy(agrees_to_03_09_2018)}
+            {this.privacyPolicy(agrees_to_01_10_2018)}
             <div style={{ marginTop: '-10px', marginBottom: '-10px' }}>
               <AcceptPrivacyPolicyModal />
             </div>

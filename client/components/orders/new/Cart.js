@@ -172,7 +172,7 @@ class Cart extends Component {
       city,
       state_province,
       zip_code,
-      agrees_to_03_09_2018,
+      agrees_to_01_10_2018,
     } = cartCustomer;
 
     if (
@@ -180,7 +180,7 @@ class Cart extends Component {
       last_name &&
       ValidatePhone(phone) &&
       ValidateEmail(email) &&
-      agrees_to_03_09_2018 &&
+      agrees_to_01_10_2018 &&
       // Condition Below:
       // Tailor will ship to store, OR customer has provided address
       (shipToStore ||
