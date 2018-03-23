@@ -69,7 +69,7 @@ if (process.env.NODE_ENV === 'production') {
     new UglifyJSPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new CompressionPlugin({
-      asset: '[path].gz[query]',
+      asset: '[path]',
       algorithm: 'gzip',
       test: /\.js$/,
     }),
