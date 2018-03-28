@@ -416,7 +416,7 @@ class OrdersShow extends Component {
           {!retailer ? this.renderPrintInstructions() : ''}
 
           <RenderGarments {...this.props} />
-          {this.orderTotal(total)}
+          {!tailor ? this.orderTotal(total) : ''}
           {this.notes()}
         </div>
         <div style={{ float: 'right', width: '40%' }}>
@@ -479,7 +479,7 @@ class OrdersShow extends Component {
       <div>
         <SectionHeader text={`Orders / ${name} / #${order.id}`} />
         <div className="order-show">
-          <div> 
+          <div>
             <BackButton {...this.props} />
             {this.renderEditOrderButton()}
             {this.renderOrder()}
