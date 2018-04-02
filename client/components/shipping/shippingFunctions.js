@@ -52,7 +52,7 @@ const messengerTime = now => {
   const endTime = now
     .clone()
     .startOf('day')
-    .hour(17);
+    .hour(20);
   const avail = now.isBetween(startTime, endTime);
   return avail;
 };
