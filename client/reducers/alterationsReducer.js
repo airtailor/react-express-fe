@@ -269,7 +269,7 @@ export default function() {
         id: 25,
         garmentId: 4,
         title: 'Shorten Dress Sleeves',
-        price: 15.0,
+        price: 15.5,
         howToPin:
           'https://s3.us-east-2.amazonaws.com/airtailor-images/new_how_to_pin/22.jpg',
         instructions:
