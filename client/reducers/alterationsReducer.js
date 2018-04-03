@@ -258,7 +258,7 @@ export default function() {
         id: 24,
         garmentId: 4,
         title: 'Shorten Dress Straps',
-        price: 15.0,
+        price: 15.5,
         howToPin:
           'https://s3.us-east-2.amazonaws.com/airtailor-images/new_how_to_pin/21.jpg',
         instructions:
