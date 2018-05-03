@@ -11,8 +11,7 @@ import {
   setCartCustomer,
   updateCartCustomer,
 } from '../../../../actions';
-import { ValidatePhone } from '../../../../utils/validations';
-import { formatPhone } from '../../../../utils/format';
+import { ValidateEmail } from '../../../../utils/validations';
 
 import FormField from '../../../FormField';
 
@@ -29,11 +28,11 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-class FindCustomerByPhone extends Component {
+class FindCustomerByEmail extends Component {
   constructor() {
     super();
     this.state = {
-      phone: '',
+      email: '',
       customer: null,
     };
   }
@@ -46,21 +45,21 @@ class FindCustomerByPhone extends Component {
     updateCustomerExists: PropTypes.func.isRequired, // parentComponent
   };
 
-  updatePhone = (field, phone) => {
+  updateEmail = (field, email) => {
     this.setState({
-      [field]: phone,
+      [field]: email,
     });
   };
 
-  renderSubmitButton(phone) {
-    if (ValidatePhone(phone)) {
+  renderSubmitButton(email) {
+    if (ValidateEmail(email)) {
       return (
         <div>
           <input
             type="submit"
             value="Submit"
             className="short-button"
-            onClick={() => this.searchForCustomerByPhone(phone)}
+            onClick={() => this.searchForCustomerByEail(email)}
           />
           <br />
           <br />
@@ -69,7 +68,7 @@ class FindCustomerByPhone extends Component {
     }
   }
 
-  searchForCustomerByPhone(phone) {
+  searchForCustomerByEmail(email) {
     const {
       setLoader,
       removeLoader,
@@ -80,13 +79,13 @@ class FindCustomerByPhone extends Component {
     } = this.props;
 
     setLoader();
-    findOrCreateCustomer({ phone }).then(res => {
+    findOrCreateCustomer({ email }).then(res => {
       removeLoader();
 
       const { body: { status, id }, body: customer } = res.data;
 
       if (status && status === 404) {
-        updateCartCustomer('phone', phone);
+        updateCartCustomer('email', email);
         updateCustomerExists(false);
       } else if (id) {
         const kind = 'success';
@@ -99,23 +98,23 @@ class FindCustomerByPhone extends Component {
   }
 
   render() {
-    const { phone, customer } = this.state;
-    const displayPhone = formatPhone(phone);
+    const { email, customer } = this.state;
+    const displayEmail = formatPhone(email);
     return (
       <div>
         <FormField
           // phone.replace regex taken from https://stackoverflow.com/a/37066380/4859818 - JCM
           // phone.replace(/^(\d{3})(\d{3})(\d)+$/, '($1) $2-$3')
-          value={displayPhone}
-          fieldName={'phone'}
-          title={'Search for Customer by Mobile Phone'}
+          value={displayEmail}
+          fieldName={'email'}
+          title={'Search for Customer by Email'}
           className="order-details-input"
-          onChange={this.updatePhone}
+          onChange={this.updateEmail}
         />
-        {this.renderSubmitButton(this.state.phone)}
+        {this.renderSubmitButton(this.state.email)}
       </div>
     );
   }
 }
 
-export default connect(null, mapDispatchToProps)(FindCustomerByPhone);
+export default connect(null, mapDispatchToProps)(FindCustomerByEmail);
