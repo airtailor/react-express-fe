@@ -59,7 +59,7 @@ class FindCustomerByEmail extends Component {
             type="submit"
             value="Submit"
             className="short-button"
-            onClick={() => this.searchForCustomerByEail(email)}
+            onClick={() => this.searchForCustomerByEmail(email)}
           />
           <br />
           <br />
@@ -99,13 +99,10 @@ class FindCustomerByEmail extends Component {
 
   render() {
     const { email, customer } = this.state;
-    const displayEmail = formatPhone(email);
     return (
       <div>
         <FormField
-          // phone.replace regex taken from https://stackoverflow.com/a/37066380/4859818 - JCM
-          // phone.replace(/^(\d{3})(\d{3})(\d)+$/, '($1) $2-$3')
-          value={displayEmail}
+          value={email}
           fieldName={'email'}
           title={'Search for Customer by Email'}
           className="order-details-input"
