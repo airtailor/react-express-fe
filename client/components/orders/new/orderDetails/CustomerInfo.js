@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { updateCartCustomer, resetCartCustomer } from '../../../../actions';
 import { formatPhone } from '../../../../utils/format';
-import FindCustomerByPhone from './FindCustomerByPhone';
+import FindCustomerByEmail from './FindCustomerByEmail';
 
 import FormField from '../../../FormField';
 import Checkbox from '../../../Checkbox';
@@ -66,6 +66,18 @@ class CustomerInfo extends Component {
     );
   }
 
+  email(email) {
+    return (
+      <FormField
+        value={email}
+        fieldName={'email'}
+        title={'Email'}
+        className="order-details-input"
+        onChange={this.props.updateCartCustomer}
+      />
+    );
+  }
+
   phone(phone) {
     const displayPhone = formatPhone(phone);
     return (
@@ -73,18 +85,6 @@ class CustomerInfo extends Component {
         value={displayPhone}
         fieldName={'phone'}
         title={'Mobile Phone'}
-        className="order-details-input"
-        onChange={this.props.updateCartCustomer}
-      />
-    );
-  }
-
-  email(email) {
-    return (
-      <FormField
-        value={email}
-        fieldName={'email'}
-        title={'Email'}
         className="order-details-input"
         onChange={this.props.updateCartCustomer}
       />
@@ -128,15 +128,15 @@ class CustomerInfo extends Component {
 
     if (customerExists === null && !id) {
       return (
-        <FindCustomerByPhone updateCustomerExists={this.updateCustomerExists} />
+        <FindCustomerByEmail updateCustomerExists={this.updateCustomerExists} />
       );
     } else {
       return (
         <div>
           {customerExists || id ? '' : <h4>Create Customer:</h4>}
           <div>
-            {this.phone(phone)}
             {this.email(email)}
+            {this.phone(phone)}
           </div>
           <div>
             {this.firstName(first_name)}
