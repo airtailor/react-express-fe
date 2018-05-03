@@ -12,6 +12,7 @@ import {
   updateCartCustomer,
 } from '../../../../actions';
 import { ValidateEmail } from '../../../../utils/validations';
+import { formatEmail } from '../../../../utils/format';
 
 import FormField from '../../../FormField';
 
@@ -69,6 +70,7 @@ class FindCustomerByEmail extends Component {
   }
 
   searchForCustomerByEmail(email) {
+    const formattedEmail = formatEmail(email);
     const {
       setLoader,
       removeLoader,
@@ -79,13 +81,13 @@ class FindCustomerByEmail extends Component {
     } = this.props;
 
     setLoader();
-    findOrCreateCustomer({ email }).then(res => {
+    findOrCreateCustomer({ email: formattedEmail }).then(res => {
       removeLoader();
 
       const { body: { status, id }, body: customer } = res.data;
 
       if (status && status === 404) {
-        updateCartCustomer('email', email);
+        updateCartCustomer('email', formattedEmail);
         updateCustomerExists(false);
       } else if (id) {
         const kind = 'success';
