@@ -462,7 +462,7 @@ class OrdersShow extends Component {
               Order Notes: <p style={{ display: 'inline' }}>{orderNotes}</p>
             </h3>
             <h3>
-              Taior Notes: <p style={{ display: 'inline' }}>{tailorNotes}</p>
+              Tailor Notes: <p style={{ display: 'inline' }}>{tailorNotes}</p>
             </h3>
           </div>
         </div>
