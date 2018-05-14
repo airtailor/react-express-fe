@@ -12,8 +12,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "clean":
-      "cd public && rimraf index.html bundle.* manifest.* vendor.* *.*.js *.*.js.gz",
+    "clean": "cd public && rimraf index.html bundle.* manifest.* vendor.* *.*.js *.*.js.gz",
     "build": "npm run clean && NODE_ENV=production webpack",
     "build-dev": "npm run clean && webpack --watch",
     "serve": "webpack-dev-server",
