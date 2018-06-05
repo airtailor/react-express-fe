@@ -17,7 +17,7 @@ class OrderComplete extends Component {
   static propTypes = {
     currentOrder: PropTypes.object.isRequired, // mapStateToProps
     userRoles: PropTypes.object.isRequired, // mapStateToProps
-    shipmentSet: PropTypes.array, // parentComponent 
+    shipmentSet: PropTypes.array, // parentComponent
   };
 
   renderShippingLabelImage(shippingLabel) {
@@ -38,8 +38,7 @@ class OrderComplete extends Component {
         <p>
           We hope everything arrived exactly as you expected and that you are
           pleased with our work. If you have any questions or would like to
-          alter/repair more clothes using Air Tailor, please text us or email
-          hello@airtailor.com. We look forward to serving you again soon,{' '}
+          alter/repair more clothes using Air Tailor, please visit us at www.airtailor.com. We look forward to serving you again soon,{' '}
           {firstName}!
         </p>
       </div>
