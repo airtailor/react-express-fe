@@ -53,20 +53,19 @@ class FindCustomerByEmail extends Component {
   };
 
   renderSubmitButton(email) {
-    if (ValidateEmail(email)) {
-      return (
-        <div>
-          <input
-            type="submit"
-            value="Submit"
-            className="short-button"
-            onClick={() => this.searchForCustomerByEmail(email)}
-          />
-          <br />
-          <br />
-        </div>
-      );
-    }
+    return (
+      <div>
+        <input
+          disabled={!ValidateEmail(email)}
+          type="submit"
+          value="Submit"
+          className="short-button"
+          onClick={() => this.searchForCustomerByEmail(email)}
+        />
+        <br />
+        <br />
+      </div>
+    );
   }
 
   searchForCustomerByEmail(email) {
